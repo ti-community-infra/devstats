@@ -1,0 +1,3 @@
+[submodule "devstats"]
+	path = devstats
+	url = https://github.com/cncf/devstats.git
