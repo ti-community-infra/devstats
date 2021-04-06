@@ -17,3 +17,6 @@
 # IDE Config
 .idea
 .vscode
+
+# Temporary files generated when compiling the image
+deployments/images/temp/

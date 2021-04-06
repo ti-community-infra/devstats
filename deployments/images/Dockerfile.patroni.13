@@ -1,3 +1,4 @@
 FROM jberkus/patroni-simple:v13
 MAINTAINER Lukasz Gryglicki <lgryglicki@cncf.io>
-ADD images/patroni/entrypoint.sh /
+
+ADD patroni/entrypoint.sh /
