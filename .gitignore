@@ -13,3 +13,10 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# IDE Config
+.idea
+.vscode
+
+# Temporary files generated when compiling the image
+deployments/images/temp/
