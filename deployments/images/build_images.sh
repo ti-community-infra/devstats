@@ -23,7 +23,7 @@ cd "${DEVSTATS_CODE_DIR}" || exit 3
 #
 # Package Stage
 #
-mkdir "$DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR"
+mkdir -p "$DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR"
 
 PATH_TO_DEVSTAT_TAR="${DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR}/devstats.tar"
 PATH_TO_DEVSTAT_CODE_TAR="${DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR}/devstatscode.tar"
@@ -64,7 +64,7 @@ cp grafana/img/*.svg "${DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR}/" || exit 32
 cd "$DEVSTATS_DOCKER_IMAGES_DIR" || exit 10
 rm -f "$PATH_TO_DEVSTAT_DOCKER_IMAGES_TAR" "$PATH_TO_API_CONFIG_TAR" 2>/dev/null
 
-tar cf "$PATH_TO_DEVSTAT_DOCKER_IMAGES_TAR" images/Makefile.* || exit 11
+tar cf "$PATH_TO_DEVSTAT_DOCKER_IMAGES_TAR" k8s example gql devstats-helm patches images/Makefile.* || exit 11
 tar cf "$PATH_TO_API_CONFIG_TAR" devstats-helm/projects.yaml || exit 45
 
 #
@@ -77,7 +77,6 @@ if [ -z "$SKIP_FULL" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    pwd
     docker build -f Dockerfile.full.test -t "${DOCKER_USER}/devstats-test" . || exit 12
   fi
   if [ -z "$SKIP_PROD" ]
