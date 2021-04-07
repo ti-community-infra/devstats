@@ -31,7 +31,6 @@ update gha_repos set repo_group = alias;
 update gha_repos
 set repo_group = 'TiDB', alias = 'TiDB'
 where name in (
-  'tidb/tidb',
   'pingcap/tidb'
 );
 
