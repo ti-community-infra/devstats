@@ -6,7 +6,7 @@
 # For example:
 # ```
 # DOCKER_USER=miniantdev SKIP_PUSH=1 SKIP_PATRONI=1 SKIP_TESTS=1 SKIP_PROD=1 ./deployments/images/build_images.sh
-# ```
+
 #
 # SKIP_TEST=1 (skip test images)
 # SKIP_PROD=1 (skip prod images)
@@ -19,7 +19,7 @@ then
   exit 1
 fi
 
-cwd="`pwd`"
+cwd="$(pwd)"
 
 # Configuration file directory.
 DEV_CONFIG_DIR="${cwd}/configs/dev"
@@ -29,24 +29,10 @@ PROD_CONFIG_DIR="${cwd}/configs/prod"
 DEVSTATS_DIR="${cwd}/devstats"
 DEVSTATS_CODE_DIR="${cwd}/devstatscode"
 DEVSTATS_REPORT_DIR="${cwd}/devstats-reports"
-DEVSTATS_DOCKER_IMAGES_DIR="${cwd}/devstats-docker-images"
 
 # Docker images directory.
 DEPLOYMENT_DOCKER_IMAGES_DIR="${cwd}/deployments/images"
 TEMP_DIR="${cwd}/deployments/images/temp"
-
-# Ensure those directory is exist.
-cd "${DEVSTATS_DIR}" || exit 2
-cd "${DEVSTATS_REPORT_DIR}" || exit 39
-cd "${DEVSTATS_CODE_DIR}" || exit 3
-
-
-#
-# Package Stage
-#
-
-# Create a directory to temporarily store files that need to be written to the image.
-mkdir -p "$TEMP_DIR"
 
 # The path to devstats package.
 DEVSTATS_TAR="${TEMP_DIR}/devstats.tar"
@@ -71,6 +57,24 @@ PROD_GRAFANA_CONFIG_TAR="${TEMP_DIR}/devstats-grafana-config-prod.tar"
 
 DEV_API_CONFIG_TAR="${TEMP_DIR}/devstats-api-config-dev.tar"
 PROD_API_CONFIG_TAR="${TEMP_DIR}/devstats-api-config-prod.tar"
+
+
+#
+# Prepare Stage
+#
+
+# Ensure those directory is exist.
+cd "${DEVSTATS_DIR}" || exit 2
+cd "${DEVSTATS_REPORT_DIR}" || exit 39
+cd "${DEVSTATS_CODE_DIR}" || exit 3
+
+# Create a directory to temporarily store files that need to be written to the image.
+mkdir -p "$TEMP_DIR"
+
+
+#
+# Package Stage
+#
 
 # Package the files in devstatscode repository.
 cd "${DEVSTATS_CODE_DIR}" || exit 3
@@ -110,7 +114,8 @@ tar cf "$DEVSTATS_DOCKER_IMAGES_TAR" patches Makefile.* || exit 11
 # Pack the configuration files of different environments into different compressed packages,
 # and then decompress them when building the image for overwriting default config.
 #
-# TODO: Move the project pgsql.sh file to the projects directory.
+# TODO: Move the project psql.sh file to the projects directory
+# so that we don't need to update the build_images.sh when we add a new project.
 #
 
 # Package the devstat config file for test environment.
@@ -203,13 +208,13 @@ fi
 
 if [ -z "$SKIP_API" ]
 then
-  if [ -z "$SKIP_PROD" ]
-  then
-    docker build -f Dockerfile.api.prod -t "${DOCKER_USER}/devstats-api-prod" . || exit 46
-  fi
   if [ -z "$SKIP_TEST" ]
   then
     docker build -f Dockerfile.api.test -t "${DOCKER_USER}/devstats-api-test" . || exit 48
+  fi
+  if [ -z "$SKIP_PROD" ]
+  then
+    docker build -f Dockerfile.api.prod -t "${DOCKER_USER}/devstats-api-prod" . || exit 46
   fi
 fi
 
@@ -224,7 +229,7 @@ rm -f devstats.tar devstatscode.tar devstats-grafana.tar devstats-docker-images.
 
 
 #
-# Publish Stage
+# Push Stage
 #
 
 # Don't push the images, just build.
@@ -233,7 +238,7 @@ then
   exit 0
 fi
 
-# Build docker image for full sync program.
+# Build docker image for full sync.
 if [ -z "$SKIP_FULL" ]
 then
   if [ -z "$SKIP_TEST" ]
@@ -246,7 +251,7 @@ then
   fi
 fi
 
-# Build docker image for minimal sync program.
+# Build docker image for minimal sync.
 if [ -z "$SKIP_MIN" ]
 then
   if [ -z "$SKIP_TEST" ]
@@ -290,8 +295,6 @@ then
   then
     docker push "${DOCKER_USER}/devstats-static-prod" || exit 24
   fi
-  docker push "${DOCKER_USER}/devstats-static-cdf" || exit 29
-  docker push "${DOCKER_USER}/devstats-static-graphql" || exit 30
   docker push "${DOCKER_USER}/devstats-static-default" || exit 31
   docker push "${DOCKER_USER}/backups-page" || exit 43
 fi

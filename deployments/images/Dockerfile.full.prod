@@ -18,9 +18,9 @@ ADD temp/devstats-grafana-config-prod.tar .
 
 RUN cp replacer patches/patch.sh /usr/bin/
 # TODO: Patch the link.
-RUN patch.sh prodsrv devstats.cncf.io 'tidb tikv chaosmesh'
-RUN make -f ./images/Makefile.full dockerinstall
-RUN make -f ./images/Makefile.full links
+#RUN patch.sh prodsrv devstats.cncf.io 'tidb tikv chaosmesh'
+RUN make -f Makefile.full dockerinstall
+RUN make -f Makefile.full links
 
 #FROM alpine
 #RUN apk add git bash postgresql-client xz curl

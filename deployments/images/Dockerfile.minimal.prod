@@ -17,8 +17,8 @@ ADD temp/devstats-grafana-config-prod.tar .
 
 RUN cp replacer patches/patch.sh /usr/bin/
 # TODO: Patch the link.
-RUN patch.sh prodsrv devstats.cncf.io 'tidb tikv chaosmesh'
-RUN make -f ./images/Makefile.minimal dockerinstall
+#RUN patch.sh prodsrv devstats.cncf.io 'tidb tikv chaosmesh'
+RUN make -f Makefile.minimal dockerinstall
 
 FROM alpine
 RUN apk add git bash
