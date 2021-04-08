@@ -2,9 +2,9 @@ FROM alpine AS builder
 WORKDIR /builder
 
 ADD temp/api-bins.tar .
-ADD temp/api-config.tar .
+ADD temp/devstats-api-config-prod.tar .
 
 FROM alpine
 COPY --from=builder /builder/api /usr/bin/
-COPY --from=builder /builder/devstats-helm/projects.yaml /etc/gha2db/projects.yaml
+COPY --from=builder /builder/projects.yaml /etc/gha2db/projects.yaml
 CMD api

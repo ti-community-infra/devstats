@@ -1,5 +1,18 @@
 #!/bin/bash
 
+#
+# Notice: Please make sure you use the script in the project root directory.
+#
+# For example:
+# ```
+# DOCKER_USER=miniantdev SKIP_PUSH=1 SKIP_PATRONI=1 SKIP_TESTS=1 SKIP_PROD=1 ./deployments/images/build_images.sh
+# ```
+#
+# SKIP_TEST=1 (skip test images)
+# SKIP_PROD=1 (skip prod images)
+# SKIP_PUSH=1 (skip push the images)
+#
+
 if [ -z "${DOCKER_USER}" ]
 then
   echo "$0: you need to set docker user via DOCKER_USER=username"
@@ -7,65 +20,120 @@ then
 fi
 
 cwd="`pwd`"
+
+# Configuration file directory.
+DEV_CONFIG_DIR="${cwd}/configs/dev"
+PROD_CONFIG_DIR="${cwd}/configs/prod"
+
+# Submodule directory.
 DEVSTATS_DIR="${cwd}/devstats"
 DEVSTATS_CODE_DIR="${cwd}/devstatscode"
 DEVSTATS_REPORT_DIR="${cwd}/devstats-reports"
 DEVSTATS_DOCKER_IMAGES_DIR="${cwd}/devstats-docker-images"
 
+# Docker images directory.
 DEPLOYMENT_DOCKER_IMAGES_DIR="${cwd}/deployments/images"
-DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR="${cwd}/deployments/images/temp"
+TEMP_DIR="${cwd}/deployments/images/temp"
 
 # Ensure those directory is exist.
 cd "${DEVSTATS_DIR}" || exit 2
 cd "${DEVSTATS_REPORT_DIR}" || exit 39
 cd "${DEVSTATS_CODE_DIR}" || exit 3
 
+
 #
 # Package Stage
 #
-mkdir -p "$DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR"
 
-PATH_TO_DEVSTAT_TAR="${DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR}/devstats.tar"
-PATH_TO_DEVSTAT_CODE_TAR="${DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR}/devstatscode.tar"
-PATH_TO_DEVSTAT_GRAFANA_TAR="${DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR}/devstats-grafana.tar"
-PATH_TO_GRAFANA_BIN_TAR="${DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR}/grafana-bins.tar"
-PATH_TO_API_SERVER_BIN_TAR="${DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR}/api-bins.tar"
-PATH_TO_API_DEVSTAT_REPORT_TAR="${DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR}/devstats-reports.tar"
-PATH_TO_HTML="${DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR}/index_*.html"
-PATH_TO_SVG="${DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR}/*.svg"
-PATH_TO_DEVSTAT_DOCKER_IMAGES_TAR="${DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR}/devstats-docker-images.tar"
-PATH_TO_API_CONFIG_TAR="${DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR}/api-config.tar"
+# Create a directory to temporarily store files that need to be written to the image.
+mkdir -p "$TEMP_DIR"
+
+# The path to devstats package.
+DEVSTATS_TAR="${TEMP_DIR}/devstats.tar"
+DEVSTATS_CODE_TAR="${TEMP_DIR}/devstatscode.tar"
+DEVSTATS_GRAFANA_TAR="${TEMP_DIR}/devstats-grafana.tar"
+DEVSTATS_REPORTS_TAR="${TEMP_DIR}/devstats-reports.tar"
+DEVSTATS_DOCKER_IMAGES_TAR="${TEMP_DIR}/devstats-docker-images.tar"
+
+GRAFANA_BIN_TAR="${TEMP_DIR}/grafana-bins.tar"
+API_SERVER_BIN_TAR="${TEMP_DIR}/api-bins.tar"
+
+# The path to static file package.
+HTML_FILES="${TEMP_DIR}/index_*.html"
+SVG_FILES="${TEMP_DIR}/*.svg"
+
+# The path to config file package.
+DEV_CONFIG_TAR="${TEMP_DIR}/devstats-config-dev.tar"
+PROD_CONFIG_TAR="${TEMP_DIR}/devstats-config-prod.tar"
+
+DEV_GRAFANA_CONFIG_TAR="${TEMP_DIR}/devstats-grafana-config-dev.tar"
+PROD_GRAFANA_CONFIG_TAR="${TEMP_DIR}/devstats-grafana-config-prod.tar"
+
+DEV_API_CONFIG_TAR="${TEMP_DIR}/devstats-api-config-dev.tar"
+PROD_API_CONFIG_TAR="${TEMP_DIR}/devstats-api-config-prod.tar"
 
 # Package the files in devstatscode repository.
 cd "${DEVSTATS_CODE_DIR}" || exit 3
 make replacer sqlitedb runq api || exit 4
-rm -f "$PATH_TO_DEVSTAT_CODE_TAR" "$PATH_TO_GRAFANA_BIN_TAR" "$PATH_TO_API_SERVER_BIN_TAR" 2>/dev/null
+rm -f "$DEVSTATS_CODE_TAR" "$GRAFANA_BIN_TAR" "$API_SERVER_BIN_TAR" 2>/dev/null
 
-tar cf "$PATH_TO_DEVSTAT_CODE_TAR" cmd vendor *.go || exit 5
-tar cf "$PATH_TO_GRAFANA_BIN_TAR" replacer sqlitedb runq || exit 6
-tar cf "$PATH_TO_API_SERVER_BIN_TAR" api || exit 44
+tar cf "$DEVSTATS_CODE_TAR" cmd vendor *.go || exit 5
+tar cf "$GRAFANA_BIN_TAR" replacer sqlitedb runq || exit 6
+tar cf "$API_SERVER_BIN_TAR" api || exit 44
 
 # Package the files in devstats-report repository.
 cd "$DEVSTATS_REPORT_DIR" || exit 40
-rm -f "$PATH_TO_API_DEVSTAT_REPORT_TAR" 2>/dev/null
-tar cf "$PATH_TO_API_DEVSTAT_REPORT_TAR" sh sql affs rep contributors velocity find.sh || exit 41
+rm -f "$DEVSTATS_REPORTS_TAR" 2>/dev/null
 
-# Package the files in devstats repository.
+tar cf "$DEVSTATS_REPORTS_TAR" sh sql affs rep contributors velocity find.sh || exit 41
+
+# Package the files in devstats repository for common config.
 cd "$DEVSTATS_DIR" || exit 7
-rm -f "$PATH_TO_DEVSTAT_TAR" "$PATH_TO_DEVSTAT_GRAFANA_TAR" "$PATH_TO_HTML" "$PATH_TO_SVG" 2>/dev/null
+rm -f "$DEVSTATS_TAR" "$DEVSTATS_GRAFANA_TAR" "$HTML_FILES" "$SVG_FILES" 2>/dev/null
 
-tar cf "$PATH_TO_DEVSTAT_TAR" hide git metrics cdf devel util_sql envoy all lfn shared iovisor mininet opennetworkinglab opensecuritycontroller openswitch p4lang openbmp tungstenfabric cord scripts partials docs cron zephyr linux sam azf riff fn openwhisk openfaas cii prestodb godotengine kubernetes prometheus opentracing fluentd linkerd grpc coredns containerd rkt cni jaeger notary tuf rook vitess nats opa spiffe spire cloudevents telepresence helm openmetrics harbor etcd tikv cortex buildpacks falco dragonfly virtualkubelet kubeedge brigade crio networkservicemesh openebs opentelemetry thanos flux intoto strimzi kubevirt longhorn chubaofs keda smi argo volcano cnigenie keptn kudo cloudcustodian dex litmuschaos artifacthub kuma parsec bfe crossplane contour operatorframework chaosmesh serverlessworkflow k3s backstage tremor metal3 porter openyurt openservicemesh keylime schemahero cdk8s certmanager openkruise tinkerbell pravega kyverno gitopswg piraeus k8dash athenz kubeovn curiefense distribution cncf opencontainers istio spinnaker knative tekton jenkins jenkinsx allcdf graphql graphqljs graphiql expressgraphql graphqlspec kubeflow hyperledger jsons/.keep util_sh projects.yaml companies.yaml skip_dates.yaml github_users.json || exit 8
-tar cf "$PATH_TO_DEVSTAT_GRAFANA_TAR" grafana/shared grafana/img/*.svg grafana/img/*.png grafana/*/change_title_and_icons.sh grafana/*/custom_sqlite.sql grafana/dashboards/*/*.json || exit 9
+tar cf "$DEVSTATS_TAR" hide git metrics devel shared scripts partials cron docs jsons/.keep util_sql util_sh github_users.json companies.yaml skip_dates.yaml  || exit 8
+tar cf "$DEVSTATS_GRAFANA_TAR" grafana/shared || exit 9
 
-cp apache/www/index_*.html "${DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR}/" || exit 22
-cp grafana/img/*.svg "${DEPLOYMENT_DOCKER_IMAGES_TEMP_DIR}/" || exit 32
+# Copy static file to temp directory, for copying to the docker image.
+cd "$DEVSTATS_DIR" || exit 7
+
+cp apache/www/index_*.html "${TEMP_DIR}/" || exit 22
+cp grafana/img/*.svg "${TEMP_DIR}/" || exit 32
 
 # Package the files in devstats-docker-images repository.
-cd "$DEVSTATS_DOCKER_IMAGES_DIR" || exit 10
-rm -f "$PATH_TO_DEVSTAT_DOCKER_IMAGES_TAR" "$PATH_TO_API_CONFIG_TAR" 2>/dev/null
+cd "$DEPLOYMENT_DOCKER_IMAGES_DIR" || exit 10
+rm -f "$DEVSTATS_DOCKER_IMAGES_TAR" 2>/dev/null
 
-tar cf "$PATH_TO_DEVSTAT_DOCKER_IMAGES_TAR" k8s example gql devstats-helm patches images/Makefile.* || exit 11
-tar cf "$PATH_TO_API_CONFIG_TAR" devstats-helm/projects.yaml || exit 45
+tar cf "$DEVSTATS_DOCKER_IMAGES_TAR" patches Makefile.* || exit 11
+
+#
+# Pack the configuration files of different environments into different compressed packages,
+# and then decompress them when building the image for overwriting default config.
+#
+# TODO: Move the project pgsql.sh file to the projects directory.
+#
+
+# Package the devstat config file for test environment.
+if [ -z "$SKIP_TEST" ]
+then
+  # Patch the custom config file.
+  cd "$DEV_CONFIG_DIR" || exit 61
+
+  tar rf "$DEV_CONFIG_TAR" tidb tikv chaosmesh metrics partials scripts devel docs projects.yaml
+  tar rf "$DEV_GRAFANA_CONFIG_TAR" grafana/img/*.svg grafana/img/*.png grafana/*/change_title_and_icons.sh grafana/*/custom_sqlite.sql grafana/dashboards/*/*.json
+  tar cf "$DEV_API_CONFIG_TAR" projects.yaml
+fi
+
+# Package the devstat config file for prod environment.
+if [ -z "$SKIP_PROD" ]
+then
+  # Patch the custom config file.
+  cd "$PROD_CONFIG_DIR" || exit 62
+
+  tar rf "$PROD_CONFIG_TAR" tidb tikv chaosmesh metrics partials scripts devel docs projects.yaml
+  tar rf "$PROD_GRAFANA_CONFIG_TAR" grafana/img/*.svg grafana/img/*.png grafana/*/change_title_and_icons.sh grafana/*/custom_sqlite.sql grafana/dashboards/*/*.json
+  tar cf "$PROD_API_CONFIG_TAR" projects.yaml
+fi
 
 #
 # Build Image Stage
@@ -124,8 +192,6 @@ then
   then
     docker build -f Dockerfile.static.prod -t "${DOCKER_USER}/devstats-static-prod" . || exit 23
   fi
-  docker build -f Dockerfile.static.cdf -t "${DOCKER_USER}/devstats-static-cdf" . || exit 25
-  docker build -f Dockerfile.static.graphql -t "${DOCKER_USER}/devstats-static-graphql" . || exit 26
   docker build -f Dockerfile.static.default -t "${DOCKER_USER}/devstats-static-default" . || exit 27
   docker build -f Dockerfile.static.backups -t "${DOCKER_USER}/backups-page" . || exit 42
 fi
@@ -139,13 +205,14 @@ if [ -z "$SKIP_API" ]
 then
   if [ -z "$SKIP_PROD" ]
   then
-    docker build -f Dockerfile.api -t "${DOCKER_USER}/devstats-api-prod" . || exit 46
+    docker build -f Dockerfile.api.prod -t "${DOCKER_USER}/devstats-api-prod" . || exit 46
   fi
   if [ -z "$SKIP_TEST" ]
   then
-    docker build -f Dockerfile.api -t "${DOCKER_USER}/devstats-api-test" . || exit 48
+    docker build -f Dockerfile.api.test -t "${DOCKER_USER}/devstats-api-test" . || exit 48
   fi
 fi
+
 
 #
 # Clean Stage
@@ -154,6 +221,7 @@ fi
 # Clean the temp file for build.
 # TODO: Delete the temp directory directly.
 rm -f devstats.tar devstatscode.tar devstats-grafana.tar devstats-docker-images.tar grafana-bins.tar api-bins.tar api-config.tar devstats-reports.tar index_*.html *.svg
+
 
 #
 # Publish Stage
