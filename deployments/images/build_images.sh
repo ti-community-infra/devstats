@@ -79,7 +79,11 @@ mkdir -p "$TEMP_DIR"
 # Package the files in devstatscode repository.
 cd "${DEVSTATS_CODE_DIR}" || exit 3
 make replacer sqlitedb runq api || exit 4
-rm -f "$DEVSTATS_CODE_TAR" "$GRAFANA_BIN_TAR" "$API_SERVER_BIN_TAR" 2>/dev/null
+
+if [ -n "$DEVSTATS_CODE_TAR" ] && [ -n "$GRAFANA_BIN_TAR" ] && [ -n "$API_SERVER_BIN_TAR" ]
+then
+  rm -f "$DEVSTATS_CODE_TAR" "$GRAFANA_BIN_TAR" "$API_SERVER_BIN_TAR" 2>/dev/null
+fi
 
 tar cf "$DEVSTATS_CODE_TAR" cmd vendor *.go || exit 5
 tar cf "$GRAFANA_BIN_TAR" replacer sqlitedb runq || exit 6
@@ -87,13 +91,21 @@ tar cf "$API_SERVER_BIN_TAR" api || exit 44
 
 # Package the files in devstats-report repository.
 cd "$DEVSTATS_REPORT_DIR" || exit 40
-rm -f "$DEVSTATS_REPORTS_TAR" 2>/dev/null
+
+if [ -n "$DEVSTATS_REPORTS_TAR" ]
+then
+  rm -f "$DEVSTATS_REPORTS_TAR" 2>/dev/null
+fi
 
 tar cf "$DEVSTATS_REPORTS_TAR" sh sql affs rep contributors velocity find.sh || exit 41
 
 # Package the files in devstats repository for common config.
 cd "$DEVSTATS_DIR" || exit 7
-rm -f "$DEVSTATS_TAR" "$DEVSTATS_GRAFANA_TAR" "$HTML_FILES" "$SVG_FILES" 2>/dev/null
+
+if [ -n "$DEVSTATS_TAR" ] && [ -n "$DEVSTATS_GRAFANA_TAR" ] && [ -n "$HTML_FILES" ] && [ -n "$SVG_FILES" ]
+then
+  rm -f "$DEVSTATS_TAR" "$DEVSTATS_GRAFANA_TAR" "$HTML_FILES" "$SVG_FILES" 2>/dev/null
+fi
 
 tar cf "$DEVSTATS_TAR" hide git metrics devel shared scripts partials cron docs jsons/.keep util_sql util_sh github_users.json companies.yaml skip_dates.yaml  || exit 8
 tar cf "$DEVSTATS_GRAFANA_TAR" grafana/shared || exit 9
@@ -106,7 +118,11 @@ cp grafana/img/*.svg "${TEMP_DIR}/" || exit 32
 
 # Package the files in devstats-docker-images repository.
 cd "$DEPLOYMENT_DOCKER_IMAGES_DIR" || exit 10
-rm -f "$DEVSTATS_DOCKER_IMAGES_TAR" 2>/dev/null
+
+if [ -n "$DEVSTATS_DOCKER_IMAGES_TAR" ]
+then
+  rm -f "$DEVSTATS_DOCKER_IMAGES_TAR" 2>/dev/null
+fi
 
 tar cf "$DEVSTATS_DOCKER_IMAGES_TAR" patches Makefile.* || exit 11
 
@@ -125,7 +141,8 @@ then
   cd "$DEV_CONFIG_DIR" || exit 61
 
   tar rf "$DEV_CONFIG_TAR" tidb tikv chaosmesh metrics partials scripts devel docs projects.yaml
-  tar rf "$DEV_GRAFANA_CONFIG_TAR" grafana/img/*.svg grafana/img/*.png grafana/*/change_title_and_icons.sh grafana/*/custom_sqlite.sql grafana/dashboards/*/*.json
+  tar rf "$DEV_GRAFANA_CONFIG_TAR" grafana/img/*.svg grafana/img/*.png grafana/*/change_title_and_icons.sh grafana/dashboards/*/*.json
+  tar rf "$DEV_GRAFANA_CONFIG_TAR" grafana/*/custom_sqlite.sql
   tar cf "$DEV_API_CONFIG_TAR" projects.yaml
 fi
 
@@ -136,7 +153,8 @@ then
   cd "$PROD_CONFIG_DIR" || exit 62
 
   tar rf "$PROD_CONFIG_TAR" tidb tikv chaosmesh metrics partials scripts devel docs projects.yaml
-  tar rf "$PROD_GRAFANA_CONFIG_TAR" grafana/img/*.svg grafana/img/*.png grafana/*/change_title_and_icons.sh grafana/*/custom_sqlite.sql grafana/dashboards/*/*.json
+  tar rf "$PROD_GRAFANA_CONFIG_TAR" grafana/img/*.svg grafana/img/*.png grafana/*/change_title_and_icons.sh grafana/dashboards/*/*.json
+  tar rf "$PROD_GRAFANA_CONFIG_TAR" grafana/*/custom_sqlite.sql
   tar cf "$PROD_API_CONFIG_TAR" projects.yaml
 fi
 
@@ -224,9 +242,10 @@ fi
 #
 
 # Clean the temp file for build.
-# TODO: Delete the temp directory directly.
-rm -f devstats.tar devstatscode.tar devstats-grafana.tar devstats-docker-images.tar grafana-bins.tar api-bins.tar api-config.tar devstats-reports.tar index_*.html *.svg
-
+if [ -n "$TEMP_DIR" ]
+then
+  rm -rf "$TEMP_DIR"
+fi
 
 #
 # Push Stage
