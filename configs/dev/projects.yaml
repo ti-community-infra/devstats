@@ -10,7 +10,6 @@ projects:
     join_date: 2020-01-01T00:00:00Z
     graduated_date: 2020-01-01T00:00:00Z
     psql_db: tidb
-    shared_db: allprj
     main_repo: pingcap/tidb
     annotation_regexp: ''
     files_skip_pattern: ''
@@ -24,7 +23,6 @@ projects:
     join_date: 2018-08-28T00:00:00Z
     graduated_date: 2020-09-02T00:00:00Z
     psql_db: tikv
-    shared_db: allprj
     main_repo: tikv/tikv
     annotation_regexp: ''
     files_skip_pattern: ''
@@ -37,7 +35,6 @@ projects:
     start_date: 2019-12-26T00:00:00Z
     join_date: 2020-07-14T00:00:00Z
     psql_db: chaosmesh
-    shared_db: allprj
     main_repo: chaos-mesh/chaos-mesh
     annotation_regexp: '^v\d+\.\d+\.\d+$'
     files_skip_pattern: '(^|/)_?(vendor|Godeps|_workspace)/'
