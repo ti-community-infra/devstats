@@ -1,0 +1,25 @@
+FROM golang:1.15 AS builder
+RUN apt-get update -y && apt-get upgrade -y && apt-get install -y ca-certificates openssh-client git curl make
+RUN go get -u github.com/rs/cors
+RUN go get -u github.com/json-iterator/go
+RUN go get -u github.com/cncf/devstatscode
+
+WORKDIR /go/src/github.com/cncf/devstatscode
+
+ADD temp/devstats.tar .
+ADD temp/devstatscode.tar .
+ADD temp/devstats-docker-images.tar .
+ADD temp/grafana-bins.tar .
+
+ADD temp/devstats-config-dev.tar .
+ADD temp/devstats-grafana-config-dev.tar .
+
+RUN cp replacer patches/patch.sh /usr/bin/
+# TODO: Patch the link.
+#RUN patch.sh testsrv teststats.cncf.io 'tidb tikv chaosmesh'
+RUN make -f Makefile.minimal dockerinstall
+
+FROM alpine
+RUN apk add git bash
+COPY --from=builder /devstats-minimal/* /usr/bin/
+COPY --from=builder /etc/gha2db /etc/gha2db

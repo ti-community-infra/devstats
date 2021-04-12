@@ -36,4 +36,5 @@ do
   MODE=ss0 FROM="':$1=$fromh '" TO="':$1=$2 '" replacer "$fn"
   MODE=ss0 FROM="': $fromh=$1'" TO="': $2=$1'" replacer "$fn"
 done
+
 echo 'Patching OK'
