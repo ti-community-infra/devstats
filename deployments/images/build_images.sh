@@ -196,7 +196,14 @@ fi
 
 if [ -z "$SKIP_GRAFANA" ]
 then
-  docker build -f Dockerfile.grafana -t "${DOCKER_USER}/devstats-grafana:${IMAGE_TAG}" . || exit 14
+  if [ -z "$SKIP_TEST" ]
+  then
+    docker build -f Dockerfile.grafana.test -t "${DOCKER_USER}/devstats-grafana-test:${IMAGE_TAG}" . || exit 14
+  fi
+  if [ -z "$SKIP_PROD" ]
+  then
+    docker build -f Dockerfile.grafana.prod -t "${DOCKER_USER}/devstats-grafana-prod:${IMAGE_TAG}" . || exit 36
+  fi
 fi
 
 if [ -z "$SKIP_TESTS" ]
@@ -292,7 +299,14 @@ fi
 # Build docker image for grafana.
 if [ -z "$SKIP_GRAFANA" ]
 then
-  docker push "${DOCKER_USER}/devstats-grafana:${IMAGE_TAG}" || exit 19
+  if [ -z "$SKIP_TEST" ]
+  then
+      docker push "${DOCKER_USER}/devstats-grafana-test:${IMAGE_TAG}" || exit 19
+  fi
+  if [ -z "$SKIP_PROD" ]
+  then
+      docker push "${DOCKER_USER}/devstats-grafana-prod:${IMAGE_TAG}" || exit 19
+  fi
 fi
 
 # Build docker image for tests.
