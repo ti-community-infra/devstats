@@ -174,7 +174,7 @@ if [ -z "$SKIP_FULL" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker build -f Dockerfile.full.test -t "${DOCKER_USER}/devstats-test:${IMAGE_TAG}" . || exit 12
+    docker build -f Dockerfile.full.dev -t "${DOCKER_USER}/devstats-dev:${IMAGE_TAG}" . || exit 12
   fi
   if [ -z "$SKIP_PROD" ]
   then
@@ -186,7 +186,7 @@ if [ -z "$SKIP_MIN" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker build -f Dockerfile.minimal.test -t "${DOCKER_USER}/devstats-minimal-test:${IMAGE_TAG}" . || exit 13
+    docker build -f Dockerfile.minimal.dev -t "${DOCKER_USER}/devstats-minimal-dev:${IMAGE_TAG}" . || exit 13
   fi
   if [ -z "$SKIP_PROD" ]
   then
@@ -198,7 +198,7 @@ if [ -z "$SKIP_GRAFANA" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker build -f Dockerfile.grafana.test -t "${DOCKER_USER}/devstats-grafana-test:${IMAGE_TAG}" . || exit 14
+    docker build -f Dockerfile.grafana.dev -t "${DOCKER_USER}/devstats-grafana-dev:${IMAGE_TAG}" . || exit 14
   fi
   if [ -z "$SKIP_PROD" ]
   then
@@ -222,7 +222,7 @@ if [ -z "$SKIP_STATIC" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker build -f Dockerfile.static.test -t "${DOCKER_USER}/devstats-static-test:${IMAGE_TAG}" . || exit 24
+    docker build -f Dockerfile.static.dev -t "${DOCKER_USER}/devstats-static-dev:${IMAGE_TAG}" . || exit 24
   fi
   if [ -z "$SKIP_PROD" ]
   then
@@ -241,7 +241,7 @@ if [ -z "$SKIP_API" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker build -f Dockerfile.api.test -t "${DOCKER_USER}/devstats-api-test:${IMAGE_TAG}" . || exit 48
+    docker build -f Dockerfile.api.dev -t "${DOCKER_USER}/devstats-api-dev:${IMAGE_TAG}" . || exit 48
   fi
   if [ -z "$SKIP_PROD" ]
   then

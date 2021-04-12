@@ -47,6 +47,7 @@ then
   fi
 fi
 
+# Project-related configuration PROJ, PROJDB, PROJREPO is defined in Pod environment variables.
 ORGNAME="-" PORT="-" ICON="-" GRAFSUFF="-" GA="-" SKIPGRAFANA=1 ./devel/deploy_proj.sh || exit 5
 
 if [ -z "$SKIPVARS" ]
