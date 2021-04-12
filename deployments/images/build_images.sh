@@ -275,7 +275,7 @@ if [ -z "$SKIP_FULL" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker push "${DOCKER_USER}/devstats-test:${IMAGE_TAG}" || exit 17
+    docker push "${DOCKER_USER}/devstats-dev:${IMAGE_TAG}" || exit 17
   fi
   if [ -z "$SKIP_PROD" ]
   then
@@ -288,7 +288,7 @@ if [ -z "$SKIP_MIN" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker push "${DOCKER_USER}/devstats-minimal-test:${IMAGE_TAG}" || exit 18
+    docker push "${DOCKER_USER}/devstats-minimal-dev:${IMAGE_TAG}" || exit 18
   fi
   if [ -z "$SKIP_PROD" ]
   then
@@ -301,7 +301,7 @@ if [ -z "$SKIP_GRAFANA" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-      docker push "${DOCKER_USER}/devstats-grafana-test:${IMAGE_TAG}" || exit 19
+      docker push "${DOCKER_USER}/devstats-grafana-dev:${IMAGE_TAG}" || exit 19
   fi
   if [ -z "$SKIP_PROD" ]
   then
@@ -328,7 +328,7 @@ if [ -z "$SKIP_STATIC" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker push "${DOCKER_USER}/devstats-static-test:${IMAGE_TAG}" || exit 28
+    docker push "${DOCKER_USER}/devstats-static-dev:${IMAGE_TAG}" || exit 28
   fi
   if [ -z "$SKIP_PROD" ]
   then
@@ -352,7 +352,7 @@ then
   fi
   if [ -z "$SKIP_TEST" ]
   then
-    docker push "${DOCKER_USER}/devstats-api-test:${IMAGE_TAG}" || exit 49
+    docker push "${DOCKER_USER}/devstats-api-dev:${IMAGE_TAG}" || exit 49
   fi
 fi
 
