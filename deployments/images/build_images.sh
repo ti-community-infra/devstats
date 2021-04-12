@@ -19,6 +19,12 @@ then
   exit 1
 fi
 
+if [ -z "${IMAGE_TAG}" ]
+then
+  echo "$0: you need to set docker image tag via IMAGE_TAG=tag"
+  exit 1
+fi
+
 cwd="$(pwd)"
 
 # Configuration file directory.
@@ -168,11 +174,11 @@ if [ -z "$SKIP_FULL" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker build -f Dockerfile.full.test -t "${DOCKER_USER}/devstats-test" . || exit 12
+    docker build -f Dockerfile.full.test -t "${DOCKER_USER}/devstats-test:${IMAGE_TAG}" . || exit 12
   fi
   if [ -z "$SKIP_PROD" ]
   then
-    docker build -f Dockerfile.full.prod -t "${DOCKER_USER}/devstats-prod" . || exit 33
+    docker build -f Dockerfile.full.prod -t "${DOCKER_USER}/devstats-prod:${IMAGE_TAG}" . || exit 33
   fi
 fi
 
@@ -180,59 +186,59 @@ if [ -z "$SKIP_MIN" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker build -f Dockerfile.minimal.test -t "${DOCKER_USER}/devstats-minimal-test" . || exit 13
+    docker build -f Dockerfile.minimal.test -t "${DOCKER_USER}/devstats-minimal-test:${IMAGE_TAG}" . || exit 13
   fi
   if [ -z "$SKIP_PROD" ]
   then
-    docker build -f Dockerfile.minimal.prod -t "${DOCKER_USER}/devstats-minimal-prod" . || exit 35
+    docker build -f Dockerfile.minimal.prod -t "${DOCKER_USER}/devstats-minimal-prod:${IMAGE_TAG}" . || exit 35
   fi
 fi
 
 if [ -z "$SKIP_GRAFANA" ]
 then
-  docker build -f Dockerfile.grafana -t "${DOCKER_USER}/devstats-grafana" . || exit 14
+  docker build -f Dockerfile.grafana -t "${DOCKER_USER}/devstats-grafana:${IMAGE_TAG}" . || exit 14
 fi
 
 if [ -z "$SKIP_TESTS" ]
 then
-  docker build -f Dockerfile.tests -t "${DOCKER_USER}/devstats-tests" . || exit 15
+  docker build -f Dockerfile.tests -t "${DOCKER_USER}/devstats-tests:${IMAGE_TAG}" . || exit 15
 fi
 
 if [ -z "$SKIP_PATRONI" ]
 then
-  #docker build -f Dockerfile.patroni -t "${DOCKER_USER}/devstats-patroni" . || exit 16
-  docker build -f Dockerfile.patroni -t "${DOCKER_USER}/devstats-patroni-new" . || exit 16
-  docker build -f Dockerfile.patroni.13 -t "${DOCKER_USER}/devstats-patroni-13" . || exit 16
+  #docker build -f Dockerfile.patroni -t "${DOCKER_USER}/devstats-patroni:${IMAGE_TAG}" . || exit 16
+  docker build -f Dockerfile.patroni -t "${DOCKER_USER}/devstats-patroni-new:${IMAGE_TAG}" . || exit 16
+  docker build -f Dockerfile.patroni.13 -t "${DOCKER_USER}/devstats-patroni-13:${IMAGE_TAG}" . || exit 16
 fi
 
 if [ -z "$SKIP_STATIC" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker build -f Dockerfile.static.test -t "${DOCKER_USER}/devstats-static-test" . || exit 24
+    docker build -f Dockerfile.static.test -t "${DOCKER_USER}/devstats-static-test:${IMAGE_TAG}" . || exit 24
   fi
   if [ -z "$SKIP_PROD" ]
   then
-    docker build -f Dockerfile.static.prod -t "${DOCKER_USER}/devstats-static-prod" . || exit 23
+    docker build -f Dockerfile.static.prod -t "${DOCKER_USER}/devstats-static-prod:${IMAGE_TAG}" . || exit 23
   fi
-  docker build -f Dockerfile.static.default -t "${DOCKER_USER}/devstats-static-default" . || exit 27
-  docker build -f Dockerfile.static.backups -t "${DOCKER_USER}/backups-page" . || exit 42
+  docker build -f Dockerfile.static.default -t "${DOCKER_USER}/devstats-static-default:${IMAGE_TAG}" . || exit 27
+  docker build -f Dockerfile.static.backups -t "${DOCKER_USER}/backups-page:${IMAGE_TAG}" . || exit 42
 fi
 
 if [ -z "$SKIP_REPORTS" ]
 then
-  docker build -f Dockerfile.reports -t "${DOCKER_USER}/devstats-reports" . || exit 37
+  docker build -f Dockerfile.reports -t "${DOCKER_USER}/devstats-reports:${IMAGE_TAG}" . || exit 37
 fi
 
 if [ -z "$SKIP_API" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker build -f Dockerfile.api.test -t "${DOCKER_USER}/devstats-api-test" . || exit 48
+    docker build -f Dockerfile.api.test -t "${DOCKER_USER}/devstats-api-test:${IMAGE_TAG}" . || exit 48
   fi
   if [ -z "$SKIP_PROD" ]
   then
-    docker build -f Dockerfile.api.prod -t "${DOCKER_USER}/devstats-api-prod" . || exit 46
+    docker build -f Dockerfile.api.prod -t "${DOCKER_USER}/devstats-api-prod:${IMAGE_TAG}" . || exit 46
   fi
 fi
 
@@ -262,11 +268,11 @@ if [ -z "$SKIP_FULL" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker push "${DOCKER_USER}/devstats-test" || exit 17
+    docker push "${DOCKER_USER}/devstats-test:${IMAGE_TAG}" || exit 17
   fi
   if [ -z "$SKIP_PROD" ]
   then
-    docker push "${DOCKER_USER}/devstats-prod" || exit 34
+    docker push "${DOCKER_USER}/devstats-prod:${IMAGE_TAG}" || exit 34
   fi
 fi
 
@@ -275,32 +281,32 @@ if [ -z "$SKIP_MIN" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker push "${DOCKER_USER}/devstats-minimal-test" || exit 18
+    docker push "${DOCKER_USER}/devstats-minimal-test:${IMAGE_TAG}" || exit 18
   fi
   if [ -z "$SKIP_PROD" ]
   then
-    docker push "${DOCKER_USER}/devstats-minimal-prod" || exit 36
+    docker push "${DOCKER_USER}/devstats-minimal-prod:${IMAGE_TAG}" || exit 36
   fi
 fi
 
 # Build docker image for grafana.
 if [ -z "$SKIP_GRAFANA" ]
 then
-  docker push "${DOCKER_USER}/devstats-grafana" || exit 19
+  docker push "${DOCKER_USER}/devstats-grafana:${IMAGE_TAG}" || exit 19
 fi
 
 # Build docker image for tests.
 if [ -z "$SKIP_TESTS" ]
 then
-  docker push "${DOCKER_USER}/devstats-tests" || exit 20
+  docker push "${DOCKER_USER}/devstats-tests:${IMAGE_TAG}" || exit 20
 fi
 
 # Build docker image for patroni database.
 if [ -z "$SKIP_PATRONI" ]
 then
   #docker push "${DOCKER_USER}/devstats-patroni" || exit 21
-  docker push "${DOCKER_USER}/devstats-patroni-new" || exit 21
-  docker push "${DOCKER_USER}/devstats-patroni-13" || exit 21
+  docker push "${DOCKER_USER}/devstats-patroni-new:${IMAGE_TAG}" || exit 21
+  docker push "${DOCKER_USER}/devstats-patroni-13:${IMAGE_TAG}" || exit 21
 fi
 
 # Build docker image for static files.
@@ -308,19 +314,19 @@ if [ -z "$SKIP_STATIC" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker push "${DOCKER_USER}/devstats-static-test" || exit 28
+    docker push "${DOCKER_USER}/devstats-static-test:${IMAGE_TAG}" || exit 28
   fi
   if [ -z "$SKIP_PROD" ]
   then
-    docker push "${DOCKER_USER}/devstats-static-prod" || exit 24
+    docker push "${DOCKER_USER}/devstats-static-prod:${IMAGE_TAG}" || exit 24
   fi
-  docker push "${DOCKER_USER}/devstats-static-default" || exit 31
-  docker push "${DOCKER_USER}/backups-page" || exit 43
+  docker push "${DOCKER_USER}/devstats-static-default:${IMAGE_TAG}" || exit 31
+  docker push "${DOCKER_USER}/backups-page:${IMAGE_TAG}" || exit 43
 fi
 
 if [ -z "$SKIP_REPORTS" ]
 then
-  docker push "${DOCKER_USER}/devstats-reports" || exit 38
+  docker push "${DOCKER_USER}/devstats-reports:${IMAGE_TAG}" || exit 38
 fi
 
 # Build docker image for API server.
@@ -328,11 +334,11 @@ if [ -z "$SKIP_API" ]
 then
   if [ -z "$SKIP_PROD" ]
   then
-    docker push "${DOCKER_USER}/devstats-api-prod" || exit 47
+    docker push "${DOCKER_USER}/devstats-api-prod:${IMAGE_TAG}" || exit 47
   fi
   if [ -z "$SKIP_TEST" ]
   then
-    docker push "${DOCKER_USER}/devstats-api-test" || exit 49
+    docker push "${DOCKER_USER}/devstats-api-test:${IMAGE_TAG}" || exit 49
   fi
 fi
 
