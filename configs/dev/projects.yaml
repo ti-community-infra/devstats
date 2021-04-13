@@ -11,8 +11,8 @@ projects:
     graduated_date: 2020-01-01T00:00:00Z
     psql_db: tidb
     main_repo: pingcap/tidb
-    annotation_regexp: ''
-    files_skip_pattern: ''
+    annotation_regexp: '^v\d+\.\d+\.\d+$'
+    files_skip_pattern: '(^|/)_?(vendor|Godeps|_workspace)/'
   tikv:
     order: 2
     name: TiKV
@@ -24,8 +24,8 @@ projects:
     graduated_date: 2020-09-02T00:00:00Z
     psql_db: tikv
     main_repo: tikv/tikv
-    annotation_regexp: ''
-    files_skip_pattern: ''
+    annotation_regexp: '^v\d+\.\d+\.\d+$'
+    files_skip_pattern: '(^|/)_?(vendor|Godeps|_workspace)/'
   chaosmesh:
     order: 3
     name: Chaos Mesh
