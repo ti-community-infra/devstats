@@ -40,7 +40,7 @@ DEVSTATS_REPORT_DIR="${cwd}/devstats-reports"
 DEPLOYMENT_DOCKER_IMAGES_DIR="${cwd}/deployments/images"
 TEMP_DIR="${cwd}/deployments/images/temp"
 
-# The path to devstats package.
+# The path to devstats packages.
 DEVSTATS_TAR="${TEMP_DIR}/devstats.tar"
 DEVSTATS_CODE_TAR="${TEMP_DIR}/devstatscode.tar"
 DEVSTATS_GRAFANA_TAR="${TEMP_DIR}/devstats-grafana.tar"
