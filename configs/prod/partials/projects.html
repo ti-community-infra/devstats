@@ -1,0 +1,45 @@
+<head>
+    <style>
+        table, tr, td {
+          border: none !important;
+        }
+        td, th {
+          text-align: center;
+        }
+        img.cncf-proj {
+          min-width: 80px;
+        }
+        td.cncf-sep {
+          border-right: 1px solid white !important;
+          border-left: 1px solid white !important;
+          border-top: 1px solid white !important;
+          font-weight: bold;
+        }
+        td.cncf-br {
+          border-right: 1px solid white !important;
+        }
+        td.cncf-bl {
+          border-left: 1px solid white !important;
+        }
+        td.cncf-bt {
+          border-top: 1px solid white !important;
+        }
+        td.cncf-bb {
+          border-bottom: 1px solid white !important;
+        }
+    </style>
+</head>
+<h2>DevStats projects:</h2>
+<table>
+    testsrv=[[hostname]]
+    <tr>
+        <td class="cncf-bl"><a href="https://tikv.[[hostname]]" target="_blank">TiKV</a></td>
+        <td class="cncf-bl"><a href="https://tidb.[[hostname]]" target="_blank">TiDB</a></td>
+        <td class="cncf-bl"><a href="https://chaomesh.[[hostname]]" target="_blank">Chao Mesh</a></td>
+    </tr>
+    <tr>
+        <td class="cncf-bb cncf-bl"><a href="https://tikv.[[hostname]]" target="_blank"><img class="cncf-proj" src="public/img/projects/tikv.svg" alt="TiKV" height="80" width="80" /></a></td>
+        <td class="cncf-bb cncf-bl"><a href="https://tidb.[[hostname]]" target="_blank"><img class="cncf-proj" src="public/img/projects/tikv.svg" alt="TiDB" height="80" width="80" /></a></td>
+        <td class="cncf-bb cncf-bl"><a href="https://chaomesh.[[hostname]]" target="_blank"><img class="cncf-proj" src="public/img/projects/tidb.svg" alt="Chao Mesh" height="80" width="80" /></a></td>
+    </tr>
+</table>
