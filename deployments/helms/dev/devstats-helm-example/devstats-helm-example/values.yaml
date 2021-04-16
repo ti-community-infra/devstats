@@ -7,7 +7,7 @@ bootstrapRestartPolicy: Never
 bootstrapUDrop: ''
 companyAcq: "companies.yaml"
 concurrencyPolicy: Forbid
-domainName: 'dev.hi-rustin.rs'
+domainName: 'dev.devstats.tidb.io'
 fullnameOverride: devstats
 grafanaCommand: 'grafana_start.sh'
 grafanaImage: 'miniantdev/devstats-grafana-dev:0.0.8'
@@ -69,7 +69,7 @@ requestsProvisionsMemory: '2Gi'
 secretType: Opaque
 servicePodName: devstats-service
 storageAccessModes: ReadWriteOnce
-storageClass: local-volume
+storageClass: default
 skipTemp: 1
 syncCommand: devstats
 syncImage: 'miniantdev/devstats-minimal-dev:0.0.8'
@@ -101,7 +101,7 @@ projects:
   - proj: tikv
     db: tikv
     icon: 'tikv'
-    org: 'PingCAP'
+    org: 'TiKV'
     repo: 'tikv/tikv'
     cron: '30 * * * *'
     disk: 50Gi
@@ -109,7 +109,7 @@ projects:
   - proj: chaosmesh
     db: chaosmesh
     icon: 'tikv'
-    org: 'PingCAP'
+    org: 'Chaosmesh'
     repo: 'chaos-mesh/chaos-mesh'
     cron: '40 * * * *'
     disk: 50Gi
