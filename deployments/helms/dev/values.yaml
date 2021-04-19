@@ -1,14 +1,36 @@
+# Some common configurations.
+name: devstats
+nameOverride: devstats
+domainName: 'dev.devstats.tidb.io'
+fullnameOverride: devstats
+imagePullPolicy: Always
+oauthSecret: github-oauth
+secretType: Opaque
+skipTemp: 1
+volumeMountName: data
+volumeMountPath: '/root'
+volumeName: data
+
+# Company configurations.
 affiliations: 'github_users.json'
+companyAcq: "companies.yaml"
+
+# Bootstrap configurations.
 bootstrapCommand: './devel/deploy_all.sh'
 bootstrapLDrop: ''
 bootstrapNoCreate: ''
 bootstrapPodName: devstats-provision-bootstrap
 bootstrapRestartPolicy: Never
 bootstrapUDrop: ''
-companyAcq: "companies.yaml"
 concurrencyPolicy: Forbid
-domainName: 'dev.devstats.tidb.io'
-fullnameOverride: devstats
+requestsBootstrapCPU: '200m'
+requestsBootstrapMemory: '256Mi'
+limitsBootstrapCPU: '2000m'
+limitsBootstrapMemory: '2Gi'
+useBootstrapResourcesLimits: 1
+waitForPostgres: 15
+
+# Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
 grafanaImage: 'miniantdev/devstats-grafana-dev:0.0.8'
 grafanaMaxSurge: 1
@@ -18,32 +40,15 @@ grafanaPodName: devstats-grafana
 grafanaPort: 3000
 grafanaRestartPolicy: Always
 grafanaSecret: grafana-secret
-imagePullPolicy: Always
-indexCronsFrom: 0
-indexCronsTo: 100
 indexGrafanasFrom: 0
 indexGrafanasTo: 100
-indexIngressesFrom: 0
-indexIngressesTo: 100
-indexProvisionsFrom: 0
-indexProvisionsTo: 100
-indexPVsFrom: 0
-indexPVsTo: 100
-indexServicesFrom: 0
-indexServicesTo: 100
-limitsBootstrapCPU: '2000m'
-limitsBootstrapMemory: '2Gi'
-limitsCronsCPU: '6000m'
-limitsCronsMemory: '16Gi'
+requestsGrafanasCPU: '300m'
+requestsGrafanasMemory: '512Mi'
 limitsGrafanasCPU: '2000m'
 limitsGrafanasMemory: '8Gi'
-limitsPostgresCPU: '8000m'
-limitsPostgresMemory: '16Gi'
-limitsProvisionsCPU: '8000m'
-limitsProvisionsMemory: '64Gi'
-name: devstats
-nameOverride: devstats
-oauthSecret: github-oauth
+useGrafanasResourcesLimits: 1
+
+# Provision configurations.
 pgSecret: pg-db
 provisionImage: 'miniantdev/devstats-dev:0.0.8'
 projectsFile: 'projects.yaml'
@@ -55,40 +60,57 @@ postgresSvcName: 'devstats-postgres'
 postgresImageName: 'lukaszgryglicki/devstats-patroni'
 postgresStorageSize: '50Gi'
 postgresNodes: 3
-pvName: devstats-pvc
-requestsBootstrapCPU: '200m'
-requestsBootstrapMemory: '256Mi'
-requestsCronsCPU: '1000m'
-requestsCronsMemory: '2Gi'
-requestsGrafanasCPU: '300m'
-requestsGrafanasMemory: '512Mi'
+useFlags: ''
+limitsPostgresCPU: '8000m'
+limitsPostgresMemory: '16Gi'
 requestsPostgresCPU: '2000m'
 requestsPostgresMemory: '4Gi'
+pvName: devstats-pvc
+indexProvisionsFrom: 0
+indexProvisionsTo: 100
 requestsProvisionsCPU: '1000m'
 requestsProvisionsMemory: '2Gi'
-secretType: Opaque
-servicePodName: devstats-service
-storageAccessModes: ReadWriteOnce
-storageClass: gp2
-skipTemp: 1
+limitsProvisionsCPU: '8000m'
+limitsProvisionsMemory: '64Gi'
+useProvisionsResourcesLimits: 1
+usePostgresResourcesLimits: 1
+waitForBootstrap: 60
+
+# Cron sync jobs configurations.
 syncCommand: devstats
 syncImage: 'miniantdev/devstats-minimal-dev:0.0.8'
 syncPodName: devstats
 syncRestartPolicy: Never
+indexCronsFrom: 0
+indexCronsTo: 100
+limitsCronsCPU: '6000m'
+limitsCronsMemory: '16Gi'
+requestsCronsCPU: '1000m'
+requestsCronsMemory: '2Gi'
+useCronsResourcesLimits: 1
+
+# Ingresses indexIngressesFrom.
+indexIngressesFrom: 0
+indexIngressesTo: 100
+
+# PVs indexes.
+indexPVsFrom: 0
+indexPVsTo: 100
+
+# Services configurations.
+servicePodName: devstats-service
+indexServicesFrom: 0
+indexServicesTo: 100
+
+# Storage configurations.
+storageAccessModes: ReadWriteOnce
+storageClass: gp2
+
+# Tests configurations.
 testsImage: 'miniantdev/devstats-dev:0.0.8'
 testsPodName: devstats-tests
 testsRestartPolicy: Never
-volumeMountName: data
-volumeMountPath: '/root'
-volumeName: data
-useFlags: ''
-useBootstrapResourcesLimits: 1
-useCronsResourcesLimits: 1
-useGrafanasResourcesLimits: 1
-useProvisionsResourcesLimits: 1
-usePostgresResourcesLimits: 1
-waitForBootstrap: 60
-waitForPostgres: 15
+
 projects:
   - proj: tidb
     db: tidb
