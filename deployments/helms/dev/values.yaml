@@ -89,7 +89,7 @@ requestsCronsCPU: '1000m'
 requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
 
-# Ingresses indexIngressesFrom.
+# Ingresses indexes.
 indexIngressesFrom: 0
 indexIngressesTo: 100
 
