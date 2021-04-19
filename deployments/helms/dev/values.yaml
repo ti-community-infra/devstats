@@ -69,7 +69,7 @@ requestsProvisionsMemory: '2Gi'
 secretType: Opaque
 servicePodName: devstats-service
 storageAccessModes: ReadWriteOnce
-storageClass: default
+storageClass: gp2
 skipTemp: 1
 syncCommand: devstats
 syncImage: 'miniantdev/devstats-minimal-dev:0.0.8'
