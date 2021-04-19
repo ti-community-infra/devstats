@@ -40,7 +40,7 @@ limitsGrafanasMemory: '8Gi'
 limitsPostgresCPU: '8000m'
 limitsPostgresMemory: '16Gi'
 limitsProvisionsCPU: '8000m'
-limitsProvisionsMemory: '50Gi'
+limitsProvisionsMemory: '64Gi'
 name: devstats
 nameOverride: devstats
 oauthSecret: github-oauth
