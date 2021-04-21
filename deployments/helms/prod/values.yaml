@@ -1,0 +1,138 @@
+# Some common configurations.
+name: devstats
+nameOverride: devstats
+domainName: 'devstats.tidb.io'
+fullnameOverride: devstats
+imagePullPolicy: Always
+oauthSecret: github-oauth
+secretType: Opaque
+skipTemp: 1
+volumeMountName: data
+volumeMountPath: '/root'
+volumeName: data
+
+# Company configurations.
+affiliations: 'github_users.json'
+companyAcq: "companies.yaml"
+
+# Bootstrap configurations.
+bootstrapCommand: './devel/deploy_all.sh'
+bootstrapLDrop: ''
+bootstrapNoCreate: ''
+bootstrapPodName: devstats-provision-bootstrap
+bootstrapRestartPolicy: Never
+bootstrapUDrop: ''
+concurrencyPolicy: Forbid
+requestsBootstrapCPU: '200m'
+requestsBootstrapMemory: '256Mi'
+limitsBootstrapCPU: '2000m'
+limitsBootstrapMemory: '2Gi'
+useBootstrapResourcesLimits: 1
+waitForPostgres: 15
+
+# Grafana configurations.
+grafanaCommand: 'grafana_start.sh'
+grafanaImage: 'miniantdev/devstats-grafana-prod:0.0.8'
+grafanaMaxSurge: 1
+grafanaMaxUnavailable: 1
+grafanaNReplicas: 2
+grafanaPodName: devstats-grafana
+grafanaPort: 3000
+grafanaRestartPolicy: Always
+grafanaSecret: grafana-secret
+indexGrafanasFrom: 0
+indexGrafanasTo: 100
+requestsGrafanasCPU: '300m'
+requestsGrafanasMemory: '512Mi'
+limitsGrafanasCPU: '2000m'
+limitsGrafanasMemory: '8Gi'
+useGrafanasResourcesLimits: 1
+
+# Provision configurations.
+pgSecret: pg-db
+provisionImage: 'miniantdev/devstats-prod:0.0.8'
+projectsFile: 'projects.yaml'
+provisionCommand: './devel/deploy_all.sh'
+provisionPodName: devstats-provision
+provisionRestartPolicy: Never
+postgresPort: 5432
+postgresSvcName: 'devstats-postgres'
+postgresImageName: 'lukaszgryglicki/devstats-patroni'
+postgresStorageSize: '50Gi'
+postgresNodes: 3
+useFlags: ''
+limitsPostgresCPU: '8000m'
+limitsPostgresMemory: '16Gi'
+requestsPostgresCPU: '2000m'
+requestsPostgresMemory: '4Gi'
+pvName: devstats-pvc
+indexProvisionsFrom: 0
+indexProvisionsTo: 100
+requestsProvisionsCPU: '1000m'
+requestsProvisionsMemory: '2Gi'
+limitsProvisionsCPU: '8000m'
+limitsProvisionsMemory: '64Gi'
+useProvisionsResourcesLimits: 1
+usePostgresResourcesLimits: 1
+waitForBootstrap: 60
+
+# Cron sync jobs configurations.
+syncCommand: devstats
+syncImage: 'miniantdev/devstats-minimal-prod:0.0.8'
+syncPodName: devstats
+syncRestartPolicy: Never
+indexCronsFrom: 0
+indexCronsTo: 100
+limitsCronsCPU: '6000m'
+limitsCronsMemory: '16Gi'
+requestsCronsCPU: '1000m'
+requestsCronsMemory: '2Gi'
+useCronsResourcesLimits: 1
+
+# Ingresses indexIngressesFrom.
+indexIngressesFrom: 0
+indexIngressesTo: 100
+
+# PVs indexes.
+indexPVsFrom: 0
+indexPVsTo: 100
+
+# Services configurations.
+servicePodName: devstats-service
+indexServicesFrom: 0
+indexServicesTo: 100
+
+# Storage configurations.
+storageAccessModes: ReadWriteOnce
+storageClass: gp2
+
+# Tests configurations.
+testsImage: 'miniantdev/devstats-prod:0.0.8'
+testsPodName: devstats-tests
+testsRestartPolicy: Never
+
+projects:
+  - proj: tidb
+    db: tidb
+    icon: 'tikv'
+    org: 'PingCAP'
+    repo: 'pingcap/tidb'
+    cron: '10 * * * *'
+    disk: 50Gi
+    i: 0
+  - proj: tikv
+    db: tikv
+    icon: 'tikv'
+    org: 'TiKV'
+    repo: 'tikv/tikv'
+    cron: '30 * * * *'
+    disk: 50Gi
+    i: 1
+  - proj: chaosmesh
+    db: chaosmesh
+    icon: 'tikv'
+    org: 'Chaosmesh'
+    repo: 'chaos-mesh/chaos-mesh'
+    cron: '40 * * * *'
+    disk: 50Gi
+    i: 2
