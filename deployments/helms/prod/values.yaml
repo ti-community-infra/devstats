@@ -1,7 +1,7 @@
 # Some common configurations.
 name: devstats
 nameOverride: devstats
-domainName: 'dev.devstats.tidb.io'
+domainName: 'devstats.tidb.io'
 fullnameOverride: devstats
 imagePullPolicy: Always
 oauthSecret: github-oauth
@@ -32,10 +32,10 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana-dev:0.0.8'
+grafanaImage: 'miniantdev/devstats-grafana-prod:0.0.9'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
-grafanaNReplicas: 1
+grafanaNReplicas: 2
 grafanaPodName: devstats-grafana
 grafanaPort: 3000
 grafanaRestartPolicy: Always
@@ -50,7 +50,7 @@ useGrafanasResourcesLimits: 1
 
 # Provision configurations.
 pgSecret: pg-db
-provisionImage: 'miniantdev/devstats-dev:0.0.8'
+provisionImage: 'miniantdev/devstats-prod:0.0.9'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
@@ -78,7 +78,7 @@ waitForBootstrap: 60
 
 # Cron sync jobs configurations.
 syncCommand: devstats
-syncImage: 'miniantdev/devstats-minimal-dev:0.0.8'
+syncImage: 'miniantdev/devstats-minimal-prod:0.0.9'
 syncPodName: devstats
 syncRestartPolicy: Never
 indexCronsFrom: 0
@@ -89,7 +89,7 @@ requestsCronsCPU: '1000m'
 requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
 
-# Ingresses indexes.
+# Ingresses indexIngressesFrom.
 indexIngressesFrom: 0
 indexIngressesTo: 100
 
