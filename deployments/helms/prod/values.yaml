@@ -32,7 +32,7 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana-prod:0.0.8'
+grafanaImage: 'miniantdev/devstats-grafana-prod:0.0.9'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
 grafanaNReplicas: 2
@@ -50,7 +50,7 @@ useGrafanasResourcesLimits: 1
 
 # Provision configurations.
 pgSecret: pg-db
-provisionImage: 'miniantdev/devstats-prod:0.0.8'
+provisionImage: 'miniantdev/devstats-prod:0.0.9'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
@@ -78,7 +78,7 @@ waitForBootstrap: 60
 
 # Cron sync jobs configurations.
 syncCommand: devstats
-syncImage: 'miniantdev/devstats-minimal-prod:0.0.8'
+syncImage: 'miniantdev/devstats-minimal-prod:0.0.9'
 syncPodName: devstats
 syncRestartPolicy: Never
 indexCronsFrom: 0
@@ -106,11 +106,6 @@ indexServicesTo: 100
 storageAccessModes: ReadWriteOnce
 storageClass: gp2
 
-# Tests configurations.
-testsImage: 'miniantdev/devstats-prod:0.0.8'
-testsPodName: devstats-tests
-testsRestartPolicy: Never
-
 projects:
   - proj: tidb
     db: tidb
@@ -130,7 +125,7 @@ projects:
     i: 1
   - proj: chaosmesh
     db: chaosmesh
-    icon: 'tikv'
+    icon: 'chaosmesh'
     org: 'Chaosmesh'
     repo: 'chaos-mesh/chaos-mesh'
     cron: '40 * * * *'

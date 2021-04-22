@@ -106,11 +106,6 @@ indexServicesTo: 100
 storageAccessModes: ReadWriteOnce
 storageClass: gp2
 
-# Tests configurations.
-testsImage: 'miniantdev/devstats-dev:0.0.8'
-testsPodName: devstats-tests
-testsRestartPolicy: Never
-
 projects:
   - proj: tidb
     db: tidb
@@ -130,7 +125,7 @@ projects:
     i: 1
   - proj: chaosmesh
     db: chaosmesh
-    icon: 'tikv'
+    icon: 'chaosmesh'
     org: 'Chaosmesh'
     repo: 'chaos-mesh/chaos-mesh'
     cron: '40 * * * *'
