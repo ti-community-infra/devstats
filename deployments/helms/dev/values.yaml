@@ -109,7 +109,7 @@ storageClass: gp2
 projects:
   - proj: tidb
     db: tidb
-    icon: 'tikv'
+    icon: 'pingcap'
     org: 'PingCAP'
     repo: 'pingcap/tidb'
     cron: '10 * * * *'
