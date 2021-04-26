@@ -2,7 +2,7 @@
 vars:
   - name: os_hostname
     type: s
-    command: [hostname]
+    value: dev.devstats.tidb.io
   - name: full_name
     type: s
     value: TiDB

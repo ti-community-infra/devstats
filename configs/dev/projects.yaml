@@ -1,5 +1,15 @@
 ---
 projects:
+  pingcap:
+    order: 0
+    name: PingCAP
+    status: Graduated
+    command_line:
+      - pingcap
+    psql_db: pingcap
+    main_repo: pingcap/tidb
+    annotation_regexp: '^v\d+\.\d+\.\d+$'
+    files_skip_pattern: '(^|/)_?(vendor|Godeps|_workspace)/'
   tidb:
     order: 1
     name: TiDB
