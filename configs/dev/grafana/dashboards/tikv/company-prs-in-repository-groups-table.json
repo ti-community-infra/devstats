@@ -332,7 +332,7 @@
         "definition": "select country_name from tcountries order by time",
         "hide": 0,
         "includeAll": true,
-        "label": "Countries",
+        "label": "Countries / Region",
         "multi": true,
         "name": "countries",
         "options": [],
