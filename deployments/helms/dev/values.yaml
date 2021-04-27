@@ -137,5 +137,5 @@ projects:
     org: 'PingCAP'
     repo: 'pingcap/tidb'
     cron: '20 * * * *'
-    disk: 64Gi
+    disk: 50Gi
     i: 3
