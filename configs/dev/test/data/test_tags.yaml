@@ -1,0 +1,6 @@
+---
+tags:
+  - name: All Actors
+    sql: all_actors_tags
+    series_name: all_actors
+    name_tag: actor_login
