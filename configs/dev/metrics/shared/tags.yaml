@@ -48,6 +48,11 @@ tags:
     sql: users_tags
     series_name: users
     name_tag: users_name
+  - name: All users
+    sql: all_users_tags
+    series_name: all_users
+    name_tag: users_name
+    limit: 4028
   - name: Country names
     sql: countries_tags
     series_name: countries
