@@ -69,7 +69,7 @@ pvName: devstats-pvc
 indexProvisionsFrom: 0
 indexProvisionsTo: 100
 requestsProvisionsCPU: '1000m'
-requestsProvisionsMemory: '16Gi'
+requestsProvisionsMemory: '2Gi'
 limitsProvisionsCPU: '8000m'
 limitsProvisionsMemory: '64Gi'
 useProvisionsResourcesLimits: 1
