@@ -48,10 +48,6 @@ tags:
     sql: users_tags
     series_name: users
     name_tag: users_name
-  - name: Active users
-    sql: active_users_tags
-    series_name: active_users
-    name_tag: users_name
   - name: Country names
     sql: countries_tags
     series_name: countries
