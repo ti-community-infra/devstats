@@ -254,6 +254,17 @@ metrics:
     merge_series: user_activity
     drop: suser_activity
     allow_fail: true
+  - name: All users activity
+    series_name_or_func: multi_row_multi_column
+    sqls: [all_user_activity, all_user_activity_commits, all_user_activity_issues, all_user_activity_prs]
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: w7,m7,q7,y7
+    merge_series: all_user_activity
+    drop: sall_user_activity
+    allow_fail: true
+    env:
+      GHA2DB_NCPUS?: 8
   - name: Countries stats
     series_name_or_func: multi_row_multi_column
     sqls: [countries, committers_countries]
