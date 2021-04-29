@@ -1,26 +1,16 @@
 ---
 projects:
   pingcap:
-    order: 0
+    order: 1
     name: PingCAP
     status: Graduated
     command_line:
       - pingcap
     psql_db: pingcap
     main_repo: pingcap/tidb
-    annotation_regexp: '^v\d+\.\d+\.\d+$'
-    files_skip_pattern: '(^|/)_?(vendor|Godeps|_workspace)/'
-  tidb:
-    order: 1
-    name: TiDB
-    status: Graduated
-    command_line:
-      - tidb
     start_date: 2020-01-01T00:00:00Z
     join_date: 2020-01-01T00:00:00Z
     graduated_date: 2020-01-01T00:00:00Z
-    psql_db: tidb
-    main_repo: pingcap/tidb
     annotation_regexp: '^v\d+\.\d+\.\d+$'
     files_skip_pattern: '(^|/)_?(vendor|Godeps|_workspace)/'
   tikv:
