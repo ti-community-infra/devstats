@@ -1,10 +1,7 @@
 ---
 tags:
-  - name: All Users
-    sql: users_tags
-    series_name: users
+  - name: All users
+    sql: all_users_tags
+    series_name: all_users
     name_tag: users_name
-  - name: Active Users
-    sql: active_users_tags
-    series_name: active_users
-    name_tag: users_name
+    limit: 4028

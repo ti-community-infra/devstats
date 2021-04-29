@@ -1,0 +1,79 @@
+---
+metrics:
+  - name: All users activity
+    series_name_or_func: multi_row_multi_column
+    sqls: [all_user_activity, all_user_activity_commits, all_user_activity_issues, all_user_activity_prs]
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: 1d,7d,1w,w7,m7,q7,y7
+    merge_series: all_user_activity
+    drop: sall_user_activity
+    allow_fail: true
+    env:
+      GHA2DB_NCPUS?: 8
+
+  # Type: Single row single column
+
+  # - name: All PRs merged
+  #   series_name_or_func: all_prs_merged
+  #   sql: all_prs_merged
+  #   periods: h,d,w,m,q,y
+  #   aggregate: 1,7,24
+  #   skip: h7,w7,m7,q7,y7,d24,w24,m24,q24,y24
+  #   drop: sall_prs_merged
+
+  # - name: All Issue opened
+  #   series_name_or_func: all_issues_opened
+  #   sql: all_issues_opened
+  #   periods: h,d,w,m,q,y
+  #   aggregate: 1,7,24
+  #   skip: h7,w7,m7,q7,y7,d24,w24,m24,q24,y24
+  #   drop: sall_issues_opened
+
+  # Type: Single row multi column
+  
+  # - name: PR comments
+  #   series_name_or_func: single_row_multi_column
+  #   sql: pr_comments
+  #   periods: d,w,m,q,y
+  #   aggregate: 1,7
+  #   skip: w7,m7,q7,y7
+  #   merge_series: user_reviews
+  #   drop: 'spr_comments_med;spr_comments_p85;spr_comments_p95'
+
+  # Type: Multi row single column
+
+  # - name: User reviews
+  #   series_name_or_func: multi_row_single_column
+  #   sql: reviews_per_user
+  #   periods: d,w,m,q,y
+  #   aggregate: 1,7
+  #   skip: w7,m7,q7,y7
+  #   multi_value: true
+  #   merge_series: user_reviews
+  #   drop: suser_reviews
+  #   allow_fail: true
+
+  # Type: Multi row multi column
+
+  # - name: Users stats
+  #   series_name_or_func: multi_row_multi_column
+  #   sqls: [user_activity, user_activity_commits, user_activity_issues, user_activity_prs]
+  #   periods: d,w,m,q,y
+  #   aggregate: 1,7
+  #   skip: w7,m7,q7,y7
+  #   multi_value: true
+  #   merge_series: user_activity
+  #   drop: suser_activity
+  #   allow_fail: true
+  #   project: '!kubernetes'
+
+  # - name: Contributions chart
+  #   series_name_or_func: multi_row_multi_column
+  #   sql: committers_single
+  #   periods: w
+  #   aggregate: 1
+  #   merge_series: ssingle_actor_metrics
+  #   drop: ssingle_actor_metrics
+  #   env:
+  #     GHA2DB_NCPUS?: 8
