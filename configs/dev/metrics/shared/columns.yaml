@@ -9,6 +9,9 @@ columns:
   - table_regexp: '^suser_activity$'
     tag: tusers
     column: users_name
+  - table_regexp: '^sall_user_activity$'
+    tag: tall_users
+    column: users_name
   - table_regexp: '^suser_reviews$'
     tag: treviewers
     column: reviewers_name
