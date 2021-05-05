@@ -23,6 +23,7 @@ bootstrapPodName: devstats-provision-bootstrap
 bootstrapRestartPolicy: Never
 bootstrapUDrop: ''
 concurrencyPolicy: Forbid
+
 requestsBootstrapCPU: '200m'
 requestsBootstrapMemory: '256Mi'
 limitsBootstrapCPU: '2000m'
@@ -40,6 +41,7 @@ grafanaPodName: devstats-grafana
 grafanaPort: 3000
 grafanaRestartPolicy: Always
 grafanaSecret: grafana-secret
+
 indexGrafanasFrom: 0
 indexGrafanasTo: 100
 requestsGrafanasCPU: '300m'
@@ -49,23 +51,12 @@ limitsGrafanasMemory: '8Gi'
 useGrafanasResourcesLimits: 1
 
 # Provision configurations.
-pgSecret: pg-db
 provisionImage: 'miniantdev/devstats-dev:0.1.6.beta.2'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
 provisionRestartPolicy: Never
-postgresPort: 5432
-postgresSvcName: 'devstats-postgres'
-postgresImageName: 'lukaszgryglicki/devstats-patroni'
-postgresStorageSize: '50Gi'
-postgresNodes: 3
 useFlags: ''
-limitsPostgresCPU: '8000m'
-limitsPostgresMemory: '16Gi'
-requestsPostgresCPU: '2000m'
-requestsPostgresMemory: '4Gi'
-pvName: devstats-pvc
 indexProvisionsFrom: 0
 indexProvisionsTo: 100
 requestsProvisionsCPU: '1000m'
@@ -73,8 +64,20 @@ requestsProvisionsMemory: '2Gi'
 limitsProvisionsCPU: '8000m'
 limitsProvisionsMemory: '64Gi'
 useProvisionsResourcesLimits: 1
-usePostgresResourcesLimits: 1
 waitForBootstrap: 60
+
+# Postgres configurations.
+postgresPort: 5432
+postgresSvcName: 'devstats-postgres'
+postgresImageName: 'lukaszgryglicki/devstats-patroni'
+postgresStorageSize: '50Gi'
+postgresNodes: 3
+pgSecret: pg-db
+limitsPostgresCPU: '8000m'
+limitsPostgresMemory: '16Gi'
+requestsPostgresCPU: '2000m'
+requestsPostgresMemory: '4Gi'
+usePostgresResourcesLimits: 1
 
 # Cron sync jobs configurations.
 syncCommand: devstats
@@ -93,14 +96,15 @@ useCronsResourcesLimits: 1
 indexIngressesFrom: 0
 indexIngressesTo: 100
 
-# PVs indexes.
-indexPVsFrom: 0
-indexPVsTo: 100
-
 # Services configurations.
 servicePodName: devstats-service
 indexServicesFrom: 0
 indexServicesTo: 100
+
+# PVs configurations.
+pvName: devstats-pvc
+indexPVsFrom: 0
+indexPVsTo: 100
 
 # Storage configurations.
 storageAccessModes: ReadWriteOnce
