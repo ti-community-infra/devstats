@@ -216,7 +216,7 @@
       "starred": false,
       "tags": [
         "dashboard",
-        "tidb"
+        "pingcap"
       ],
       "title": "All [[full_name]] Dashboards",
       "transparent": false,
@@ -243,7 +243,7 @@
   "tags": [
     "home",
     "all",
-    "tidb"
+    "pingcap"
   ],
   "templating": {
     "list": [

@@ -32,10 +32,10 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana-prod:0.0.9'
+grafanaImage: 'miniantdev/devstats-grafana-prod:0.1.6'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
-grafanaNReplicas: 2
+grafanaNReplicas: 1
 grafanaPodName: devstats-grafana
 grafanaPort: 3000
 grafanaRestartPolicy: Always
@@ -49,23 +49,12 @@ limitsGrafanasMemory: '8Gi'
 useGrafanasResourcesLimits: 1
 
 # Provision configurations.
-pgSecret: pg-db
-provisionImage: 'miniantdev/devstats-prod:0.0.9'
+provisionImage: 'miniantdev/devstats-prod:0.1.6'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
 provisionRestartPolicy: Never
-postgresPort: 5432
-postgresSvcName: 'devstats-postgres'
-postgresImageName: 'lukaszgryglicki/devstats-patroni'
-postgresStorageSize: '50Gi'
-postgresNodes: 3
 useFlags: ''
-limitsPostgresCPU: '8000m'
-limitsPostgresMemory: '16Gi'
-requestsPostgresCPU: '2000m'
-requestsPostgresMemory: '4Gi'
-pvName: devstats-pvc
 indexProvisionsFrom: 0
 indexProvisionsTo: 100
 requestsProvisionsCPU: '1000m'
@@ -73,12 +62,24 @@ requestsProvisionsMemory: '2Gi'
 limitsProvisionsCPU: '8000m'
 limitsProvisionsMemory: '64Gi'
 useProvisionsResourcesLimits: 1
-usePostgresResourcesLimits: 1
 waitForBootstrap: 60
+
+# Postgres configurations.
+postgresPort: 5432
+postgresSvcName: 'devstats-postgres'
+postgresImageName: 'lukaszgryglicki/devstats-patroni'
+postgresStorageSize: '50Gi'
+postgresNodes: 3
+pgSecret: pg-db
+limitsPostgresCPU: '8000m'
+limitsPostgresMemory: '16Gi'
+requestsPostgresCPU: '2000m'
+requestsPostgresMemory: '4Gi'
+usePostgresResourcesLimits: 1
 
 # Cron sync jobs configurations.
 syncCommand: devstats
-syncImage: 'miniantdev/devstats-minimal-prod:0.0.9'
+syncImage: 'miniantdev/devstats-minimal-prod:0.1.6'
 syncPodName: devstats
 syncRestartPolicy: Never
 indexCronsFrom: 0
@@ -89,30 +90,31 @@ requestsCronsCPU: '1000m'
 requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
 
-# Ingresses indexIngressesFrom.
+# Ingresses indexes.
 indexIngressesFrom: 0
 indexIngressesTo: 100
-
-# PVs indexes.
-indexPVsFrom: 0
-indexPVsTo: 100
 
 # Services configurations.
 servicePodName: devstats-service
 indexServicesFrom: 0
 indexServicesTo: 100
 
+# PVs configurations.
+pvName: devstats-pvc
+indexPVsFrom: 0
+indexPVsTo: 100
+
 # Storage configurations.
 storageAccessModes: ReadWriteOnce
 storageClass: gp2
 
 projects:
-  - proj: tidb
-    db: tidb
+  - proj: pingcap
+    db: pingcap
     icon: 'pingcap'
     org: 'PingCAP'
     repo: 'pingcap/tidb'
-    cron: '10 * * * *'
+    cron: '20 * * * *'
     disk: 50Gi
     i: 0
   - proj: tikv
@@ -126,7 +128,7 @@ projects:
   - proj: chaosmesh
     db: chaosmesh
     icon: 'chaosmesh'
-    org: 'Chaosmesh'
+    org: 'ChaosMesh'
     repo: 'chaos-mesh/chaos-mesh'
     cron: '40 * * * *'
     disk: 50Gi
