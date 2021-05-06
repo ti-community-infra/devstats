@@ -33,7 +33,7 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana-dev:0.1.6.beta.4'
+grafanaImage: 'miniantdev/devstats-grafana-dev:0.1.6.beta.5'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
 grafanaNReplicas: 1
@@ -51,7 +51,7 @@ limitsGrafanasMemory: '8Gi'
 useGrafanasResourcesLimits: 1
 
 # Provision configurations.
-provisionImage: 'miniantdev/devstats-dev:0.1.6.beta.4'
+provisionImage: 'miniantdev/devstats-dev:0.1.6.beta.5'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
@@ -81,7 +81,7 @@ usePostgresResourcesLimits: 1
 
 # Cron sync jobs configurations.
 syncCommand: devstats
-syncImage: 'miniantdev/devstats-minimal-dev:0.1.6.beta.4'
+syncImage: 'miniantdev/devstats-minimal-dev:0.1.6.beta.5'
 syncPodName: devstats
 syncRestartPolicy: Never
 indexCronsFrom: 0
