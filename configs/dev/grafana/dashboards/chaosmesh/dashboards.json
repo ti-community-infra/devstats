@@ -295,8 +295,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "dev.hi-rustin.rs",
-          "value": "dev.hi-rustin.rs"
+          "text": "dev.devstats.tidb.io",
+          "value": "dev.devstats.tidb.io"
         },
         "datasource": "psql",
         "hide": 2,

@@ -1,15 +1,14 @@
 ---
 projects:
-  tidb:
+  pingcap:
     order: 1
-    name: TiDB
+    name: PingCAP
     status: Graduated
     command_line:
-      - tidb
-    start_date: 2015-09-06T00:00:00Z
-    join_date: 2015-09-06T00:00:00Z
-    psql_db: tidb
+      - pingcap
+    psql_db: pingcap
     main_repo: pingcap/tidb
+    start_date: 2015-09-06T00:00:00Z
     annotation_regexp: '^v\d+\.\d+\.\d+$'
     files_skip_pattern: '(^|/)_?(vendor|Godeps|_workspace)/'
   tikv:

@@ -216,7 +216,7 @@
       "starred": false,
       "tags": [
         "dashboard",
-        "tikv"
+        "pingcap"
       ],
       "title": "All [[full_name]] Dashboards",
       "transparent": false,
@@ -243,7 +243,7 @@
   "tags": [
     "home",
     "all",
-    "tikv"
+    "pingcap"
   ],
   "templating": {
     "list": [
@@ -295,8 +295,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "dev.devstats.tidb.io",
-          "value": "dev.devstats.tidb.io"
+          "text": "devstats.tidb.io",
+          "value": "devstats.tidb.io"
         },
         "datasource": "psql",
         "hide": 2,
