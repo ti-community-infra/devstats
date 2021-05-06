@@ -17,6 +17,7 @@
 # IDE Config
 .idea
 .vscode
+.favorites.json
 
 # Temporary files generated when compiling the image
 deployments/images/temp/
