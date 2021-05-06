@@ -5,7 +5,7 @@ metrics:
     sqls: [all_user_activity, all_user_activity_commits, all_user_activity_issues, all_user_activity_prs]
     periods: d,w,m,q,y
     aggregate: 1,7
-    skip: 1d,7d,1w,w7,m7,q7,y7
+    skip: d1,d7,w1,w7,m7,q7,y7
     merge_series: all_user_activity
     drop: sall_user_activity
     allow_fail: true

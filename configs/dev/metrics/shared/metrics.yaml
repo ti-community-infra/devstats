@@ -255,7 +255,7 @@ metrics:
     drop: suser_activity
     allow_fail: true
   - name: All users activity
-    series_name_or_func: multi_row_single_column
+    series_name_or_func: multi_row_multi_column
     sqls: [all_user_activity, all_user_activity_commits, all_user_activity_issues, all_user_activity_prs]
     periods: d,w,m,q,y
     aggregate: 1,7
