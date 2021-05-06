@@ -23,7 +23,6 @@ bootstrapPodName: devstats-provision-bootstrap
 bootstrapRestartPolicy: Never
 bootstrapUDrop: ''
 concurrencyPolicy: Forbid
-
 requestsBootstrapCPU: '200m'
 requestsBootstrapMemory: '256Mi'
 limitsBootstrapCPU: '2000m'
@@ -41,7 +40,6 @@ grafanaPodName: devstats-grafana
 grafanaPort: 3000
 grafanaRestartPolicy: Always
 grafanaSecret: grafana-secret
-
 indexGrafanasFrom: 0
 indexGrafanasTo: 100
 requestsGrafanasCPU: '300m'
