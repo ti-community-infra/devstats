@@ -1,1 +1,1 @@
-pingcap tidb tikv chaosmesh
+pingcap tikv chaosmesh
