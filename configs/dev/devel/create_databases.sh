@@ -83,8 +83,8 @@ then
   GHA2DB_PROJECT=$PROJ PG_DB=$PROJDB ./shared/setup_scripts.sh 2>>errors.txt | tee -a run.log || exit 6
   GHA2DB_PROJECT=$PROJ PG_DB=$PROJDB ./shared/get_repos.sh 2>>errors.txt | tee -a run.log || exit 7
   GHA2DB_PROJECT=$PROJ PG_DB=$PROJDB GHA2DB_LOCAL=1 vars || exit 8
-  ./devel/ro_user_grants.sh $PROJDB || exit 9
-  ./devel/psql_user_grants.sh devstats_team $PROJDB || exit 10
+  ./devel/ro_user_grants.sh "$PROJDB" || exit 9
+  ./devel/psql_user_grants.sh devstats_team "$PROJDB" || exit 10
 fi
 
 if [ ! -z "$GETREPOS" ]
