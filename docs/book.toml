@@ -3,4 +3,4 @@ authors = ["hi-rustin"]
 language = "en"
 multilingual = false
 src = "src"
-title = "devstats in TiDB"
+title = "DevStats in TiDB"
