@@ -76,7 +76,7 @@ fi
 # Notice: Temporarily fixed the problem that the following scripts were not executed because of the error during data synchronization and rerun.
 if [ ! -z "$REINIT_DATA" ]
 then
-  echo "GETREPOS mode"
+  echo "REINIT_DATA mode"
   GHA2DB_PROJECT=$PROJ PG_DB=$PROJDB GHA2DB_LOCAL=1 GHA2DB_MGETC=y GHA2DB_SKIPTABLE=1 GHA2DB_INDEX=1 structure 2>>errors.txt | tee -a run.log || exit 3
   GHA2DB_PROJECT=$PROJ PG_DB=$PROJDB ./shared/setup_repo_groups.sh 2>>errors.txt | tee -a run.log || exit 4
   GHA2DB_PROJECT=$PROJ PG_DB=$PROJDB ./shared/import_affs.sh 2>>errors.txt | tee -a run.log || exit 5
