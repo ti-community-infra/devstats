@@ -17,7 +17,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 16,
-  "iteration": 1620625939287,
+  "iteration": 1620637367903,
   "links": [],
   "panels": [
     {
@@ -410,8 +410,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": "Last year",
-          "value": "Last year"
+          "text": "Last month",
+          "value": "Last month"
         },
         "datasource": "psql",
         "definition": "",
@@ -519,8 +519,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "y",
-          "value": "y"
+          "text": "m",
+          "value": "m"
         },
         "datasource": "psql",
         "definition": "",
@@ -715,7 +715,6 @@
         "allValue": "null",
         "current": {
           "selected": true,
-          "tags": [],
           "text": [
             "All"
           ],
@@ -779,5 +778,5 @@
   "timezone": "",
   "title": "Developer Activity Counts by Companies",
   "uid": "66",
-  "version": 3
+  "version": 2
 }

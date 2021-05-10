@@ -15,17 +15,21 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 25,
-  "iteration": 1529597649833,
+  "id": 30,
+  "iteration": 1620638002965,
   "links": [],
   "panels": [
     {
       "columns": [],
       "datasource": "psql",
       "description": "",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "fontSize": "90%",
       "gridPos": {
-        "h": 22,
+        "h": 17,
         "w": 24,
         "x": 0,
         "y": 0
@@ -43,6 +47,7 @@
       "styles": [
         {
           "alias": "Time",
+          "align": "auto",
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "decimals": null,
           "pattern": "Time",
@@ -50,6 +55,7 @@
         },
         {
           "alias": "Metric name",
+          "align": "auto",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -66,6 +72,7 @@
         },
         {
           "alias": "Metric value",
+          "align": "auto",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -81,6 +88,7 @@
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -139,26 +147,33 @@
       ],
       "title": "[[full_name]] Project statistics (Repository group [[repogroup_name]], Range: [[period_name]]), bots excluded",
       "transform": "table",
-      "transparent": false,
-      "type": "table"
+      "type": "table-old"
     },
     {
-      "content": "${docs:raw}",
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 17
       },
       "id": 11,
       "links": [],
-      "mode": "html",
+      "options": {
+        "content": "${docs:raw}",
+        "mode": "html"
+      },
+      "pluginVersion": "7.5.0",
       "title": "Dashboard documentation",
       "type": "text"
     }
   ],
   "refresh": false,
-  "schemaVersion": 16,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [
     "dashboard",
@@ -170,10 +185,14 @@
       {
         "allValue": null,
         "current": {
-          "text": "SPIFFE",
-          "value": "SPIFFE"
+          "selected": false,
+          "text": "Chaos Mesh",
+          "value": "Chaos Mesh"
         },
         "datasource": "psql",
+        "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -194,11 +213,14 @@
       {
         "allValue": null,
         "current": {
-          "tags": [],
+          "selected": false,
           "text": "Last decade",
           "value": "Last decade"
         },
         "datasource": "psql",
+        "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Range",
@@ -219,10 +241,14 @@
       {
         "allValue": null,
         "current": {
+          "selected": false,
           "text": "y10",
           "value": "y10"
         },
         "datasource": "psql",
+        "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -243,10 +269,14 @@
       {
         "allValue": null,
         "current": {
+          "selected": false,
           "text": "All",
           "value": "All"
         },
         "datasource": "psql",
+        "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Repository group",
@@ -267,10 +297,14 @@
       {
         "allValue": null,
         "current": {
+          "selected": false,
           "text": "all",
           "value": "all"
         },
         "datasource": "psql",
+        "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": "",
@@ -290,8 +324,15 @@
       },
       {
         "allValue": null,
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "<h1 id=\"dashboard-header\">Chaos Mesh project statistics dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Main metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/project_stats.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>project_stats</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chaosmesh/project-statistics.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows various project metrics.</li>\n<li>Contributor is defined as somebody who made a review, comment, commit or created PR or issue.</li>\n<li>Pusher is somebody who pushed the commit into the repository, committer is somebody who made/authored a commit/PR pushed by the pusher, this can be the same person or not.</li>\n<li>You can select last day, month, week etc. range or date range between releases, for example <code>v1.9 - v1.10</code>.</li>\n<li>You can select single repository group or summary for all of them.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots when calculating statistics, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n</ul>",
+          "value": "<h1 id=\"dashboard-header\">Chaos Mesh project statistics dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Main metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/project_stats.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>project_stats</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chaosmesh/project-statistics.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows various project metrics.</li>\n<li>Contributor is defined as somebody who made a review, comment, commit or created PR or issue.</li>\n<li>Pusher is somebody who pushed the commit into the repository, committer is somebody who made/authored a commit/PR pushed by the pusher, this can be the same person or not.</li>\n<li>You can select last day, month, week etc. range or date range between releases, for example <code>v1.9 - v1.10</code>.</li>\n<li>You can select single repository group or summary for all of them.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots when calculating statistics, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n</ul>"
+        },
         "datasource": "psql",
+        "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,

@@ -30,8 +30,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 39,
-  "iteration": 1620625688022,
+  "id": 33,
+  "iteration": 1533290141172,
   "links": [],
   "panels": [
     {
@@ -42,19 +42,13 @@
       "datasource": "psql",
       "decimals": 0,
       "description": "Number of PRs merged in given repository group",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 3,
-      "fillGradient": 0,
       "gridPos": {
         "h": 15,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "hiddenSeries": false,
       "id": 2,
       "legend": {
         "alignAsTable": true,
@@ -73,11 +67,7 @@
       "linewidth": 0,
       "links": [],
       "nullPointMode": "null as zero",
-      "options": {
-        "alertThreshold": true
-      },
       "percentage": false,
-      "pluginVersion": "7.5.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -113,7 +103,6 @@
       ],
       "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
       "title": "PRs merged per repository groups ([[repogroups]], [[period]])",
       "tooltip": {
@@ -160,19 +149,13 @@
       "datasource": "psql",
       "decimals": 0,
       "description": "PRs merged in all [[full_name]] repositories",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 5,
-      "fillGradient": 0,
       "gridPos": {
         "h": 12,
         "w": 24,
         "x": 0,
         "y": 15
       },
-      "hiddenSeries": false,
       "id": 3,
       "legend": {
         "alignAsTable": true,
@@ -189,11 +172,7 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null as zero",
-      "options": {
-        "alertThreshold": true
-      },
       "percentage": false,
-      "pluginVersion": "7.5.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -229,7 +208,6 @@
       ],
       "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
       "title": "PRs merged in all [[full_name]] repositories ([[period]])",
       "tooltip": {
@@ -269,11 +247,7 @@
       }
     },
     {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
+      "content": "${docs:raw}",
       "gridPos": {
         "h": 11,
         "w": 24,
@@ -282,17 +256,13 @@
       },
       "id": 11,
       "links": [],
-      "options": {
-        "content": "${docs:raw}",
-        "mode": "html"
-      },
-      "pluginVersion": "7.5.0",
+      "mode": "html",
       "title": "Dashboard documentation",
       "type": "text"
     }
   ],
   "refresh": false,
-  "schemaVersion": 27,
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
     "dashboard",
@@ -302,15 +272,8 @@
     "list": [
       {
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "TiKV",
-          "value": "TiKV"
-        },
+        "current": {},
         "datasource": "psql",
-        "definition": "",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -335,8 +298,6 @@
           "text": "7 Days MA",
           "value": "d7"
         },
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Period",
@@ -380,15 +341,8 @@
       },
       {
         "allValue": "",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": "psql",
-        "definition": "",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Repository group",
@@ -408,15 +362,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "<h1 id=\"dashboard-header\">TiKV PRs merged repository groups dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/prs_merged_groups.sql\" target=\"_blank\">SQL file</a> (repo groups).</li>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/all_prs_merged.sql\" target=\"_blank\">SQL file</a> (all PRs merged).</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>prs_merged_groups</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/tikv/prs-merged-repository-groups.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows number of PRs merged in given periods in selected repository groups.</li>\n<li>One panel shows stacked number of PRs merged in selected repositories. Second panel shows chart for all PRs merged in all repository groups.</li>\n<li>Selecting period (for example week) means that dashboard will show PRs merged in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots activity, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n</ul>",
-          "value": "<h1 id=\"dashboard-header\">TiKV PRs merged repository groups dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/prs_merged_groups.sql\" target=\"_blank\">SQL file</a> (repo groups).</li>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/all_prs_merged.sql\" target=\"_blank\">SQL file</a> (all PRs merged).</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>prs_merged_groups</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/tikv/prs-merged-repository-groups.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows number of PRs merged in given periods in selected repository groups.</li>\n<li>One panel shows stacked number of PRs merged in selected repositories. Second panel shows chart for all PRs merged in all repository groups.</li>\n<li>Selecting period (for example week) means that dashboard will show PRs merged in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots activity, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n</ul>"
-        },
+        "current": {},
         "datasource": "psql",
-        "definition": "",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -437,7 +384,7 @@
     ]
   },
   "time": {
-    "from": "now-1y",
+    "from": "now-3y",
     "to": "now"
   },
   "timepicker": {

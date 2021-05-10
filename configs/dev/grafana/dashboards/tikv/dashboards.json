@@ -32,7 +32,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 15,
-  "iteration": 1620623924165,
+  "iteration": 1620623672862,
   "links": [
     {
       "icon": "dashboard",
@@ -333,65 +333,6 @@
     },
     {
       "datasource": null,
-      "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 24,
-        "x": 0,
-        "y": 30
-      },
-      "id": 18,
-      "options": {
-        "folderId": 1003,
-        "maxItems": 15,
-        "query": "",
-        "showHeadings": false,
-        "showRecentlyViewed": false,
-        "showSearch": true,
-        "showStarred": false,
-        "tags": []
-      },
-      "pluginVersion": "7.5.0",
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": false,
-          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  value\nFROM sall_user_activity\nWHERE\n  $__timeFilter(\"time\")\nORDER BY 1",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "sall_user_activity",
-          "timeColumn": "\"time\"",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Company Group Dashboards",
-      "transparent": true,
-      "type": "dashlist"
-    },
-    {
-      "datasource": null,
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -400,7 +341,7 @@
         "h": 17,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 30
       },
       "id": 12,
       "options": {
@@ -458,7 +399,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 59
+        "y": 47
       },
       "id": 14,
       "options": {
@@ -519,7 +460,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 66
+        "y": 54
       },
       "id": 16,
       "options": {
@@ -564,6 +505,65 @@
         }
       ],
       "title": "Comment Dashboards",
+      "transparent": true,
+      "type": "dashlist"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 61
+      },
+      "id": 18,
+      "options": {
+        "folderId": 1003,
+        "maxItems": 15,
+        "query": "",
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": []
+      },
+      "pluginVersion": "7.5.0",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  value\nFROM sall_user_activity\nWHERE\n  $__timeFilter(\"time\")\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "sall_user_activity",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Company Group Dashboards",
       "transparent": true,
       "type": "dashlist"
     },

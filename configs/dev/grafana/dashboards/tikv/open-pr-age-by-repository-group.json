@@ -30,8 +30,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 28,
-  "iteration": 1620625488374,
+  "id": 23,
+  "iteration": 1533290087426,
   "links": [],
   "panels": [
     {
@@ -45,10 +45,6 @@
       ],
       "datasource": "psql",
       "description": "Current median age of opened PRs.",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -97,7 +93,7 @@
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "",
+      "tableColumn": "descr",
       "targets": [
         {
           "alias": "",
@@ -165,10 +161,6 @@
       ],
       "datasource": "psql",
       "description": "Current average number of opened PRs.",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -217,7 +209,7 @@
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "",
+      "tableColumn": "descr",
       "targets": [
         {
           "alias": "",
@@ -282,19 +274,13 @@
       "datasource": "psql",
       "decimals": 2,
       "description": "Median age and number of pull requests created in [[repogroup]] repository group.",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 3,
-      "fillGradient": 0,
       "gridPos": {
         "h": 13,
         "w": 24,
         "x": 0,
         "y": 3
       },
-      "hiddenSeries": false,
       "id": 1,
       "legend": {
         "alignAsTable": false,
@@ -314,11 +300,7 @@
       "linewidth": 0,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
       "percentage": false,
-      "pluginVersion": "7.5.0",
       "pointradius": 1,
       "points": false,
       "renderer": "flot",
@@ -397,7 +379,6 @@
       ],
       "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
       "title": "Number/Age of Pull requests in [[repogroup_name]] repository group ([[period]])",
       "tooltip": {
@@ -405,6 +386,7 @@
         "sort": 0,
         "value_type": "individual"
       },
+      "transparent": false,
       "type": "graph",
       "xaxis": {
         "buckets": null,
@@ -442,10 +424,6 @@
       "columns": [],
       "datasource": "psql",
       "description": "Median age and number of pull requests created in [[repogroup]] repository group.",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fontSize": "90%",
       "gridPos": {
         "h": 11,
@@ -465,14 +443,12 @@
       "styles": [
         {
           "alias": "Time",
-          "align": "auto",
           "dateFormat": "MM/DD/YYYY",
           "pattern": "Time",
           "type": "date"
         },
         {
           "alias": "",
-          "align": "auto",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -571,15 +547,12 @@
         }
       ],
       "title": "Number/Age of Pull requests in [[repogroup_name]] repository group ([[period]])",
-      "transform": "timeseries_to_rows",
-      "type": "table-old"
+      "transform": "table",
+      "transparent": false,
+      "type": "table"
     },
     {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
+      "content": "${docs:raw}",
       "gridPos": {
         "h": 11,
         "w": 24,
@@ -588,17 +561,13 @@
       },
       "id": 11,
       "links": [],
-      "options": {
-        "content": "${docs:raw}",
-        "mode": "html"
-      },
-      "pluginVersion": "7.5.0",
+      "mode": "html",
       "title": "Dashboard documentation",
       "type": "text"
     }
   ],
   "refresh": false,
-  "schemaVersion": 27,
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
     "dashboard",
@@ -613,8 +582,6 @@
           "text": "7 Days MA",
           "value": "d7"
         },
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Period",
@@ -659,14 +626,10 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
           "text": "All",
           "value": "All"
         },
         "datasource": "psql",
-        "definition": "",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Repository group",
@@ -687,14 +650,10 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
           "text": "all",
           "value": "all"
         },
         "datasource": "psql",
-        "definition": "",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": "",
@@ -714,15 +673,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "TiKV",
-          "value": "TiKV"
-        },
+        "current": {},
         "datasource": "psql",
-        "definition": "",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -742,15 +694,8 @@
       },
       {
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "<h1 id=\"dashboard-header\">TiKV PRs age dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/prs_age.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>prs_age</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/tikv/prs-age.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows number of PRs opened in given periods and median age of those PRs.</li>\n<li>PR age is defined as time from open to either merge or now (for non-merged PRs).</li>\n<li>You can select single repository group or summary for all of them.</li>\n<li>Selecting period (for example week) means that dashboard will calculate data in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n</ul>",
-          "value": "<h1 id=\"dashboard-header\">TiKV PRs age dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/prs_age.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>prs_age</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/tikv/prs-age.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows number of PRs opened in given periods and median age of those PRs.</li>\n<li>PR age is defined as time from open to either merge or now (for non-merged PRs).</li>\n<li>You can select single repository group or summary for all of them.</li>\n<li>Selecting period (for example week) means that dashboard will calculate data in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n</ul>"
-        },
+        "current": {},
         "datasource": "psql",
-        "definition": "",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -771,7 +716,7 @@
     ]
   },
   "time": {
-    "from": "now-1y",
+    "from": "now-3y",
     "to": "now-1w"
   },
   "timepicker": {
