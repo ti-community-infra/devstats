@@ -4,12 +4,12 @@ insert into dashboard_tag(dashboard_id, term) values((select id from dashboard w
 insert into dashboard_tag(dashboard_id, term) values((select id from dashboard where slug = 'dashboards'), 'all');
 insert into dashboard_tag(dashboard_id, term) values((select id from dashboard where slug = 'dashboards'), 'chaosmesh');
 
-update dashboard set id = 1001  where slug = 'community-sizing-and-health-assessment'
-update dashboard set id = 1002  where slug = 'contributor-statistics'
-update dashboard set id = 1003  where slug = 'company-group'
-update dashboard set id = 1004  where slug = 'pr-velocity'
-update dashboard set id = 1005  where slug = 'issue-velocity'
-update dashboard set id = 1006  where slug = 'comment'
+update dashboard set id = 1001  where slug = 'community-sizing-and-health-assessment';
+update dashboard set id = 1002  where slug = 'contributor-statistics';
+update dashboard set id = 1003  where slug = 'company-group';
+update dashboard set id = 1004  where slug = 'pr-velocity';
+update dashboard set id = 1005  where slug = 'issue-velocity';
+update dashboard set id = 1006  where slug = 'comment';
 
 update
   dashboard
