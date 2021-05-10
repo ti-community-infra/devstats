@@ -32,8 +32,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 11,
-  "iteration": 1533289926441,
+  "id": 16,
+  "iteration": 1620366671807,
   "links": [],
   "panels": [
     {
@@ -47,6 +47,10 @@
       ],
       "datasource": "psql",
       "description": "Current median closing time for recent issues.",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -95,7 +99,7 @@
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "descr",
+      "tableColumn": "",
       "targets": [
         {
           "alias": "",
@@ -163,6 +167,10 @@
       ],
       "datasource": "psql",
       "description": "Number of closed issues opened recently",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -211,7 +219,7 @@
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "descr",
+      "tableColumn": "",
       "targets": [
         {
           "alias": "",
@@ -276,13 +284,19 @@
       "datasource": "psql",
       "decimals": 2,
       "description": "Median time to close and number of issues created in [[repogroup]] repository group.",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "fill": 3,
+      "fillGradient": 0,
       "gridPos": {
         "h": 13,
         "w": 24,
         "x": 0,
         "y": 3
       },
+      "hiddenSeries": false,
       "id": 1,
       "legend": {
         "alignAsTable": false,
@@ -302,7 +316,11 @@
       "linewidth": 0,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.5.0",
       "pointradius": 1,
       "points": false,
       "renderer": "flot",
@@ -381,6 +399,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Number/Median time to close of Issues in [[repogroup_name]] repository group ([[period]]), Priority: [[prio_name]]",
       "tooltip": {
@@ -388,7 +407,6 @@
         "sort": 0,
         "value_type": "individual"
       },
-      "transparent": false,
       "type": "graph",
       "xaxis": {
         "buckets": null,
@@ -428,6 +446,10 @@
       "columns": [],
       "datasource": "psql",
       "description": "Median time to close and the number​ of issues created in [[repogroup]] repository group.",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "fontSize": "90%",
       "gridPos": {
         "h": 11,
@@ -447,12 +469,14 @@
       "styles": [
         {
           "alias": "Time",
+          "align": "auto",
           "dateFormat": "MM/DD/YYYY",
           "pattern": "Time",
           "type": "date"
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -551,12 +575,15 @@
         }
       ],
       "title": "Number/Median time to close of Issues in [[repogroup_name]] repository group ([[period]]), Priority: [[prio_name]]",
-      "transform": "table",
-      "transparent": false,
-      "type": "table"
+      "transform": "timeseries_to_rows",
+      "type": "table-old"
     },
     {
-      "content": "${docs:raw}",
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 11,
         "w": 24,
@@ -565,17 +592,22 @@
       },
       "id": 11,
       "links": [],
-      "mode": "html",
+      "options": {
+        "content": "${docs:raw}",
+        "mode": "html"
+      },
+      "pluginVersion": "7.5.0",
       "title": "Dashboard documentation",
       "type": "text"
     }
   ],
   "refresh": false,
-  "schemaVersion": 16,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [
     "dashboard",
-    "tikv"
+    "tikv",
+    "issue"
   ],
   "templating": {
     "list": [
@@ -586,6 +618,9 @@
           "value": "SPIFFE"
         },
         "datasource": "psql",
+        "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -610,6 +645,8 @@
           "text": "7 Days MA",
           "value": "d7"
         },
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Period",
@@ -658,6 +695,9 @@
           "value": "All"
         },
         "datasource": "psql",
+        "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Repository group",
@@ -682,6 +722,9 @@
           "value": "all"
         },
         "datasource": "psql",
+        "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": "",
@@ -706,6 +749,9 @@
           "value": "All"
         },
         "datasource": "psql",
+        "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Priority",
@@ -730,6 +776,9 @@
           "value": "all"
         },
         "datasource": "psql",
+        "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": "Priority",
@@ -751,6 +800,9 @@
         "allValue": null,
         "current": {},
         "datasource": "psql",
+        "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -802,5 +854,5 @@
   "timezone": "",
   "title": "Issues Age by Repository Group",
   "uid": "11",
-  "version": 2
+  "version": 3
 }

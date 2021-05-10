@@ -30,7 +30,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 25,
+  "id": 35,
   "iteration": 1533290157715,
   "links": [],
   "panels": [
@@ -342,5 +342,5 @@
   "timezone": "",
   "title": "Repository Commenters",
   "uid": "25",
-  "version": 2
+  "version": 3
 }

@@ -2,7 +2,6 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:25",
         "builtIn": 1,
         "datasource": "-- Grafana --",
         "enable": true,
@@ -12,7 +11,6 @@
         "type": "dashboard"
       },
       {
-        "$$hashKey": "object:26",
         "datasource": "psql",
         "enable": true,
         "hide": false,
@@ -32,8 +30,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 26,
-  "iteration": 1594980010233,
+  "id": 27,
+  "iteration": 1534769392523,
   "links": [],
   "panels": [
     {
@@ -45,14 +43,12 @@
       "decimals": null,
       "description": "Shows review counts for given users and repository.",
       "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 22,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "hiddenSeries": false,
       "hideTimeOverride": false,
       "id": 1,
       "legend": {
@@ -75,9 +71,6 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null as zero",
-      "options": {
-        "dataLinks": []
-      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -115,7 +108,6 @@
       ],
       "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
       "title": "Reviews per user/repo ([[repo_name]], [[period]])",
       "tooltip": {
@@ -159,7 +151,6 @@
     },
     {
       "content": "${docs:raw}",
-      "datasource": null,
       "gridPos": {
         "h": 12,
         "w": 24,
@@ -173,7 +164,7 @@
       "type": "text"
     }
   ],
-  "schemaVersion": 22,
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
     "dashboard",
@@ -184,7 +175,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "tags": [],
           "text": "7 Days MA",
           "value": "d7"
         },
@@ -236,10 +227,8 @@
           "value": "All"
         },
         "datasource": "psql",
-        "definition": "",
         "hide": 0,
         "includeAll": false,
-        "index": -1,
         "label": "Repository",
         "multi": false,
         "name": "repo_name",
@@ -262,10 +251,8 @@
           "value": "all"
         },
         "datasource": "psql",
-        "definition": "",
         "hide": 2,
         "includeAll": false,
-        "index": -1,
         "label": "",
         "multi": false,
         "name": "repo",
@@ -284,37 +271,29 @@
       {
         "allValue": "",
         "current": {
-          "text": "\"yeya24\" + \"cwen0\" + \"fewdan\" + \"Gallardot\" + \"Yisaer\" + \"dcalvin\" + \"g1eny0ung\" + \"zhouqiang-cl\" + \"mahjonp\" + \"Hexilee\" + \"AngleNet\" + \"anotherrachel\" + \"vincent178\" + \"Illyrix\" + \"yujunz\" + \"YangKeao\" + \"xuechunL\" + \"l2dy\" + \"shonge\" + \"disksing\" + \"huangwei2013\" + \"you06\"",
+          "tags": [],
+          "text": "\"breeswish\" + \"zhangjinpeng1987\" + \"BusyJay\" + \"siddontang\" + \"AndreMouche\" + \"overvenus\" + \"Hoverbear\" + \"hicqu\" + \"huachaohuang\" + \"MyonKeminta\" + \"Connor1996\" + \"bb7133\" + \"ice1000\" + \"CaitinChen\" + \"spongedu\"",
           "value": [
-            "\"yeya24\"",
-            "\"cwen0\"",
-            "\"fewdan\"",
-            "\"Gallardot\"",
-            "\"Yisaer\"",
-            "\"dcalvin\"",
-            "\"g1eny0ung\"",
-            "\"zhouqiang-cl\"",
-            "\"mahjonp\"",
-            "\"Hexilee\"",
-            "\"AngleNet\"",
-            "\"anotherrachel\"",
-            "\"vincent178\"",
-            "\"Illyrix\"",
-            "\"yujunz\"",
-            "\"YangKeao\"",
-            "\"xuechunL\"",
-            "\"l2dy\"",
-            "\"shonge\"",
-            "\"disksing\"",
-            "\"huangwei2013\"",
-            "\"you06\""
+            "\"breeswish\"",
+            "\"zhangjinpeng1987\"",
+            "\"BusyJay\"",
+            "\"siddontang\"",
+            "\"AndreMouche\"",
+            "\"overvenus\"",
+            "\"Hoverbear\"",
+            "\"hicqu\"",
+            "\"huachaohuang\"",
+            "\"MyonKeminta\"",
+            "\"Connor1996\"",
+            "\"bb7133\"",
+            "\"ice1000\"",
+            "\"CaitinChen\"",
+            "\"spongedu\""
           ]
         },
         "datasource": "psql",
-        "definition": "",
         "hide": 0,
         "includeAll": false,
-        "index": -1,
         "label": "Reviewer",
         "multi": true,
         "name": "reviewers",
@@ -333,14 +312,12 @@
       {
         "allValue": null,
         "current": {
-          "text": "Chaos Mesh",
-          "value": "Chaos Mesh"
+          "text": "TiDB",
+          "value": "chaosmesh/tidb"
         },
         "datasource": "psql",
-        "definition": "",
         "hide": 2,
         "includeAll": false,
-        "index": -1,
         "label": null,
         "multi": false,
         "name": "full_name",
@@ -359,14 +336,12 @@
       {
         "allValue": null,
         "current": {
-          "text": "<h1 id=\"dashboard-header\">Chaos Mesh user reviews dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/reviews_per_user.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>reviews_per_user</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chaosmesh/user-reviews.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows number of PR reviews most active reviewers.</li>\n<li>Review means user added PR review comment.</li>\n<li>You can select reviewer from the reviewers drop-down, it shows top active reviewers from last 3 months.</li>\n<li>To find top active reviewers we sum number of reviews per user.</li>\n<li>You can select single repository or summary for all of them.</li>\n<li>You can filter by period and choose multiple reviewers to stack their data.</li>\n<li>Selecting period (for example week) means that dashboard will show reviews in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n</ul>",
-          "value": "<h1 id=\"dashboard-header\">Chaos Mesh user reviews dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/reviews_per_user.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>reviews_per_user</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chaosmesh/user-reviews.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows number of PR reviews most active reviewers.</li>\n<li>Review means user added PR review comment.</li>\n<li>You can select reviewer from the reviewers drop-down, it shows top active reviewers from last 3 months.</li>\n<li>To find top active reviewers we sum number of reviews per user.</li>\n<li>You can select single repository or summary for all of them.</li>\n<li>You can filter by period and choose multiple reviewers to stack their data.</li>\n<li>Selecting period (for example week) means that dashboard will show reviews in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n</ul>"
+          "text": "<h1 id=\"dashboard-header\">TiDB community user reviews dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/reviews_per_user.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>reviews_per_user</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chaosmesh/user-reviews.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows number of PR reviews most active reviewers.</li>\n<li>Review means user added PR review comment.</li>\n<li>You can select reviewer from the reviewers drop-down, it shows top active reviewers from last 3 months.</li>\n<li>To find top active reviewers we sum number of reviews per user.</li>\n<li>You can select single repository or summary for all of them.</li>\n<li>You can filter by period and choose multiple reviewers to stack their data.</li>\n<li>Selecting period (for example week) means that dashboard will show reviews in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n</ul>",
+          "value": "<h1 id=\"dashboard-header\">TiDB community user reviews dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/reviews_per_user.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>reviews_per_user</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chaosmesh/user-reviews.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows number of PR reviews most active reviewers.</li>\n<li>Review means user added PR review comment.</li>\n<li>You can select reviewer from the reviewers drop-down, it shows top active reviewers from last 3 months.</li>\n<li>To find top active reviewers we sum number of reviews per user.</li>\n<li>You can select single repository or summary for all of them.</li>\n<li>You can filter by period and choose multiple reviewers to stack their data.</li>\n<li>Selecting period (for example week) means that dashboard will show reviews in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n</ul>"
         },
         "datasource": "psql",
-        "definition": "",
         "hide": 2,
         "includeAll": false,
-        "index": -1,
         "label": null,
         "multi": false,
         "name": "docs",
@@ -385,7 +360,7 @@
     ]
   },
   "time": {
-    "from": "now-1y",
+    "from": "now-3y",
     "to": "now"
   },
   "timepicker": {
@@ -416,8 +391,5 @@
   "timezone": "",
   "title": "PR Reviews by Contributor",
   "uid": "29",
-  "variables": {
-    "list": []
-  },
-  "version": 3
+  "version": 2
 }

@@ -30,8 +30,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 21,
-  "iteration": 1586176673378,
+  "id": 22,
+  "iteration": 1579677884548,
   "links": [],
   "panels": [
     {
@@ -382,7 +382,7 @@
     ]
   },
   "time": {
-    "from": "now-1y",
+    "from": "now-3y",
     "to": "now"
   },
   "timepicker": {

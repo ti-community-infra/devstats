@@ -31,7 +31,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 3,
-  "iteration": 1583991644407,
+  "iteration": 1533289870030,
   "links": [],
   "panels": [
     {
@@ -43,14 +43,12 @@
       "decimals": 0,
       "description": "",
       "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 22,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "hiddenSeries": false,
       "id": 1,
       "legend": {
         "alignAsTable": true,
@@ -69,9 +67,6 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "percentage": false,
       "pointradius": 1,
       "points": false,
@@ -139,7 +134,6 @@
       ],
       "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
       "title": "Contributing companies and developers ([[repogroup_name]], [[period]])",
       "tooltip": {
@@ -183,7 +177,6 @@
     },
     {
       "content": "${docs:raw}",
-      "datasource": null,
       "gridPos": {
         "h": 12,
         "w": 24,
@@ -193,13 +186,12 @@
       "id": 11,
       "links": [],
       "mode": "html",
-      "options": {},
       "title": "Dashboard documentation",
       "type": "text"
     }
   ],
   "refresh": false,
-  "schemaVersion": 21,
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
     "companies",
@@ -212,7 +204,6 @@
         "allValue": null,
         "current": {},
         "datasource": "psql",
-        "definition": "",
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -277,7 +268,6 @@
         "allValue": null,
         "current": {},
         "datasource": "psql",
-        "definition": "",
         "hide": 0,
         "includeAll": false,
         "label": "Repository group",
@@ -299,7 +289,6 @@
         "allValue": null,
         "current": {},
         "datasource": "psql",
-        "definition": "",
         "hide": 2,
         "includeAll": false,
         "label": "",
@@ -321,7 +310,6 @@
         "allValue": null,
         "current": {},
         "datasource": "psql",
-        "definition": "",
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -342,7 +330,7 @@
     ]
   },
   "time": {
-    "from": "now-9M",
+    "from": "now-3y",
     "to": "now"
   },
   "timepicker": {

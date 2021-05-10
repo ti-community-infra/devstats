@@ -33,7 +33,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 7,
-  "iteration": 1586176648854,
+  "iteration": 1533289837663,
   "links": [],
   "panels": [
     {
@@ -45,14 +45,12 @@
       "decimals": 2,
       "description": "Measures company [[metric]]. Independent means developers working on their own.",
       "fill": 6,
-      "fillGradient": 0,
       "gridPos": {
         "h": 17,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "hiddenSeries": false,
       "id": 1,
       "legend": {
         "alignAsTable": true,
@@ -74,9 +72,6 @@
       "linewidth": 0,
       "links": [],
       "nullPointMode": "null as zero",
-      "options": {
-        "dataLinks": []
-      },
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -124,7 +119,6 @@
       ],
       "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
       "title": "Companies [[metric]] metric ([[repogroup_name]], [[period]])",
       "tooltip": {
@@ -174,14 +168,12 @@
       "decimals": 2,
       "description": "Measures company [[metric]]. Independent means developers working on their own.",
       "fill": 6,
-      "fillGradient": 0,
       "gridPos": {
         "h": 16,
         "w": 24,
         "x": 0,
         "y": 17
       },
-      "hiddenSeries": false,
       "id": 2,
       "legend": {
         "alignAsTable": true,
@@ -203,9 +195,6 @@
       "linewidth": 0,
       "links": [],
       "nullPointMode": "null as zero",
-      "options": {
-        "dataLinks": []
-      },
       "percentage": true,
       "pointradius": 5,
       "points": false,
@@ -243,7 +232,6 @@
       ],
       "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
       "title": "Companies [[metric]] metric ([[repogroup_name]], [[period]])",
       "tooltip": {
@@ -286,7 +274,6 @@
     },
     {
       "content": "${docs:raw}",
-      "datasource": null,
       "gridPos": {
         "h": 14,
         "w": 24,
@@ -296,12 +283,11 @@
       "id": 11,
       "links": [],
       "mode": "html",
-      "options": {},
       "title": "Dashboard documentation",
       "type": "text"
     }
   ],
-  "schemaVersion": 21,
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
     "companies",
@@ -314,7 +300,6 @@
         "allValue": null,
         "current": {},
         "datasource": "psql",
-        "definition": "",
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -460,7 +445,6 @@
           "value": "All"
         },
         "datasource": "psql",
-        "definition": "",
         "hide": 0,
         "includeAll": false,
         "label": "Repository group",
@@ -485,7 +469,6 @@
           "value": "all"
         },
         "datasource": "psql",
-        "definition": "",
         "hide": 2,
         "includeAll": false,
         "label": "",
@@ -510,7 +493,6 @@
           "value": "$__all"
         },
         "datasource": "psql",
-        "definition": "",
         "hide": 0,
         "includeAll": true,
         "label": "Companies",
@@ -532,7 +514,6 @@
         "allValue": null,
         "current": {},
         "datasource": "psql",
-        "definition": "",
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -553,7 +534,7 @@
     ]
   },
   "time": {
-    "from": "now-1y",
+    "from": "now-3y",
     "to": "now"
   },
   "timepicker": {

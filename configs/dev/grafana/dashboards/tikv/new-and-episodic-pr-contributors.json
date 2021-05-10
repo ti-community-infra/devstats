@@ -30,7 +30,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 14,
+  "id": 20,
   "iteration": 1533289967018,
   "links": [],
   "panels": [
@@ -419,5 +419,5 @@
   "timezone": "",
   "title": "New and Episodic PR Contributors",
   "uid": "14",
-  "version": 3
+  "version": 2
 }

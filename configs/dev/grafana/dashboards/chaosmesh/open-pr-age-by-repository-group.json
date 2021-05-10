@@ -30,8 +30,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 22,
-  "iteration": 1586176673537,
+  "id": 23,
+  "iteration": 1533290087426,
   "links": [],
   "panels": [
     {
@@ -76,7 +76,6 @@
       "maxDataPoints": 100,
       "nullPointMode": "connected",
       "nullText": null,
-      "options": {},
       "postfix": "",
       "postfixFontSize": "50%",
       "prefix": "",
@@ -94,7 +93,7 @@
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "",
+      "tableColumn": "descr",
       "targets": [
         {
           "alias": "",
@@ -193,7 +192,6 @@
       "maxDataPoints": 100,
       "nullPointMode": "connected",
       "nullText": null,
-      "options": {},
       "postfix": "",
       "postfixFontSize": "50%",
       "prefix": "",
@@ -211,7 +209,7 @@
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "",
+      "tableColumn": "descr",
       "targets": [
         {
           "alias": "",
@@ -277,14 +275,12 @@
       "decimals": 2,
       "description": "Median age and number of pull requests created in [[repogroup]] repository group.",
       "fill": 3,
-      "fillGradient": 0,
       "gridPos": {
         "h": 13,
         "w": 24,
         "x": 0,
         "y": 3
       },
-      "hiddenSeries": false,
       "id": 1,
       "legend": {
         "alignAsTable": false,
@@ -304,9 +300,6 @@
       "linewidth": 0,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "percentage": false,
       "pointradius": 1,
       "points": false,
@@ -386,7 +379,6 @@
       ],
       "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
       "title": "Number/Age of Pull requests in [[repogroup_name]] repository group ([[period]])",
       "tooltip": {
@@ -394,6 +386,7 @@
         "sort": 0,
         "value_type": "individual"
       },
+      "transparent": false,
       "type": "graph",
       "xaxis": {
         "buckets": null,
@@ -440,7 +433,6 @@
       },
       "id": 3,
       "links": [],
-      "options": {},
       "pageSize": 10,
       "scroll": true,
       "showHeader": true,
@@ -556,11 +548,11 @@
       ],
       "title": "Number/Age of Pull requests in [[repogroup_name]] repository group ([[period]])",
       "transform": "table",
+      "transparent": false,
       "type": "table"
     },
     {
       "content": "${docs:raw}",
-      "datasource": null,
       "gridPos": {
         "h": 11,
         "w": 24,
@@ -570,13 +562,12 @@
       "id": 11,
       "links": [],
       "mode": "html",
-      "options": {},
       "title": "Dashboard documentation",
       "type": "text"
     }
   ],
   "refresh": false,
-  "schemaVersion": 21,
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
     "dashboard",
@@ -639,7 +630,6 @@
           "value": "All"
         },
         "datasource": "psql",
-        "definition": "",
         "hide": 0,
         "includeAll": false,
         "label": "Repository group",
@@ -664,7 +654,6 @@
           "value": "all"
         },
         "datasource": "psql",
-        "definition": "",
         "hide": 2,
         "includeAll": false,
         "label": "",
@@ -686,7 +675,6 @@
         "allValue": null,
         "current": {},
         "datasource": "psql",
-        "definition": "",
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -708,7 +696,6 @@
         "allValue": null,
         "current": {},
         "datasource": "psql",
-        "definition": "",
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -729,7 +716,7 @@
     ]
   },
   "time": {
-    "from": "now-1y",
+    "from": "now-3y",
     "to": "now-1w"
   },
   "timepicker": {

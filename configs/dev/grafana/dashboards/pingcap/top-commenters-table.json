@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 42,
+  "id": 40,
   "iteration": 1568187929551,
   "links": [],
   "panels": [
@@ -364,5 +364,5 @@
   "timezone": "",
   "title": "Top Commenters Table",
   "uid": "28",
-  "version": 2
+  "version": 3
 }
