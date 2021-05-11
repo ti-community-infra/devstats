@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 41,
+  "id": 9,
   "iteration": 1619774042564,
   "links": [],
   "panels": [
@@ -1141,5 +1141,5 @@
   "timezone": "",
   "title": "Contributor Profile",
   "uid": "contributor-profile",
-  "version": 27
+  "version": 2
 }

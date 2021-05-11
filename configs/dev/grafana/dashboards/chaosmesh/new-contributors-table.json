@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 20,
-  "iteration": 1586176671222,
+  "id": 21,
+  "iteration": 1541500383578,
   "links": [],
   "panels": [
     {
@@ -33,7 +33,6 @@
       "hideTimeOverride": false,
       "id": 1,
       "links": [],
-      "options": {},
       "pageSize": 30,
       "scroll": true,
       "showHeader": true,
@@ -151,11 +150,11 @@
       "timeShift": null,
       "title": "[[full_name]] New contributors table (Repository group [[repogroup_name]])",
       "transform": "table",
+      "transparent": false,
       "type": "table"
     },
     {
       "content": "${docs:raw}",
-      "datasource": null,
       "gridPos": {
         "h": 11,
         "w": 24,
@@ -165,13 +164,12 @@
       "id": 11,
       "links": [],
       "mode": "html",
-      "options": {},
       "title": "Dashboard documentation",
       "type": "text"
     }
   ],
   "refresh": false,
-  "schemaVersion": 21,
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [
     "dashboard",
@@ -182,12 +180,8 @@
     "list": [
       {
         "allValue": null,
-        "current": {
-          "text": "ChubaoFS",
-          "value": "ChubaoFS"
-        },
+        "current": {},
         "datasource": "psql",
-        "definition": "",
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -212,7 +206,6 @@
           "value": "All"
         },
         "datasource": "psql",
-        "definition": "",
         "hide": 0,
         "includeAll": false,
         "label": "Repository group",
@@ -237,7 +230,6 @@
           "value": "all"
         },
         "datasource": "psql",
-        "definition": "",
         "hide": 2,
         "includeAll": false,
         "label": "",
@@ -258,11 +250,11 @@
       {
         "allValue": null,
         "current": {
-          "text": "<h1 id=\"dashboard-header\">ChubaoFS new contributors table dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>New contributors metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/new_contributors_data.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>New contributors table</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chubaofs/new-contributors-table.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows statistics about new PR contributors.</li>\n<li>New contributor (PR creator) is someone whose PR was merged for the first time.</li>\n<li>You can select single repository group or summary for all of them.</li>\n<li>You can select date range to show new contributors for this period.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n</ul>",
-          "value": "<h1 id=\"dashboard-header\">ChubaoFS new contributors table dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>New contributors metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/new_contributors_data.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>New contributors table</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chubaofs/new-contributors-table.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows statistics about new PR contributors.</li>\n<li>New contributor (PR creator) is someone whose PR was merged for the first time.</li>\n<li>You can select single repository group or summary for all of them.</li>\n<li>You can select date range to show new contributors for this period.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n</ul>"
+          "isNone": true,
+          "text": "None",
+          "value": ""
         },
         "datasource": "psql",
-        "definition": "",
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -283,7 +275,7 @@
     ]
   },
   "time": {
-    "from": "now-6M",
+    "from": "now-1M",
     "to": "now"
   },
   "timepicker": {

@@ -21,3 +21,7 @@
 
 # Temporary files generated when compiling the image
 deployments/images/temp/
+
+# The temporary grafana dashboard configuration file generated from the SQLite database file
+configs/dev/sqlite/*.json
+configs/dev/sqlite/*.db

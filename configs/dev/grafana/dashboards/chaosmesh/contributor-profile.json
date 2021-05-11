@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 41,
+  "id": 9,
   "iteration": 1619774042564,
   "links": [],
   "panels": [
@@ -1107,8 +1107,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "Chaosmesh",
-          "value": "Chaosmesh"
+          "text": "ChaosMesh",
+          "value": "ChaosMesh"
         },
         "datasource": null,
         "definition": "select value_s from gha_vars where name = 'full_name'",
@@ -1141,5 +1141,5 @@
   "timezone": "",
   "title": "Contributor Profile",
   "uid": "contributor-profile",
-  "version": 27
+  "version": 2
 }
