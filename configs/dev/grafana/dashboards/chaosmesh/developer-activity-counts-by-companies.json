@@ -17,10 +17,11 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 16,
-  "iteration": 1620638165510,
+  "iteration": 1620734180897,
   "links": [],
   "panels": [
     {
+      "cacheTimeout": null,
       "datasource": null,
       "description": "",
       "fieldConfig": {
@@ -29,6 +30,7 @@
             "mode": "thresholds"
           },
           "mappings": [],
+          "min": 10,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -37,45 +39,190 @@
                 "value": null
               },
               {
-                "color": "red",
-                "value": 80
+                "color": "light-green",
+                "value": 100
+              },
+              {
+                "color": "dark-green",
+                "value": 200
+              },
+              {
+                "color": "semi-dark-green",
+                "value": 300
               }
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "count-gt-0"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "count>0"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "count-gt-1"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "count>1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "count-gt-4"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "count>4"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "count-gt-8"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "count>8"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 3,
-        "w": 12,
+        "h": 6,
+        "w": 6,
         "x": 0,
         "y": 0
       },
-      "id": 5,
+      "id": 9,
+      "interval": null,
+      "links": [],
+      "maxDataPoints": 1,
       "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
+        "displayMode": "gradient",
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
           "fields": "",
-          "values": false
+          "values": true
         },
-        "text": {},
-        "textMode": "auto"
+        "showUnfilled": true,
+        "text": {}
       },
       "pluginVersion": "7.5.0",
       "targets": [
         {
           "format": "table",
           "group": [],
+          "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select row_number() over (order by value desc) as \"Rank\",\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n) sub",
-          "refId": "A",
+          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        (\n          '[[companies:csv]]' != 'Not PingCAP' and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n        ) or (\n          '[[companies:csv]]' = 'Not PingCAP' and split_part(name, '$$$', 2) != 'PingCAP'\n        )\n    )\n) sub",
+          "refId": "count-gt-0",
+          "select": [
+            [
+              {
+                "params": [
+                  "license_prob"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gha_repos",
+          "timeColumn": "created_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        (\n          '[[companies:csv]]' != 'Not PingCAP' and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n        ) or (\n          '[[companies:csv]]' = 'Not PingCAP' and split_part(name, '$$$', 2) != 'PingCAP'\n        )\n    )\n    and value > 1\n) sub",
+          "refId": "count-gt-1",
+          "select": [
+            [
+              {
+                "params": [
+                  "license_prob"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gha_repos",
+          "timeColumn": "created_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        (\n          '[[companies:csv]]' != 'Not PingCAP' and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n        ) or (\n          '[[companies:csv]]' = 'Not PingCAP' and split_part(name, '$$$', 2) != 'PingCAP'\n        )\n    )\n    and value > 4\n) sub",
+          "refId": "count-gt-4",
+          "select": [
+            [
+              {
+                "params": [
+                  "license_prob"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gha_repos",
+          "timeColumn": "created_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        (\n          '[[companies:csv]]' != 'Not PingCAP' and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n        ) or (\n          '[[companies:csv]]' = 'Not PingCAP' and split_part(name, '$$$', 2) != 'PingCAP'\n        )\n    )\n    and value > 8\n) sub",
+          "refId": "count-gt-8",
           "select": [
             [
               {
@@ -98,8 +245,166 @@
           ]
         }
       ],
-      "title": "Developer Count According to [[metric]] Metric",
-      "type": "stat"
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Developer with  [[metric]] Count",
+      "type": "bargauge"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "pingcap"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "PingCAP"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "palette-classic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "notpingcap"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Not PingCAP"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "palette-classic"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 5,
+      "links": [],
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {}
+      },
+      "pluginVersion": "7.5.0",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        split_part(name, '$$$', 2) = 'PingCAP'\n    )\n) sub",
+          "refId": "pingcap",
+          "select": [
+            [
+              {
+                "params": [
+                  "license_prob"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gha_repos",
+          "timeColumn": "created_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        split_part(name, '$$$', 2) != 'PingCAP'\n    )\n) sub",
+          "refId": "notpingcap",
+          "select": [
+            [
+              {
+                "params": [
+                  "license_prob"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gha_repos",
+          "timeColumn": "created_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Proportion of External Contributors",
+      "type": "piechart"
     },
     {
       "datasource": null,
@@ -127,15 +432,15 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 12,
+        "h": 6,
+        "w": 6,
         "x": 12,
         "y": 0
       },
       "id": 7,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
@@ -155,7 +460,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select \n  sum(sub.value)\nfrom (\n  select row_number() over (order by value desc) as \"Rank\",\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n) sub",
+          "rawSql": "select \n  sum(sub.value)\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        (\n          '[[companies:csv]]' != 'Not PingCAP' and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n        ) or (\n          '[[companies:csv]]' = 'Not PingCAP' and split_part(name, '$$$', 2) != 'PingCAP'\n        )\n    )\n) sub",
           "refId": "A",
           "select": [
             [
@@ -179,8 +484,150 @@
           ]
         }
       ],
-      "title": "[[metric]] Sum",
+      "title": "[[metric]]  Total",
       "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "pingcap"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "PingCAP"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "notpingcap"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Not PingCAP"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 8,
+      "links": [],
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {}
+      },
+      "pluginVersion": "7.5.0",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select \n  sum(value)\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and  split_part(name, '$$$', 2) = 'PingCAP'\n) sub",
+          "refId": "pingcap",
+          "select": [
+            [
+              {
+                "params": [
+                  "license_prob"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gha_repos",
+          "timeColumn": "created_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select \n  sum(value)\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and split_part(name, '$$$', 2) != 'PingCAP'\n) sub",
+          "refId": "notpingcap",
+          "select": [
+            [
+              {
+                "params": [
+                  "license_prob"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gha_repos",
+          "timeColumn": "created_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Proportion of External Contributors’s [[metric]]",
+      "type": "piechart"
     },
     {
       "datasource": "psql",
@@ -296,14 +743,20 @@
         "h": 18,
         "w": 24,
         "x": 0,
-        "y": 3
+        "y": 6
       },
       "hideTimeOverride": true,
       "id": 1,
       "interval": "",
       "links": [],
       "options": {
-        "showHeader": true
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Number"
+          }
+        ]
       },
       "pluginVersion": "7.5.0",
       "targets": [
@@ -331,7 +784,7 @@
           "policy": "default",
           "query": "SELECT \"name\", \"value\" FROM \"developers_hist_[[metric]]_[[repogroup]]_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select \n  sub.\"Rank\",\n  split_part(sub.name, '$$$', 1) as name,\n  split_part(sub.name, '$$$', 2) as \"Company\",\n  sub.value\nfrom (\n  select row_number() over (order by value desc) as \"Rank\",\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n) sub",
+          "rawSql": "select \n  sub.\"Rank\",\n  split_part(sub.name, '$$$', 1) as name,\n  split_part(sub.name, '$$$', 2) as \"Company\",\n  sub.value\nfrom (\n  select row_number() over (order by value desc) as \"Rank\",\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        (\n          '[[companies:csv]]' != 'Not PingCAP' and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n        ) or (\n          '[[companies:csv]]' = 'Not PingCAP' and split_part(name, '$$$', 2) != 'PingCAP'\n        )\n    )\n) sub",
           "refId": "A",
           "resultFormat": "table",
           "select": [
@@ -373,6 +826,7 @@
     },
     {
       "datasource": null,
+      "description": "",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -381,7 +835,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 24
       },
       "id": 3,
       "links": [],
@@ -402,7 +856,7 @@
     "repogroups",
     "table",
     "companies",
-    "chaosmesh"
+    "pingcap"
   ],
   "templating": {
     "list": [
@@ -410,8 +864,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": "Last month",
-          "value": "Last month"
+          "text": "Last year",
+          "value": "Last year"
         },
         "datasource": "psql",
         "definition": "",
@@ -437,7 +891,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "Merged PRs",
           "value": "merged_prs"
         },
@@ -519,8 +973,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "m",
-          "value": "m"
+          "text": "y",
+          "value": "y"
         },
         "datasource": "psql",
         "definition": "",
@@ -631,8 +1085,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "<h1 id=\"dashboard-header\">Chaos Mesh Developer Activity Counts by Companies dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/project_developer_stats.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>Developer summary</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chaosmesh/developer-activity-counts-by-companies.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows various developer metrics groupped by their affiliated companies.</li>\n<li>You can select last day, month, week etc. range or date range between releases, for example <code>v1.9 - v1.10</code>.</li>\n<li>You can select single repository group or summary for all of them.</li>\n<li>You can select country from a drop-down or summary for all countries.</li>\n<li>You can select company/companies from a drop-down or all to display all companies.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots when calculating statistics, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n<li>We are determining user's company affiliation from <a href=\"https://github.com/cncf/devstats/blob/master/github_users.json\" target=\"_blank\">this file</a>, which is imported from <code>cncf/gitdm</code>.</li>\n</ul>",
-          "value": "<h1 id=\"dashboard-header\">Chaos Mesh Developer Activity Counts by Companies dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/project_developer_stats.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>Developer summary</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chaosmesh/developer-activity-counts-by-companies.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows various developer metrics groupped by their affiliated companies.</li>\n<li>You can select last day, month, week etc. range or date range between releases, for example <code>v1.9 - v1.10</code>.</li>\n<li>You can select single repository group or summary for all of them.</li>\n<li>You can select country from a drop-down or summary for all countries.</li>\n<li>You can select company/companies from a drop-down or all to display all companies.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots when calculating statistics, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n<li>We are determining user's company affiliation from <a href=\"https://github.com/cncf/devstats/blob/master/github_users.json\" target=\"_blank\">this file</a>, which is imported from <code>cncf/gitdm</code>.</li>\n</ul>"
+          "text": "<h1 id=\"dashboard-header\">Chaos Mesh Developer Activity Counts by Companies dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/project_developer_stats.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>Developer summary</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/pingcap/developer-activity-counts-by-companies.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows various developer metrics groupped by their affiliated companies.</li>\n<li>You can select last day, month, week etc. range or date range between releases, for example <code>v1.9 - v1.10</code>.</li>\n<li>You can select single repository group or summary for all of them.</li>\n<li>You can select country from a drop-down or summary for all countries.</li>\n<li>You can select company/companies from a drop-down or all to display all companies.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots when calculating statistics, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n<li>We are determining user's company affiliation from <a href=\"https://github.com/cncf/devstats/blob/master/github_users.json\" target=\"_blank\">this file</a>, which is imported from <code>cncf/gitdm</code>.</li>\n</ul>",
+          "value": "<h1 id=\"dashboard-header\">Chaos Mesh Developer Activity Counts by Companies dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/project_developer_stats.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>Developer summary</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/pingcap/developer-activity-counts-by-companies.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows various developer metrics groupped by their affiliated companies.</li>\n<li>You can select last day, month, week etc. range or date range between releases, for example <code>v1.9 - v1.10</code>.</li>\n<li>You can select single repository group or summary for all of them.</li>\n<li>You can select country from a drop-down or summary for all countries.</li>\n<li>You can select company/companies from a drop-down or all to display all companies.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots when calculating statistics, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n<li>We are determining user's company affiliation from <a href=\"https://github.com/cncf/devstats/blob/master/github_users.json\" target=\"_blank\">this file</a>, which is imported from <code>cncf/gitdm</code>.</li>\n</ul>"
         },
         "datasource": "psql",
         "definition": "select value_s from gha_vars where name = 'developer_company_stats_docs_html'",
@@ -715,15 +1169,16 @@
         "allValue": "null",
         "current": {
           "selected": true,
+          "tags": [],
           "text": [
-            "All"
+            "Not PingCAP"
           ],
           "value": [
-            "$__all"
+            "Not PingCAP"
           ]
         },
         "datasource": "psql",
-        "definition": "select companies_name from tcompanies order by time",
+        "definition": "select companies_name from\n(\n\tselect 'Not PingCAP' as companies_name, '2012-07-01 00:30:00' as time \n\tunion \n\tselect companies_name, time ord from tcompanies\n\torder by time\n) companies",
         "description": null,
         "error": null,
         "hide": 0,
@@ -732,7 +1187,7 @@
         "multi": true,
         "name": "companies",
         "options": [],
-        "query": "select companies_name from tcompanies order by time",
+        "query": "select companies_name from\n(\n\tselect 'Not PingCAP' as companies_name, '2012-07-01 00:30:00' as time \n\tunion \n\tselect companies_name, time ord from tcompanies\n\torder by time\n) companies",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -778,5 +1233,5 @@
   "timezone": "",
   "title": "Developer Activity Counts by Companies",
   "uid": "66",
-  "version": 2
+  "version": 12
 }
