@@ -35,7 +35,7 @@ grafanaCommand: 'grafana_start.sh'
 grafanaImage: 'miniantdev/devstats-grafana-dev:0.2.0.beta.2'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
-grafanaNReplicas: 1
+grafanaNReplicas: 2
 grafanaPodName: devstats-grafana
 grafanaPort: 3000
 grafanaRestartPolicy: Always
