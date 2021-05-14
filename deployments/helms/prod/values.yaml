@@ -32,7 +32,7 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana-prod:0.1.6'
+grafanaImage: 'miniantdev/devstats-grafana-prod:0.2.0'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
 grafanaNReplicas: 2
@@ -49,7 +49,7 @@ limitsGrafanasMemory: '8Gi'
 useGrafanasResourcesLimits: 1
 
 # Provision configurations.
-provisionImage: 'miniantdev/devstats-prod:0.1.6'
+provisionImage: 'miniantdev/devstats-prod:0.2.0'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
@@ -68,18 +68,18 @@ waitForBootstrap: 60
 postgresPort: 5432
 postgresSvcName: 'devstats-postgres'
 postgresImageName: 'lukaszgryglicki/devstats-patroni'
-postgresStorageSize: '50Gi'
+postgresStorageSize: '200Gi'
 postgresNodes: 3
 pgSecret: pg-db
 limitsPostgresCPU: '8000m'
-limitsPostgresMemory: '16Gi'
+limitsPostgresMemory: '24Gi'
 requestsPostgresCPU: '2000m'
 requestsPostgresMemory: '4Gi'
 usePostgresResourcesLimits: 1
 
 # Cron sync jobs configurations.
 syncCommand: devstats
-syncImage: 'miniantdev/devstats-minimal-prod:0.1.6'
+syncImage: 'miniantdev/devstats-minimal-prod:0.2.0'
 syncPodName: devstats
 syncRestartPolicy: Never
 indexCronsFrom: 0
