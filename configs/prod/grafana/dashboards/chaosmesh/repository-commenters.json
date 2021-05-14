@@ -30,8 +30,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 33,
-  "iteration": 1586176689614,
+  "id": 41,
+  "iteration": 1620637926229,
   "links": [],
   "panels": [
     {
@@ -42,6 +42,10 @@
       "datasource": "psql",
       "decimals": 0,
       "description": "Number of unique commenters.",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -70,9 +74,10 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.5.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -152,8 +157,11 @@
       }
     },
     {
-      "content": "${docs:raw}",
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 11,
         "w": 24,
@@ -162,14 +170,17 @@
       },
       "id": 11,
       "links": [],
-      "mode": "html",
-      "options": {},
+      "options": {
+        "content": "${docs:raw}",
+        "mode": "html"
+      },
+      "pluginVersion": "7.5.0",
       "title": "Dashboard documentation",
       "type": "text"
     }
   ],
   "refresh": false,
-  "schemaVersion": 21,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [
     "dashboard",
@@ -184,6 +195,8 @@
           "text": "7 Days MA",
           "value": "d7"
         },
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Period",
@@ -228,11 +241,14 @@
       {
         "allValue": null,
         "current": {
+          "selected": false,
           "text": "All",
           "value": "All"
         },
         "datasource": "psql",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Repository group",
@@ -253,11 +269,14 @@
       {
         "allValue": null,
         "current": {
+          "selected": false,
           "text": "all",
           "value": "all"
         },
         "datasource": "psql",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": "",
@@ -278,11 +297,14 @@
       {
         "allValue": null,
         "current": {
-          "text": "ChubaoFS",
-          "value": "ChubaoFS"
+          "selected": false,
+          "text": "Chaos Mesh",
+          "value": "Chaos Mesh"
         },
         "datasource": "psql",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -303,11 +325,14 @@
       {
         "allValue": null,
         "current": {
-          "text": "<h1 id=\"dashboard-header\">ChubaoFS repository commenters dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/repo_commenters.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>repo_commenters</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chubaofs/repository-commenters.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows the number of unique commenters on a given repository group or all of them combined.</li>\n<li>Selecting period (for example week) means that dashboard will show unique commenters in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots activity, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n</ul>",
-          "value": "<h1 id=\"dashboard-header\">ChubaoFS repository commenters dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/repo_commenters.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>repo_commenters</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chubaofs/repository-commenters.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows the number of unique commenters on a given repository group or all of them combined.</li>\n<li>Selecting period (for example week) means that dashboard will show unique commenters in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots activity, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n</ul>"
+          "selected": false,
+          "text": "<h1 id=\"dashboard-header\">Chaos Mesh repository commenters dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/repo_commenters.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>repo_commenters</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chaosmesh/repository-commenters.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows the number of unique commenters on a given repository group or all of them combined.</li>\n<li>Selecting period (for example week) means that dashboard will show unique commenters in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots activity, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n</ul>",
+          "value": "<h1 id=\"dashboard-header\">Chaos Mesh repository commenters dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/repo_commenters.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>repo_commenters</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chaosmesh/repository-commenters.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows the number of unique commenters on a given repository group or all of them combined.</li>\n<li>Selecting period (for example week) means that dashboard will show unique commenters in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots activity, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n</ul>"
         },
         "datasource": "psql",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,

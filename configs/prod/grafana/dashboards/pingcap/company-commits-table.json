@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 66,
+  "id": 5,
   "iteration": 1557388627645,
   "links": [],
   "panels": [
@@ -351,5 +351,5 @@
   "timezone": "",
   "title": "Company Commits Table",
   "uid": "56",
-  "version": 13
+  "version": 2
 }

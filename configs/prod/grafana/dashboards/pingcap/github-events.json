@@ -30,7 +30,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 63,
+  "id": 15,
   "iteration": 1533024842622,
   "links": [],
   "panels": [
@@ -543,5 +543,5 @@
   "timezone": "",
   "title": "GitHub Events",
   "uid": "47",
-  "version": 3
+  "version": 2
 }

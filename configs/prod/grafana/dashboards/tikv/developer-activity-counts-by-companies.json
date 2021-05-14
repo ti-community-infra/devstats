@@ -16,11 +16,12 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 11,
-  "iteration": 1619681306885,
+  "id": 16,
+  "iteration": 1620893627934,
   "links": [],
   "panels": [
     {
+      "cacheTimeout": null,
       "datasource": null,
       "description": "",
       "fieldConfig": {
@@ -29,6 +30,7 @@
             "mode": "thresholds"
           },
           "mappings": [],
+          "min": 10,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -37,45 +39,190 @@
                 "value": null
               },
               {
-                "color": "red",
-                "value": 80
+                "color": "light-green",
+                "value": 100
+              },
+              {
+                "color": "dark-green",
+                "value": 200
+              },
+              {
+                "color": "semi-dark-green",
+                "value": 300
               }
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "count-gt-0"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "count>0"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "count-gt-1"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "count>1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "count-gt-4"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "count>4"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "count-gt-8"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "count>8"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 3,
-        "w": 12,
+        "h": 6,
+        "w": 6,
         "x": 0,
         "y": 0
       },
-      "id": 5,
+      "id": 9,
+      "interval": null,
+      "links": [],
+      "maxDataPoints": 1,
       "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
+        "displayMode": "gradient",
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
           "fields": "",
-          "values": false
+          "values": true
         },
-        "text": {},
-        "textMode": "auto"
+        "showUnfilled": true,
+        "text": {}
       },
       "pluginVersion": "7.5.0",
       "targets": [
         {
           "format": "table",
           "group": [],
+          "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select row_number() over (order by value desc) as \"Rank\",\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n) sub",
-          "refId": "A",
+          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n    and (\n      '[[exclude_pingcap]]' = false\n      or ('[[exclude_pingcap]]' = true and split_part(name, '$$$', 2) != 'PingCAP')\n    )\n) sub",
+          "refId": "count-gt-0",
+          "select": [
+            [
+              {
+                "params": [
+                  "license_prob"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gha_repos",
+          "timeColumn": "created_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n    and (\n      '[[exclude_pingcap]]' = false\n      or ('[[exclude_pingcap]]' = true and split_part(name, '$$$', 2) != 'PingCAP')\n    )\n    and value > 1\n) sub",
+          "refId": "count-gt-1",
+          "select": [
+            [
+              {
+                "params": [
+                  "license_prob"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gha_repos",
+          "timeColumn": "created_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n    and (\n      '[[exclude_pingcap]]' = false\n      or ('[[exclude_pingcap]]' = true and split_part(name, '$$$', 2) != 'PingCAP')\n    )\n    and value > 4\n) sub",
+          "refId": "count-gt-4",
+          "select": [
+            [
+              {
+                "params": [
+                  "license_prob"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gha_repos",
+          "timeColumn": "created_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n    and (\n      '[[exclude_pingcap]]' = false\n      or ('[[exclude_pingcap]]' = true and split_part(name, '$$$', 2) != 'PingCAP')\n    )\n    and value > 8\n) sub",
+          "refId": "count-gt-8",
           "select": [
             [
               {
@@ -98,8 +245,168 @@
           ]
         }
       ],
-      "title": "Developer Count According to [[metric]] Metric",
-      "type": "stat"
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Developer with  [[metric]] Count",
+      "type": "bargauge"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "pingcap"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "PingCAP"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "palette-classic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "notpingcap"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Not PingCAP"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "palette-classic"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 5,
+      "links": [],
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {}
+      },
+      "pluginVersion": "7.5.0",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        split_part(name, '$$$', 2) = 'PingCAP'\n    )\n) sub",
+          "refId": "pingcap",
+          "select": [
+            [
+              {
+                "params": [
+                  "license_prob"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gha_repos",
+          "timeColumn": "created_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        split_part(name, '$$$', 2) != 'PingCAP'\n    )\n) sub",
+          "refId": "notpingcap",
+          "select": [
+            [
+              {
+                "params": [
+                  "license_prob"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gha_repos",
+          "timeColumn": "created_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Proportion of External Contributors",
+      "type": "piechart"
     },
     {
       "datasource": null,
@@ -127,15 +434,15 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 12,
+        "h": 6,
+        "w": 6,
         "x": 12,
         "y": 0
       },
       "id": 7,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
@@ -155,7 +462,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select \n  sum(sub.value)\nfrom (\n  select row_number() over (order by value desc) as \"Rank\",\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n) sub",
+          "rawSql": "select \n  sum(sub.value)\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n    and (\n      '[[exclude_pingcap]]' = false\n      or ('[[exclude_pingcap]]' = true and split_part(name, '$$$', 2) != 'PingCAP')\n    )\n) sub",
           "refId": "A",
           "select": [
             [
@@ -179,8 +486,152 @@
           ]
         }
       ],
-      "title": "[[metric]] Sum",
+      "title": "[[metric]]  Total",
       "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "pingcap"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "PingCAP"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "notpingcap"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Not PingCAP"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 8,
+      "links": [],
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {}
+      },
+      "pluginVersion": "7.5.0",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select \n  sum(value)\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and  split_part(name, '$$$', 2) = 'PingCAP'\n) sub",
+          "refId": "pingcap",
+          "select": [
+            [
+              {
+                "params": [
+                  "license_prob"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gha_repos",
+          "timeColumn": "created_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select \n  sum(value)\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and split_part(name, '$$$', 2) != 'PingCAP'\n) sub",
+          "refId": "notpingcap",
+          "select": [
+            [
+              {
+                "params": [
+                  "license_prob"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "gha_repos",
+          "timeColumn": "created_at",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Proportion of External Contributors’s [[metric]]",
+      "type": "piechart"
     },
     {
       "datasource": "psql",
@@ -296,14 +747,20 @@
         "h": 18,
         "w": 24,
         "x": 0,
-        "y": 3
+        "y": 6
       },
       "hideTimeOverride": true,
       "id": 1,
       "interval": "",
       "links": [],
       "options": {
-        "showHeader": true
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Number"
+          }
+        ]
       },
       "pluginVersion": "7.5.0",
       "targets": [
@@ -331,7 +788,7 @@
           "policy": "default",
           "query": "SELECT \"name\", \"value\" FROM \"developers_hist_[[metric]]_[[repogroup]]_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select \n  sub.\"Rank\",\n  split_part(sub.name, '$$$', 1) as name,\n  split_part(sub.name, '$$$', 2) as \"Company\",\n  sub.value\nfrom (\n  select row_number() over (order by value desc) as \"Rank\",\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n) sub",
+          "rawSql": "select \n  sub.\"Rank\",\n  split_part(sub.name, '$$$', 1) as name,\n  split_part(sub.name, '$$$', 2) as \"Company\",\n  sub.value\nfrom (\n  select row_number() over (order by value desc) as \"Rank\",\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n    and (\n      '[[exclude_pingcap]]' = false\n      or ('[[exclude_pingcap]]' = true and split_part(name, '$$$', 2) != 'PingCAP')\n    )\n) sub",
           "refId": "A",
           "resultFormat": "table",
           "select": [
@@ -373,6 +830,7 @@
     },
     {
       "datasource": null,
+      "description": "",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -381,7 +839,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 24
       },
       "id": 3,
       "links": [],
@@ -410,8 +868,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "Last decade",
-          "value": "Last decade"
+          "text": "Last year",
+          "value": "Last year"
         },
         "datasource": "psql",
         "definition": "",
@@ -519,8 +977,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "y10",
-          "value": "y10"
+          "text": "y",
+          "value": "y"
         },
         "datasource": "psql",
         "definition": "",
@@ -712,9 +1170,40 @@
         "useTags": false
       },
       {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "false",
+          "value": "false"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Exclude PingCAP",
+        "multi": false,
+        "name": "exclude_pingcap",
+        "options": [
+          {
+            "selected": false,
+            "text": "true",
+            "value": "true"
+          },
+          {
+            "selected": true,
+            "text": "false",
+            "value": "false"
+          }
+        ],
+        "query": "true,false",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
         "allValue": "null",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "All"
           ],
@@ -723,7 +1212,7 @@
           ]
         },
         "datasource": "psql",
-        "definition": "select companies_name from tcompanies order by time",
+        "definition": "select companies_name from tcompanies where\n ($exclude_pingcap=true and companies_name != 'PingCAP') or ($exclude_pingcap=false)",
         "description": null,
         "error": null,
         "hide": 0,
@@ -732,7 +1221,7 @@
         "multi": true,
         "name": "companies",
         "options": [],
-        "query": "select companies_name from tcompanies order by time",
+        "query": "select companies_name from tcompanies where\n ($exclude_pingcap=true and companies_name != 'PingCAP') or ($exclude_pingcap=false)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -746,7 +1235,7 @@
     ]
   },
   "time": {
-    "from": "now-5y",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -778,5 +1267,5 @@
   "timezone": "",
   "title": "Developer Activity Counts by Companies",
   "uid": "66",
-  "version": 12
+  "version": 5
 }

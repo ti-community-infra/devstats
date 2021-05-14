@@ -30,8 +30,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 8,
-  "iteration": 1586176648960,
+  "id": 14,
+  "iteration": 1620637965237,
   "links": [],
   "panels": [
     {
@@ -42,6 +42,10 @@
       "datasource": "psql",
       "decimals": null,
       "description": "[[full_name]] [[metric]] countries / regions stats ([[repogroup_name]])",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "fill": 3,
       "fillGradient": 0,
       "gridPos": {
@@ -70,9 +74,10 @@
       "links": [],
       "nullPointMode": "null as zero",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.5.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -156,6 +161,10 @@
       "datasource": "psql",
       "decimals": null,
       "description": "[[full_name]] [[metric]] countries / regions stats ([[repogroup_name]])",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "fill": 3,
       "fillGradient": 0,
       "gridPos": {
@@ -184,9 +193,10 @@
       "links": [],
       "nullPointMode": "null as zero",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.5.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -270,15 +280,17 @@
       "datasource": "psql",
       "decimals": null,
       "description": "[[full_name]] [[metric]] countries / regions stats ([[repogroup_name]])",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "fill": 3,
-      "fillGradient": 0,
       "gridPos": {
         "h": 21,
         "w": 24,
         "x": 0,
         "y": 42
       },
-      "hiddenSeries": false,
       "id": 3,
       "legend": {
         "alignAsTable": true,
@@ -297,10 +309,8 @@
       "linewidth": 0,
       "links": [],
       "nullPointMode": "null as zero",
-      "options": {
-        "dataLinks": []
-      },
       "percentage": true,
+      "pluginVersion": "7.5.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -336,7 +346,6 @@
       ],
       "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
       "title": "[[full_name]] [[metric]] countries / regions stats ([[repogroup_name]])",
       "tooltip": {
@@ -377,8 +386,11 @@
       }
     },
     {
-      "content": "${docs:raw}",
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 16,
         "w": 24,
@@ -387,14 +399,17 @@
       },
       "id": 1,
       "links": [],
-      "mode": "html",
-      "options": {},
+      "options": {
+        "content": "${docs:raw}",
+        "mode": "html"
+      },
+      "pluginVersion": "7.5.0",
       "title": "Dashboard documentation",
       "type": "text"
     }
   ],
   "refresh": false,
-  "schemaVersion": 21,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [
     "dashboard",
@@ -405,11 +420,14 @@
       {
         "allValue": null,
         "current": {
-          "text": "ChubaoFS",
-          "value": "ChubaoFS"
+          "selected": false,
+          "text": "Chaos Mesh",
+          "value": "Chaos Mesh"
         },
         "datasource": "psql",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -430,12 +448,14 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "Month",
-          "value": "Month"
+          "selected": false,
+          "text": "Quarter",
+          "value": "Quarter"
         },
         "datasource": "psql",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Period",
@@ -456,13 +476,18 @@
       {
         "allValue": "",
         "current": {
-          "text": "All",
+          "selected": true,
+          "text": [
+            "All"
+          ],
           "value": [
             "$__all"
           ]
         },
         "datasource": "psql",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Countries / Region",
@@ -483,12 +508,14 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "All"
         },
         "datasource": "psql",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Repository group",
@@ -509,11 +536,14 @@
       {
         "allValue": null,
         "current": {
+          "selected": false,
           "text": "all",
           "value": "all"
         },
         "datasource": "psql",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": "",
@@ -535,9 +565,12 @@
         "allValue": null,
         "current": {
           "selected": true,
+          "tags": [],
           "text": "Committers",
           "value": "rcommitters"
         },
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Metric",
@@ -656,6 +689,8 @@
           "text": "No",
           "value": "countries"
         },
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Cumulative",
@@ -680,11 +715,14 @@
       {
         "allValue": null,
         "current": {
-          "text": "<h1 id=\"dashboard-header\">ChubaoFS countries / regions stats dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/countries.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>Cumulative metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/countries_cum.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>Committers metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/committers_countries.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>Committers cumulative metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/committers_countries_cum.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>countries</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chubaofs/countries-stats.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows countries statistics (cumulative and in given periods).</li>\n<li>Contributor is defined as somebody who made a review, comment, commit, created PR or issue.</li>\n<li>Contribution is a review, comment, commit, issue or PR.</li>\n<li>We are determining contributor's country by using GitHub localization and searching for a country using <a href=\"http://www.geonames.org\" target=\"_blank\">geonames</a> database.</li>\n<li>You can select single repository group or summary statistics for all of them combined.</li>\n<li>You can choose to display contributors, contributions, users, actvity, committers, commits etc.</li>\n<li>You can select cumulative statistics or statistics in given periods.</li>\n<li>Selecting period (for example week) means that dashboard will show data in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots activity, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n</ul>",
-          "value": "<h1 id=\"dashboard-header\">ChubaoFS countries / regions stats dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/countries.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>Cumulative metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/countries_cum.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>Committers metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/committers_countries.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>Committers cumulative metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/committers_countries_cum.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>countries</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chubaofs/countries-stats.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows countries statistics (cumulative and in given periods).</li>\n<li>Contributor is defined as somebody who made a review, comment, commit, created PR or issue.</li>\n<li>Contribution is a review, comment, commit, issue or PR.</li>\n<li>We are determining contributor's country by using GitHub localization and searching for a country using <a href=\"http://www.geonames.org\" target=\"_blank\">geonames</a> database.</li>\n<li>You can select single repository group or summary statistics for all of them combined.</li>\n<li>You can choose to display contributors, contributions, users, actvity, committers, commits etc.</li>\n<li>You can select cumulative statistics or statistics in given periods.</li>\n<li>Selecting period (for example week) means that dashboard will show data in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots activity, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n</ul>"
+          "selected": false,
+          "text": "<h1 id=\"dashboard-header\">Chaos Mesh countries stats dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/countries.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>Cumulative metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/countries_cum.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>Committers metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/committers_countries.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>Committers cumulative metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/committers_countries_cum.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>countries</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chaosmesh/countries-stats.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows countries statistics (cumulative and in given periods).</li>\n<li>Contributor is defined as somebody who made a review, comment, commit, created PR or issue.</li>\n<li>Contribution is a review, comment, commit, issue or PR.</li>\n<li>We are determining contributor's country by using GitHub localization and searching for a country using <a href=\"http://www.geonames.org\" target=\"_blank\">geonames</a> database.</li>\n<li>You can select single repository group or summary statistics for all of them combined.</li>\n<li>You can choose to display contributors, contributions, users, actvity, committers, commits etc.</li>\n<li>You can select cumulative statistics or statistics in given periods.</li>\n<li>When you select N Years period it displays data for N-years, for example data for 2020-01-01 with 5 Years period means a summary data for 2015-01-01 00:00:00-2020-01-01 00:00:00.</li>\n<li>Selecting period (for example week) means that dashboard will show data in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots activity, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n</ul>",
+          "value": "<h1 id=\"dashboard-header\">Chaos Mesh countries stats dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/countries.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>Cumulative metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/countries_cum.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>Committers metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/committers_countries.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>Committers cumulative metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/committers_countries_cum.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>countries</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chaosmesh/countries-stats.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows countries statistics (cumulative and in given periods).</li>\n<li>Contributor is defined as somebody who made a review, comment, commit, created PR or issue.</li>\n<li>Contribution is a review, comment, commit, issue or PR.</li>\n<li>We are determining contributor's country by using GitHub localization and searching for a country using <a href=\"http://www.geonames.org\" target=\"_blank\">geonames</a> database.</li>\n<li>You can select single repository group or summary statistics for all of them combined.</li>\n<li>You can choose to display contributors, contributions, users, actvity, committers, commits etc.</li>\n<li>You can select cumulative statistics or statistics in given periods.</li>\n<li>When you select N Years period it displays data for N-years, for example data for 2020-01-01 with 5 Years period means a summary data for 2015-01-01 00:00:00-2020-01-01 00:00:00.</li>\n<li>Selecting period (for example week) means that dashboard will show data in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots activity, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n</ul>"
         },
         "datasource": "psql",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -705,11 +743,14 @@
       {
         "allValue": null,
         "current": {
-          "text": "m",
-          "value": "m"
+          "selected": false,
+          "text": "q",
+          "value": "q"
         },
         "datasource": "psql",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": "",
