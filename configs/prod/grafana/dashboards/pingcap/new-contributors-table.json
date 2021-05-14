@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 64,
+  "id": 21,
   "iteration": 1541500383578,
   "links": [],
   "panels": [
@@ -307,5 +307,5 @@
   "timezone": "",
   "title": "New Contributors Table",
   "uid": "52",
-  "version": 4
+  "version": 2
 }

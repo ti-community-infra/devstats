@@ -30,8 +30,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 15,
-  "iteration": 1567416900696,
+  "id": 17,
+  "iteration": 1620366652629,
   "links": [],
   "panels": [
     {
@@ -42,6 +42,12 @@
       "datasource": "psql",
       "decimals": 2,
       "description": "Show Issues opened/closed for given repository group",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -50,6 +56,7 @@
         "x": 0,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 3,
       "legend": {
         "alignAsTable": true,
@@ -71,9 +78,10 @@
       "links": [],
       "nullPointMode": "null as zero",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.5.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -185,6 +193,12 @@
       "datasource": "psql",
       "decimals": 2,
       "description": "Show PRs opened/closed for given repository group",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -193,6 +207,7 @@
         "x": 0,
         "y": 9
       },
+      "hiddenSeries": false,
       "id": 13,
       "legend": {
         "alignAsTable": true,
@@ -214,9 +229,10 @@
       "links": [],
       "nullPointMode": "null as zero",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.5.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -348,6 +364,12 @@
       "datasource": "psql",
       "decimals": 2,
       "description": "Show Issues opened/closed for given repository group",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -356,6 +378,7 @@
         "x": 0,
         "y": 18
       },
+      "hiddenSeries": false,
       "id": 12,
       "legend": {
         "alignAsTable": true,
@@ -377,9 +400,10 @@
       "links": [],
       "nullPointMode": "null as zero",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.5.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -511,6 +535,12 @@
       "datasource": "psql",
       "decimals": 2,
       "description": "Show PRs opened/closed for given repository group",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -519,6 +549,7 @@
         "x": 0,
         "y": 27
       },
+      "hiddenSeries": false,
       "id": 14,
       "legend": {
         "alignAsTable": true,
@@ -540,9 +571,10 @@
       "links": [],
       "nullPointMode": "null as zero",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.5.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -667,7 +699,11 @@
       }
     },
     {
-      "content": "${docs:raw}",
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 11,
         "w": 24,
@@ -676,18 +712,22 @@
       },
       "id": 11,
       "links": [],
-      "mode": "html",
-      "options": {},
+      "options": {
+        "content": "${docs:raw}",
+        "mode": "html"
+      },
+      "pluginVersion": "7.5.0",
       "title": "Dashboard documentation",
       "type": "text"
     }
   ],
   "refresh": false,
-  "schemaVersion": 19,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [
     "dashboard",
-    "tikv"
+    "tikv",
+    "issue"
   ],
   "templating": {
     "list": [
@@ -699,6 +739,8 @@
         },
         "datasource": "psql",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -723,6 +765,8 @@
           "text": "7 Days MA",
           "value": "d7"
         },
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Period",
@@ -772,6 +816,8 @@
         },
         "datasource": "psql",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Repository group",
@@ -797,6 +843,8 @@
         },
         "datasource": "psql",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": "",
@@ -822,6 +870,8 @@
         },
         "datasource": "psql",
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -873,5 +923,5 @@
   "timezone": "",
   "title": "Issues Opened/Closed by Repository Group",
   "uid": "12",
-  "version": 4
+  "version": 3
 }
