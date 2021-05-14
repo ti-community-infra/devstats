@@ -52,6 +52,8 @@ spec:
       value: {{ .proj }}
     - name: WAITBOOT
       value: '{{ $root.Values.waitForBootstrap }}'
+    - name: REINIT_DATA
+    - name: GETREPOS
     - name: GHA2DB_PROPAGATE_ONLY_VAR
       value: "1"
     - name: GHA2DB_NCPUS
