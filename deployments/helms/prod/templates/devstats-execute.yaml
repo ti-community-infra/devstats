@@ -1,16 +1,15 @@
-
-{{- $targetProject := .Values.targetProject -}}
-{{ if $targetProject }}
+{{- $executeTargetProject := .Values.executeTargetProject -}}
+{{ if $executeTargetProject }}
 {{- $root := . -}}
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: '{{ $root.Values.executePodName }}-{{ .targetProject }}'
+  name: '{{ $root.Values.executePodName }}-{{ $executeTargetProject }}'
   labels:
     name: devstats
     type: 'execute'
-    proj: {{ .targetProject }}
+    proj: {{ $executeTargetProject }}
 spec:
   containers:
   - command:
@@ -32,7 +31,7 @@ spec:
 {{ end }}
     env:
     - name: ONLY
-      value: {{ .targetProject }}
+      value: {{ $executeTargetProject }}
     - name: GHA2DB_PROPAGATE_ONLY_VAR
       value: "1"
     - name: GHA2DB_CHECK_PROVISION_FLAG
@@ -42,13 +41,13 @@ spec:
     - name: GHA2DB_SET_RUNNING_FLAG
       value: "1"
     - name: GHA2DB_NCPUS
-      value: '{{ $root.Values.gha2dbCPUs }}'
+      value: '{{ $root.Values.executeGha2dbCPUs }}'
     - name: GHA2DB_DEBUG
       value: "1"
     - name: GHA2DB_CMDDEBUG
-      value: '{{ $root.Values.cmdDebug }}'
+      value: '{{ $root.Values.executeCmdDebug }}'
     - name: GHA2DB_GITHUB_DEBUG
-      value: '{{ $root.Values.githubDebug }}'
+      value: '{{ $root.Values.executeGithubDebug }}'
     - name: GHA2DB_QOUT
       value: '{{ $root.Values.queryOut }}'
     - name: GHA2DB_REPOS_DIR
@@ -75,7 +74,7 @@ spec:
     - name: GHA2DB_FORCE_PERIODS
       value: '{{ $root.Values.periods }}'
     - name: GHA2DB_PROJECTS_YAML
-      value: {{ $root.Values.targetProjectectsFile }}
+      value: {{ $root.Values.projectectsFile }}
     - name: GHA2DB_GITHUB_OAUTH
       valueFrom:
         secretKeyRef:
@@ -98,19 +97,18 @@ spec:
           key: PG_PASS.secret
     image: {{ $root.Values.executeImage }}
     imagePullPolicy: {{ $root.Values.imagePullPolicy }}
-    name: '{{ $root.Values.executePodName }}-{{ .targetProject }}'
+    name: '{{ $root.Values.executePodName }}-{{ $executeTargetProject }}'
     volumeMounts:
-    - name: '{{ $root.Values.volumeMountName }}-{{ .targetProject }}'
+    - name: '{{ $root.Values.volumeMountName }}-{{ $executeTargetProject }}'
       mountPath: '{{ $root.Values.volumeMountPath }}'
   volumes:
-  - name: '{{ $root.Values.volumeName }}-{{ .targetProject }}'
+  - name: '{{ $root.Values.volumeName }}-{{ $executeTargetProject }}'
     persistentVolumeClaim:
-      claimName: '{{ $root.Values.pvName }}-{{ .targetProject }}'
+      claimName: '{{ $root.Values.pvName }}-{{ $executeTargetProject }}'
   restartPolicy: {{ $root.Values.executeRestartPolicy }}
   nodeSelector:
 {{- with $root.Values.appNodeSelector -}}
 {{ toYaml . | nindent 4 }}
 {{ end }}
 {{ end }}
-{{ end }}
-{{ end }}
+
