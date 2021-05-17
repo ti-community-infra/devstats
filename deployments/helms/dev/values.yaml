@@ -101,9 +101,7 @@ executeTargetProject: 'tikv'
 executeResetTSDB: '1'
 executeOnlyMetrics: 'first_non_author_activity_company_group'
 # executeSkipMetrics: ''
-executeRestartPolicy: Never
-indexExecuteFrom: 0
-indexExecuteTo: 100
+executeRestartPolicy: Always
 limitsExecuteCPU: '6000m'
 limitsExecuteMemory: '32Gi'
 requestsExecuteCPU: '1000m'
