@@ -59,6 +59,8 @@ spec:
     - name: GHA2DB_COMPUTE_ALL
       value: '{{ $root.Values.executeForceComputeAll }}'
     # Metrics config
+    - name: GHA2DB_RESETTSDB
+      value: '{{ $root.Values.executeResetTSDB }}'
     - name: GHA2DB_SKIP_METRICS
       value: '{{ $root.Values.executeSkipMetrics }}'
     - name: GHA2DB_ONLY_METRICS
@@ -74,7 +76,7 @@ spec:
     - name: GHA2DB_FORCE_PERIODS
       value: '{{ $root.Values.periods }}'
     - name: GHA2DB_PROJECTS_YAML
-      value: {{ $root.Values.projectectsFile }}
+      value: {{ $root.Values.projectsFile }}
     - name: GHA2DB_GITHUB_OAUTH
       valueFrom:
         secretKeyRef:
