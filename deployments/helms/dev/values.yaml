@@ -98,6 +98,7 @@ executeCommand: devstats
 executeImage: 'miniantdev/devstats-minimal-dev:0.2.0'
 executePodName: 'devstats-execute'
 executeTargetProject: 'tikv'
+executeResetTSDB: '1'
 executeOnlyMetrics: 'first_non_author_activity_company_group'
 # executeSkipMetrics: ''
 executeRestartPolicy: Never
