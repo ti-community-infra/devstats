@@ -91,13 +91,15 @@ requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
 
 # Execute Pod configurations.
-executePodName: 'miniantdev/devstats-minimal-dev:0.2.0'
-targetProject: 'tikv'
-executeMetrics: ''
-executeCommand: 'sleep'
-executeCommandArgs:
+executeCommand: devstats
+# executeCommand: 'sleep'
+# executeCommandArgs:
 # - "3000"
-# executeCommand: 'vars'
+executeImage: 'miniantdev/devstats-minimal-dev:0.2.0'
+executePodName: 'devstats-execute'
+executeTargetProject: 'tikv'
+executeOnlyMetrics: 'first_non_author_activity_company_group'
+# executeSkipMetrics: ''
 executeRestartPolicy: Never
 indexExecuteFrom: 0
 indexExecuteTo: 100
