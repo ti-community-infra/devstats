@@ -10,6 +10,7 @@ skipTemp: 1
 volumeMountName: data
 volumeMountPath: '/root'
 volumeName: data
+nSyncCPUs: 6
 
 # Company configurations.
 affiliations: 'github_users.json'
@@ -22,7 +23,6 @@ bootstrapNoCreate: ''
 bootstrapPodName: devstats-provision-bootstrap
 bootstrapRestartPolicy: Never
 bootstrapUDrop: ''
-concurrencyPolicy: Forbid
 requestsBootstrapCPU: '200m'
 requestsBootstrapMemory: '256Mi'
 limitsBootstrapCPU: '2000m'
@@ -35,7 +35,7 @@ grafanaCommand: 'grafana_start.sh'
 grafanaImage: 'miniantdev/devstats-grafana-prod:0.2.0'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
-grafanaNReplicas: 2
+grafanaNReplicas: 1
 grafanaPodName: devstats-grafana
 grafanaPort: 3000
 grafanaRestartPolicy: Always
@@ -54,6 +54,7 @@ projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
 provisionRestartPolicy: Never
+concurrencyPolicy: Forbid
 useFlags: ''
 indexProvisionsFrom: 0
 indexProvisionsTo: 100
@@ -85,7 +86,7 @@ syncRestartPolicy: Never
 indexCronsFrom: 0
 indexCronsTo: 100
 limitsCronsCPU: '6000m'
-limitsCronsMemory: '16Gi'
+limitsCronsMemory: '32Gi'
 requestsCronsCPU: '1000m'
 requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
@@ -114,7 +115,7 @@ projects:
     icon: 'pingcap'
     org: 'PingCAP'
     repo: 'pingcap/tidb'
-    cron: '20 * * * *'
+    cron: '05 * * * *'
     disk: 50Gi
     i: 0
   - proj: tikv
@@ -130,6 +131,6 @@ projects:
     icon: 'chaosmesh'
     org: 'ChaosMesh'
     repo: 'chaos-mesh/chaos-mesh'
-    cron: '40 * * * *'
+    cron: '50 * * * *'
     disk: 50Gi
     i: 2
