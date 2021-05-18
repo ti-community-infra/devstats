@@ -1,0 +1,66 @@
+---
+projects:
+  spinnaker:
+    order: 102
+    name: Spinnaker
+    status: "-"
+    command_line:
+      - spinnaker
+    start_date: 2015-03-06T00:00:00Z
+    join_date: null
+    psql_db: spinnaker
+    main_repo: spinnaker/spinnaker
+    annotation_regexp: ''
+    files_skip_pattern: ''
+    shared_db: allcdf
+  tekton:
+    order: 104
+    name: Tekton
+    status: "-"
+    command_line:
+      - tektoncd,knative/build
+    start_date: 2018-07-23T00:00:00Z
+    join_date: null
+    psql_db: tekton
+    main_repo: knative/build
+    annotation_regexp: '^v\d+\.\d+\.\d+$'
+    files_skip_pattern: '(^|/)_?(vendor|Godeps|_workspace)/'
+    shared_db: allcdf
+  jenkins:
+    order: 105
+    name: Jenkins
+    status: "-"
+    command_line:
+      - 'jenkinsci,jenkins-infra,jenkins-zh,stapler'
+    start_date: 2012-07-01T00:00:00Z
+    join_date: null
+    psql_db: jenkins
+    main_repo: jenkinsci/jenkins
+    annotation_regexp: '^jenkins-\d+\.\d*0$'
+    files_skip_pattern: ''
+    shared_db: allcdf
+  jenkinsx:
+    order: 106
+    name: Jenkins X
+    status: "-"
+    command_line:
+      - jenkins-x
+    start_date: 2018-02-01T00:00:00Z
+    join_date: null
+    psql_db: jenkinsx
+    main_repo: jenkins-x/jx
+    annotation_regexp: '^v\d+\.\d+\.(0|\d*00)$'
+    files_skip_pattern: ''
+    shared_db: allcdf
+  allcdf:
+    order: 255
+    name: All CDF
+    status: "-"
+    command_line:
+      - 'spinnaker,tektoncd,knative/build,jenkinsci,jenkins-x'
+    start_date: 2012-07-01T00:00:00Z
+    join_date: 2019-03-04T00:00:00Z
+    psql_db: allcdf
+    main_repo: ''
+    annotation_regexp: ''
+    files_skip_pattern: ''
