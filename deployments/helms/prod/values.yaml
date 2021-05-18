@@ -54,7 +54,6 @@ projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
 provisionRestartPolicy: Never
-concurrencyPolicy: Forbid
 useFlags: ''
 indexProvisionsFrom: 0
 indexProvisionsTo: 100
@@ -83,6 +82,7 @@ syncCommand: devstats
 syncImage: 'miniantdev/devstats-minimal-prod:0.2.0'
 syncPodName: devstats
 syncRestartPolicy: Never
+concurrencyPolicy: Forbid
 indexCronsFrom: 0
 indexCronsTo: 100
 limitsCronsCPU: '6000m'
