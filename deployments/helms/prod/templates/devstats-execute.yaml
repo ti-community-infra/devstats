@@ -1,0 +1,116 @@
+{{- $executeTargetProject := .Values.executeTargetProject -}}
+{{ if $executeTargetProject }}
+{{- $root := . -}}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: '{{ $root.Values.executePodName }}-{{ $executeTargetProject }}'
+  labels:
+    name: devstats
+    type: 'execute'
+    proj: {{ $executeTargetProject }}
+spec:
+  containers:
+  - command:
+    - {{ $root.Values.executeCommand }}
+{{ if $root.Values.executeCommandArgs }}
+    args:
+{{- with $root.Values.executeCommandArgs -}}
+{{ toYaml . | nindent 6 }}
+{{ end }}
+{{ end }}
+{{ if $root.Values.useExecuteResourcesLimits }}
+    resources:
+      requests:
+        memory: '{{ $root.Values.requestsExecuteMemory }}'
+        cpu: '{{ $root.Values.requestsExecuteCPU }}'
+      limits:
+        memory: '{{ $root.Values.limitsExecuteMemory }}'
+        cpu: '{{ $root.Values.limitsExecuteCPU }}'
+{{ end }}
+    env:
+    - name: ONLY
+      value: {{ $executeTargetProject }}
+    - name: GHA2DB_PROPAGATE_ONLY_VAR
+      value: "1"
+    - name: GHA2DB_CHECK_PROVISION_FLAG
+      value: "1"
+    - name: GHA2DB_CHECK_RUNNING_FLAG
+      value: "1"
+    - name: GHA2DB_SET_RUNNING_FLAG
+      value: "1"
+    - name: GHA2DB_NCPUS
+      value: '{{ $root.Values.executeGha2dbCPUs }}'
+    - name: GHA2DB_DEBUG
+      value: "1"
+    - name: GHA2DB_CMDDEBUG
+      value: '{{ $root.Values.executeCmdDebug }}'
+    - name: GHA2DB_GITHUB_DEBUG
+      value: '{{ $root.Values.executeGithubDebug }}'
+    - name: GHA2DB_QOUT
+      value: '{{ $root.Values.queryOut }}'
+    - name: GHA2DB_REPOS_DIR
+      value: '{{ $root.Values.reposDir }}'
+    - name: GHA2DB_COMPANY_ACQ_YAML
+      value: '{{ $root.Values.companyAcq }}'
+    - name: GHA2DB_AFFILIATIONS_JSON
+      value: '{{ $root.Values.affiliations }}'
+    - name: GHA2DB_COMPUTE_ALL
+      value: '{{ $root.Values.executeForceComputeAll }}'
+    # Metrics config
+    - name: GHA2DB_RESETTSDB
+      value: '{{ $root.Values.executeResetTSDB }}'
+    - name: GHA2DB_SKIP_METRICS
+      value: '{{ $root.Values.executeSkipMetrics }}'
+    - name: GHA2DB_ONLY_METRICS
+      value: '{{ $root.Values.executeOnlyMetrics }}'
+    # Tags config
+    - name: GHA2DB_SKIP_TAGS
+      value: '{{ $root.Values.executeSkipTags }}'
+    # Vars config
+    - name: GHA2DB_ONLY_VARS
+      value: '{{ $root.Values.executeOnlyVars }}'
+    - name: GHA2DB_EXCLUDE_VARS
+      value: '{{ $root.Values.excludeVars }}'
+    - name: GHA2DB_FORCE_PERIODS
+      value: '{{ $root.Values.periods }}'
+    - name: GHA2DB_PROJECTS_YAML
+      value: {{ $root.Values.projectsFile }}
+    - name: GHA2DB_GITHUB_OAUTH
+      valueFrom:
+        secretKeyRef:
+          name: {{ $root.Values.oauthSecret }}
+          key: GHA2DB_GITHUB_OAUTH.secret
+    - name: PG_HOST
+      valueFrom:
+        secretKeyRef:
+          name: {{ $root.Values.pgSecret }}
+          key: PG_HOST.secret
+    - name: PG_PORT
+      valueFrom:
+        secretKeyRef:
+          name: {{ $root.Values.pgSecret }}
+          key: PG_PORT.secret
+    - name: PG_PASS
+      valueFrom:
+        secretKeyRef:
+          name: {{ $root.Values.pgSecret }}
+          key: PG_PASS.secret
+    image: {{ $root.Values.executeImage }}
+    imagePullPolicy: {{ $root.Values.imagePullPolicy }}
+    name: '{{ $root.Values.executePodName }}-{{ $executeTargetProject }}'
+    volumeMounts:
+    - name: '{{ $root.Values.volumeMountName }}-{{ $executeTargetProject }}'
+      mountPath: '{{ $root.Values.volumeMountPath }}'
+  volumes:
+  - name: '{{ $root.Values.volumeName }}-{{ $executeTargetProject }}'
+    persistentVolumeClaim:
+      claimName: '{{ $root.Values.pvName }}-{{ $executeTargetProject }}'
+  restartPolicy: {{ $root.Values.executeRestartPolicy }}
+  nodeSelector:
+{{- with $root.Values.appNodeSelector -}}
+{{ toYaml . | nindent 4 }}
+{{ end }}
+{{ end }}
+

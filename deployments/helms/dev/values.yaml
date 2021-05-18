@@ -22,7 +22,6 @@ bootstrapNoCreate: ''
 bootstrapPodName: devstats-provision-bootstrap
 bootstrapRestartPolicy: Never
 bootstrapUDrop: ''
-concurrencyPolicy: Forbid
 requestsBootstrapCPU: '200m'
 requestsBootstrapMemory: '256Mi'
 limitsBootstrapCPU: '2000m'
@@ -82,6 +81,7 @@ syncCommand: devstats
 syncImage: 'miniantdev/devstats-minimal-dev:0.2.0'
 syncPodName: devstats
 syncRestartPolicy: Never
+concurrencyPolicy: Forbid
 indexCronsFrom: 0
 indexCronsTo: 100
 limitsCronsCPU: '6000m'
@@ -89,6 +89,25 @@ limitsCronsMemory: '16Gi'
 requestsCronsCPU: '1000m'
 requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
+
+# Execute Pod configurations.
+executeImage: 'miniantdev/devstats-minimal-dev:0.2.1.beta.1'
+executePodName: 'devstats-execute'
+executeTargetProject: 'tikv'
+executeCommand: 'sleep'
+executeCommandArgs:
+- "3000"
+# example:
+# executeCommand: devstats
+# executeResetTSDB: '1'
+# executeOnlyMetrics: 'first_non_author_activity_company_group'
+executeSkipMetrics: ''
+executeRestartPolicy: Never
+limitsExecuteCPU: '6000m'
+limitsExecuteMemory: '32Gi'
+requestsExecuteCPU: '1000m'
+requestsExecuteMemory: '1Gi'
+useExecuteResourcesLimits: 1
 
 # Ingresses indexes.
 indexIngressesFrom: 0
@@ -114,7 +133,7 @@ projects:
     icon: 'pingcap'
     org: 'PingCAP'
     repo: 'pingcap/tidb'
-    cron: '20 * * * *'
+    cron: '05 * * * *'
     disk: 50Gi
     i: 0
   - proj: tikv
@@ -130,6 +149,6 @@ projects:
     icon: 'chaosmesh'
     org: 'ChaosMesh'
     repo: 'chaos-mesh/chaos-mesh'
-    cron: '40 * * * *'
+    cron: '50 * * * *'
     disk: 50Gi
     i: 2
