@@ -1,0 +1,50 @@
+---
+projects:
+  cncf:
+    order: 1
+    name: CNCF
+    status: "-"
+    command_line:
+      - 'cncf,crosscloudci,cdfoundation'
+    start_date: 2015-12-07T18:00:00Z
+    join_date: 2015-12-07T18:00:00Z
+    psql_db: cncf
+    main_repo: cncf/landscapeapp
+    annotation_regexp: '^v\d+\.\d+\.(0|\d*[05]0)$'
+    files_skip_pattern: ''
+  prometheus:
+    order: 2
+    name: Prometheus
+    status: Graduated
+    command_line:
+      - prometheus
+    start_date: 2014-01-06T00:00:00Z
+    join_date: 2016-05-09T00:00:00Z
+    psql_db: prometheus
+    main_repo: prometheus/prometheus
+    annotation_regexp: '^v?\d+\.\d+\.0$'
+    files_skip_pattern: '(^|/)_?(vendor|Godeps|_workspace)/'
+  kubeflow:
+    order: 3
+    name: Kubeflow
+    status: "-"
+    command_line:
+      - kubeflow
+    start_date: 2017-11-30T00:00:00Z
+    join_date: null
+    psql_db: kubeflow
+    main_repo: kubeflow/kubeflow
+    annotation_regexp: '^v?\d+\.\d+\.\d+$'
+    files_skip_pattern: ''
+  istio:
+    order: 4
+    name: Istio
+    status: "-"
+    command_line:
+      - istio
+    start_date: 2016-12-01T00:00:00Z
+    join_date: null
+    psql_db: istio
+    main_repo: istio/istio
+    annotation_regexp: ''
+    files_skip_pattern: ''
