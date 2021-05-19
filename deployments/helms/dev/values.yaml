@@ -56,10 +56,10 @@ provisionRestartPolicy: Never
 useFlags: ''
 indexProvisionsFrom: 0
 indexProvisionsTo: 100
-requestsProvisionsCPU: '1000m'
-requestsProvisionsMemory: '2Gi'
-limitsProvisionsCPU: '8000m'
-limitsProvisionsMemory: '64Gi'
+requestsProvisionsCPU: '2000m'
+requestsProvisionsMemory: '16Gi'
+limitsProvisionsCPU: '4000m'
+limitsProvisionsMemory: '32Gi'
 useProvisionsResourcesLimits: 1
 waitForBootstrap: 60
 
