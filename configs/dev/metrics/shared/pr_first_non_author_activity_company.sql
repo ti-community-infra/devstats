@@ -104,7 +104,7 @@ with issues as (
 )
 -- All repositories and all contributors.
 select
-    'non_auth_company;All_All;company,p15,med,p85' as name,
+    'non_auth_company;All_All;p15,med,p85' as name,
     greatest(percentile_disc(0.15) within group (order by diff asc), 0) as non_author_15_percentile,
     greatest(percentile_disc(0.5) within group (order by diff asc), 0) as non_author_median,
     greatest(percentile_disc(0.85) within group (order by diff asc), 0) as non_author_85_percentile
