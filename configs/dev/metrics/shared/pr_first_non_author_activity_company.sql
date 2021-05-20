@@ -28,8 +28,8 @@ with issues as (
     select
         extract(epoch from i2.updated_at - i.created_at) / 3600 as diff,
         r.repo_group as repo_group,
-        CASE WHEN aa.company_name = 'PingCAP' THEN 'Internal'
-             ELSE 'External'
+        CASE WHEN aa.company_name = 'PingCAP' THEN 'is-top-contributing-company'
+             ELSE 'not-top-contributing-company'
         END company_category
     from
         issues i,
@@ -67,8 +67,8 @@ with issues as (
     select
         extract(epoch from p2.updated_at - p.created_at) / 3600 as diff,
         r.repo_group as repo_group,
-        CASE WHEN aa.company_name = 'PingCAP' THEN 'Internal'
-             ELSE 'External'
+        CASE WHEN aa.company_name = 'PingCAP' THEN 'is-top-contributing-company'
+             ELSE 'not-top-contributing-company'
         END company_category
     from
         prs p,
@@ -110,34 +110,34 @@ select
     greatest(percentile_disc(0.85) within group (order by diff asc), 0) as non_author_85_percentile
 from
     tdiffs
--- All repositories and external contributors.
+-- All repositories and not-top-contributing-company contributors.
 union
 (
 	select
-		'non_auth_company;All_External;p15,med,p85' as name,
+		'non_auth_company;All_not-top-contributing-company;p15,med,p85' as name,
         greatest(percentile_disc(0.15) within group (order by diff asc), 0) as non_author_15_percentile,
         greatest(percentile_disc(0.5) within group (order by diff asc), 0) as non_author_median,
         greatest(percentile_disc(0.85) within group (order by diff asc), 0) as non_author_85_percentile
 	from
 		tdiffs
 	where
-		company_category = 'External'
+		company_category = 'not-top-contributing-company'
 	order by
 		non_author_median desc,
 		name asc
 )
--- All repositories and internal contributors.
+-- All repositories and is-top-contributing-company contributors.
 union
 (
 	select
-		'non_auth_company;All_Internal;p15,med,p85' as name,
+		'non_auth_company;All_is-top-contributing-company;p15,med,p85' as name,
         greatest(percentile_disc(0.15) within group (order by diff asc), 0) as non_author_15_percentile,
         greatest(percentile_disc(0.5) within group (order by diff asc), 0) as non_author_median,
         greatest(percentile_disc(0.85) within group (order by diff asc), 0) as non_author_85_percentile
 	from
 		tdiffs
 	where
-		company_category = 'Internal'
+		company_category = 'is-top-contributing-company'
 	order by
 		non_author_median desc,
 		name asc
@@ -160,11 +160,11 @@ union
 		non_author_median desc,
 		name asc
 )
--- Repository groups and internal contributors.
+-- Repository groups and is-top-contributing-company contributors.
 union
 (
 	select
-		'non_auth_company;' || repo_group || '_Internal;p15,med,p85' as name,
+		'non_auth_company;' || repo_group || '_is-top-contributing-company;p15,med,p85' as name,
         greatest(percentile_disc(0.15) within group (order by diff asc), 0) as non_author_15_percentile,
         greatest(percentile_disc(0.5) within group (order by diff asc), 0) as non_author_median,
         greatest(percentile_disc(0.85) within group (order by diff asc), 0) as non_author_85_percentile
@@ -172,18 +172,18 @@ union
 		tdiffs
 	where
 		repo_group is not null
-	    and company_category = 'Internal'
+	    and company_category = 'is-top-contributing-company'
 	group by
 		repo_group
 	order by
 		non_author_median desc,
 		name asc
 )
--- Repository groups and external contributors.
+-- Repository groups and not-top-contributing-company contributors.
 union
 (
 	select
-		'non_auth_company;' || repo_group || '_External;p15,med,p85' as name,
+		'non_auth_company;' || repo_group || '_not-top-contributing-company;p15,med,p85' as name,
         greatest(percentile_disc(0.15) within group (order by diff asc), 0) as non_author_15_percentile,
         greatest(percentile_disc(0.5) within group (order by diff asc), 0) as non_author_median,
         greatest(percentile_disc(0.85) within group (order by diff asc), 0) as non_author_85_percentile
@@ -191,7 +191,7 @@ union
 		tdiffs
 	where
 		repo_group is not null
-        and company_category = 'External'
+        and company_category = 'not-top-contributing-company'
 	group by
 		repo_group
 	order by

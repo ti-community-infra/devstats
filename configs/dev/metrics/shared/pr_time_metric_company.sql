@@ -31,8 +31,8 @@ with prs_latest as (
         ipr.issue_id,
         pr.created_at,
         pr.merged_at,
-        CASE WHEN aa.company_name = 'PingCAP' THEN 'Internal'
-             ELSE 'External'
+        CASE WHEN aa.company_name = 'PingCAP' THEN 'is-top-contributing-company'
+             ELSE 'not-top-contributing-company'
         END company_category
     from
         gha_issues_pull_requests ipr,
@@ -47,8 +47,8 @@ with prs_latest as (
         ipr.issue_id,
         pr.created_at,
         pr.merged_at,
-        CASE WHEN aa.company_name = 'PingCAP' THEN 'Internal'
-             ELSE 'External'
+        CASE WHEN aa.company_name = 'PingCAP' THEN 'is-top-contributing-company'
+             ELSE 'not-top-contributing-company'
         END company_category
     from
         gha_issues_pull_requests ipr,
@@ -84,29 +84,29 @@ select
     greatest(percentile_disc(0.85) within group (order by open_to_merge asc), 0) as pc_o2m
 from
     tdiffs
--- All repositories and internal contributors.
+-- All repositories and is-top-contributing-company contributors.
 union
 (
     select
-        'pr_time_metric_company;All_Internal;med,p85' as name,
+        'pr_time_metric_company;All_is-top-contributing-company;med,p85' as name,
         greatest(percentile_disc(0.5) within group (order by open_to_merge asc), 0) as m_o2m,
         greatest(percentile_disc(0.85) within group (order by open_to_merge asc), 0) as pc_o2m
     from
         tdiffs
     where
-        company_category = 'Internal'
+        company_category = 'is-top-contributing-company'
 )
--- All repositories and external contributors.
+-- All repositories and not-top-contributing-company contributors.
 union
 (
     select
-        'pr_time_metric_company;All_External;med,p85' as name,
+        'pr_time_metric_company;All_not-top-contributing-company;med,p85' as name,
         greatest(percentile_disc(0.5) within group (order by open_to_merge asc), 0) as m_o2m,
         greatest(percentile_disc(0.85) within group (order by open_to_merge asc), 0) as pc_o2m
     from
         tdiffs
     where
-        company_category = 'External'
+        company_category = 'not-top-contributing-company'
 )
 -- Repository groups and all contributors.
 union
@@ -122,33 +122,33 @@ union
     order by
         name asc
 )
--- Repository groups and internal contributors.
+-- Repository groups and is-top-contributing-company contributors.
 union
 (
     select
-        'pr_time_metric_company;' || repo_group || '_Internal;med,p85' as name,
+        'pr_time_metric_company;' || repo_group || '_is-top-contributing-company;med,p85' as name,
         greatest(percentile_disc(0.5) within group (order by open_to_merge asc), 0) as m_o2m,
         greatest(percentile_disc(0.85) within group (order by open_to_merge asc), 0) as pc_o2m
     from
         tdiffs_groups
     where
-        company_category = 'Internal'
+        company_category = 'is-top-contributing-company'
     group by
         repo_group
     order by
         name asc
 )
--- Repository groups and external contributors.
+-- Repository groups and not-top-contributing-company contributors.
 union
 (
     select
-        'pr_time_metric_company;' || repo_group || '_External;med,p85' as name,
+        'pr_time_metric_company;' || repo_group || '_not-top-contributing-company;med,p85' as name,
         greatest(percentile_disc(0.5) within group (order by open_to_merge asc), 0) as m_o2m,
         greatest(percentile_disc(0.85) within group (order by open_to_merge asc), 0) as pc_o2m
     from
         tdiffs_groups
     where
-        company_category = 'External'
+        company_category = 'not-top-contributing-company'
     group by
         repo_group
     order by
