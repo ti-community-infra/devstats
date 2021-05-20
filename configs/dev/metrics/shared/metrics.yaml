@@ -50,7 +50,7 @@ metrics:
     desc: time_diff_as_string
     merge_series: opened_to_merged
     drop: sopened_to_merged
-  - name: PR opened to merged group group by company
+  - name: PR opened to merged group by company
     series_name_or_func: multi_row_multi_column
     sql: pr_opened_to_merged_company
     periods: d,w,m,q,y
