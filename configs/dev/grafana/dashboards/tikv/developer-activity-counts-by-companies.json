@@ -405,7 +405,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Proportion of External Contributors",
+      "title": "Proportion of Contributors",
       "type": "piechart"
     },
     {
@@ -630,7 +630,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Proportion of External Contributors’s [[metric]]",
+      "title": "Proportion of Contributors’s [[metric]]",
       "type": "piechart"
     },
     {
