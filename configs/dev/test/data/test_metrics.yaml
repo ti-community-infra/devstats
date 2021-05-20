@@ -1,16 +1,56 @@
 ---
 metrics:
-  - name: All users activity
+  - name: PR first non-author activity group by company
     series_name_or_func: multi_row_multi_column
-    sqls: [all_user_activity, all_user_activity_commits, all_user_activity_issues, all_user_activity_prs]
+    sql: pr_first_non_author_activity_company
     periods: d,w,m,q,y
     aggregate: 1,7
-    skip: d1,d7,w1,w7,m7,q7,y7
-    merge_series: all_user_activity
-    drop: sall_user_activity
-    allow_fail: true
-    env:
-      GHA2DB_NCPUS?: 8
+    skip: d,w7,m7,q7,y7
+    desc: time_diff_as_string
+    merge_series: pr_first_non_author_activity_company
+    drop: spr_first_non_author_activity_company
+
+  - name: PR opened to merged group group by company
+    series_name_or_func: multi_row_multi_column
+    sql: pr_opened_to_merged_company
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: d,w7,m7,q7,y7
+    desc: time_diff_as_string
+    merge_series: pr_opened_to_merged_company
+    drop: spr_opened_to_merged_company
+
+  - name: PR age group by company
+    series_name_or_func: multi_row_multi_column
+    sql: pr_age_company
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: w7,m7,q7,y7
+    desc: time_diff_as_string
+    merge_series: pr_age_company
+    drop: spr_age_company
+
+  - name: Time metrics group by company
+    series_name_or_func: multi_row_multi_column
+    sql: pr_time_metric_company
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: w7,m7,q7,y7
+    desc: time_diff_as_string
+    merge_series: pr_time_metric_company
+    drop: spr_time_metric_company
+
+  # - name: All users activity
+  #   series_name_or_func: multi_row_multi_column
+  #   sqls: [all_user_activity, all_user_activity_commits, all_user_activity_issues, all_user_activity_prs]
+  #   periods: d,w,m,q,y
+  #   aggregate: 1,7
+  #   skip: d1,d7,w1,w7,m7,q7,y7
+  #   merge_series: all_user_activity
+  #   drop: sall_user_activity
+  #   allow_fail: true
+  #   env:
+  #     GHA2DB_NCPUS?: 8
 
   # Type: Single row single column
 
