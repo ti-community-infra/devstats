@@ -11,7 +11,7 @@ struct Config {
 fn main() {
     match envy::from_env::<Config>() {
         Ok(config) => {
-            let crawler = Crawler {
+            let crawler = &Crawler {
                 api_url: config.url,
                 config: AppConfig {
                     app_id: config.app_id,
@@ -19,7 +19,7 @@ fn main() {
                 },
                 client: Default::default(),
             };
-            match crawler.list_github_names() {
+            match crawler.list_github_logins() {
                 Ok(names) => names.iter().for_each(|n| println!("{}", n)),
                 Err(error) => panic!("{:#?}", error),
             }
