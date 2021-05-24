@@ -31,7 +31,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 29,
-  "iteration": 1621840712036,
+  "iteration": 1621849798573,
   "links": [],
   "panels": [
     {
@@ -1078,7 +1078,8 @@
   "style": "dark",
   "tags": [
     "dashboard",
-    "chaosmesh"
+    "chaosmesh",
+    "active"
   ],
   "templating": {
     "list": [
@@ -1273,5 +1274,5 @@
   "timezone": "",
   "title": "Opened to Merged",
   "uid": "16",
-  "version": 3
+  "version": 2
 }
