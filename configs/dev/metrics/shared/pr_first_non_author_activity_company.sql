@@ -36,7 +36,7 @@ with issues as (
         gha_repos r,
         gha_issues i2
     left join
-        gha_actors_affiliations aa on aa.actor_id = i2.user_id
+        gha_actors_affiliations aa on aa.actor_id = i2.user_id and i2.created_at > aa.dt_to and i2.created_at <= aa.dt_from
     where
         i.id = i2.id
         and r.name = i2.dup_repo_name
@@ -75,7 +75,7 @@ with issues as (
         gha_repos r,
         gha_pull_requests p2
     left join
-        gha_actors_affiliations aa on aa.actor_id = p2.user_id
+        gha_actors_affiliations aa on aa.actor_id = p2.user_id and p2.created_at > aa.dt_to and p2.created_at <= aa.dt_from
     where
         p.id = p2.id
         and r.name = p2.dup_repo_name
