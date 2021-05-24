@@ -31,7 +31,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 45,
-  "iteration": 1621515166741,
+  "iteration": 1621840613457,
   "links": [],
   "panels": [
     {
@@ -449,7 +449,7 @@
             "h": 13,
             "w": 12,
             "x": 0,
-            "y": 2
+            "y": 25
           },
           "hiddenSeries": false,
           "id": 18,
@@ -577,7 +577,7 @@
             "h": 13,
             "w": 12,
             "x": 12,
-            "y": 2
+            "y": 25
           },
           "hiddenSeries": false,
           "id": 19,
@@ -720,7 +720,7 @@
             "h": 13,
             "w": 12,
             "x": 0,
-            "y": 16
+            "y": 26
           },
           "hiddenSeries": false,
           "id": 20,
@@ -848,7 +848,7 @@
             "h": 13,
             "w": 12,
             "x": 12,
-            "y": 16
+            "y": 26
           },
           "hiddenSeries": false,
           "id": 23,
@@ -1010,9 +1010,9 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "Day",
-          "value": "d"
+          "selected": false,
+          "text": "7 Days MA",
+          "value": "d7"
         },
         "description": null,
         "error": null,
@@ -1023,12 +1023,12 @@
         "name": "period",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "Day",
             "value": "d"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "7 Days MA",
             "value": "d7"
           },
@@ -1204,5 +1204,5 @@
   "timezone": "",
   "title": "Time to Merge in Repository Groups",
   "uid": "27",
-  "version": 2
+  "version": 3
 }

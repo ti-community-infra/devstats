@@ -31,7 +31,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 29,
-  "iteration": 1621515749857,
+  "iteration": 1621840712036,
   "links": [],
   "panels": [
     {
@@ -226,6 +226,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:69",
           "format": "h",
           "label": "Opened to merged (median & 85th percentile)",
           "logBase": 10,
@@ -234,171 +235,7 @@
           "show": true
         },
         {
-          "format": "short",
-          "label": "Opened to merged (15th percentile)",
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "psql",
-      "decimals": 2,
-      "description": "Median percentile of the number of hours from open to merging for PR",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "fill": 0,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 13,
-        "w": 24,
-        "x": 0,
-        "y": 14
-      },
-      "hiddenSeries": false,
-      "id": 12,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.5.0",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "15th percentile time opened to merged (in hours)",
-          "yaxis": 2
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "",
-          "dsType": "influxdb",
-          "format": "time_series",
-          "group": [],
-          "groupBy": [],
-          "metricColumn": "none",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"value\" FROM \"opened_to_merged_[[repogroup]]_percentile_85_[[period]]\" WHERE $timeFilter",
-          "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Median time of top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_company[[repogroup]]istopcontributingcompanymed'\norder by\n  time",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "alias": "",
-          "dsType": "influxdb",
-          "format": "time_series",
-          "group": [],
-          "groupBy": [],
-          "metricColumn": "none",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"value\" FROM \"opened_to_merged_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
-          "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Median time of not top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_company[[repogroup]]nottopcontributingcompanymed'\norder by\n  time",
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Open to Merged Median Time  Compare ([[repogroup_name]], [[period]])",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "h",
-          "label": "Opened to merged (median & 85th percentile)",
-          "logBase": 10,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
+          "$$hashKey": "object:70",
           "format": "short",
           "label": "Opened to merged (15th percentile)",
           "logBase": 1,
@@ -425,7 +262,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 14
       },
       "id": 3,
       "links": [],
@@ -590,13 +427,192 @@
       "type": "table-old"
     },
     {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 26,
+      "panels": [],
+      "title": "Compare",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "psql",
+      "decimals": 2,
+      "description": "Median percentile of the number of hours from open to merging for PR",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
+      "hiddenSeries": false,
+      "id": 12,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.0",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "15th percentile time opened to merged (in hours)",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "",
+          "dsType": "influxdb",
+          "format": "time_series",
+          "group": [],
+          "groupBy": [],
+          "metricColumn": "none",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"opened_to_merged_[[repogroup]]_percentile_85_[[period]]\" WHERE $timeFilter",
+          "rawQuery": true,
+          "rawSql": "select\n  time,\n  value as \"Median time of top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_company[[repogroup]]istopcontributingcompanymed'\norder by\n  time",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "dsType": "influxdb",
+          "format": "time_series",
+          "group": [],
+          "groupBy": [],
+          "metricColumn": "none",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"opened_to_merged_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
+          "rawQuery": true,
+          "rawSql": "select\n  time,\n  value as \"Median time of not top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_company[[repogroup]]nottopcontributingcompanymed'\norder by\n  time",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Open to Merged Median Time  Compare ([[repogroup_name]], [[period]])",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "h",
+          "label": "Opened to merged (median & 85th percentile)",
+          "logBase": 10,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": "Opened to merged (15th percentile)",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
       "collapsed": true,
       "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 38
+        "y": 39
       },
       "id": 18,
       "panels": [
@@ -618,7 +634,7 @@
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 2
+            "y": 39
           },
           "hiddenSeries": false,
           "id": 13,
@@ -762,7 +778,7 @@
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Time of Top Contributing Company ([[repogroup_name]], [[period]])",
+          "title": "Time from Open to Merged ([[repogroup_name]], [[period]])",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -778,6 +794,7 @@
           },
           "yaxes": [
             {
+              "$$hashKey": "object:122",
               "format": "h",
               "label": "Opened to merged (median & 85th percentile)",
               "logBase": 10,
@@ -786,6 +803,7 @@
               "show": true
             },
             {
+              "$$hashKey": "object:123",
               "format": "short",
               "label": "Opened to merged (15th percentile)",
               "logBase": 1,
@@ -798,7 +816,22 @@
             "align": false,
             "alignLevel": null
           }
-        },
+        }
+      ],
+      "title": "The top contributing company",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 40
+      },
+      "id": 24,
+      "panels": [
         {
           "aliasColors": {},
           "bars": false,
@@ -817,7 +850,7 @@
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 15
+            "y": 40
           },
           "hiddenSeries": false,
           "id": 14,
@@ -961,7 +994,7 @@
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Time of Not Top Contributing Company ([[repogroup_name]], [[period]])",
+          "title": "Time from Open to Merged ([[repogroup_name]], [[period]])",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -977,6 +1010,7 @@
           },
           "yaxes": [
             {
+              "$$hashKey": "object:230",
               "format": "h",
               "label": "Opened to merged (median & 85th percentile)",
               "logBase": 10,
@@ -985,6 +1019,7 @@
               "show": true
             },
             {
+              "$$hashKey": "object:231",
               "format": "short",
               "label": "Opened to merged (15th percentile)",
               "logBase": 1,
@@ -999,7 +1034,7 @@
           }
         }
       ],
-      "title": "Compare with the top contributing company",
+      "title": "Not top contributing company",
       "type": "row"
     },
     {
@@ -1009,7 +1044,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 39
+        "y": 41
       },
       "id": 22,
       "panels": [],
@@ -1026,7 +1061,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 40
+        "y": 42
       },
       "id": 11,
       "links": [],
@@ -1238,5 +1273,5 @@
   "timezone": "",
   "title": "Opened to Merged",
   "uid": "16",
-  "version": 5
+  "version": 3
 }
