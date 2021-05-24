@@ -52,7 +52,7 @@
       "title": "TiKV",
       "tooltip": "Opens TiKV dashboards",
       "type": "link",
-      "url": "https://chaosmesh.[[hostname]]"
+      "url": "https://tikv.[[hostname]]"
     },
     {
       "icon": "dashboard",
