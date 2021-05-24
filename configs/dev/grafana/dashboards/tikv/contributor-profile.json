@@ -16,8 +16,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 9,
-  "iteration": 1619774042564,
+  "id": 12,
+  "iteration": 1621849936260,
   "links": [],
   "panels": [
     {
@@ -964,14 +964,15 @@
     "contributor",
     "tikv",
     "dashboard",
-    "repogroups"
+    "repogroups",
+    "active"
   ],
   "templating": {
     "list": [
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "hi-rustin",
           "value": "hi-rustin"
         },

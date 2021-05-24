@@ -32,7 +32,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 15,
-  "iteration": 1620623924165,
+  "iteration": 1621849964441,
   "links": [
     {
       "icon": "dashboard",
@@ -49,10 +49,10 @@
       "keepTime": true,
       "tags": [],
       "targetBlank": true,
-      "title": "TiKV",
-      "tooltip": "Opens TiKV dashboards",
+      "title": "PingCAP",
+      "tooltip": "Opens PingCAP dashboards",
       "type": "link",
-      "url": "https://tikv.[[hostname]]"
+      "url": "https://pingcap.[[hostname]]"
     },
     {
       "icon": "dashboard",
@@ -125,7 +125,9 @@
           "alias": "",
           "dsType": "influxdb",
           "format": "time_series",
+          "group": [],
           "groupBy": [],
+          "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT \"value\" FROM \"events_h\" WHERE $timeFilter",
@@ -143,7 +145,15 @@
               }
             ]
           ],
-          "tags": []
+          "tags": [],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
       "thresholds": [],
@@ -169,6 +179,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:111",
           "format": "short",
           "label": "Activity",
           "logBase": 1,
@@ -177,6 +188,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:112",
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -222,21 +234,23 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 12,
-        "w": 24,
+        "h": 11,
+        "w": 12,
         "x": 0,
         "y": 6
       },
-      "id": 8,
+      "id": 20,
       "options": {
-        "folderId": 1001,
-        "maxItems": 10,
+        "folderId": null,
+        "maxItems": 7,
         "query": "",
-        "showHeadings": false,
+        "showHeadings": true,
         "showRecentlyViewed": false,
         "showSearch": true,
         "showStarred": false,
-        "tags": []
+        "tags": [
+          "active"
+        ]
       },
       "pluginVersion": "7.5.0",
       "targets": [
@@ -245,7 +259,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": false,
-          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  value\nFROM sall_user_activity\nWHERE\n  $__timeFilter(\"time\")\nORDER BY 1",
+          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  value\nFROM stime_metrics\nWHERE\n  $__timeFilter(\"time\")\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -257,7 +271,7 @@
               }
             ]
           ],
-          "table": "sall_user_activity",
+          "table": "stime_metrics",
           "timeColumn": "\"time\"",
           "timeColumnType": "timestamp",
           "where": [
@@ -269,7 +283,7 @@
           ]
         }
       ],
-      "title": "Community Sizing and Health Assessment Dashboards",
+      "title": "Active Dashboards",
       "transparent": true,
       "type": "dashlist"
     },
@@ -281,9 +295,9 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 24,
-        "x": 0,
-        "y": 18
+        "w": 12,
+        "x": 12,
+        "y": 6
       },
       "id": 10,
       "options": {
@@ -340,9 +354,126 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 24,
+        "w": 12,
         "x": 0,
-        "y": 30
+        "y": 17
+      },
+      "id": 8,
+      "options": {
+        "folderId": 1001,
+        "maxItems": 10,
+        "query": "",
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": []
+      },
+      "pluginVersion": "7.5.0",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  value\nFROM sall_user_activity\nWHERE\n  $__timeFilter(\"time\")\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "sall_user_activity",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Community Sizing and Health Assessment Dashboards",
+      "transparent": true,
+      "type": "dashlist"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 17,
+        "w": 12,
+        "x": 12,
+        "y": 18
+      },
+      "id": 12,
+      "options": {
+        "folderId": 1004,
+        "maxItems": 20,
+        "query": "",
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": []
+      },
+      "pluginVersion": "7.5.0",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  value\nFROM sall_user_activity\nWHERE\n  $__timeFilter(\"time\")\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "sall_user_activity",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "PR Velocity Dashboards",
+      "transparent": true,
+      "type": "dashlist"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 29
       },
       "id": 18,
       "options": {
@@ -397,68 +528,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 17,
-        "w": 24,
-        "x": 0,
-        "y": 42
-      },
-      "id": 12,
-      "options": {
-        "folderId": 1004,
-        "maxItems": 20,
-        "query": "",
-        "showHeadings": false,
-        "showRecentlyViewed": false,
-        "showSearch": true,
-        "showStarred": false,
-        "tags": []
-      },
-      "pluginVersion": "7.5.0",
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": false,
-          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  value\nFROM sall_user_activity\nWHERE\n  $__timeFilter(\"time\")\nORDER BY 1",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "sall_user_activity",
-          "timeColumn": "\"time\"",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "PR Velocity Dashboards",
-      "transparent": true,
-      "type": "dashlist"
-    },
-    {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 59
+        "h": 6,
+        "w": 12,
+        "x": 12,
+        "y": 35
       },
       "id": 14,
       "options": {
@@ -517,9 +590,9 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 66
+        "w": 12,
+        "x": 12,
+        "y": 41
       },
       "id": 16,
       "options": {
@@ -576,9 +649,9 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 24,
-        "x": 0,
-        "y": 73
+        "w": 12,
+        "x": 12,
+        "y": 48
       },
       "id": 4,
       "links": [],
@@ -614,7 +687,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 76
+        "y": 51
       },
       "id": 6,
       "links": [],
@@ -641,8 +714,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "<h1 id=\"-full_name-home-dashboard\">PingCAP Home dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Postgres <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/events.sql\" target=\"_blank\">SQL file</a>, database <a href=\"https://dev.devstats.tidb.io/backups\" target=\"_blank\">dumps</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/pingcap/metrics.yaml\" target=\"_blank\">series definition</a> (search for <code>name: GitHub activity</code>).</li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/pingcap/dashboards.json\" target=\"_blank\">JSON</a>.</li>\n<li>Developer <a href=\"https://github.com/cncf/devstats/blob/master/docs/dashboards/dashboards_devel.md\" target=\"_blank\">documentation</a>.</li>\n<li>Direct <a href=\"https://pingcap.dev.devstats.tidb.io\" target=\"_blank\">link</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>First we&#39;re displaying links to all CNCF projects defined.</li>\n<li>Next we&#39;re showing current project&#39;s hourly activity - this is the number of all GitHub events that happened for PingCAP project hourly.</li>\n<li>This also includes bots activity (most other dashboards skip bot activity).</li>\n<li>Next we&#39;re showing HTML panel that shows all CNCF projects icons and links.</li>\n<li>Next there is a dashboard that shows a list of all dashboards defined for PingCAP project.</li>\n</ul>",
-          "value": "<h1 id=\"-full_name-home-dashboard\">PingCAP Home dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Postgres <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/events.sql\" target=\"_blank\">SQL file</a>, database <a href=\"https://dev.devstats.tidb.io/backups\" target=\"_blank\">dumps</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/pingcap/metrics.yaml\" target=\"_blank\">series definition</a> (search for <code>name: GitHub activity</code>).</li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/pingcap/dashboards.json\" target=\"_blank\">JSON</a>.</li>\n<li>Developer <a href=\"https://github.com/cncf/devstats/blob/master/docs/dashboards/dashboards_devel.md\" target=\"_blank\">documentation</a>.</li>\n<li>Direct <a href=\"https://pingcap.dev.devstats.tidb.io\" target=\"_blank\">link</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>First we&#39;re displaying links to all CNCF projects defined.</li>\n<li>Next we&#39;re showing current project&#39;s hourly activity - this is the number of all GitHub events that happened for PingCAP project hourly.</li>\n<li>This also includes bots activity (most other dashboards skip bot activity).</li>\n<li>Next we&#39;re showing HTML panel that shows all CNCF projects icons and links.</li>\n<li>Next there is a dashboard that shows a list of all dashboards defined for PingCAP project.</li>\n</ul>"
+          "text": "<h1 id=\"-full_name-home-dashboard\">PingCAP Home dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Postgres <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/events.sql\" target=\"_blank\">SQL file</a>, database <a href=\"https://devstats.tidb.io/backups\" target=\"_blank\">dumps</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/pingcap/metrics.yaml\" target=\"_blank\">series definition</a> (search for <code>name: GitHub activity</code>).</li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/pingcap/dashboards.json\" target=\"_blank\">JSON</a>.</li>\n<li>Developer <a href=\"https://github.com/cncf/devstats/blob/master/docs/dashboards/dashboards_devel.md\" target=\"_blank\">documentation</a>.</li>\n<li>Direct <a href=\"https://pingcap.devstats.tidb.io\" target=\"_blank\">link</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>First we&#39;re displaying links to all CNCF projects defined.</li>\n<li>Next we&#39;re showing current project&#39;s hourly activity - this is the number of all GitHub events that happened for PingCAP project hourly.</li>\n<li>This also includes bots activity (most other dashboards skip bot activity).</li>\n<li>Next we&#39;re showing HTML panel that shows all CNCF projects icons and links.</li>\n<li>Next there is a dashboard that shows a list of all dashboards defined for PingCAP project.</li>\n</ul>",
+          "value": "<h1 id=\"-full_name-home-dashboard\">PingCAP Home dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Postgres <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/events.sql\" target=\"_blank\">SQL file</a>, database <a href=\"https://devstats.tidb.io/backups\" target=\"_blank\">dumps</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/pingcap/metrics.yaml\" target=\"_blank\">series definition</a> (search for <code>name: GitHub activity</code>).</li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/pingcap/dashboards.json\" target=\"_blank\">JSON</a>.</li>\n<li>Developer <a href=\"https://github.com/cncf/devstats/blob/master/docs/dashboards/dashboards_devel.md\" target=\"_blank\">documentation</a>.</li>\n<li>Direct <a href=\"https://pingcap.devstats.tidb.io\" target=\"_blank\">link</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>First we&#39;re displaying links to all CNCF projects defined.</li>\n<li>Next we&#39;re showing current project&#39;s hourly activity - this is the number of all GitHub events that happened for PingCAP project hourly.</li>\n<li>This also includes bots activity (most other dashboards skip bot activity).</li>\n<li>Next we&#39;re showing HTML panel that shows all CNCF projects icons and links.</li>\n<li>Next there is a dashboard that shows a list of all dashboards defined for PingCAP project.</li>\n</ul>"
         },
         "datasource": "psql",
         "definition": "",
@@ -697,8 +770,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "dev.devstats.tidb.io",
-          "value": "dev.devstats.tidb.io"
+          "text": "devstats.tidb.io",
+          "value": "devstats.tidb.io"
         },
         "datasource": "psql",
         "definition": "",
@@ -756,5 +829,5 @@
   "timezone": "",
   "title": "Dashboards",
   "uid": "8",
-  "version": 2
+  "version": 4
 }
