@@ -8,7 +8,11 @@ with prs as (
     from
         gha_pull_requests pr
     left join
-        gha_actors_affiliations aa on aa.actor_id = pr.user_id and pr.created_at > aa.dt_to and pr.created_at <= aa.dt_from
+        gha_actors_affiliations aa
+    on
+        aa.actor_id = pr.user_id
+        and aa.dt_from <= pr.created_at
+        and aa.dt_to > pr.created_at
     where
         pr.merged_at is not null
         and pr.created_at >= '{{from}}'
@@ -29,7 +33,11 @@ with prs as (
         gha_repos r,
         gha_pull_requests pr
     left join
-        gha_actors_affiliations aa on aa.actor_id = pr.user_id and pr.created_at > aa.dt_to and pr.created_at <= aa.dt_from
+        gha_actors_affiliations aa
+    on
+        aa.actor_id = pr.user_id
+        and aa.dt_from <= pr.created_at
+        and aa.dt_to > pr.created_at
     where
         r.id = pr.dup_repo_id
         and r.name = pr.dup_repo_name
