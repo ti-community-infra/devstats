@@ -32,11 +32,15 @@ with issues as (
              ELSE 'not-top-contributing-company'
         END company_category
     from
-        issues i,
         gha_repos r,
-        gha_issues i2
+        gha_issues i2,
+        issues i
     left join
-        gha_actors_affiliations aa on aa.actor_id = i2.user_id and i2.created_at > aa.dt_to and i2.created_at <= aa.dt_from
+        gha_actors_affiliations aa
+    on
+        aa.actor_id = i.user_id
+        and aa.dt_from <= i.created_at
+        and aa.dt_to > i.created_at
     where
         i.id = i2.id
         and r.name = i2.dup_repo_name
@@ -71,11 +75,15 @@ with issues as (
              ELSE 'not-top-contributing-company'
         END company_category
     from
-        prs p,
         gha_repos r,
-        gha_pull_requests p2
+        gha_pull_requests p2,
+        prs p
     left join
-        gha_actors_affiliations aa on aa.actor_id = p2.user_id and p2.created_at > aa.dt_to and p2.created_at <= aa.dt_from
+        gha_actors_affiliations aa
+    on
+        aa.actor_id = p.user_id
+        and aa.dt_from <= p.created_at
+        and aa.dt_to > p.created_at
     where
         p.id = p2.id
         and r.name = p2.dup_repo_name
