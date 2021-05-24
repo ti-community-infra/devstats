@@ -50,6 +50,15 @@ metrics:
     desc: time_diff_as_string
     merge_series: opened_to_merged
     drop: sopened_to_merged
+  - name: PR opened to merged group by company
+    series_name_or_func: multi_row_multi_column
+    sql: pr_opened_to_merged_company
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: d,w7,m7,q7,y7
+    desc: time_diff_as_string
+    merge_series: pr_opened_to_merged_company
+    drop: spr_opened_to_merged_company
   - name: Time metrics
     series_name_or_func: multi_row_multi_column
     sql: time_metrics
@@ -59,6 +68,15 @@ metrics:
     desc: time_diff_as_string
     merge_series: time_metrics
     drop: stime_metrics
+  - name: Time metrics group by company
+    series_name_or_func: multi_row_multi_column
+    sql: pr_time_metric_company
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: w7,m7,q7,y7
+    desc: time_diff_as_string
+    merge_series: pr_time_metric_company
+    drop: spr_time_metric_company
   - name: First non-author activity
     series_name_or_func: multi_row_multi_column
     sql: first_non_author_activity
@@ -68,6 +86,15 @@ metrics:
     desc: time_diff_as_string
     merge_series: first_non_author
     drop: sfirst_non_author
+  - name: PR first non-author activity group by company
+    series_name_or_func: multi_row_multi_column
+    sql: pr_first_non_author_activity_company
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: d,w7,m7,q7,y7
+    desc: time_diff_as_string
+    merge_series: pr_first_non_author_activity_company
+    drop: spr_first_non_author_activity_company
   - name: PRs age
     series_name_or_func: multi_row_multi_column
     sql: prs_age
@@ -77,6 +104,15 @@ metrics:
     desc: time_diff_as_string
     merge_series: prs_age
     drop: sprs_age
+  - name: PR age group by company
+    series_name_or_func: multi_row_multi_column
+    sql: pr_age_company
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: w7,m7,q7,y7
+    desc: time_diff_as_string
+    merge_series: pr_age_company
+    drop: spr_age_company
   - name: Issues age
     series_name_or_func: multi_row_multi_column
     sql: issues_age
