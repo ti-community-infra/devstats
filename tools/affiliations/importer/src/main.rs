@@ -1,4 +1,4 @@
-use crawler::crawler::{AppConfig, Crawl, Crawler};
+use crawler::crawler::Crawler;
 use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
@@ -8,18 +8,12 @@ struct Config {
     app_secret: String,
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
     match envy::from_env::<Config>() {
         Ok(config) => {
-            let crawler = &Crawler {
-                api_url: config.url,
-                config: AppConfig {
-                    app_id: config.app_id,
-                    app_secret: config.app_secret,
-                },
-                client: Default::default(),
-            };
-            match crawler.list_github_logins() {
+            let crawler = &Crawler::new(config.app_id, config.app_secret).expect("Failed init");
+            match crawler.list_github_logins().await {
                 Ok(names) => names.iter().for_each(|n| println!("{}", n)),
                 Err(error) => panic!("{:#?}", error),
             }

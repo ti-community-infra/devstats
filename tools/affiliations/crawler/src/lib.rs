@@ -1,6 +1,7 @@
 mod auth;
 pub mod crawler;
 mod departments;
+mod lark;
 mod resp;
 mod users;
 
