@@ -27,11 +27,12 @@
       }
     ]
   },
+  "description": "",
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
   "id": 33,
-  "iteration": 1621841120924,
+  "iteration": 1621849619737,
   "links": [],
   "panels": [
     {
@@ -1077,7 +1078,8 @@
   "style": "dark",
   "tags": [
     "dashboard",
-    "chaosmesh"
+    "chaosmesh",
+    "active"
   ],
   "templating": {
     "list": [

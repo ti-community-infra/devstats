@@ -31,7 +31,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 45,
-  "iteration": 1621840613457,
+  "iteration": 1621849812790,
   "links": [],
   "panels": [
     {
@@ -1003,7 +1003,8 @@
   "style": "dark",
   "tags": [
     "dashboard",
-    "tikv"
+    "tikv",
+    "active"
   ],
   "templating": {
     "list": [
@@ -1204,5 +1205,5 @@
   "timezone": "",
   "title": "Time to Merge in Repository Groups",
   "uid": "27",
-  "version": 3
+  "version": 2
 }
