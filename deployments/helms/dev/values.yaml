@@ -96,7 +96,7 @@ executePodName: 'devstats-execute'
 executeTargetProject: 'pingcap'
 executeCommand: 'sleep'
 executeCommandArgs:
-- "3000"
+- "60"
 # example:
 # executeCommand: devstats
 # executeResetTSDB: '1'
