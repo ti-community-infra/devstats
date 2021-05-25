@@ -17,7 +17,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 16,
-  "iteration": 1621849872682,
+  "iteration": 1621946901655,
   "links": [],
   "panels": [
     {
@@ -1214,56 +1214,16 @@
           ]
         },
         "datasource": "psql",
-        "definition": "select companies_name from tcompanies where\n ($exclude_pingcap=true and companies_name != 'PingCAP') or ($exclude_pingcap=false)",
+        "definition": "select companies_name from tcompanies where\n ($exclude_top_contribuing_company=true and companies_name != 'PingCAP') or ($exclude_top_contribuing_company=false)",
         "description": null,
-        "error": {
-          "config": {
-            "data": {
-              "from": "1621763470613",
-              "queries": [
-                {
-                  "datasourceId": 1,
-                  "format": "table",
-                  "rawSql": "select companies_name from tcompanies where\n ($exclude_pingcap=true and companies_name != 'PingCAP') or ($exclude_pingcap=false)",
-                  "refId": "companies"
-                }
-              ],
-              "to": "1621849870613"
-            },
-            "headers": {
-              "X-Grafana-Org-Id": 1
-            },
-            "hideFromInspector": false,
-            "method": "POST",
-            "retry": 0,
-            "url": "api/tsdb/query"
-          },
-          "data": {
-            "message": "pq: syntax error at or near \"$\"",
-            "results": {
-              "companies": {
-                "dataframes": null,
-                "error": "pq: syntax error at or near \"$\"",
-                "meta": {
-                  "executedQueryString": "select companies_name from tcompanies where\n ($exclude_pingcap=true and companies_name != 'PingCAP') or ($exclude_pingcap=false)"
-                },
-                "refId": "companies",
-                "series": null,
-                "tables": null
-              }
-            }
-          },
-          "message": "pq: syntax error at or near \"$\"",
-          "status": 400,
-          "statusText": "Bad Request"
-        },
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Companies",
         "multi": true,
         "name": "companies",
         "options": [],
-        "query": "select companies_name from tcompanies where\n ($exclude_pingcap=true and companies_name != 'PingCAP') or ($exclude_pingcap=false)",
+        "query": "select companies_name from tcompanies where\n ($exclude_top_contribuing_company=true and companies_name != 'PingCAP') or ($exclude_top_contribuing_company=false)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1309,5 +1269,5 @@
   "timezone": "",
   "title": "Developer Activity Counts by Companies",
   "uid": "66",
-  "version": 3
+  "version": 2
 }

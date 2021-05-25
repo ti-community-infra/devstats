@@ -32,7 +32,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 15,
-  "iteration": 1621849964441,
+  "iteration": 1621946999851,
   "links": [
     {
       "icon": "dashboard",
@@ -234,16 +234,14 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 11,
+        "h": 14,
         "w": 12,
         "x": 0,
         "y": 6
       },
       "id": 20,
       "options": {
-        "folderId": null,
-        "maxItems": 7,
-        "query": "",
+        "maxItems": 15,
         "showHeadings": true,
         "showRecentlyViewed": false,
         "showSearch": true,
@@ -347,65 +345,6 @@
     },
     {
       "datasource": null,
-      "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 12,
-        "x": 0,
-        "y": 17
-      },
-      "id": 8,
-      "options": {
-        "folderId": 1001,
-        "maxItems": 10,
-        "query": "",
-        "showHeadings": false,
-        "showRecentlyViewed": false,
-        "showSearch": true,
-        "showStarred": false,
-        "tags": []
-      },
-      "pluginVersion": "7.5.0",
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": false,
-          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  value\nFROM sall_user_activity\nWHERE\n  $__timeFilter(\"time\")\nORDER BY 1",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "sall_user_activity",
-          "timeColumn": "\"time\"",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Community Sizing and Health Assessment Dashboards",
-      "transparent": true,
-      "type": "dashlist"
-    },
-    {
-      "datasource": null,
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -473,7 +412,66 @@
         "h": 12,
         "w": 12,
         "x": 0,
-        "y": 29
+        "y": 20
+      },
+      "id": 8,
+      "options": {
+        "folderId": 1001,
+        "maxItems": 10,
+        "query": "",
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": []
+      },
+      "pluginVersion": "7.5.0",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  value\nFROM sall_user_activity\nWHERE\n  $__timeFilter(\"time\")\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "sall_user_activity",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Community Sizing and Health Assessment Dashboards",
+      "transparent": true,
+      "type": "dashlist"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 32
       },
       "id": 18,
       "options": {
@@ -829,5 +827,5 @@
   "timezone": "",
   "title": "Dashboards",
   "uid": "8",
-  "version": 4
+  "version": 3
 }
