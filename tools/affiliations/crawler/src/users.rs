@@ -1,35 +1,19 @@
 use serde::{Deserialize, Serialize};
 
+pub(crate) const GITHUB_LOGIN_ATTR_ID: &str = "C-6934211695879389211";
+
 #[derive(Serialize, Deserialize, Debug)]
-pub struct UsersResp {
-    pub code: i64,
-    pub msg: String,
-    pub data: RespDetails,
+pub(crate) struct User {
+    pub(crate) custom_attrs: Option<Vec<CustomAttrs>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct RespDetails {
-    pub has_more: bool,
-    pub page_token: Option<String>,
-    pub items: Vec<User>,
+pub(crate) struct CustomAttrs {
+    pub(crate) id: String,
+    pub(crate) value: Value,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct User {
-    pub custom_attrs: Vec<CustomAttrs>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct CustomAttrs {
-    #[serde(rename = "type")]
-    pub attr_type: String,
-    pub id: String,
-    pub value: Value,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Value {
-    pub text: String,
-    pub url: String,
-    pub pc_url: String,
+pub(crate) struct Value {
+    pub(crate) text: String,
 }

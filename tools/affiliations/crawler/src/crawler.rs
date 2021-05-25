@@ -1,80 +1,77 @@
-use anyhow::{anyhow, Result};
-use reqwest::blocking::Client;
-use serde::{Deserialize, Serialize};
+use crate::departments::Department;
+use crate::lark::{AppConfig, Lark};
+use crate::users::{User, GITHUB_LOGIN_ATTR_ID};
+use anyhow::Result;
+use async_trait::async_trait;
+use std::collections::HashSet;
+use std::iter::FromIterator;
 
-use crate::users::UsersResp;
-use crate::auth::AuthResp;
-
+#[async_trait]
 pub trait Crawl {
-    fn list_github_names(self) -> Result<Vec<String>>;
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct AppConfig {
-    pub app_id: String,
-    pub app_secret: String,
+    async fn list_github_logins(&self) -> Result<Vec<String>>;
+    async fn list_departments(&self) -> Result<Vec<String>>;
 }
 
 pub struct Crawler {
-    pub api_url: String,
-    pub config: AppConfig,
-    pub client: Client,
+    pub(crate) lark: Lark,
 }
 
+impl Crawler {
+    pub fn new<S>(app_id: S, app_secret: S) -> Result<Self>
+    where
+        S: Into<String>,
+    {
+        Ok(Self {
+            lark: Lark::new(AppConfig {
+                app_id: app_id.into(),
+                app_secret: app_secret.into(),
+            })?,
+        })
+    }
+}
+
+#[async_trait]
 impl Crawl for Crawler {
-    fn list_github_names(self) -> Result<Vec<String>> {
-        let res = self.client.post(format!("{}/{}", &self.api_url, "auth/v3/tenant_access_token/internal/"))
-            .json(&self.config)
-            .send()?
-            .json::<AuthResp>()?;
+    /// List all PingCAPer's github logins.
+    async fn list_github_logins(&self) -> Result<Vec<String>> {
+        let departments = self.list_departments().await?;
+        let mut results: HashSet<String> = HashSet::new();
 
-        if res.code != 0 {
-            return Err(anyhow!("Get token failed and msg is {}", res.msg));
-        }
+        for d in departments {
+            let parameters = vec![("department_id", &d)];
+            let res: Vec<User> = self
+                .lark
+                .list("contact/v3/users", Some(&parameters))
+                .await?;
 
-        let token = res.tenant_access_token;
-
-        let mut res = self
-            .client
-            .get(format!("{}/{}", &self.api_url, "contact/v3/users"))
-            .bearer_auth(&token)
-            .send()?
-            .json::<UsersResp>()?;
-
-        if res.code != 0 {
-            return Err(anyhow!("List users failed and msg is {}", res.msg));
-        }
-
-        let mut results = vec![];
-
-        while res.data.has_more {
-            let github_names: Vec<String> = res
-                .data
-                .items
-                .iter()
+            res.iter()
+                .filter(|i| i.custom_attrs.is_some())
                 .map(|i| {
                     i.custom_attrs
+                        .as_ref()
+                        .unwrap()
                         .iter()
-                        .filter(|c| c.attr_type == "github")
+                        .filter(|c| c.id == GITHUB_LOGIN_ATTR_ID)
                         .map(|c| c.value.text.clone())
                         .collect()
                 })
-                .collect();
-            results.extend_from_slice(&github_names);
-
-            res = self
-                .client
-                .get(format!("{}/{}", &self.api_url, "contact/v3/users"))
-                .bearer_auth(&token)
-                .query(&[("page_token", res.data.page_token.unwrap())])
-                .send()?
-                .json::<UsersResp>()?;
-
-            if res.code != 0 {
-                return Err(anyhow!("List users failed and msg is {}", res.msg));
-            }
+                .for_each(|g| {
+                    results.insert(g);
+                });
         }
 
-        Ok(results)
+        Ok(Vec::from_iter(results))
+    }
+
+    /// List all PingCAP's departments.
+    async fn list_departments(&self) -> Result<Vec<String>> {
+        let parameters = vec![("fetch_child", "true"), ("parent_department_id", "0")];
+
+        let res: Vec<Department> = self
+            .lark
+            .list("contact/v3/departments", Some(&parameters))
+            .await?;
+
+        Ok(res.iter().map(|i| i.open_department_id.clone()).collect())
     }
 }

@@ -1,29 +1,17 @@
-use crawler::crawler::{AppConfig, Crawl, Crawler};
-use serde::Deserialize;
+extern crate pretty_env_logger;
 
-#[derive(Deserialize, Debug)]
-struct Config {
-    url: String,
-    app_id: String,
-    app_secret: String,
-}
+#[macro_use]
+extern crate dotenv_codegen;
 
-fn main() {
-    match envy::from_env::<Config>() {
-        Ok(config) => {
-            let crawler = Crawler {
-                api_url: config.url,
-                config: AppConfig {
-                    app_id: config.app_id,
-                    app_secret: config.app_secret,
-                },
-                client: Default::default(),
-            };
-            match crawler.list_github_names() {
-                Ok(names) => names.iter().for_each(|n| println!("{}", n)),
-                Err(error) => panic!("{:#?}", error),
-            }
-        }
+use crawler::crawler::{Crawl, Crawler};
+
+#[tokio::main]
+async fn main() {
+    pretty_env_logger::init();
+    let crawler =
+        &Crawler::new(dotenv!("APP_ID"), dotenv!("APP_SECRET")).expect("Failed init the crawler.");
+    match crawler.list_github_logins().await {
+        Ok(names) => names.iter().for_each(|n| println!("{}", n)),
         Err(error) => panic!("{:#?}", error),
     }
 }
