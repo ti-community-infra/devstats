@@ -1,9 +1,9 @@
 use crate::auth::AuthResp;
-use anyhow::Result;
+use crate::resp::{Data, Resp};
+use anyhow::{anyhow, Result};
 use reqwest::Client;
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
-use std::fmt;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct AppConfig {
@@ -61,21 +61,45 @@ impl Lark {
             .tenant_access_token)
     }
 
-    /// Send a `GET` request to `uri` with optional query parameters, returning
-    /// the body of the response.
-    pub async fn get<R, T, A, P>(&self, token: T, uri: A, parameters: Option<&P>) -> Result<R>
+    pub async fn list<R, A, P>(&self, uri: A, parameters: Option<&P>) -> Result<Vec<R>>
     where
         A: AsRef<str>,
-        T: fmt::Display,
         P: Serialize + ?Sized,
         R: DeserializeOwned,
     {
-        let mut request = self.client.get(self.url(uri.as_ref())).bearer_auth(token);
+        let token = self.auth().await?;
+        let mut results = vec![];
+        let mut request = self.client.get(self.url(uri.as_ref())).bearer_auth(&token);
 
         if let Some(parameters) = parameters {
             request = request.query(parameters);
         }
 
-        Ok(request.send().await?.json::<R>().await?)
+        let mut res = request.send().await?.json::<Resp<Data<R>>>().await?;
+        if res.code != 0 {
+            return Err(anyhow!("List failed and msg is {}", res.msg));
+        }
+        if let Some(items) = res.data.items {
+            results.extend(items);
+        }
+
+        while let Some(ref page_token) = res.data.page_token {
+            let mut request = self.client.get(self.url(uri.as_ref())).bearer_auth(&token);
+
+            if let Some(parameters) = parameters {
+                request = request.query(parameters);
+            }
+            request = request.query(&[("page_token", page_token)]);
+
+            res = request.send().await?.json::<Resp<Data<R>>>().await?;
+            if res.code != 0 {
+                return Err(anyhow!("List failed and msg is {}", res.msg));
+            }
+            if let Some(items) = res.data.items {
+                results.extend(items);
+            }
+        }
+
+        Ok(results)
     }
 }

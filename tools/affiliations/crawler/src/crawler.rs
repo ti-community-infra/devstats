@@ -1,10 +1,16 @@
 use crate::departments::Department;
 use crate::lark::{AppConfig, Lark};
-use crate::resp::{Data, Resp};
 use crate::users::User;
-use anyhow::{anyhow, Result};
+use anyhow::Result;
+use async_trait::async_trait;
 use std::collections::HashSet;
 use std::iter::FromIterator;
+
+#[async_trait]
+pub trait Crawl {
+    async fn list_github_logins(&self) -> Result<Vec<String>>;
+    async fn list_departments(&self) -> Result<Vec<String>>;
+}
 
 pub struct Crawler {
     pub lark: Lark,
@@ -18,14 +24,19 @@ impl Crawler {
     }
 }
 
-impl Crawler {
-    pub async fn list_github_logins(&self) -> Result<Vec<String>> {
-        let token = self.lark.auth().await?;
+#[async_trait]
+impl Crawl for Crawler {
+    async fn list_github_logins(&self) -> Result<Vec<String>> {
         let departments = self.list_departments().await?;
         let mut results: HashSet<String> = HashSet::new();
-        let mut collector = |items: Vec<User>| {
-            items
-                .iter()
+
+        for d in departments {
+            let parameters = vec![("department_id", &d)];
+            let res: Vec<User> = self
+                .lark
+                .list("contact/v3/users", Some(&parameters))
+                .await?;
+            res.iter()
                 .filter(|i| i.custom_attrs.is_some())
                 .map(|i| {
                     i.custom_attrs
@@ -39,84 +50,19 @@ impl Crawler {
                 .for_each(|g| {
                     let _ = results.insert(g);
                 });
-        };
-
-        for d in departments {
-            let parameters = vec![("department_id", &d)];
-            let mut res: Resp<Data<User>> = self
-                .lark
-                .get(&token, "contact/v3/users", Some(&parameters))
-                .await?;
-            if res.code != 0 {
-                return Err(anyhow!("List users failed and msg is {}", res.msg));
-            }
-            if let Some(items) = res.data.items {
-                collector(items);
-            }
-
-            while let Some(ref page_token) = res.data.page_token {
-                let mut new_parm = parameters.clone();
-                new_parm.push(("page_token", page_token));
-                res = self
-                    .lark
-                    .get::<Resp<Data<User>>, &String, &str, Vec<(&str, &String)>>(
-                        &token,
-                        "contact/v3/users",
-                        Some(&new_parm),
-                    )
-                    .await?;
-                if res.code != 0 {
-                    return Err(anyhow!("List users failed and msg is {}", res.msg));
-                }
-                if let Some(items) = res.data.items {
-                    collector(items);
-                }
-            }
         }
 
         Ok(Vec::from_iter(results))
     }
 
-    pub async fn list_departments(&self) -> Result<Vec<String>> {
-        let token = self.lark.auth().await?;
-        let mut results = vec![];
-        let mut collector = |items: Vec<Department>| {
-            let departments: Vec<String> =
-                items.iter().map(|i| i.open_department_id.clone()).collect();
-            results.extend_from_slice(&departments);
-        };
-
+    async fn list_departments(&self) -> Result<Vec<String>> {
         let parameters = vec![("fetch_child", "true"), ("parent_department_id", "0")];
-        let mut res: Resp<Data<Department>> = self
+
+        let res: Vec<Department> = self
             .lark
-            .get(&token, "contact/v3/departments", Some(&parameters))
+            .list("contact/v3/departments", Some(&parameters))
             .await?;
-        if res.code != 0 {
-            return Err(anyhow!("List departments failed and msg is {}", res.msg));
-        }
-        if let Some(items) = res.data.items {
-            collector(items);
-        }
 
-        while let Some(ref page_token) = res.data.page_token {
-            let mut new_parm = parameters.clone();
-            new_parm.push(("page_token", page_token));
-            res = self
-                .lark
-                .get::<Resp<Data<Department>>, &String, &str, Vec<(&str, &str)>>(
-                    &token,
-                    "contact/v3/departments",
-                    Some(&new_parm),
-                )
-                .await?;
-            if res.code != 0 {
-                return Err(anyhow!("List departments failed and msg is {}", res.msg));
-            }
-            if let Some(items) = res.data.items {
-                collector(items);
-            }
-        }
-
-        Ok(results)
+        Ok(res.iter().map(|i| i.open_department_id.clone()).collect())
     }
 }
