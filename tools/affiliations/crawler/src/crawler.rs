@@ -1,6 +1,6 @@
 use crate::departments::Department;
 use crate::lark::{AppConfig, Lark};
-use crate::users::User;
+use crate::users::{User, GITHUB_LOGIN_ATTR_ID};
 use anyhow::Result;
 use async_trait::async_trait;
 use std::collections::HashSet;
@@ -13,19 +13,26 @@ pub trait Crawl {
 }
 
 pub struct Crawler {
-    pub lark: Lark,
+    pub(crate) lark: Lark,
 }
 
 impl Crawler {
-    pub fn new(app_id: String, app_secret: String) -> Result<Self> {
+    pub fn new<S>(app_id: S, app_secret: S) -> Result<Self>
+    where
+        S: Into<String>,
+    {
         Ok(Self {
-            lark: Lark::new(AppConfig { app_id, app_secret })?,
+            lark: Lark::new(AppConfig {
+                app_id: app_id.into(),
+                app_secret: app_secret.into(),
+            })?,
         })
     }
 }
 
 #[async_trait]
 impl Crawl for Crawler {
+    /// List all PingCAPer's github logins.
     async fn list_github_logins(&self) -> Result<Vec<String>> {
         let departments = self.list_departments().await?;
         let mut results: HashSet<String> = HashSet::new();
@@ -36,6 +43,7 @@ impl Crawl for Crawler {
                 .lark
                 .list("contact/v3/users", Some(&parameters))
                 .await?;
+
             res.iter()
                 .filter(|i| i.custom_attrs.is_some())
                 .map(|i| {
@@ -43,18 +51,19 @@ impl Crawl for Crawler {
                         .as_ref()
                         .unwrap()
                         .iter()
-                        .filter(|c| c.id == "C-6934211695879389211")
+                        .filter(|c| c.id == GITHUB_LOGIN_ATTR_ID)
                         .map(|c| c.value.text.clone())
                         .collect()
                 })
                 .for_each(|g| {
-                    let _ = results.insert(g);
+                    results.insert(g);
                 });
         }
 
         Ok(Vec::from_iter(results))
     }
 
+    /// List all PingCAP's departments.
     async fn list_departments(&self) -> Result<Vec<String>> {
         let parameters = vec![("fetch_child", "true"), ("parent_department_id", "0")];
 

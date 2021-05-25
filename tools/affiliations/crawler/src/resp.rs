@@ -1,15 +1,15 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct Resp<D> {
-    pub code: i64,
-    pub msg: String,
-    pub data: D,
+pub(crate) struct Resp<D> {
+    pub(crate) code: i64,
+    pub(crate) msg: String,
+    pub(crate) data: D,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct Data<T> {
-    pub has_more: bool,
-    pub page_token: Option<String>,
-    pub items: Option<Vec<T>>,
+pub(crate) struct Data<T> {
+    pub(crate) has_more: bool,
+    pub(crate) page_token: Option<String>,
+    pub(crate) items: Option<Vec<T>>,
 }
