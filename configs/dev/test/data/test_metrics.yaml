@@ -1,14 +1,24 @@
 ---
 metrics:
-  - name: Issues age group by company
+  - name: Time to first comment on the issue group by company
     series_name_or_func: multi_row_multi_column
-    sql: issue_age_company
+    sql: issue_first_comment_time_company
     periods: d,w,m,q,y
     aggregate: 1,7
-    skip: w7,m7,q7,y7
+    skip: d,w7,m7,q7,y7
     desc: time_diff_as_string
-    merge_series: issue_age_company
-    drop: sissue_age_company
+    merge_series: issue_first_comment_time_company
+    drop: sissue_first_comment_time_company
+
+#  - name: Issues age group by company
+#    series_name_or_func: multi_row_multi_column
+#    sql: issue_age_company
+#    periods: d,w,m,q,y
+#    aggregate: 1,7
+#    skip: w7,m7,q7,y7
+#    desc: time_diff_as_string
+#    merge_series: issue_age_company
+#    drop: sissue_age_company
 
   #  - name: PR first non-author activity group by company
   #    series_name_or_func: multi_row_multi_column
