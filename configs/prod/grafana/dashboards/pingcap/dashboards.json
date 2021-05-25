@@ -49,10 +49,10 @@
       "keepTime": true,
       "tags": [],
       "targetBlank": true,
-      "title": "PingCAP",
-      "tooltip": "Opens PingCAP dashboards",
+      "title": "TiKV",
+      "tooltip": "Opens TiKV dashboards",
       "type": "link",
-      "url": "https://pingcap.[[hostname]]"
+      "url": "https://tikv.[[hostname]]"
     },
     {
       "icon": "dashboard",
