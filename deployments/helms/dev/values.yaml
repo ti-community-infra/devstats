@@ -91,7 +91,7 @@ requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
 
 # Execute Pod configurations.
-executeImage: 'miniantdev/devstats-minimal-dev:0.2.3'
+executeImage: 'miniantdev/devstats-minimal-dev:0.2.4.beta.1'
 executePodName: 'devstats-execute'
 executeTargetProject: 'pingcap'
 executeCommand: 'sleep'
