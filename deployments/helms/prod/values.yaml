@@ -32,7 +32,7 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana-prod:0.2.0'
+grafanaImage: 'miniantdev/devstats-grafana-prod:0.2.2'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
 grafanaNReplicas: 1
@@ -49,7 +49,7 @@ limitsGrafanasMemory: '8Gi'
 useGrafanasResourcesLimits: 1
 
 # Provision configurations.
-provisionImage: 'miniantdev/devstats-prod:0.2.0'
+provisionImage: 'miniantdev/devstats-prod:0.2.2'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
@@ -79,7 +79,7 @@ usePostgresResourcesLimits: 1
 
 # Cron sync jobs configurations.
 syncCommand: devstats
-syncImage: 'miniantdev/devstats-minimal-prod:0.2.0'
+syncImage: 'miniantdev/devstats-minimal-prod:0.2.2'
 syncPodName: devstats
 syncRestartPolicy: Never
 concurrencyPolicy: Forbid
@@ -90,6 +90,25 @@ limitsCronsMemory: '32Gi'
 requestsCronsCPU: '1000m'
 requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
+
+# Execute Pod configurations.
+executeImage: 'miniantdev/devstats-minimal-dev:0.2.2'
+executePodName: 'devstats-execute'
+executeTargetProject: 'tikv'
+executeCommand: 'sleep'
+executeCommandArgs:
+- "60"
+# example:
+# executeCommand: devstats
+# executeResetTSDB: '1'
+# executeOnlyMetrics: 'pr_opened_to_merged_company,pr_time_metric_company,pr_first_non_author_activity_company,pr_age_company'
+executeSkipMetrics: ''
+executeRestartPolicy: Never
+limitsExecuteCPU: '6000m'
+limitsExecuteMemory: '32Gi'
+requestsExecuteCPU: '1000m'
+requestsExecuteMemory: '1Gi'
+useExecuteResourcesLimits: 1
 
 # Ingresses indexes.
 indexIngressesFrom: 0
