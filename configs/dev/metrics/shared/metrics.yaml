@@ -122,6 +122,24 @@ metrics:
     desc: time_diff_as_string
     merge_series: issues_age
     drop:  sissues_age
+  - name: Issues age group by company
+    series_name_or_func: multi_row_multi_column
+    sql: issue_age_company
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: w7,m7,q7,y7
+    desc: time_diff_as_string
+    merge_series: issue_age_company
+    drop: sissue_age_company
+  - name: Time to first comment on the issue group by company
+    series_name_or_func: multi_row_multi_column
+    sql: issue_first_comment_time_company
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: d,w7,m7,q7,y7
+    desc: time_diff_as_string
+    merge_series: issue_first_comment_time_company
+    drop: sissue_first_comment_time_company
   - name: PR comments
     series_name_or_func: single_row_multi_column
     sql: pr_comments

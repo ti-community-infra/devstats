@@ -137,6 +137,7 @@ set
 where
   slug in (
     'issues-age-by-repository-group',
+    'issue-time-to-first-comment',
     'issues-opened-closed-by-repository-group',
     'new-and-episodic-issue-creators'
   )

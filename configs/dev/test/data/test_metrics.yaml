@@ -1,44 +1,64 @@
 ---
 metrics:
-  - name: PR first non-author activity group by company
+  - name: Time to first comment on the issue group by company
     series_name_or_func: multi_row_multi_column
-    sql: pr_first_non_author_activity_company
+    sql: issue_first_comment_time_company
     periods: d,w,m,q,y
     aggregate: 1,7
     skip: d,w7,m7,q7,y7
     desc: time_diff_as_string
-    merge_series: pr_first_non_author_activity_company
-    drop: spr_first_non_author_activity_company
+    merge_series: issue_first_comment_time_company
+    drop: sissue_first_comment_time_company
 
-  - name: PR opened to merged group group by company
-    series_name_or_func: multi_row_multi_column
-    sql: pr_opened_to_merged_company
-    periods: d,w,m,q,y
-    aggregate: 1,7
-    skip: d,w7,m7,q7,y7
-    desc: time_diff_as_string
-    merge_series: pr_opened_to_merged_company
-    drop: spr_opened_to_merged_company
+#  - name: Issues age group by company
+#    series_name_or_func: multi_row_multi_column
+#    sql: issue_age_company
+#    periods: d,w,m,q,y
+#    aggregate: 1,7
+#    skip: w7,m7,q7,y7
+#    desc: time_diff_as_string
+#    merge_series: issue_age_company
+#    drop: sissue_age_company
 
-  - name: PR age group by company
-    series_name_or_func: multi_row_multi_column
-    sql: pr_age_company
-    periods: d,w,m,q,y
-    aggregate: 1,7
-    skip: w7,m7,q7,y7
-    desc: time_diff_as_string
-    merge_series: pr_age_company
-    drop: spr_age_company
+  #  - name: PR first non-author activity group by company
+  #    series_name_or_func: multi_row_multi_column
+  #    sql: pr_first_non_author_activity_company
+  #    periods: d,w,m,q,y
+  #    aggregate: 1,7
+  #    skip: d,w7,m7,q7,y7
+  #    desc: time_diff_as_string
+  #    merge_series: pr_first_non_author_activity_company
+  #    drop: spr_first_non_author_activity_company
 
-  - name: Time metrics group by company
-    series_name_or_func: multi_row_multi_column
-    sql: pr_time_metric_company
-    periods: d,w,m,q,y
-    aggregate: 1,7
-    skip: w7,m7,q7,y7
-    desc: time_diff_as_string
-    merge_series: pr_time_metric_company
-    drop: spr_time_metric_company
+  #  - name: PR opened to merged group group by company
+  #    series_name_or_func: multi_row_multi_column
+  #    sql: pr_opened_to_merged_company
+  #    periods: d,w,m,q,y
+  #    aggregate: 1,7
+  #    skip: d,w7,m7,q7,y7
+  #    desc: time_diff_as_string
+  #    merge_series: pr_opened_to_merged_company
+  #    drop: spr_opened_to_merged_company
+
+  #  - name: PR age group by company
+  #    series_name_or_func: multi_row_multi_column
+  #    sql: pr_age_company
+  #    periods: d,w,m,q,y
+  #    aggregate: 1,7
+  #    skip: w7,m7,q7,y7
+  #    desc: time_diff_as_string
+  #    merge_series: pr_age_company
+  #    drop: spr_age_company
+
+  #  - name: Time metrics group by company
+  #    series_name_or_func: multi_row_multi_column
+  #    sql: pr_time_metric_company
+  #    periods: d,w,m,q,y
+  #    aggregate: 1,7
+  #    skip: w7,m7,q7,y7
+  #    desc: time_diff_as_string
+  #    merge_series: pr_time_metric_company
+  #    drop: spr_time_metric_company
 
   # - name: All users activity
   #   series_name_or_func: multi_row_multi_column
