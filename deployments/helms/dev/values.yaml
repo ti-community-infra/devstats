@@ -1,7 +1,7 @@
 # Some common configurations.
 name: devstats
 nameOverride: devstats
-domainName: 'dev.devstats.tidb.io'
+domainName: 'devstats-dev.tidb.io'
 fullnameOverride: devstats
 imagePullPolicy: Always
 oauthSecret: github-oauth
