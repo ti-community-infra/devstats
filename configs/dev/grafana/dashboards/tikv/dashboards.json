@@ -32,7 +32,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 15,
-  "iteration": 1621946999851,
+  "iteration": 1622080154256,
   "links": [
     {
       "icon": "dashboard",
@@ -241,7 +241,9 @@
       },
       "id": 20,
       "options": {
+        "folderId": null,
         "maxItems": 15,
+        "query": "",
         "showHeadings": true,
         "showRecentlyViewed": false,
         "showSearch": true,
@@ -526,7 +528,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 7,
         "w": 12,
         "x": 12,
         "y": 35
@@ -590,7 +592,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 41
+        "y": 42
       },
       "id": 16,
       "options": {
@@ -649,7 +651,7 @@
         "h": 3,
         "w": 12,
         "x": 12,
-        "y": 48
+        "y": 49
       },
       "id": 4,
       "links": [],
@@ -685,7 +687,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 51
+        "y": 52
       },
       "id": 6,
       "links": [],
@@ -827,5 +829,5 @@
   "timezone": "",
   "title": "Dashboards",
   "uid": "8",
-  "version": 3
+  "version": 2
 }

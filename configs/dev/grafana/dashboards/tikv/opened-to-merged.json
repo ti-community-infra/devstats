@@ -30,8 +30,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 29,
-  "iteration": 1621849798573,
+  "id": 30,
+  "iteration": 1622080414825,
   "links": [],
   "panels": [
     {
@@ -95,6 +95,7 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:87",
           "alias": "15th percentile time opened to merged (in hours)",
           "yaxis": 2
         }
@@ -485,12 +486,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "15th percentile time opened to merged (in hours)",
-          "yaxis": 2
-        }
-      ],
+      "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
@@ -506,7 +502,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"opened_to_merged_[[repogroup]]_percentile_85_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Median time of top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_company[[repogroup]]istopcontributingcompanymed'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"Median time of the top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_company[[repogroup]]istopcontributingcompanymed'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1274,5 +1270,5 @@
   "timezone": "",
   "title": "Opened to Merged",
   "uid": "16",
-  "version": 2
+  "version": 3
 }
