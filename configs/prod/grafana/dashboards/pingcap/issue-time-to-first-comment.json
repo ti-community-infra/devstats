@@ -31,8 +31,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1008,
-  "iteration": 1621946347706,
+  "id": 20,
+  "iteration": 1622080665759,
   "links": [],
   "panels": [
     {
@@ -516,11 +516,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "15th percentile time opened to merged (in hours)"
-        }
-      ],
+      "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
@@ -536,7 +532,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Not Top Contributing Company Median time\"\nfrom\n  sissue_first_comment_time_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'issue_first_comment_company[[repogroup]]nottopcontributingcompanymed'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"The Top Contributing Company Median time\"\nfrom\n  sissue_first_comment_time_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'issue_first_comment_company[[repogroup]]istopcontributingcompanymed'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -570,7 +566,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_percentile_15_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Top Contributing Company Median time\"\nfrom\n  sissue_first_comment_time_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'issue_first_comment_company[[repogroup]]istopcontributingcompanymed'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"Not Top Contributing Company Median time\"\nfrom\n  sissue_first_comment_time_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'issue_first_comment_company[[repogroup]]nottopcontributingcompanymed'\norder by\n  time",
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -1305,5 +1301,5 @@
   "timezone": "",
   "title": "Issue Time to First Comment",
   "uid": "issue-time-to-first-comment",
-  "version": 3
+  "version": 2
 }
