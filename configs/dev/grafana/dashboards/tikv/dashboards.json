@@ -42,7 +42,7 @@
       "title": "PingCAP",
       "tooltip": "Opens PingCAP dashboards",
       "type": "link",
-      "url": "https://pingcap.[[hostname]]"
+      "url": "https://pingcap-[[hostname]]"
     },
     {
       "icon": "dashboard",
@@ -52,7 +52,7 @@
       "title": "TiKV",
       "tooltip": "Opens TiKV dashboards",
       "type": "link",
-      "url": "https://tikv.[[hostname]]"
+      "url": "https://tikv-[[hostname]]"
     },
     {
       "icon": "dashboard",
@@ -62,7 +62,7 @@
       "title": "Chaos Mesh",
       "tooltip": "Opens Chaos Mesh dashboards",
       "type": "link",
-      "url": "https://chaosmesh.[[hostname]]"
+      "url": "https://chaosmesh-[[hostname]]"
     }
   ],
   "panels": [
