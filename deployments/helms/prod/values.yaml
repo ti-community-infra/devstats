@@ -32,7 +32,7 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana-prod:0.2.5'
+grafanaImage: 'miniantdev/devstats-grafana-prod:0.2.6'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
 grafanaNReplicas: 1
@@ -49,7 +49,7 @@ limitsGrafanasMemory: '8Gi'
 useGrafanasResourcesLimits: 1
 
 # Provision configurations.
-provisionImage: 'miniantdev/devstats-prod:0.2.5'
+provisionImage: 'miniantdev/devstats-prod:0.2.6'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
@@ -79,7 +79,7 @@ usePostgresResourcesLimits: 1
 
 # Cron sync jobs configurations.
 syncCommand: devstats
-syncImage: 'miniantdev/devstats-minimal-prod:0.2.5'
+syncImage: 'miniantdev/devstats-minimal-prod:0.2.6'
 syncPodName: devstats
 syncRestartPolicy: Never
 concurrencyPolicy: Forbid
@@ -92,7 +92,7 @@ requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
 
 # Execute Pod configurations.
-executeImage: 'miniantdev/devstats-minimal-prod:0.2.5'
+executeImage: 'miniantdev/devstats-minimal-prod:0.2.6'
 executePodName: 'devstats-execute'
 executeTargetProject: 'tikv'
 executeCommand: 'sleep'
