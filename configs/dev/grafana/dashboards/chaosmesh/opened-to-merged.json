@@ -31,7 +31,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 30,
-  "iteration": 1622080414825,
+  "iteration": 1622363662988,
   "links": [],
   "panels": [
     {
@@ -237,7 +237,7 @@
         },
         {
           "$$hashKey": "object:70",
-          "format": "short",
+          "format": "h",
           "label": "Opened to merged (15th percentile)",
           "logBase": 1,
           "max": null,
@@ -580,6 +580,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:76",
           "format": "h",
           "label": "Opened to merged (median & 85th percentile)",
           "logBase": 10,
@@ -588,12 +589,13 @@
           "show": true
         },
         {
+          "$$hashKey": "object:77",
           "format": "short",
           "label": "Opened to merged (15th percentile)",
           "logBase": 1,
           "max": null,
           "min": "0",
-          "show": true
+          "show": false
         }
       ],
       "yaxis": {
@@ -630,7 +632,7 @@
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 39
+            "y": 40
           },
           "hiddenSeries": false,
           "id": 13,
@@ -800,7 +802,7 @@
             },
             {
               "$$hashKey": "object:123",
-              "format": "short",
+              "format": "h",
               "label": "Opened to merged (15th percentile)",
               "logBase": 1,
               "max": null,
@@ -846,7 +848,7 @@
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 40
+            "y": 41
           },
           "hiddenSeries": false,
           "id": 14,
@@ -1016,7 +1018,7 @@
             },
             {
               "$$hashKey": "object:231",
-              "format": "short",
+              "format": "h",
               "label": "Opened to merged (15th percentile)",
               "logBase": 1,
               "max": null,
@@ -1270,5 +1272,5 @@
   "timezone": "",
   "title": "Opened to Merged",
   "uid": "16",
-  "version": 3
+  "version": 4
 }

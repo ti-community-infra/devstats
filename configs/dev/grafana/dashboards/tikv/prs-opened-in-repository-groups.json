@@ -30,8 +30,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 27,
-  "iteration": 1620637560827,
+  "id": 28,
+  "iteration": 1622359599936,
   "links": [],
   "panels": [
     {
@@ -51,10 +51,182 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 22,
+        "h": 14,
         "w": 24,
         "x": 0,
         "y": 0
+      },
+      "hiddenSeries": false,
+      "id": 12,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": true,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.0",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "",
+          "dsType": "influxdb",
+          "format": "time_series",
+          "group": [],
+          "groupBy": [],
+          "hide": false,
+          "measurement": "reviewers_d",
+          "metricColumn": "none",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "",
+          "rawQuery": true,
+          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_company[[repogroup]]excludebotsistop'\n  and period = '[[period]]'\norder by\n  time",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "dsType": "influxdb",
+          "format": "time_series",
+          "group": [],
+          "groupBy": [],
+          "hide": false,
+          "measurement": "reviewers_d",
+          "metricColumn": "none",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "",
+          "rawQuery": true,
+          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_company[[repogroup]]excludebotsnottop'\n  and period = '[[period]]'\norder by\n  time",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "New PRs created ([[repogroup_name]], [[period]], exclude bots)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": [
+          "total"
+        ]
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:333",
+          "format": "none",
+          "label": "New PRs",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:334",
+          "format": "none",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "psql",
+      "decimals": 0,
+      "description": "Number of new pull requests created in [[repogroup]] repository group.",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 15,
+        "w": 24,
+        "x": 0,
+        "y": 14
       },
       "hiddenSeries": false,
       "id": 1,
@@ -221,7 +393,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 29
       },
       "id": 11,
       "links": [],
@@ -239,16 +411,17 @@
   "style": "dark",
   "tags": [
     "dashboard",
-    "tikv"
+    "tikv",
+    "active"
   ],
   "templating": {
     "list": [
       {
         "allValue": null,
         "current": {
-          "tags": [],
-          "text": "Week",
-          "value": "w"
+          "selected": true,
+          "text": "7 Days MA",
+          "value": "d7"
         },
         "description": null,
         "error": null,
@@ -259,7 +432,7 @@
         "name": "period",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "7 Days MA",
             "value": "d7"
           },
@@ -269,7 +442,7 @@
             "value": "d"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "Week",
             "value": "w"
           },
@@ -290,6 +463,7 @@
           }
         ],
         "query": "d,d7,w,m,q,y",
+        "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
       },
@@ -408,7 +582,7 @@
     ]
   },
   "time": {
-    "from": "now-1y",
+    "from": "now-90d",
     "to": "now"
   },
   "timepicker": {
@@ -437,7 +611,7 @@
     ]
   },
   "timezone": "",
-  "title": "New PRs in Repository Groups",
+  "title": "PRs Opened in Repository Groups",
   "uid": "15",
-  "version": 2
+  "version": 7
 }
