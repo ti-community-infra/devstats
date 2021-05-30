@@ -32,7 +32,7 @@ with opened_prs as (
 -- all repositories, include bots, all companies.
 (
     select
-        'pr_opened_company,all_repo_include_bot_all_company' as series,
+        'pr_opened_company,all_include_bot_all_company' as series,
         round(count(distinct id) / {{n}}, 2) as count
     from
         opened_prs
@@ -41,7 +41,7 @@ with opened_prs as (
 union
 (
     select
-        'pr_opened_company,all_repo_include_bot_is_top' as series,
+        'pr_opened_company,all_include_bot_is_top' as series,
         round(count(distinct id) / {{n}}, 2) as count
     from
         opened_prs
@@ -53,7 +53,7 @@ union
 union
 (
     select
-        'pr_opened_company,all_repo_include_bot_not_top' as series,
+        'pr_opened_company,all_include_bot_not_top' as series,
         round(count(distinct id) / {{n}}, 2) as count
     from
         opened_prs
@@ -67,7 +67,7 @@ union
 union
 (
     select
-        'pr_opened_company,all_repo_exclude_bots_all_company' as series,
+        'pr_opened_company,all_exclude_bots_all_company' as series,
         round(count(distinct id) / {{n}}, 2) as count
     from
         opened_prs
@@ -78,7 +78,7 @@ union
 union
 (
     select
-        'pr_opened_company,all_repo_exclude_bots_is_top' as series,
+        'pr_opened_company,all_exclude_bots_is_top' as series,
         round(count(distinct id) / {{n}}, 2) as count
     from
         opened_prs
@@ -90,7 +90,7 @@ union
 union
 (
     select
-        'pr_opened_company,all_repo_exclude_bots_not_top' as series,
+        'pr_opened_company,all_exclude_bots_not_top' as series,
         round(count(distinct id) / {{n}}, 2) as count
     from
         opened_prs
