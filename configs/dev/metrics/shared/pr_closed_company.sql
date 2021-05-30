@@ -31,7 +31,7 @@ with closed_prs as (
 -- all repositories, include bots, all companies.
 (
     select
-        'pr_closed_company,all_include_bot_all_company' as series,
+        'pr_closed_company,all_include_bots_all_company' as series,
         round(count(distinct id) / {{n}}, 2) as count
     from
         closed_prs
@@ -40,7 +40,7 @@ with closed_prs as (
 union
 (
     select
-        'pr_closed_company,all_include_bot_is_top' as series,
+        'pr_closed_company,all_include_bots_is_top' as series,
         round(count(distinct id) / {{n}}, 2) as count
     from
         closed_prs
@@ -52,7 +52,7 @@ union
 union
 (
     select
-        'pr_closed_company,all_include_bot_not_top' as series,
+        'pr_closed_company,all_include_bots_not_top' as series,
         round(count(distinct id) / {{n}}, 2) as count
     from
         closed_prs
@@ -71,7 +71,7 @@ union
     from
         closed_prs
     where
-        author_login {{exclude_bots}}
+        lower(author_login) {{exclude_bots}}
 )
 -- all repositories, exclude bots, is top contributing company.
 union
@@ -83,7 +83,7 @@ union
         closed_prs
     where
         company_category = 'is-top-contributing-company'
-        and author_login {{exclude_bots}}
+        and (lower(author_login) {{exclude_bots}})
 )
 -- all repositories, exclude bots, not top contributing company.
 union
@@ -95,7 +95,7 @@ union
         closed_prs
     where
         company_category = 'not-top-contributing-company'
-        and author_login {{exclude_bots}}
+        and (lower(author_login) {{exclude_bots}})
 )
 
 -- repo group, include bots
@@ -104,7 +104,7 @@ union
 union
 (
     select
-        'pr_closed_company,' || repo_group  || '_include_bot_all_company' as series,
+        'pr_closed_company,' || repo_group  || '_include_bots_all_company' as series,
         round(count(distinct id) / {{n}}, 2) as count
     from
         closed_prs
@@ -115,7 +115,7 @@ union
 union
 (
     select
-        'pr_closed_company,' || repo_group  || '_include_bot_is_top' as series,
+        'pr_closed_company,' || repo_group  || '_include_bots_is_top' as series,
         round(count(distinct id) / {{n}}, 2) as count
     from
         closed_prs
@@ -129,7 +129,7 @@ union
 union
 (
     select
-        'pr_closed_company,' || repo_group  || '_include_bot_not_top' as series,
+        'pr_closed_company,' || repo_group  || '_include_bots_not_top' as series,
         round(count(distinct id) / {{n}}, 2) as count
     from
         closed_prs
@@ -145,12 +145,12 @@ union
 union
 (
     select
-        'pr_closed_company,' || repo_group  || '_exclude_bot_all_company' as series,
+        'pr_closed_company,' || repo_group  || '_exclude_bots_all_company' as series,
         round(count(distinct id) / {{n}}, 2) as count
     from
         closed_prs
     where
-        author_login {{exclude_bots}}
+        lower(author_login) {{exclude_bots}}
     group by
         repo_group
 )
@@ -158,13 +158,13 @@ union
 union
 (
     select
-        'pr_closed_company,' || repo_group  || '_exclude_bot_is_top' as series,
+        'pr_closed_company,' || repo_group  || '_exclude_bots_is_top' as series,
         round(count(distinct id) / {{n}}, 2) as count
     from
         closed_prs
     where
         company_category = 'is-top-contributing-company'
-        and author_login {{exclude_bots}}
+        and (lower(author_login) {{exclude_bots}})
     group by
         repo_group
 )
@@ -172,13 +172,13 @@ union
 union
 (
     select
-        'pr_closed_company,' || repo_group  || '_exclude_bot_not_top' as series,
+        'pr_closed_company,' || repo_group  || '_exclude_bots_not_top' as series,
         round(count(distinct id) / {{n}}, 2) as count
     from
         closed_prs
     where
         company_category = 'not-top-contributing-company'
-        and author_login {{exclude_bots}}
+        and (lower(author_login) {{exclude_bots}})
     group by
         repo_group
 )
