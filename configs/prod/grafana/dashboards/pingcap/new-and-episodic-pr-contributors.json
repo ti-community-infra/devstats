@@ -30,8 +30,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 20,
-  "iteration": 1533289967018,
+  "id": 26,
+  "iteration": 1622353566135,
   "links": [],
   "panels": [
     {
@@ -42,13 +42,19 @@
       "datasource": "psql",
       "decimals": 0,
       "description": "Displays the number of new/episodic issues and the number of new/episodic issues authors.\nThe episodic author is defined as someone who hasn't created issue in the last 3 months and no more than 12 issues overall.",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 22,
         "w": 24,
         "x": 0,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 1,
       "legend": {
         "alignAsTable": false,
@@ -67,7 +73,11 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "7.5.0",
       "pointradius": 1,
       "points": false,
       "renderer": "flot",
@@ -192,6 +202,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "New/episodic issues ([[repogroup_name]], [[period]])",
       "tooltip": {
@@ -234,7 +245,11 @@
       }
     },
     {
-      "content": "${docs:raw}",
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 13,
         "w": 24,
@@ -243,25 +258,37 @@
       },
       "id": 11,
       "links": [],
-      "mode": "html",
+      "options": {
+        "content": "${docs:raw}",
+        "mode": "html"
+      },
+      "pluginVersion": "7.5.0",
       "title": "Dashboard documentation",
       "type": "text"
     }
   ],
   "refresh": false,
-  "schemaVersion": 16,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [
     "dashboard",
     "pingcap",
-    "issues"
+    "issues",
+    "active"
   ],
   "templating": {
     "list": [
       {
         "allValue": null,
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "PingCAP",
+          "value": "PingCAP"
+        },
         "datasource": "psql",
+        "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -286,6 +313,8 @@
           "text": "28 Days MA",
           "value": "d28"
         },
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Period",
@@ -324,8 +353,15 @@
       },
       {
         "allValue": null,
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "All"
+        },
         "datasource": "psql",
+        "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Repository group",
@@ -345,8 +381,15 @@
       },
       {
         "allValue": null,
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "all",
+          "value": "all"
+        },
         "datasource": "psql",
+        "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -366,8 +409,15 @@
       },
       {
         "allValue": null,
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "<h1 id=\"dashboard-header\">PingCAP new and episodic PR contributors dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>New contributors metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/new_contributors.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>Episodic contributors metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/episodic_contributors.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>New and episodic PR contributors</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/pingcap/new-and-episodic-pr-contributors.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows statistics about new and episodic PRs and contributors (PR creators).</li>\n<li>New contributor (PR creator) is someone who haven't created any PR before given period.</li>\n<li>New PR is a PR created by new contributor</li>\n<li>Episodic contributor (PR creator) is someone who haven't created any PR in 3 months before given project and haven't created more than 12 PRs overall.</li>\n<li>Episodic PR is a PR created by episodic contributor.</li>\n<li>You can select single repository group or summary for all of them.</li>\n<li>Selecting period (for example week) means that dashboard will calculate statistics in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n</ul>",
+          "value": "<h1 id=\"dashboard-header\">PingCAP new and episodic PR contributors dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>New contributors metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/new_contributors.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>Episodic contributors metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/episodic_contributors.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>New and episodic PR contributors</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/pingcap/new-and-episodic-pr-contributors.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows statistics about new and episodic PRs and contributors (PR creators).</li>\n<li>New contributor (PR creator) is someone who haven't created any PR before given period.</li>\n<li>New PR is a PR created by new contributor</li>\n<li>Episodic contributor (PR creator) is someone who haven't created any PR in 3 months before given project and haven't created more than 12 PRs overall.</li>\n<li>Episodic PR is a PR created by episodic contributor.</li>\n<li>You can select single repository group or summary for all of them.</li>\n<li>Selecting period (for example week) means that dashboard will calculate statistics in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n</ul>"
+        },
         "datasource": "psql",
+        "definition": "",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -388,7 +438,7 @@
     ]
   },
   "time": {
-    "from": "now-3y",
+    "from": "now-1y",
     "to": "now-1M"
   },
   "timepicker": {

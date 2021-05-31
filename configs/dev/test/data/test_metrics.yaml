@@ -1,24 +1,76 @@
 ---
 metrics:
-  - name: Time to first comment on the issue group by company
+  # Contributor
+  - name: New and episodic PR contributors
     series_name_or_func: multi_row_multi_column
-    sql: issue_first_comment_time_company
+    sql: episodic_contributors
+    periods: d,w,m,q,y
+    aggregate: 1,28
+    skip: d,w28,m28,q28,y28
+    merge_series: episodic_contributors
+    drop: sepisodic_contributors
+    
+  - name: New and episodic PR contributors
+    series_name_or_func: multi_row_multi_column
+    sql: new_contributors
+    periods: d,w,m,q,y
+    aggregate: 1,28
+    skip: d,w28,m28,q28,y28
+    merge_series: new_contributors
+    drop: snew_contributors
+
+  # PR Count
+
+  - name: PRs opened group by company
+    series_name_or_func: multi_row_single_column
+    sql: pr_opened_company
     periods: d,w,m,q,y
     aggregate: 1,7
-    skip: d,w7,m7,q7,y7
-    desc: time_diff_as_string
-    merge_series: issue_first_comment_time_company
-    drop: sissue_first_comment_time_company
+    skip: w7,m7,q7,y7
+    merge_series: pr_opened_company
+    drop: spr_opened_company
 
-#  - name: Issues age group by company
-#    series_name_or_func: multi_row_multi_column
-#    sql: issue_age_company
-#    periods: d,w,m,q,y
-#    aggregate: 1,7
-#    skip: w7,m7,q7,y7
-#    desc: time_diff_as_string
-#    merge_series: issue_age_company
-#    drop: sissue_age_company
+  - name: PRs closed group by company
+    series_name_or_func: multi_row_single_column
+    sql: pr_closed_company
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: w7,m7,q7,y7
+    merge_series: pr_closed_company
+    drop: spr_closed_company
+
+  - name: PRs merged group by company
+    series_name_or_func: multi_row_single_column
+    sql: pr_merged_company
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: w7,m7,q7,y7
+    merge_series: pr_merged_company
+    drop: spr_merged_company
+
+  # Issue
+
+  # - name: Time to first comment on the issue group by company
+  #   series_name_or_func: multi_row_multi_column
+  #   sql: issue_first_comment_time_company
+  #   periods: d,w,m,q,y
+  #   aggregate: 1,7
+  #   skip: d,w7,m7,q7,y7
+  #   desc: time_diff_as_string
+  #   merge_series: issue_first_comment_time_company
+  #   drop: sissue_first_comment_time_company
+
+  #  - name: Issues age group by company
+  #    series_name_or_func: multi_row_multi_column
+  #    sql: issue_age_company
+  #    periods: d,w,m,q,y
+  #    aggregate: 1,7
+  #    skip: w7,m7,q7,y7
+  #    desc: time_diff_as_string
+  #    merge_series: issue_age_company
+  #    drop: sissue_age_company
+
+  # PR
 
   #  - name: PR first non-author activity group by company
   #    series_name_or_func: multi_row_multi_column

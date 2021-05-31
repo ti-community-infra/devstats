@@ -109,7 +109,9 @@ set
   )
 where
   slug in (
-    'new-prs-in-repository-groups',
+    'prs-opened-in-repository-groups',
+    'prs-merged-in-repository-groups',
+    'prs-closed-in-repository-groups',
     'open-pr-age-by-repository-group',
     'opened-to-merged',
     'pr-reviews-by-contributor',
@@ -117,7 +119,6 @@ where
     'prs-approval-repository-groups',
     'prs-authors-repository-groups',
     'prs-authors-table',
-    'prs-merged-repository-groups',
     'prs-mergers-table',
     'time-to-merge-in-repository-groups'
   )

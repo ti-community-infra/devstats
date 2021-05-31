@@ -30,8 +30,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 39,
-  "iteration": 1620638449533,
+  "id": 40,
+  "iteration": 1622365252513,
   "links": [],
   "panels": [
     {
@@ -41,12 +41,14 @@
       "dashes": false,
       "datasource": "psql",
       "decimals": 0,
-      "description": "Number of PRs merged in given repository group",
+      "description": "Number of new pull requests merged in [[repogroup]] repository group.",
       "fieldConfig": {
-        "defaults": {},
+        "defaults": {
+          "links": []
+        },
         "overrides": []
       },
-      "fill": 3,
+      "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 15,
@@ -55,24 +57,24 @@
         "y": 0
       },
       "hiddenSeries": false,
-      "id": 2,
+      "id": 13,
       "legend": {
         "alignAsTable": true,
         "avg": true,
         "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
         "max": true,
         "min": true,
-        "rightSide": true,
+        "rightSide": false,
         "show": true,
-        "sort": "avg",
-        "sortDesc": true,
         "total": true,
         "values": true
       },
       "lines": false,
-      "linewidth": 0,
+      "linewidth": 1,
       "links": [],
-      "nullPointMode": "null as zero",
+      "nullPointMode": "null",
       "options": {
         "alertThreshold": true
       },
@@ -84,18 +86,22 @@
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": true,
-      "steppedLine": true,
+      "steppedLine": false,
       "targets": [
         {
-          "alias": "$col",
+          "alias": "",
           "dsType": "influxdb",
+          "format": "time_series",
+          "group": [],
           "groupBy": [],
-          "measurement": "notused",
+          "hide": false,
+          "measurement": "reviewers_d",
+          "metricColumn": "none",
           "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT /^[[repogroups]]$/ FROM \"group_prs_merged_[[period]]\" WHERE $timeFilter",
+          "policy": "autogen",
+          "query": "",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  ${repogroups:csv}\nfrom\n  sgrp_pr_merg\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_company[[repogroup_name]]excludebotsistop')\n  and period = '[[period]]'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -108,17 +114,61 @@
               }
             ]
           ],
-          "tags": []
+          "tags": [],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "dsType": "influxdb",
+          "format": "time_series",
+          "group": [],
+          "groupBy": [],
+          "hide": false,
+          "measurement": "reviewers_d",
+          "metricColumn": "none",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "",
+          "rawQuery": true,
+          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_company[[repogroup_name]]excludebotsnottop')\n  and period = '[[period]]'\norder by\n  time",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "PRs merged per repository groups ([[repogroups]], [[period]])",
+      "title": "PRs Merged ([[repogroup_name]], [[period]], exclude bots)",
       "tooltip": {
         "shared": true,
-        "sort": 2,
+        "sort": 0,
         "value_type": "individual"
       },
       "type": "graph",
@@ -127,24 +177,28 @@
         "mode": "time",
         "name": null,
         "show": true,
-        "values": []
+        "values": [
+          "total"
+        ]
       },
       "yaxes": [
         {
-          "format": "short",
-          "label": "Pull requests merged",
+          "$$hashKey": "object:333",
+          "format": "none",
+          "label": "New PRs",
           "logBase": 1,
           "max": null,
           "min": "0",
           "show": true
         },
         {
-          "format": "short",
+          "$$hashKey": "object:334",
+          "format": "none",
           "label": "",
           "logBase": 1,
           "max": null,
           "min": "0",
-          "show": true
+          "show": false
         }
       ],
       "yaxis": {
@@ -180,7 +234,7 @@
         "current": true,
         "max": true,
         "min": true,
-        "rightSide": true,
+        "rightSide": false,
         "show": true,
         "total": true,
         "values": true
@@ -205,8 +259,11 @@
         {
           "alias": "PRs merged",
           "dsType": "influxdb",
+          "format": "time_series",
+          "group": [],
           "groupBy": [],
           "measurement": "all_prs_merged_h",
+          "metricColumn": "none",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT \"value\" FROM \"all_prs_merged_[[period]]\" WHERE $timeFilter",
@@ -224,7 +281,15 @@
               }
             ]
           ],
-          "tags": []
+          "tags": [],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
       "thresholds": [],
@@ -296,7 +361,8 @@
   "style": "dark",
   "tags": [
     "dashboard",
-    "chaosmesh"
+    "tikv",
+    "active"
   ],
   "templating": {
     "list": [
@@ -304,8 +370,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "Chaos Mesh",
-          "value": "Chaos Mesh"
+          "text": "TiKV",
+          "value": "TiKV"
         },
         "datasource": "psql",
         "definition": "",
@@ -331,9 +397,9 @@
       {
         "allValue": null,
         "current": {
-          "tags": [],
-          "text": "7 Days MA",
-          "value": "d7"
+          "selected": true,
+          "text": "Day",
+          "value": "d"
         },
         "description": null,
         "error": null,
@@ -344,12 +410,12 @@
         "name": "period",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "Day",
             "value": "d"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "7 Days MA",
             "value": "d7"
           },
@@ -375,27 +441,28 @@
           }
         ],
         "query": "d,w,m,q,y",
+        "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
       },
       {
-        "allValue": "",
+        "allValue": "all",
         "current": {
           "selected": false,
           "text": "All",
-          "value": "$__all"
+          "value": "All"
         },
         "datasource": "psql",
-        "definition": "",
+        "definition": "select all_repo_group_name from tall_repo_groups order by 1",
         "description": null,
         "error": null,
         "hide": 0,
-        "includeAll": true,
+        "includeAll": false,
         "label": "Repository group",
-        "multi": true,
-        "name": "repogroups",
+        "multi": false,
+        "name": "repogroup_name",
         "options": [],
-        "query": "select '\"' || repo_group_name || '\"' from trepo_groups order by 1",
+        "query": "select all_repo_group_name from tall_repo_groups order by 1",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -410,8 +477,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "<h1 id=\"dashboard-header\">Chaos Mesh PRs merged repository groups dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/prs_merged_groups.sql\" target=\"_blank\">SQL file</a> (repo groups).</li>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/all_prs_merged.sql\" target=\"_blank\">SQL file</a> (all PRs merged).</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>prs_merged_groups</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chaosmesh/prs-merged-repository-groups.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows number of PRs merged in given periods in selected repository groups.</li>\n<li>One panel shows stacked number of PRs merged in selected repositories. Second panel shows chart for all PRs merged in all repository groups.</li>\n<li>Selecting period (for example week) means that dashboard will show PRs merged in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots activity, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n</ul>",
-          "value": "<h1 id=\"dashboard-header\">Chaos Mesh PRs merged repository groups dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/prs_merged_groups.sql\" target=\"_blank\">SQL file</a> (repo groups).</li>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/all_prs_merged.sql\" target=\"_blank\">SQL file</a> (all PRs merged).</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>prs_merged_groups</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/chaosmesh/prs-merged-repository-groups.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows number of PRs merged in given periods in selected repository groups.</li>\n<li>One panel shows stacked number of PRs merged in selected repositories. Second panel shows chart for all PRs merged in all repository groups.</li>\n<li>Selecting period (for example week) means that dashboard will show PRs merged in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots activity, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n</ul>"
+          "text": "<h1 id=\"dashboard-header\">TiKV PRs merged repository groups dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/prs_merged_groups.sql\" target=\"_blank\">SQL file</a> (repo groups).</li>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/all_prs_merged.sql\" target=\"_blank\">SQL file</a> (all PRs merged).</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>prs_merged_groups</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/tikv/prs-merged-repository-groups.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows number of PRs merged in given periods in selected repository groups.</li>\n<li>One panel shows stacked number of PRs merged in selected repositories. Second panel shows chart for all PRs merged in all repository groups.</li>\n<li>Selecting period (for example week) means that dashboard will show PRs merged in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots activity, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n</ul>",
+          "value": "<h1 id=\"dashboard-header\">TiKV PRs merged repository groups dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/prs_merged_groups.sql\" target=\"_blank\">SQL file</a> (repo groups).</li>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/all_prs_merged.sql\" target=\"_blank\">SQL file</a> (all PRs merged).</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>prs_merged_groups</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/tikv/prs-merged-repository-groups.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows number of PRs merged in given periods in selected repository groups.</li>\n<li>One panel shows stacked number of PRs merged in selected repositories. Second panel shows chart for all PRs merged in all repository groups.</li>\n<li>Selecting period (for example week) means that dashboard will show PRs merged in those periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/periods.md\" target=\"_blank\">here</a> for more informations about periods.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots activity, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n</ul>"
         },
         "datasource": "psql",
         "definition": "",
@@ -433,11 +500,45 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "all",
+          "value": "all"
+        },
+        "datasource": null,
+        "definition": "select all_repo_group_value from tall_repo_groups where all_repo_group_name = '[[repogroup_name]]'",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "repogroup",
+        "options": [
+          {
+            "selected": true,
+            "text": "all",
+            "value": "all"
+          }
+        ],
+        "query": "select all_repo_group_value from tall_repo_groups where all_repo_group_name = '[[repogroup_name]]'",
+        "refresh": 0,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
       }
     ]
   },
   "time": {
-    "from": "now-1y",
+    "from": "now-90d",
     "to": "now"
   },
   "timepicker": {
@@ -466,7 +567,7 @@
     ]
   },
   "timezone": "",
-  "title": "PRs Merged Repository Groups",
+  "title": "PRs Merged in Repository Groups",
   "uid": "24",
-  "version": 2
+  "version": 13
 }
