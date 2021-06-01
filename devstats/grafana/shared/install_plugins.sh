@@ -40,7 +40,4 @@ install_plugin yesoreyeram-boomtable-panel || exit 16
 install_plugin digrich-bubblechart-panel || exit 17
 install_plugin neocat-cal-heatmap-panel || exit 18
 install_plugin petrslavotinek-carpetplot-panel || exit 19
-install_plugin grafana-image-renderer || exit 20
-install_plugin grafana-github-datasource || exit 21
-
 echo 'Plugins installed'
