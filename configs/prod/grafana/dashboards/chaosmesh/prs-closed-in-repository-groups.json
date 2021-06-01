@@ -30,12 +30,12 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1007,
-  "iteration": 1622365281282,
+  "id": 39,
+  "iteration": 1622541988853,
   "links": [],
   "panels": [
     {
-      "collapsed": true,
+      "collapsed": false,
       "datasource": null,
       "gridPos": {
         "h": 1,
@@ -44,311 +44,348 @@
         "y": 0
       },
       "id": 19,
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": true,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "psql",
-          "decimals": 0,
-          "description": "The number of new pull requests closed in [[repogroup]] repository group.",
-          "fieldConfig": {
-            "defaults": {
-              "links": []
-            },
-            "overrides": []
-          },
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 14,
-            "w": 24,
-            "x": 0,
-            "y": 1
-          },
-          "hiddenSeries": false,
-          "id": 13,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "hideEmpty": false,
-            "hideZero": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "total": true,
-            "values": true
-          },
-          "lines": false,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "percentage": false,
-          "pluginVersion": "7.5.0",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "alias": "",
-              "dsType": "influxdb",
-              "format": "time_series",
-              "group": [],
-              "groupBy": [],
-              "hide": false,
-              "measurement": "reviewers_d",
-              "metricColumn": "none",
-              "orderByTime": "ASC",
-              "policy": "autogen",
-              "query": "",
-              "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  spr_closed_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_closed_company[[repogroup_name]]excludebotsistop')\n  and period = '[[period]]'\norder by\n  time",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [],
-              "timeColumn": "time",
-              "where": [
-                {
-                  "name": "$__timeFilter",
-                  "params": [],
-                  "type": "macro"
-                }
-              ]
-            },
-            {
-              "alias": "",
-              "dsType": "influxdb",
-              "format": "time_series",
-              "group": [],
-              "groupBy": [],
-              "hide": false,
-              "measurement": "reviewers_d",
-              "metricColumn": "none",
-              "orderByTime": "ASC",
-              "policy": "autogen",
-              "query": "",
-              "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  spr_closed_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_closed_company[[repogroup_name]]excludebotsnottop')\n  and period = '[[period]]'\norder by\n  time",
-              "refId": "B",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [],
-              "timeColumn": "time",
-              "where": [
-                {
-                  "name": "$__timeFilter",
-                  "params": [],
-                  "type": "macro"
-                }
-              ]
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "PRs closed ([[repogroup_name]], [[period]], exclude bots)",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": [
-              "total"
-            ]
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:333",
-              "format": "none",
-              "label": "New PRs",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "$$hashKey": "object:334",
-              "format": "none",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": true,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "psql",
-          "decimals": 0,
-          "description": "PRs closed in all [[full_name]] repositories",
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
-          "fill": 5,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 12,
-            "w": 24,
-            "x": 0,
-            "y": 15
-          },
-          "hiddenSeries": false,
-          "id": 3,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "total": true,
-            "values": true
-          },
-          "lines": false,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null as zero",
-          "options": {
-            "alertThreshold": true
-          },
-          "percentage": false,
-          "pluginVersion": "7.5.0",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "alias": "PRs merged",
-              "dsType": "influxdb",
-              "format": "time_series",
-              "group": [],
-              "groupBy": [],
-              "measurement": "all_prs_merged_h",
-              "metricColumn": "none",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT \"value\" FROM \"all_prs_merged_[[period]]\" WHERE $timeFilter",
-              "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  spr_closed_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_closed_company[[repogroup_name]]excludebotsallcompany')\n  and period = '[[period]]'\norder by\n  time",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [],
-              "timeColumn": "time",
-              "where": [
-                {
-                  "name": "$__timeFilter",
-                  "params": [],
-                  "type": "macro"
-                }
-              ]
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "PRs closed in all [[full_name]] repositories ([[period]])",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:551",
-              "format": "short",
-              "label": "PRs merged",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "$$hashKey": "object:552",
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        }
-      ],
+      "panels": [],
       "title": "PR closed (Not include merged PR)",
       "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "psql",
+      "decimals": 0,
+      "description": "The number of pull requests closed in [[repogroup]] repository group.",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 14,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "hiddenSeries": false,
+      "id": 13,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": true,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.0",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "",
+          "dsType": "influxdb",
+          "format": "time_series",
+          "group": [],
+          "groupBy": [],
+          "hide": false,
+          "measurement": "reviewers_d",
+          "metricColumn": "none",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "",
+          "rawQuery": true,
+          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  spr_closed_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_closed_company[[repogroup_name]]excludebotsistop')\n  and period = '[[period]]'\norder by\n  time",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "dsType": "influxdb",
+          "format": "time_series",
+          "group": [],
+          "groupBy": [],
+          "hide": false,
+          "measurement": "reviewers_d",
+          "metricColumn": "none",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "",
+          "rawQuery": true,
+          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  spr_closed_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_closed_company[[repogroup_name]]excludebotsnottop')\n  and period = '[[period]]'\norder by\n  time",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "PRs Closed ([[repogroup_name]], [[period]], Exclude Bots)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": [
+          "total"
+        ]
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:333",
+          "decimals": null,
+          "format": "none",
+          "label": "Closed PRs (Not include merged PR)",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:334",
+          "format": "none",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "psql",
+      "decimals": 0,
+      "description": "PRs closed in [[full_name]] repositories",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 5,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "hiddenSeries": false,
+      "id": 3,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": true,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.0",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:293",
+          "alias": "/including bots/",
+          "bars": false,
+          "fill": 0,
+          "lines": true
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "PRs merged",
+          "dsType": "influxdb",
+          "format": "time_series",
+          "group": [],
+          "groupBy": [],
+          "measurement": "all_prs_merged_h",
+          "metricColumn": "none",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"all_prs_merged_[[period]]\" WHERE $timeFilter",
+          "rawQuery": true,
+          "rawSql": "select\n  time,\n  value as \"[[repogroup_name]] (excluding bots)\"\nfrom\n  spr_closed_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_closed_company[[repogroup_name]]excludebotsallcompany')\n  and period = '[[period]]'\norder by\n  time",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n  time,\n  value as \"[[repogroup_name]] (including bots)\"\nfrom\n  spr_closed_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_closed_company[[repogroup_name]]includebotsallcompany')\n  and period = '[[period]]'\norder by\n  time",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "stime_metrics",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "PRs Closed in [[full_name]] repositories ([[period]])",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:551",
+          "format": "short",
+          "label": "Closed PRs (Not include merged PR)",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:552",
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "collapsed": false,
@@ -357,7 +394,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 1
+        "y": 27
       },
       "id": 21,
       "panels": [],
@@ -384,7 +421,7 @@
         "h": 14,
         "w": 24,
         "x": 0,
-        "y": 2
+        "y": 28
       },
       "hiddenSeries": false,
       "id": 16,
@@ -415,7 +452,7 @@
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": true,
+      "stack": false,
       "steppedLine": false,
       "targets": [
         {
@@ -495,7 +532,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "PRs closed or merged ([[repogroup_name]], [[period]], exclude bots)",
+      "title": "PRs Closed or Merged ([[repogroup_name]], [[period]], Exclude Bots)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -515,7 +552,7 @@
         {
           "$$hashKey": "object:333",
           "format": "none",
-          "label": "New PRs",
+          "label": "PRs Closed or Merged",
           "logBase": 1,
           "max": null,
           "min": "0",
@@ -543,7 +580,7 @@
       "dashes": false,
       "datasource": "psql",
       "decimals": 0,
-      "description": "PRs closed or merged in all [[full_name]] repositories",
+      "description": "PRs closed or merged in [[full_name]] repositories",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -554,7 +591,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 42
       },
       "hiddenSeries": false,
       "id": 17,
@@ -581,7 +618,15 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [],
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:531",
+          "alias": "/includeing bots/",
+          "bars": false,
+          "fill": 0,
+          "lines": true
+        }
+      ],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
@@ -598,7 +643,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"all_prs_merged_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  sub.time,\n  sum(sub.value) as \"The top contribuing company\"\nfrom (\n  (\n    select\n      time,\n      value\n    from\n      spr_closed_company\n    where\n      $__timeFilter(time)\n      and series = lower('pr_closed_company[[repogroup_name]]excludebotsallcompany')\n      and period = '[[period]]'\n  )\n  union\n  (\n    select\n      time,\n      value\n    from\n      spr_merged_company\n    where\n      $__timeFilter(time)\n      and series = lower('pr_merged_company[[repogroup_name]]excludebotsallcompany')\n      and period = '[[period]]'\n  )\n) sub\ngroup by time\norder by time",
+          "rawSql": "select\n  sub.time,\n  sum(sub.value) as \"[[repogroup_name]] (excluding bots)\"\nfrom (\n  (\n    select\n      time,\n      value\n    from\n      spr_closed_company\n    where\n      $__timeFilter(time)\n      and series = lower('pr_closed_company[[repogroup_name]]excludebotsallcompany')\n      and period = '[[period]]'\n  )\n  union\n  (\n    select\n      time,\n      value\n    from\n      spr_merged_company\n    where\n      $__timeFilter(time)\n      and series = lower('pr_merged_company[[repogroup_name]]excludebotsallcompany')\n      and period = '[[period]]'\n  )\n) sub\ngroup by time\norder by time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -620,13 +665,42 @@
               "type": "macro"
             }
           ]
+        },
+        {
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n  sub.time,\n  sum(sub.value) as \"[[repogroup_name]] (includeing bots)\"\nfrom (\n  (\n    select\n      time,\n      value\n    from\n      spr_closed_company\n    where\n      $__timeFilter(time)\n      and series = lower('pr_closed_company[[repogroup_name]]includebotsallcompany')\n      and period = '[[period]]'\n  )\n  union\n  (\n    select\n      time,\n      value\n    from\n      spr_merged_company\n    where\n      $__timeFilter(time)\n      and series = lower('pr_merged_company[[repogroup_name]]includebotsallcompany')\n      and period = '[[period]]'\n  )\n) sub\ngroup by time\norder by time",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "stime_metrics",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "PRs closed or merged  in all [[full_name]] repositories ([[period]])",
+      "title": "PRs Closed or Merged  in [[full_name]] repositories ([[period]])",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -644,7 +718,7 @@
         {
           "$$hashKey": "object:551",
           "format": "short",
-          "label": "PRs merged",
+          "label": "PRs Closed or Merged",
           "logBase": 1,
           "max": null,
           "min": "0",
@@ -657,7 +731,7 @@
           "logBase": 1,
           "max": null,
           "min": "0",
-          "show": true
+          "show": false
         }
       ],
       "yaxis": {
@@ -879,5 +953,5 @@
   "timezone": "",
   "title": "PRs Closed in Repository Groups",
   "uid": "pr-closed",
-  "version": 13
+  "version": 9
 }
