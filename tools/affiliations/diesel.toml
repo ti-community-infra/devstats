@@ -1,0 +1,3 @@
+[print_schema]
+# This will cause only the users and posts tables to be output
+filter = { only_tables = ["gha_actors", "gha_actors_affiliations"] }
