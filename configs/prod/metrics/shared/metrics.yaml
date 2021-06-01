@@ -224,6 +224,14 @@ metrics:
     skip: w7,m7,q7,y7
     merge_series: new_prs
     drop: snew_prs
+  - name: PRs opened group by company
+    series_name_or_func: multi_row_single_column
+    sql: pr_opened_company
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: w7,m7,q7,y7
+    merge_series: pr_opened_company
+    drop: spr_opened_company
   - name: PRs authors
     series_name_or_func: multi_row_single_column
     sql: prs_authors
@@ -240,6 +248,22 @@ metrics:
     skip: w7,m7,q7,y7
     multi_value: true
     drop: sgrp_pr_merg
+  - name: PRs merged group by company
+    series_name_or_func: multi_row_single_column
+    sql: pr_merged_company
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: w7,m7,q7,y7
+    merge_series: pr_merged_company
+    drop: spr_merged_company
+  - name: PRs closed group by company
+    series_name_or_func: multi_row_single_column
+    sql: pr_closed_company
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: w7,m7,q7,y7
+    merge_series: pr_closed_company
+    drop: spr_closed_company
   - name: PRs approval
     series_name_or_func: multi_row_multi_column
     sql: prs_state
