@@ -30,8 +30,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 28,
-  "iteration": 1622359599936,
+  "id": 42,
+  "iteration": 1622541646689,
   "links": [],
   "panels": [
     {
@@ -85,7 +85,7 @@
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": true,
+      "stack": false,
       "steppedLine": false,
       "targets": [
         {
@@ -165,7 +165,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "New PRs created ([[repogroup_name]], [[period]], exclude bots)",
+      "title": "PRs Opened ([[repogroup_name]], [[period]], Exclude Bots)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -185,7 +185,7 @@
         {
           "$$hashKey": "object:333",
           "format": "none",
-          "label": "New PRs",
+          "label": "PRs Opened",
           "logBase": 1,
           "max": null,
           "min": "0",
@@ -257,6 +257,7 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:247",
           "alias": "/including bots/",
           "bars": false,
           "fill": 0,
@@ -280,7 +281,7 @@
           "policy": "autogen",
           "query": "",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"[[repogroup_name]] (excluding bots)\"\nfrom\n  snew_prs\nwhere\n  $__timeFilter(time)\n  and series = 'new_prs[[repogroup]]'\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"[[repogroup_name]] (excluding bots)\"\nfrom\n  spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_company[[repogroup]]excludebotsallcompany'\n  and period = '[[period]]'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -316,7 +317,7 @@
           "policy": "autogen",
           "query": "",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"[[repogroup_name]] (including bots)\"\nfrom\n  snew_prs\nwhere\n  $__timeFilter(time)\n  and series = 'new_prs_bots[[repogroup]]'\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"[[repogroup_name]] (including bots)\"\nfrom\n  spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_company[[repogroup]]includebotsallcompany'\n  and period = '[[period]]'\norder by\n  time",
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -344,7 +345,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "New PRs created in [[repogroup_name]] repository group ([[period]])",
+      "title": "PRs opened in [[repogroup_name]] repository group ([[period]])",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -362,14 +363,16 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:38",
           "format": "none",
-          "label": "New PRs",
+          "label": "PRs Opened",
           "logBase": 1,
           "max": null,
           "min": "0",
           "show": true
         },
         {
+          "$$hashKey": "object:39",
           "format": "none",
           "label": "",
           "logBase": 1,
@@ -382,28 +385,6 @@
         "align": false,
         "alignLevel": null
       }
-    },
-    {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 24,
-        "x": 0,
-        "y": 29
-      },
-      "id": 11,
-      "links": [],
-      "options": {
-        "content": "${docs:raw}",
-        "mode": "html"
-      },
-      "pluginVersion": "7.5.0",
-      "title": "Dashboard documentation",
-      "type": "text"
     }
   ],
   "refresh": false,
@@ -420,8 +401,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": "7 Days MA",
-          "value": "d7"
+          "text": "Day",
+          "value": "d"
         },
         "description": null,
         "error": null,
@@ -432,12 +413,12 @@
         "name": "period",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "7 Days MA",
             "value": "d7"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "Day",
             "value": "d"
           },

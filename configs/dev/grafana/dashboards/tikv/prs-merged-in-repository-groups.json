@@ -31,7 +31,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 40,
-  "iteration": 1622365252513,
+  "iteration": 1622542200744,
   "links": [],
   "panels": [
     {
@@ -85,7 +85,7 @@
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": true,
+      "stack": false,
       "steppedLine": false,
       "targets": [
         {
@@ -165,7 +165,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "PRs Merged ([[repogroup_name]], [[period]], exclude bots)",
+      "title": "PRs Merged ([[repogroup_name]], [[period]], Exclude Bots)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -185,7 +185,7 @@
         {
           "$$hashKey": "object:333",
           "format": "none",
-          "label": "New PRs",
+          "label": "PRs Merged",
           "logBase": 1,
           "max": null,
           "min": "0",
@@ -221,7 +221,7 @@
       "fill": 5,
       "fillGradient": 0,
       "gridPos": {
-        "h": 12,
+        "h": 14,
         "w": 24,
         "x": 0,
         "y": 15
@@ -232,6 +232,7 @@
         "alignAsTable": true,
         "avg": true,
         "current": true,
+        "hideEmpty": false,
         "max": true,
         "min": true,
         "rightSide": false,
@@ -251,7 +252,15 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [],
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:469",
+          "alias": "/including bots/",
+          "bars": false,
+          "fill": 0,
+          "lines": true
+        }
+      ],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
@@ -268,7 +277,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"all_prs_merged_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  \"value\" as \"All PRs merged\"\nfrom\n  sall_prs_merged\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"[[repogroup_name]] (excluding bots)\"\nfrom\n  spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_company[[repogroup_name]]excludebotsallcompany')\n  and period = '[[period]]'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -277,12 +286,43 @@
                 "params": [
                   "value"
                 ],
-                "type": "field"
+                "type": "column"
               }
             ]
           ],
+          "table": "stime_metrics",
           "tags": [],
-          "timeColumn": "time",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n  time,\n  value as \"[[repogroup_name]] (including bots)\"\nfrom\n  spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_company[[repogroup_name]]includebotsallcompany')\n  and period = '[[period]]'\norder by\n  time",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "stime_metrics",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
           "where": [
             {
               "name": "$__timeFilter",
@@ -296,7 +336,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "PRs merged in all [[full_name]] repositories ([[period]])",
+      "title": "PRs Merged in all [[full_name]] repositories ([[period]])",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -312,48 +352,28 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:449",
           "format": "short",
-          "label": "PRs merged",
+          "label": "PRs Merged",
           "logBase": 1,
           "max": null,
           "min": "0",
           "show": true
         },
         {
+          "$$hashKey": "object:450",
           "format": "short",
           "label": "",
           "logBase": 1,
           "max": null,
           "min": "0",
-          "show": true
+          "show": false
         }
       ],
       "yaxis": {
         "align": false,
         "alignLevel": null
       }
-    },
-    {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 24,
-        "x": 0,
-        "y": 27
-      },
-      "id": 11,
-      "links": [],
-      "options": {
-        "content": "${docs:raw}",
-        "mode": "html"
-      },
-      "pluginVersion": "7.5.0",
-      "title": "Dashboard documentation",
-      "type": "text"
     }
   ],
   "refresh": false,
@@ -569,5 +589,5 @@
   "timezone": "",
   "title": "PRs Merged in Repository Groups",
   "uid": "24",
-  "version": 13
+  "version": 8
 }
