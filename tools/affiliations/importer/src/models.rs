@@ -1,3 +1,5 @@
+use chrono::NaiveDateTime;
+
 #[derive(Queryable)]
 pub struct GhaActor {
     pub id: i64,
@@ -10,4 +12,14 @@ pub struct GhaActor {
     pub tz_offset: Option<i32>,
     pub country_name: Option<String>,
     pub age: Option<i32>,
+}
+
+#[derive(Queryable)]
+pub struct GhaActorAffiliation {
+    pub actor_id: i64,
+    pub company_name: String,
+    pub original_company_name: String,
+    pub dt_from: NaiveDateTime,
+    pub dt_to: NaiveDateTime,
+    pub source: String,
 }
