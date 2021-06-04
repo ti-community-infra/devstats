@@ -16,6 +16,7 @@ reqwest = { version = "0.11", features = ["json"] }
 tokio = { version = "1", features = ["full"] }
 log = "0.4"
 pretty_env_logger = "0.3"
+chrono = "0.4"
 
 [dependencies.crawler]
 version = "~0.1.0"

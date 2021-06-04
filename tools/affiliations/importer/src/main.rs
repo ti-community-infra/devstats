@@ -12,12 +12,20 @@ extern crate log;
 
 use std::collections::HashSet;
 
+use chrono::Utc;
 use crawler::crawler::{Crawl, Crawler};
 
 /// Invalid affiliations.
 static INVALID_AFFILIATIONS: [&str; 4] = ["", "-", "(Unknown)", "NotFound"];
 /// PingCAP affiliation.
 static PINGCAP_AFFILIATION: &str = "PingCAP";
+/// Independent affiliation.
+static INDEPENDENT_AFFILIATION: &str = "Independent";
+/// Company separator.
+static COMPANY_SEPARATOR: &str = ", ";
+/// Date separator.
+/// For example: PingCAP < 2021-06-04.
+static DATE_SEPARATOR: &str = " < ";
 
 /// GitHub user info.
 #[derive(Debug, Serialize, Deserialize)]
@@ -64,7 +72,7 @@ async fn main() {
             set_pingcap_affiliation(record);
             logins.remove(&record.login);
         } else {
-            // TODO: remove_pingcap_affiliation.
+            remove_pingcap_affiliation(record);
         }
     }
 
@@ -118,14 +126,56 @@ fn set_pingcap_affiliation(user: &mut GitHubUser) {
     }
 }
 
+/// Remove PingCAP affiliation to user.
+fn remove_pingcap_affiliation(user: &mut GitHubUser) {
+    match &user.affiliation {
+        // None, no need to change.
+        None => {}
+        Some(affiliation) => {
+            // Only when the affiliation is valid.
+            if !INVALID_AFFILIATIONS.contains(&affiliation.as_str()) {
+                match affiliation
+                    .split(COMPANY_SEPARATOR)
+                    .collect::<Vec<&str>>()
+                    .last()
+                {
+                    None => {}
+                    Some(last) => {
+                        // Only if the last company is PingCAP.
+                        if *last == PINGCAP_AFFILIATION {
+                            let current_date = Utc::now().date().format("%Y-%m-%d").to_string();
+                            let new_record = format!(
+                                "{}{}{}{}{}",
+                                last,
+                                DATE_SEPARATOR,
+                                current_date,
+                                COMPANY_SEPARATOR,
+                                INDEPENDENT_AFFILIATION
+                            );
+                            let mut new_affiliation = affiliation.to_string();
+                            new_affiliation.replace_range(
+                                affiliation.len() - last.len()..,
+                                new_record.as_str(),
+                            );
+                            info!(
+                                "Set [{}] affiliation from `{}` to `{}`.",
+                                user.login, affiliation, new_affiliation
+                            );
+                            user.affiliation = Some(new_affiliation);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 /// Generate new affiliation with PingCAP.
 fn generate_new_affiliation_with_pingcap(affiliation: &str) -> Option<String> {
     let pingcap = PINGCAP_AFFILIATION.to_string();
-    let company_separator = ", ";
-
     // The original affiliation look like: "PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, Simplebet".
     return match affiliation
-        .split(company_separator)
+        .split(COMPANY_SEPARATOR)
         .collect::<Vec<&str>>()
         .as_slice()
     {
@@ -140,7 +190,11 @@ fn generate_new_affiliation_with_pingcap(affiliation: &str) -> Option<String> {
             // Set the last company record date to the penultimate company date
             // (Equivalent to ignoring the last company, we can't know exactly when he joined, so we have to do this),
             // then add the pingcap.
-            match penultimate.split(" < ").collect::<Vec<&str>>().first() {
+            match penultimate
+                .split(DATE_SEPARATOR)
+                .collect::<Vec<&str>>()
+                .first()
+            {
                 None => panic!("Invalid penultimate affiliation: {}.", penultimate),
                 Some(company) => {
                     // Temp: PwC < 2020-01-01 -> Simplebet < 2020-01-01
@@ -152,7 +206,7 @@ fn generate_new_affiliation_with_pingcap(affiliation: &str) -> Option<String> {
                         .replace_range(affiliation.len() - last.len().., new_record.as_str());
 
                     // Finally: "PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, Simplebet < 2020-01-01, PingCAP"
-                    Some(new_affiliation.as_str().to_owned() + company_separator + pingcap.as_str())
+                    Some(new_affiliation.as_str().to_owned() + COMPANY_SEPARATOR + pingcap.as_str())
                 }
             }
         }
@@ -171,7 +225,11 @@ fn generate_new_affiliation_with_pingcap(affiliation: &str) -> Option<String> {
 
 #[cfg(test)]
 mod tests {
-    use crate::{generate_new_affiliation_with_pingcap, set_pingcap_affiliation, GitHubUser};
+    use crate::{
+        generate_new_affiliation_with_pingcap, remove_pingcap_affiliation, set_pingcap_affiliation,
+        GitHubUser,
+    };
+    use chrono::Utc;
 
     #[test]
     fn test_generate_new_affiliation_with_pingcap() {
@@ -194,6 +252,10 @@ mod tests {
             ),
             (
                 "NotFound",
+                Some("PingCAP".to_string())
+            ),
+            (
+                "",
                 Some("PingCAP".to_string())
             )
         ];
@@ -243,6 +305,56 @@ mod tests {
                 country_id: None,
             };
             set_pingcap_affiliation(user);
+            assert_eq!(user.affiliation, case.1)
+        }
+    }
+
+    #[test]
+    fn test_remove_pingcap_affiliation() {
+        let current_date = Utc::now().date().format("%Y-%m-%d").to_string();
+
+        let cases = vec![
+            (
+                None, None
+            ),
+            (
+                Some("".to_string()), Some("".to_string())
+            ),
+            (
+                Some("-".to_string()), Some("-".to_string())
+            ),
+            (
+                Some("(Unknown)".to_string()), Some("(Unknown)".to_string())
+            ),
+            (
+                Some("".to_string()), Some("".to_string())
+            ),
+            (
+                Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, Simplebet".to_string()),
+                Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, Simplebet".to_string())
+            ),
+            (
+                Some("PingCAP".to_string()),
+                Some(format!("PingCAP < {}, Independent",current_date))
+            ),
+            (
+                Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, PingCAP".to_string()),
+                Some(format!("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, PingCAP < {}, Independent",current_date))
+            )
+        ];
+
+        for case in cases {
+            let user = &mut GitHubUser {
+                login: "".to_string(),
+                email: "".to_string(),
+                affiliation: case.0,
+                source: None,
+                name: None,
+                commits: 0,
+                location: None,
+                country_id: None,
+            };
+            remove_pingcap_affiliation(user);
             assert_eq!(user.affiliation, case.1)
         }
     }
