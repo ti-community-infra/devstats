@@ -37,7 +37,7 @@ async fn main() {
     pretty_env_logger::init();
 
     info!("Start downloading the github_users file...");
-    let resp = reqwest::get("https://github.com/cncf/gitdm/raw/master/src/github_users.json")
+    let resp = reqwest::get(dotenv!("GITHUB_USERS_SOURCE"))
         .await
         .expect("Failed to download the github_users file.")
         .text()
@@ -165,4 +165,83 @@ fn generate_affiliation_with_pingcap(affiliation: &str) -> (String, bool) {
         }
         [] => (pingcap, true),
     };
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::{generate_affiliation_with_pingcap, set_pingcap_affiliation, GitHubUser};
+
+    #[test]
+    fn test_generate_affiliation_with_pingcap() {
+        let cases = vec![
+            (
+             "PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, Simplebet",
+             ("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, Simplebet < 2020-01-01, PingCAP".to_string(),true)
+            ),
+            (
+                "PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, PingCAP",
+                ("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, PingCAP".to_string(),false)
+            ),
+            (
+                "PingCAP",
+                ("PingCAP".to_string(),false)
+            ),
+            (
+                "Simplebet",
+                ("PingCAP".to_string(),true)
+            ),
+            (
+                "NotFound",
+                ("PingCAP".to_string(),true)
+            )
+        ];
+        for case in cases {
+            let affiliation = generate_affiliation_with_pingcap(case.0);
+            assert_eq!(affiliation, case.1)
+        }
+    }
+
+    #[test]
+    fn test_set_pingcap_affiliation() {
+        let cases = vec![
+            (
+                None, Some("PingCAP".to_string())
+            ),
+            (
+                Some("".to_string()), Some("PingCAP".to_string())
+            ),
+            (
+                Some("-".to_string()), Some("PingCAP".to_string())
+            ),
+            (
+                Some("(Unknown)".to_string()), Some("PingCAP".to_string())
+            ),
+            (
+                Some("".to_string()), Some("PingCAP".to_string())
+            ),
+            (
+                Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, Simplebet".to_string()),
+                Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, Simplebet < 2020-01-01, PingCAP".to_string())
+            ),
+            (
+                Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, PingCAP".to_string()),
+                Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, PingCAP".to_string())
+            )
+        ];
+
+        for case in cases {
+            let user = &mut GitHubUser {
+                login: "".to_string(),
+                email: "".to_string(),
+                affiliation: case.0,
+                source: None,
+                name: None,
+                commits: 0,
+                location: None,
+                country_id: None,
+            };
+            set_pingcap_affiliation(user);
+            assert_eq!(user.affiliation, case.1)
+        }
+    }
 }
