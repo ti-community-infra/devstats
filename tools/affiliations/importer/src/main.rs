@@ -89,6 +89,10 @@ async fn main() {
             country_id: None,
         })
     });
+
+    let file =
+        std::fs::File::create("github_users.json").expect("Create github_users file failed.");
+    serde_json::to_writer_pretty(file, &records).expect("Failed to deserialize.");
 }
 
 /// Set PingCAP affiliation to user.
