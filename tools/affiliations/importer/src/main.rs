@@ -106,24 +106,15 @@ fn set_pingcap_affiliation(user: &mut GitHubUser) {
             }
         }
         Some(affiliation) => {
-            // If it is an invalid affiliation, set directly to PingCAP.
-            if INVALID_AFFILIATIONS.contains(&affiliation.as_str()) {
-                info!(
-                    "Set [{}] invalid affiliation `{}` to PingCAP.",
-                    user.login, affiliation
-                );
-                user.affiliation = Some(PINGCAP_AFFILIATION.to_string());
-            } else {
-                let new_affiliation = generate_new_affiliation_with_pingcap(affiliation);
-                match new_affiliation {
-                    None => {}
-                    Some(new_affiliation) => {
-                        info!(
-                            "Set [{}] affiliation from `{}` to `{}`.",
-                            user.login, affiliation, new_affiliation
-                        );
-                        user.affiliation = Some(new_affiliation);
-                    }
+            let new_affiliation = generate_new_affiliation_with_pingcap(affiliation);
+            match new_affiliation {
+                None => {}
+                Some(new_affiliation) => {
+                    info!(
+                        "Set [{}] affiliation from `{}` to `{}`.",
+                        user.login, affiliation, new_affiliation
+                    );
+                    user.affiliation = Some(new_affiliation);
                 }
             }
         }
@@ -177,6 +168,12 @@ fn remove_pingcap_affiliation(user: &mut GitHubUser) {
 /// Generate new affiliation with PingCAP.
 fn generate_new_affiliation_with_pingcap(affiliation: &str) -> Option<String> {
     let pingcap = PINGCAP_AFFILIATION.to_string();
+
+    // If it is an invalid affiliation, set directly to PingCAP.
+    if INVALID_AFFILIATIONS.contains(&affiliation) {
+        return Some(pingcap);
+    }
+
     // The original affiliation look like: "PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, Simplebet".
     return match affiliation
         .split(COMPANY_SEPARATOR)
@@ -220,7 +217,10 @@ fn generate_new_affiliation_with_pingcap(affiliation: &str) -> Option<String> {
             return if *last == PINGCAP_AFFILIATION {
                 None
             } else {
-                Some(pingcap)
+                Some(format!(
+                    "{}{}2015-09-06{}{}",
+                    last, DATE_SEPARATOR, COMPANY_SEPARATOR, PINGCAP_AFFILIATION
+                ))
             };
         }
         [] => Some(pingcap),
@@ -252,7 +252,7 @@ mod tests {
             ),
             (
                 "Simplebet",
-                Some("PingCAP".to_string())
+                Some("Simplebet < 2015-09-06, PingCAP".to_string())
             ),
             (
                 "NotFound",
@@ -286,6 +286,10 @@ mod tests {
             ),
             (
                 Some("".to_string()), Some("PingCAP".to_string())
+            ),
+            (
+                Some("PerkinElmer".to_string()),
+                Some("PerkinElmer < 2015-09-06, PingCAP".to_string())
             ),
             (
                 Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, Simplebet".to_string()),
