@@ -38,6 +38,7 @@ struct GitHubUser {
     commits: i64,
     location: Option<String>,
     country_id: Option<String>,
+    modified_by_affiliations: Option<bool>,
 }
 
 #[tokio::main]
@@ -64,31 +65,47 @@ async fn main() {
         .list_github_logins()
         .await
         .expect("Failed to list logins.");
-    let mut logins: HashSet<&String> = logins.iter().collect::<HashSet<_>>();
+    let logins: HashSet<String> = logins
+        .iter()
+        .map(|l| l.trim())
+        // NOTICE: login is not case-sensitive.
+        .map(|l| l.to_lowercase())
+        .collect::<HashSet<_>>();
     info!("Fetching the logins to succeed!");
 
+    // Because a login may appear twice in the original data and their affiliation may be different,
+    // we need to process both, not just one and then consider the process complete.
+    let mut processed_logins: HashSet<String> = HashSet::new();
     for record in &mut records {
-        if logins.contains(&record.login) {
+        // NOTICE: login is not case-sensitive.
+        let login = &record.login.to_lowercase();
+        if logins.contains(login) {
             set_pingcap_affiliation(record);
-            logins.remove(&record.login);
+            processed_logins.insert(login.clone());
         } else {
             remove_pingcap_affiliation(record);
         }
     }
 
-    logins.iter().for_each(|l| {
-        info!("Add new record for {}.", l);
-        records.push(GitHubUser {
-            login: (*l).clone(),
-            email: l.as_str().to_owned() + "!users.noreply.github.com",
-            affiliation: Some(PINGCAP_AFFILIATION.to_string()),
-            source: Some("manual".to_string()),
-            name: None,
-            commits: 0,
-            location: None,
-            country_id: None,
-        })
-    });
+    // Processes the remaining logins.
+    logins
+        .difference(&processed_logins)
+        .collect::<Vec<&String>>()
+        .iter()
+        .for_each(|l| {
+            info!("Add new record for {}.", l);
+            records.push(GitHubUser {
+                login: (*l).clone(),
+                email: l.as_str().to_owned() + "!users.noreply.github.com",
+                affiliation: Some(PINGCAP_AFFILIATION.to_string()),
+                source: Some("manual".to_string()),
+                name: None,
+                commits: 0,
+                location: None,
+                country_id: None,
+                modified_by_affiliations: Some(true),
+            })
+        });
 
     let file =
         std::fs::File::create("github_users.json").expect("Create github_users file failed.");
@@ -103,7 +120,8 @@ fn set_pingcap_affiliation(user: &mut GitHubUser) {
             user.affiliation = {
                 info!("Set [{}] affiliation to PingCAP.", user.login);
                 Some(PINGCAP_AFFILIATION.to_string())
-            }
+            };
+            user.modified_by_affiliations = Some(true);
         }
         Some(affiliation) => {
             let new_affiliation = generate_new_affiliation_with_pingcap(affiliation);
@@ -115,6 +133,7 @@ fn set_pingcap_affiliation(user: &mut GitHubUser) {
                         user.login, affiliation, new_affiliation
                     );
                     user.affiliation = Some(new_affiliation);
+                    user.modified_by_affiliations = Some(true);
                 }
             }
         }
@@ -157,6 +176,7 @@ fn remove_pingcap_affiliation(user: &mut GitHubUser) {
                                 user.login, affiliation, new_affiliation
                             );
                             user.affiliation = Some(new_affiliation);
+                            user.modified_by_affiliations = Some(true);
                         }
                     }
                 }
@@ -273,31 +293,34 @@ mod tests {
     fn test_set_pingcap_affiliation() {
         let cases = vec![
             (
-                None, Some("PingCAP".to_string())
+                None, Some("PingCAP".to_string()),Some(true)
             ),
             (
-                Some("".to_string()), Some("PingCAP".to_string())
+                Some("".to_string()), Some("PingCAP".to_string()),Some(true)
             ),
             (
-                Some("-".to_string()), Some("PingCAP".to_string())
+                Some("-".to_string()), Some("PingCAP".to_string()),Some(true)
             ),
             (
-                Some("(Unknown)".to_string()), Some("PingCAP".to_string())
+                Some("(Unknown)".to_string()), Some("PingCAP".to_string()),Some(true)
             ),
             (
-                Some("".to_string()), Some("PingCAP".to_string())
+                Some("".to_string()), Some("PingCAP".to_string()),Some(true)
             ),
             (
                 Some("PerkinElmer".to_string()),
-                Some("PerkinElmer < 2015-09-06, PingCAP".to_string())
+                Some("PerkinElmer < 2015-09-06, PingCAP".to_string()),
+                Some(true)
             ),
             (
                 Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, Simplebet".to_string()),
-                Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, Simplebet < 2020-01-01, PingCAP".to_string())
+                Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, Simplebet < 2020-01-01, PingCAP".to_string()),
+                Some(true)
             ),
             (
                 Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, PingCAP".to_string()),
-                Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, PingCAP".to_string())
+                Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, PingCAP".to_string()),
+                None
             )
         ];
 
@@ -311,9 +334,11 @@ mod tests {
                 commits: 0,
                 location: None,
                 country_id: None,
+                modified_by_affiliations: None,
             };
             set_pingcap_affiliation(user);
-            assert_eq!(user.affiliation, case.1)
+            assert_eq!(user.affiliation, case.1);
+            assert_eq!(user.modified_by_affiliations, case.2);
         }
     }
 
@@ -323,31 +348,34 @@ mod tests {
 
         let cases = vec![
             (
-                None, None
+                None, None,None
             ),
             (
-                Some("".to_string()), Some("".to_string())
+                Some("".to_string()), Some("".to_string()),None
             ),
             (
-                Some("-".to_string()), Some("-".to_string())
+                Some("-".to_string()), Some("-".to_string()),None
             ),
             (
-                Some("(Unknown)".to_string()), Some("(Unknown)".to_string())
+                Some("(Unknown)".to_string()), Some("(Unknown)".to_string()),None
             ),
             (
-                Some("".to_string()), Some("".to_string())
+                Some("".to_string()), Some("".to_string()),None
             ),
             (
                 Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, Simplebet".to_string()),
-                Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, Simplebet".to_string())
+                Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, Simplebet".to_string()),
+                None
             ),
             (
                 Some("PingCAP".to_string()),
-                Some(format!("PingCAP < {}, Independent",current_date))
+                Some(format!("PingCAP < {}, Independent",current_date)),
+                Some(true)
             ),
             (
                 Some("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, PingCAP".to_string()),
-                Some(format!("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, PingCAP < {}, Independent",current_date))
+                Some(format!("PerkinElmer < 2014-08-01, Independent < 2015-10-01, PwC < 2020-01-01, PingCAP < {}, Independent",current_date)),
+                Some(true)
             )
         ];
 
@@ -361,9 +389,11 @@ mod tests {
                 commits: 0,
                 location: None,
                 country_id: None,
+                modified_by_affiliations: None,
             };
             remove_pingcap_affiliation(user);
-            assert_eq!(user.affiliation, case.1)
+            assert_eq!(user.affiliation, case.1);
+            assert_eq!(user.modified_by_affiliations, case.2);
         }
     }
 }
