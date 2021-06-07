@@ -78,10 +78,10 @@ async fn main() {
     let mut processed_logins: HashSet<String> = HashSet::new();
     for record in &mut records {
         // NOTICE: login is not case-sensitive.
-        let login = &record.login.to_lowercase();
-        if logins.contains(login) {
+        let login = record.login.to_lowercase();
+        if logins.contains(&login) {
             set_pingcap_affiliation(record);
-            processed_logins.insert(login.clone());
+            processed_logins.insert(login);
         } else {
             remove_pingcap_affiliation(record);
         }
