@@ -4,6 +4,7 @@ nameOverride: devstats
 domainName: 'devstats-dev.tidb.io'
 fullnameOverride: devstats
 imagePullPolicy: Always
+concurrencyPolicy: Forbid
 oauthSecret: github-oauth
 secretType: Opaque
 skipTemp: 1
@@ -81,7 +82,6 @@ syncCommand: devstats
 syncImage: 'miniantdev/devstats-minimal-dev:0.2.8'
 syncPodName: devstats
 syncRestartPolicy: Never
-concurrencyPolicy: Forbid
 indexCronsFrom: 0
 indexCronsTo: 100
 limitsCronsCPU: '6000m'
@@ -109,6 +109,26 @@ requestsExecuteCPU: '1000m'
 requestsExecuteMemory: '1Gi'
 useExecuteResourcesLimits: 1
 
+# Affiliations Sync.
+affiliationsImage: 'miniantdev/devstats-minimal-dev:0.2.8'
+affiliationsPodName: 'devstats-affiliations'
+affiliationsRestartPolicy: Never
+affiliationsCommand: './shared/affs.sh'
+affiliationsCronHistoryLimit: 2
+affiliationsCronFailedHistoryLimit: 1
+affiliationsCronStartingDeadlineSeconds: 300
+affiliationsGetAffsFiles: '1'
+affiliationsSourceUrl: https://github.com/cncf/gitdm/raw/master/src/github_users.json
+affiliationsCompaniesSourceUrl: https://raw.githubusercontent.com/cncf/gitdm/master/src/companies.yaml
+
+useAffiliationsResourcesLimits: 1
+indexAffiliationsFrom: 0
+indexAffiliationsTo: 300
+limitsAffiliationsCPU: '4000m'
+limitsAffiliationsMemory: '32Gi'
+requestsAffiliationsCPU: '250m'
+requestsAffiliationsMemory: '512Mi'
+
 # Ingresses indexes.
 indexIngressesFrom: 0
 indexIngressesTo: 100
@@ -128,27 +148,34 @@ storageAccessModes: ReadWriteOnce
 storageClass: gp2
 
 projects:
-  - proj: pingcap
+  - i: 0
+    proj: pingcap
     db: pingcap
     icon: 'pingcap'
     org: 'PingCAP'
     repo: 'pingcap/tidb'
     cron: '05 * * * *'
+    affCronTest: '0 14 * * 0'
+    affCronProd: '0 14 * * 0'
+    affSkipTemp: '1'
     disk: 50Gi
-    i: 0
-  - proj: tikv
+  - i: 1
+    proj: tikv
     db: tikv
     icon: 'tikv'
     org: 'TiKV'
     repo: 'tikv/tikv'
     cron: '30 * * * *'
+    affCronTest: '0 16 * * 0'
+    affCronProd: '0 16 * * 0'
     disk: 50Gi
-    i: 1
-  - proj: chaosmesh
+  - i: 2
+    proj: chaosmesh
     db: chaosmesh
     icon: 'chaosmesh'
     org: 'ChaosMesh'
     repo: 'chaos-mesh/chaos-mesh'
     cron: '50 * * * *'
+    affCronTest: '0 18 * * 0'
+    affCronProd: '0 18 * * 0'
     disk: 50Gi
-    i: 2
