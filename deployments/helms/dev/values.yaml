@@ -110,7 +110,7 @@ requestsExecuteMemory: '1Gi'
 useExecuteResourcesLimits: 1
 
 # Affiliations Sync.
-affiliationsImage: 'miniantdev/devstats-minimal-dev:0.2.9-beta.1'
+affiliationsImage: 'miniantdev/devstats-dev:0.2.9-beta.1'
 affiliationsPodName: 'devstats-affiliations'
 affiliationsRestartPolicy: Never
 affiliationsCommand: './shared/affs.sh'
