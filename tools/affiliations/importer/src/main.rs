@@ -61,11 +61,11 @@ async fn main() {
     info!("Start fetching the PingCAP GitHub logins...");
     let crawler =
         &Crawler::new(dotenv!("APP_ID"), dotenv!("APP_SECRET")).expect("Failed init the crawler.");
-    let logins = crawler
+    let pingcap_github_logins = crawler
         .list_github_logins()
         .await
         .expect("Failed to list logins.");
-    let logins: HashSet<String> = logins
+    let pingcap_github_logins: HashSet<String> = pingcap_github_logins
         .iter()
         .map(|l| l.trim())
         // NOTICE: login is not case-sensitive.
@@ -79,7 +79,7 @@ async fn main() {
     for record in &mut records {
         // NOTICE: login is not case-sensitive.
         let login = record.login.to_lowercase();
-        if logins.contains(&login) {
+        if pingcap_github_logins.contains(&login) {
             set_pingcap_affiliation(record);
             processed_logins.insert(login);
         } else {
@@ -87,8 +87,8 @@ async fn main() {
         }
     }
 
-    // Processes the remaining logins.
-    logins
+    // Processes the remaining PingCAP github logins.
+    pingcap_github_logins
         .difference(&processed_logins)
         .collect::<Vec<&String>>()
         .iter()
