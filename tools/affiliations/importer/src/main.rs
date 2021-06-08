@@ -144,8 +144,7 @@ async fn main() {
         .bucket(bucket)
         .key(github_users_file_name)
         .body(new_github_user)
-        .grant_read("Everyone")
-        .grant_read_acp("Everyone")
+        .grant_read("uri=http://acs.amazonaws.com/groups/global/AllUsers")
         .send()
         .await
         .unwrap_or_else(|_| panic!("Failed to upload {} to aws s3.", github_users_file_name));
