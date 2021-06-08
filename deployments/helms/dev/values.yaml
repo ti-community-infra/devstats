@@ -32,7 +32,7 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana-dev:0.2.9.beta.1'
+grafanaImage: 'miniantdev/devstats-grafana-dev:0.2.9-beta.1'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
 grafanaNReplicas: 1
@@ -49,7 +49,7 @@ limitsGrafanasMemory: '8Gi'
 useGrafanasResourcesLimits: 1
 
 # Provision configurations.
-provisionImage: 'miniantdev/devstats-dev:0.2.9.beta.1'
+provisionImage: 'miniantdev/devstats-dev:0.2.9-beta.1'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
@@ -79,7 +79,7 @@ usePostgresResourcesLimits: 1
 
 # Cron sync jobs configurations.
 syncCommand: devstats
-syncImage: 'miniantdev/devstats-minimal-dev:0.2.9.beta.1'
+syncImage: 'miniantdev/devstats-minimal-dev:0.2.9-beta.1'
 syncPodName: devstats
 syncRestartPolicy: Never
 indexCronsFrom: 0
@@ -91,7 +91,7 @@ requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
 
 # Execute Pod configurations.
-executeImage: 'miniantdev/devstats-minimal-dev:0.2.9.beta.1'
+executeImage: 'miniantdev/devstats-minimal-dev:0.2.9-beta.1'
 executePodName: 'devstats-execute'
 executeTargetProject: 'pingcap'
 executeCommand: 'sleep'
@@ -110,7 +110,7 @@ requestsExecuteMemory: '1Gi'
 useExecuteResourcesLimits: 1
 
 # Affiliations Sync.
-affiliationsImage: 'miniantdev/devstats-minimal-dev:0.2.9.beta.1'
+affiliationsImage: 'miniantdev/devstats-minimal-dev:0.2.9-beta.1'
 affiliationsPodName: 'devstats-affiliations'
 affiliationsRestartPolicy: Never
 affiliationsCommand: './shared/affs.sh'
@@ -118,7 +118,7 @@ affiliationsCronHistoryLimit: 2
 affiliationsCronFailedHistoryLimit: 1
 affiliationsCronStartingDeadlineSeconds: 300
 affiliationsGetAffsFiles: '1'
-affiliationsSourceUrl: https://github.com/cncf/gitdm/raw/master/src/github_users.json
+affiliationsSourceUrl: https://community-devstats-affiliations-dev.s3-ap-northeast-1.amazonaws.com/github_users.json
 affiliationsCompaniesSourceUrl: https://raw.githubusercontent.com/cncf/gitdm/master/src/companies.yaml
 
 useAffiliationsResourcesLimits: 1
