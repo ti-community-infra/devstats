@@ -73,7 +73,7 @@ async fn main() {
         .collect::<HashSet<_>>();
     info!("Fetching the logins to succeed!");
 
-    // Because a login may appear twice in the original data and their affiliation may be different,
+    // Because a login may appear multiple times in the original data and their affiliation may be different,
     // we need to process both, not just one and then consider the process complete.
     let mut processed_logins: HashSet<String> = HashSet::new();
     for record in &mut records {
