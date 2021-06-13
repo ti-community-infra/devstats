@@ -155,8 +155,7 @@ projects:
     org: 'PingCAP'
     repo: 'pingcap/tidb'
     cron: '05 * * * *'
-    affCronTest: '0 14 * * 0'
-    affCronProd: '0 14 * * 0'
+    affCron: '0 14 * * 0'
     affSkipTemp: '1'
     disk: 50Gi
   - i: 1
@@ -166,8 +165,7 @@ projects:
     org: 'TiKV'
     repo: 'tikv/tikv'
     cron: '30 * * * *'
-    affCronTest: '0 16 * * 0'
-    affCronProd: '0 16 * * 0'
+    affCron: '0 16 * * 0'
     disk: 50Gi
   - i: 2
     proj: chaosmesh
@@ -176,6 +174,5 @@ projects:
     org: 'ChaosMesh'
     repo: 'chaos-mesh/chaos-mesh'
     cron: '50 * * * *'
-    affCronTest: '0 18 * * 0'
-    affCronProd: '0 18 * * 0'
+    affCron: '0 18 * * 0'
     disk: 50Gi

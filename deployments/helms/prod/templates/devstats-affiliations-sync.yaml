@@ -69,7 +69,7 @@ spec:
               value: "1"
             - name: NOBACKUP
               value: "1"
-            - name: TEST_SERVER
+            - name: PROD_SERVER
               value: '1'
             - name: ONLY
               value: {{ .proj }}
