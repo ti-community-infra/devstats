@@ -13,6 +13,8 @@ extern crate log;
 use std::collections::HashSet;
 
 use chrono::Utc;
+use s3::{ByteStream, Credentials, Region};
+
 use crawler::crawler::{Crawl, Crawler};
 
 /// Invalid affiliations.
@@ -45,17 +47,41 @@ struct GitHubUser {
 async fn main() {
     pretty_env_logger::init();
 
-    info!("Start downloading the github_users file...");
-    let resp = reqwest::get(dotenv!("GITHUB_USERS_SOURCE"))
-        .await
-        .expect("Failed to download the github_users file.")
-        .text()
-        .await
-        .expect("Failed to convert github_users to text.");
-    info!("Downloading the github_users file was successful!");
+    let credentials_provider = Credentials::new(
+        dotenv!("AWS_ACCESS_KEY_ID"),
+        dotenv!("AWS_SECRET_ACCESS_KEY"),
+        None,
+        None,
+        "affiliations",
+    );
+    let conf = s3::Config::builder()
+        .credentials_provider(credentials_provider)
+        .region(Region::new(dotenv!("AWS_DEFAULT_REGION")))
+        .build();
+    let bucket = dotenv!("GITHUB_USERS_JSON_BUCKET");
+    let github_users_file_name = dotenv!("GITHUB_USERS_JSON_BUCKET_KEY");
 
-    let mut records: Vec<GitHubUser> =
-        serde_json::from_str(resp.as_str()).expect("Failed to parse github_users file.");
+    info!("Start downloading the {} file...", github_users_file_name);
+    let client = s3::Client::from_conf(conf);
+    let resp = client
+        .get_object()
+        .bucket(bucket)
+        .key(github_users_file_name)
+        .send()
+        .await
+        .unwrap_or_else(|_| panic!("Failed to download the {} file.", github_users_file_name));
+    let data = resp
+        .body
+        .collect()
+        .await
+        .unwrap_or_else(|_| panic!("Failed to collect {} data.", github_users_file_name));
+    info!(
+        "Downloading the {} file was successful!",
+        github_users_file_name
+    );
+
+    let mut records: Vec<GitHubUser> = serde_json::from_slice(&data.into_bytes())
+        .unwrap_or_else(|_| panic!("Failed to parse {} file.", github_users_file_name));
     info!("{} records were obtained.", records.len());
 
     info!("Start fetching the PingCAP GitHub logins...");
@@ -71,7 +97,7 @@ async fn main() {
         // NOTICE: login is not case-sensitive.
         .map(|l| l.to_lowercase())
         .collect::<HashSet<_>>();
-    info!("Fetching the logins to succeed!");
+    info!("Fetching the logins was successful!");
 
     // Because a login may appear multiple times in the original data and their affiliation may be different,
     // we need to process both, not just one and then consider the process complete.
@@ -106,10 +132,26 @@ async fn main() {
                 modified_by_affiliations: Some(true),
             })
         });
+    let results = serde_json::to_vec_pretty(&records).expect("Failed to deserialize.");
 
-    let file =
-        std::fs::File::create("github_users.json").expect("Create github_users file failed.");
-    serde_json::to_writer_pretty(file, &records).expect("Failed to deserialize.");
+    let new_github_user = ByteStream::from(results);
+    info!(
+        "Start uploading the {} file to aws S3...",
+        github_users_file_name
+    );
+    client
+        .put_object()
+        .bucket(bucket)
+        .key(github_users_file_name)
+        .body(new_github_user)
+        .grant_read("uri=http://acs.amazonaws.com/groups/global/AllUsers")
+        .send()
+        .await
+        .unwrap_or_else(|_| panic!("Failed to upload {} to aws s3.", github_users_file_name));
+    info!(
+        "Uploading the {} file was successful!",
+        github_users_file_name
+    );
 }
 
 /// Set PingCAP affiliation to user.
