@@ -76,3 +76,8 @@ tags:
     sql: languages_tags
     series_name: languages
     name_tag: lang_name
+  - name: SIG mentions using labels
+    sql: sig_mentions_labels_sigs_tags
+    series_name: sig_mentions_labels
+    name_tag: sig_mentions_labels_name
+    value_tag: sig_mentions_labels_value
