@@ -6,7 +6,7 @@ create temp table dtto{{rnd}} as
             else '{{to}}'::timestamp
         end as dtto;
 
--- issues created in one year and still opened.
+-- issues created in 1 year and still opened.
 create temp table issues{{rnd}} as
   select
     sub.issue_id,
@@ -96,7 +96,7 @@ create index on prs{{rnd}}(repo_name);
 create index on prs{{rnd}}(user_id);
 create index on prs{{rnd}}(event_id);
 
--- pr with sig
+-- pr with sigs
 create temp table pr_sigs{{rnd}} as
   select
     sub.issue_id,
@@ -164,7 +164,7 @@ create temp table issues_act{{rnd}} as
 create index on issues_act{{rnd}}(number);
 create index on issues_act{{rnd}}(repo_name);
 
--- pr with first  non-author activity
+-- pr with first non-author activity
 create temp table prs_act{{rnd}} as
   select
     pr2.number,

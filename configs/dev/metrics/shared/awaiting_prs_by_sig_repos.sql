@@ -68,7 +68,7 @@ with dtfrom as (
     and pr.closed_at is null
     and pr.merged_at is null
 ), pr_sigs as (
-  -- select all sig label.
+  -- select all sig.
     select
       sub.issue_id,
       sub.event_id,
@@ -129,7 +129,7 @@ with dtfrom as (
 )
 select
   'awaiting_prs_by_sig_repos;' || sub.sig || '`' || sub.repo || ';d7,d10,d30,d60,d90,y' as metric,
-  count(distinct sub.issue_id) filter(where sub.inactive_for > 604800) as open_7,
+  count(distinct sub.issue_id) filter(where sub.age > 604800) as open_7,
   count(distinct sub.issue_id) filter(where sub.age > 864000) as open_10,
   count(distinct sub.issue_id) filter(where sub.age > 2592000) as open_30,
   count(distinct sub.issue_id) filter(where sub.age > 5184000) as open_60,
