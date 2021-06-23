@@ -104,15 +104,15 @@ metrics:
     desc: time_diff_as_string
     merge_series: pr_first_non_author_activity_company
     drop: spr_first_non_author_activity_company
-   - name: PR first non-author activity group by sig
-     series_name_or_func: multi_row_multi_column
-     sql: pr_first_non_author_activity_sig
-     periods: d,w,m,q,y
-     aggregate: 1,7
-     skip: d,w7,m7,q7,y7
-     desc: time_diff_as_string
-     merge_series: pr_first_non_author_activity_sig
-     drop: spr_first_non_author_activity_sig
+  - name: PR first non-author activity group by sig
+    series_name_or_func: multi_row_multi_column
+    sql: pr_first_non_author_activity_sig
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: d,w7,m7,q7,y7
+    desc: time_diff_as_string
+    merge_series: pr_first_non_author_activity_sig
+    drop: spr_first_non_author_activity_sig
   - name: Stale PRs by SIG
     series_name_or_func: multi_row_multi_column
     sql: pr_stale_by_sig
