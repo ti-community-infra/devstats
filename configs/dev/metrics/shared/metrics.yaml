@@ -115,10 +115,11 @@ metrics:
      drop: spr_first_non_author_activity_sig
   - name: Stale PRs by SIG
     series_name_or_func: multi_row_multi_column
-    sql: stale_prs_by_sig
+    sql: pr_stale_by_sig
     periods: d
+    merge_series: pr_stale_by_sig
     multi_value: true
-    drop: 'sstale_prs_by_sigw1,sstale_prs_by_sigw2;sstale_prs_by_sigd30;sstale_prs_by_sigd90'
+    drop: spr_stale_by_sig
     env:
       GHA2DB_NCPUS?: 8
   - name: PRs age

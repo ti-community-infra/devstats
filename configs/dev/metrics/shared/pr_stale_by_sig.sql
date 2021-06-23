@@ -188,7 +188,7 @@ with dtto as (
         and aoi.number = plr.number
 )
 select
-    'stale_prs_by_sig;' || sub.sig || ';w1,w2,d30,d90' as metric,
+    'pr_stale_by_sig;' || sub.sig || ';w1,w2,d30,d90' as metric,
     count(distinct sub.pr) filter (where sub.stale_for > 604800)  as stale_7,
     count(distinct sub.pr) filter (where sub.stale_for > 1209600) as stale_14,
     count(distinct sub.pr) filter (where sub.stale_for > 2592000) as stale_30,
