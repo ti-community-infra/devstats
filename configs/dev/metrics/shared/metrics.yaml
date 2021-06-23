@@ -59,6 +59,15 @@ metrics:
     desc: time_diff_as_string
     merge_series: pr_opened_to_merged_company
     drop: spr_opened_to_merged_company
+  - name: PR opened to merged group by SIG
+    series_name_or_func: multi_row_multi_column
+    sql: pr_opened_to_merged_sig
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: d,w7,m7,q7,y7
+    desc: time_diff_as_string
+    merge_series: pr_opened_to_merged_sig
+    drop: spr_opened_to_merged_sig
   - name: Time metrics
     series_name_or_func: multi_row_multi_column
     sql: time_metrics
@@ -95,20 +104,21 @@ metrics:
     desc: time_diff_as_string
     merge_series: pr_first_non_author_activity_company
     drop: spr_first_non_author_activity_company
-  - name: Awaiting PRs by SIG and repository
+   - name: PR first non-author activity group by sig
+     series_name_or_func: multi_row_multi_column
+     sql: pr_first_non_author_activity_sig
+     periods: d,w,m,q,y
+     aggregate: 1,7
+     skip: d,w7,m7,q7,y7
+     desc: time_diff_as_string
+     merge_series: pr_first_non_author_activity_sig
+     drop: spr_first_non_author_activity_sig
+  - name: Stale PRs by SIG
     series_name_or_func: multi_row_multi_column
-    sql: awaiting_prs_by_sig_repos
+    sql: stale_prs_by_sig
     periods: d
-    merge_series: awaiting_prs_by_sig_repos
     multi_value: true
-    drop: sawaiting_prs_by_sig_repos
-  - name: Inactive PRs by SIG and repository
-    series_name_or_func: multi_row_multi_column
-    sql: inactive_prs_by_sig_repos
-    periods: d
-    merge_series: inactive_prs_by_sig_repos
-    multi_value: true
-    drop: sinactive_prs_by_sig_repos
+    drop: 'sstale_prs_by_sigw1,sstale_prs_by_sigw2;sstale_prs_by_sigd30;sstale_prs_by_sigd90'
     env:
       GHA2DB_NCPUS?: 8
   - name: PRs age
