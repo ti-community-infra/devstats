@@ -1,140 +1,109 @@
 with prs as (
     select
-        pr.event_id,
-        pr.id,
-        pr.dup_repo_name repo_name,
-        pr.number,
-        pr.created_at,
-        pr.merged_at,
-        case when aa.company_name = 'PingCAP' then 'is-top-contributing-company'
-             when lower(pr.dup_user_login) like any(array[
-                'dependabot', 'ti-srebot', 'codecov-io', 'web-flow',  'prowbot', 'travis%bot', 'k8s-%', '%-bot',
-                '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot',
-                '%-testing', 'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%cibot', '%-ci'
-             ]) then 'only-bots'
-             else 'not-top-contributing-company'
-        end as author_type
+        pre.id,
+        pre.dup_repo_name || '#' || pre.number as pr_key,
+        pre.dup_repo_id repo_id,
+        pre.dup_repo_name repo_name,
+        pre.number,
+        pre.user_id author_id,
+        pre.dup_user_login author_login,
+        pre.created_at,
+        pre.merged_at
     from
-        gha_pull_requests pr
-    left join
-        gha_actors_affiliations aa
-    on
-        aa.actor_id = pr.user_id
-        and aa.dt_from <= pr.created_at
-        and aa.dt_to > pr.created_at
+        gha_pull_requests pre
     where
-        pr.merged_at is not null
-        and pr.created_at >= '{{from}}'
-        and pr.created_at < '{{to}}'
+        pre.merged_at is not null
+        and pre.created_at >= '{{from}}'
+        and pre.created_at < '{{to}}'
         -- Select the latest pr event.
-        and pr.event_id = (
-            select i.event_id from gha_pull_requests i where i.id = pr.id order by i.updated_at desc limit 1
+        and pre.event_id = (
+            select
+               last_pre.event_id
+            from
+                gha_pull_requests last_pre
+            where
+                last_pre.id = pre.id
+            order by
+                last_pre.updated_at desc
+            limit 1
         )
-), prs_groups as (
+), pr_with_last_issue_event as (
     select
-        pr.event_id,
-        pr.id,
-        pr.dup_repo_name repo_name,
-        pr.number,
+        pr_key,
+        i.id issue_id,
+        last_value(event_id) over issues_ordered_by_update last_issue_event_id
+    from
+         prs pr,
+         gha_issues i
+    where
+         pr.repo_name = i.dup_repo_name
+         and pr.repo_id = i.dup_repo_id
+         and pr.number = i.number
+    window
+        issues_ordered_by_update as (
+            partition by pr.pr_key
+            order by
+                updated_at asc,
+                event_id asc
+            range between current row
+            and unbounded following
+        )
+), pr_sig_labels as (
+    select
+        pr_key,
+        sig
+    from
+    (
+        select
+            distinct pr_key,
+            lower(substring(il.dup_label_name from '(?i)sig/(.*)')) as sig
+        from
+            gha_issues_labels il,
+            pr_with_last_issue_event i
+        where
+            il.event_id = i.last_issue_event_id
+    ) sub
+    where
+        sig is not null
+        and sig in (select sig_mentions_labels_name from tsig_mentions_labels)
+), pr_tdiff as (
+    select
+        pr.pr_key,
+        repo_name,
+        number,
         r.repo_group,
-        case when aa.company_name = 'PingCAP' then 'is-top-contributing-company'
-             when lower(pr.dup_user_login) like any(array[
+        coalesce(l.sig, 'non-category') as sig,
+        -- So far, PingCAP is the company with the largest contribution to the TiDB community,
+        -- but other companies may still become the company with the largest contribution.
+        case when aa.company_name = 'PingCAP' then 'top-contrib'
+             when lower(pr.author_login) like any(array[
                 'dependabot', 'ti-srebot', 'codecov-io', 'web-flow',  'prowbot', 'travis%bot', 'k8s-%', '%-bot',
                 '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot',
                 '%-testing', 'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%cibot', '%-ci'
              ]) then 'only-bots'
-             else 'not-top-contributing-company'
+             else 'other-company'
         end as author_type,
-        pr.created_at,
-        pr.merged_at as merged_at
-    from
-        gha_repos r,
-        gha_pull_requests pr
-    left join
-        gha_actors_affiliations aa
-    on
-        aa.actor_id = pr.user_id
-        and aa.dt_from <= pr.created_at
-        and aa.dt_to > pr.created_at
-    where
-        r.id = pr.dup_repo_id
-        and r.name = pr.dup_repo_name
-        and r.repo_group is not null
-        and pr.merged_at is not null
-        and pr.created_at >= '{{from}}'
-        and pr.created_at < '{{to}}'
-        -- Select the latest pr event.
-        and pr.event_id = (
-            select i.event_id from gha_pull_requests i where i.id = pr.id order by i.updated_at desc limit 1
-        )
-), prs_sigs_label as (
-    select
-      distinct sub.id,
-      sub.sig
-    from (
-      select
-        p.id,
-        lower(substring(il.dup_label_name from '(?i)sig/(.*)')) as sig
-      from
-        gha_issues_labels il,
-        prs p
-      where
-        il.dup_repo_name = p.repo_name
-        and il.dup_issue_number = p.number
-      ) sub
-    where
-      sub.sig is not null
-      and sub.sig in (select sig_mentions_labels_name from tsig_mentions_labels)
-), prs_with_sigs as (
-    select
-        pr.event_id,
-        pr.id,
-        pr.repo_name,
-        psl.sig,
-        pr.number,
-        pr.created_at,
-        pr.merged_at,
-        author_type
+        extract(epoch from pr.merged_at - pr.created_at) / 3600 as open_to_merge
     from
         prs pr
+    -- Notice: A PR belongs to only one repo group.
     left join
-        prs_sigs_label psl
+        gha_repos r
     on
-        pr.id = psl.id
-), prs_groups_with_sigs as (
-    select
-        pr.event_id,
-        pr.id,
-        pr.repo_group,
-        pr.repo_name,
-        psl.sig,
-        pr.number,
-        pr.created_at,
-        pr.merged_at,
-        author_type
-    from
-        prs_groups pr
+        repo_id = r.id
+        and repo_name = r.name
+    -- Notice: The author of the PR may belong to multiple companies at the same time.
     left join
-        prs_sigs_label psl
+        gha_actors_affiliations aa
     on
-        pr.id = psl.id
-), tdiffs as (
-    select
-        id,
-        sig,
-        author_type,
-        extract(epoch from merged_at - created_at) / 3600 as open_to_merge
-    from
-        prs_with_sigs ps
-), tdiffs_groups as (
-    select
-        id,
-        sig,
-        repo_group,
-        author_type,
-        extract(epoch from merged_at - created_at) / 3600 as open_to_merge
-    from
-        prs_groups_with_sigs
+        aa.actor_id = pr.author_id
+        and aa.dt_from <= pr.created_at
+        and aa.dt_to > pr.created_at
+    -- Notice: A PR may belong to multiple SIGs.
+    left join
+        pr_sig_labels l
+    on
+        pr.pr_key = l.pr_key
 )
 -- all repository, all author type, all sig.
 select
@@ -143,7 +112,13 @@ select
     percentile_disc(0.5) within group (order by open_to_merge asc) as open_to_merge_median,
     percentile_disc(0.85) within group (order by open_to_merge asc) as open_to_merge_85_percentile
 from
-    tdiffs
+    (
+        select
+            distinct on (pr_key)
+            open_to_merge
+        from
+            pr_tdiff
+    ) sub
 -- all repository, author type group, all sig.
 union
 (
@@ -153,7 +128,14 @@ union
         percentile_disc(0.5) within group (order by open_to_merge asc) as open_to_merge_median,
         percentile_disc(0.85) within group (order by open_to_merge asc) as open_to_merge_85_percentile
     from
-        tdiffs
+        (
+            select
+                distinct on (pr_key || author_type)
+                author_type,
+                open_to_merge
+            from
+                pr_tdiff
+        ) sub
     where
         author_type is not null
     group by
@@ -168,7 +150,14 @@ union
         percentile_disc(0.5) within group (order by open_to_merge asc) as open_to_merge_median,
         percentile_disc(0.85) within group (order by open_to_merge asc) as open_to_merge_85_percentile
     from
-        tdiffs_groups
+        (
+            select
+                distinct on (pr_key || repo_group)
+                repo_group,
+                open_to_merge
+            from
+                pr_tdiff
+        ) sub
     where
         repo_group is not null
     group by
@@ -186,7 +175,15 @@ union
         percentile_disc(0.5) within group (order by open_to_merge asc) as open_to_merge_median,
         percentile_disc(0.85) within group (order by open_to_merge asc) as open_to_merge_85_percentile
     from
-        tdiffs_groups
+        (
+            select
+                distinct on (pr_key || repo_group || author_type)
+                repo_group,
+                author_type,
+                open_to_merge
+            from
+                pr_tdiff
+        ) sub
     where
         author_type is not null
         and repo_group is not null
@@ -206,7 +203,14 @@ union
         percentile_disc(0.5) within group (order by open_to_merge asc) as open_to_merge_median,
         percentile_disc(0.85) within group (order by open_to_merge asc) as open_to_merge_85_percentile
     from
-        tdiffs
+        (
+            select
+                distinct on (pr_key || sig)
+                sig,
+                open_to_merge
+            from
+                pr_tdiff
+        ) sub
     where
         sig is not null
     group by
@@ -221,7 +225,15 @@ union
         percentile_disc(0.5) within group (order by open_to_merge asc) as open_to_merge_median,
         percentile_disc(0.85) within group (order by open_to_merge asc) as open_to_merge_85_percentile
     from
-        tdiffs
+        (
+            select
+                distinct on (pr_key || author_type || sig)
+                author_type,
+                sig,
+                open_to_merge
+            from
+                pr_tdiff
+        ) sub
     where
         author_type is not null
         and sig is not null
@@ -238,7 +250,15 @@ union
         percentile_disc(0.5) within group (order by open_to_merge asc) as open_to_merge_median,
         percentile_disc(0.85) within group (order by open_to_merge asc) as open_to_merge_85_percentile
     from
-        tdiffs_groups
+        (
+            select
+                distinct on (pr_key || repo_group || sig)
+                repo_group,
+                sig,
+                open_to_merge
+            from
+                pr_tdiff
+        ) sub
     where
         repo_group is not null
         and sig is not null
@@ -258,7 +278,16 @@ union
         percentile_disc(0.5) within group (order by open_to_merge asc) as open_to_merge_median,
         percentile_disc(0.85) within group (order by open_to_merge asc) as open_to_merge_85_percentile
     from
-        tdiffs_groups
+        (
+            select
+                distinct on (pr_key || repo_group || author_type || sig)
+                repo_group,
+                author_type,
+                sig,
+                open_to_merge
+            from
+                pr_tdiff
+        ) sub
     where
         author_type is not null
         and repo_group is not null
