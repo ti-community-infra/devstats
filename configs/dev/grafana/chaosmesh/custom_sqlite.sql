@@ -113,14 +113,14 @@ where
     'prs-merged-in-repository-groups',
     'prs-closed-in-repository-groups',
     'open-pr-age-by-repository-group',
-    'opened-to-merged',
     'pr-reviews-by-contributor',
-    'pr-time-to-engagement',
+    'pr-time-open-to-first-response',
     'prs-approval-repository-groups',
     'prs-authors-repository-groups',
     'prs-authors-table',
     'prs-mergers-table',
-    'time-to-merge-in-repository-groups'
+    'time-to-merge-in-repository-groups',
+    'stale-prs-by-sig'
   )
 ;
 
