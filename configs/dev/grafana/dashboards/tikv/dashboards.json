@@ -32,7 +32,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 15,
-  "iteration": 1624865133360,
+  "iteration": 1624876928457,
   "links": [
     {
       "icon": "dashboard",
@@ -160,7 +160,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Hourly [[full_name]] activity on GitHub",
+      "title": "Hourly activity on  [[full_name]]  GitHub Org",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -648,7 +648,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 5,
         "w": 12,
         "x": 12,
         "y": 54
@@ -687,7 +687,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 58
+        "y": 59
       },
       "id": 6,
       "links": [],
@@ -829,5 +829,5 @@
   "timezone": "",
   "title": "Dashboards",
   "uid": "8",
-  "version": 2
+  "version": 3
 }

@@ -27,11 +27,12 @@
       }
     ]
   },
+  "description": "",
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
   "id": 33,
-  "iteration": 1624865255635,
+  "iteration": 1624872215350,
   "links": [],
   "panels": [
     {
@@ -97,7 +98,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_percentile_85_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"85th percentile time\"\nfrom\n  spr_opened_to_merged_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series =  'open2merge_sig${repogroup}${author_type:raw}${sig:raw}p85'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"85th percentile time\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series =  'non_auth_sig${repogroup}${author_type:raw}${sig:raw}p85'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -131,7 +132,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Median time\"\nfrom\n  spr_opened_to_merged_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'open2merge_sig${repogroup}${author_type:raw}${sig:raw}med'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"Median time\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}${author_type:raw}${sig:raw}med'\norder by\n  time",
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -165,7 +166,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_percentile_15_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"15th percentile time\"\nfrom\n  spr_opened_to_merged_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'open2merge_sig${repogroup}${author_type:raw}${sig:raw}p15'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"15th percentile time\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}${author_type:raw}${sig:raw}p15'\norder by\n  time",
           "refId": "C",
           "resultFormat": "time_series",
           "select": [
@@ -193,7 +194,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "PR Time opened to megred (${repogroup_name}, ${period}, ${sig} SIG)",
+      "title": "PR Time opened to first response by non-author (${repogroup_name}, ${period}, ${sig} SIG)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -247,7 +248,7 @@
         "x": 0,
         "y": 13
       },
-      "id": 4,
+      "id": 3,
       "links": [],
       "pageSize": 10,
       "scroll": true,
@@ -305,7 +306,7 @@
           "policy": "default",
           "query": "SELECT \"descr\" FROM \"non_author_[[repogroup]]_percentile_15_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time as \"Time\",\n  descr as \"15th percentile\"\nfrom\n  spr_opened_to_merged_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'open2merge_sig${repogroup}${author_type:raw}${sig:raw}p15'\norder by\n  time",
+          "rawSql": "select\n  time as \"Time\",\n  descr as \"15th percentile\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}${author_type:raw}${sig:raw}p15'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -356,7 +357,7 @@
           "policy": "default",
           "query": "SELECT \"descr\" FROM \"non_author_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time as \"Time\",\n  descr as \"Median\"\nfrom\n  spr_opened_to_merged_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'open2merge_sig${repogroup}${author_type:raw}${sig:raw}med'\norder by\n  time",
+          "rawSql": "select\n  time as \"Time\",\n  descr as \"Median\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}${author_type:raw}${sig:raw}med'\norder by\n  time",
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -407,7 +408,7 @@
           "policy": "default",
           "query": "SELECT \"descr\" FROM \"non_author_[[repogroup]]_percentile_85_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time as \"Time\",\n  descr as \"85th percentile\"\nfrom\n  spr_opened_to_merged_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'open2merge_sig${repogroup}${author_type:raw}${sig:raw}p85'\norder by\n  time",
+          "rawSql": "select\n  time as \"Time\",\n  descr as \"85th percentile\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}${author_type:raw}${sig:raw}p85'\norder by\n  time",
           "refId": "C",
           "resultFormat": "time_series",
           "select": [
@@ -435,7 +436,7 @@
           ]
         }
       ],
-      "title": "PR Time opened to merged (${repogroup_name}, ${period}, ${sig} SIG)",
+      "title": "PR Time opened to first response by non-author (${repogroup_name}, ${period}, ${sig} SIG)",
       "transform": "timeseries_to_rows",
       "type": "table-old"
     },
@@ -462,7 +463,7 @@
         "y": 24
       },
       "hiddenSeries": false,
-      "id": 6,
+      "id": 13,
       "legend": {
         "alignAsTable": true,
         "avg": true,
@@ -503,7 +504,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"From the top contributing company\"\nfrom\n  spr_opened_to_merged_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'open2merge_sig${repogroup}topcontrib${sig:raw}med'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"From the top contributing company\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}topcontrib${sig:raw}med'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -537,7 +538,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_percentile_15_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"From not top contributing company\"\nfrom\n  spr_opened_to_merged_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'open2merge_sig${repogroup}othercompany${sig:raw}med'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"From not top contributing company\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}othercompany${sig:raw}med'\norder by\n  time",
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -566,7 +567,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"From Bots\"\nfrom\n  spr_opened_to_merged_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'open2merge_sig${repogroup}onlybots${sig:raw}med'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"From Bots\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}onlybots${sig:raw}med'\norder by\n  time",
           "refId": "C",
           "select": [
             [
@@ -638,7 +639,7 @@
   "style": "dark",
   "tags": [
     "dashboard",
-    "chaosmesh",
+    "tikv",
     "active",
     "PRs"
   ],
@@ -648,8 +649,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "Chaos Mesh",
-          "value": "Chaos Mesh"
+          "text": "TiKV",
+          "value": "TiKV"
         },
         "datasource": "psql",
         "definition": "",
@@ -675,7 +676,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "7 Days MA",
           "value": "d7"
         },
@@ -714,6 +715,7 @@
           }
         ],
         "query": "d7,w,m,q,y",
+        "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
       },
@@ -776,7 +778,7 @@
       {
         "allValue": "all",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -804,7 +806,7 @@
       {
         "allValue": "all",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -874,7 +876,7 @@
     ]
   },
   "timezone": "",
-  "title": "PR Time Opened to Merged",
-  "uid": "16",
-  "version": 2
+  "title": "PR Time Open to First Response",
+  "uid": "10",
+  "version": 13
 }
