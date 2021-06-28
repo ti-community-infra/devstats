@@ -39,6 +39,7 @@ set
   )
 where
   slug in (
+    'weekly-report',
     'activity-repository-groups',
     'countries-statistics-in-repository-groups',
     'github-events',
@@ -115,6 +116,7 @@ where
     'open-pr-age-by-repository-group',
     'pr-reviews-by-contributor',
     'pr-time-open-to-first-response',
+    'pr-time-opened-to-merged',
     'prs-approval-repository-groups',
     'prs-authors-repository-groups',
     'prs-authors-table',
