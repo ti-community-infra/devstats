@@ -31,7 +31,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 14,
-  "iteration": 1620637965237,
+  "iteration": 1620636870116,
   "links": [],
   "panels": [
     {
@@ -448,7 +448,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "Quarter",
           "value": "Quarter"
         },

@@ -17,7 +17,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 16,
-  "iteration": 1621946901655,
+  "iteration": 1624873230622,
   "links": [],
   "panels": [
     {
@@ -135,7 +135,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n    and (\n      '[[exclude_top_contribuing_company]]' = false\n      or ('[[exclude_top_contribuing_company]]' = true and split_part(name, '$$$', 2) != 'PingCAP')\n    )\n) sub",
+          "rawSql": "select \n  count(distinct lower(split_part(sub.name, '$$$', 1)))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n    and (\n      '[[exclude_top_contribuing_company]]' = false\n      or ('[[exclude_top_contribuing_company]]' = true and split_part(name, '$$$', 2) != 'PingCAP')\n    )\n) sub",
           "refId": "count-gt-0",
           "select": [
             [
@@ -164,7 +164,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n    and (\n      '[[exclude_top_contribuing_company]]' = false\n      or ('[[exclude_top_contribuing_company]]' = true and split_part(name, '$$$', 2) != 'PingCAP')\n    )\n    and value > 1\n) sub",
+          "rawSql": "select \n  count(distinct lower(split_part(sub.name, '$$$', 1)))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n    and (\n      '[[exclude_top_contribuing_company]]' = false\n      or ('[[exclude_top_contribuing_company]]' = true and split_part(name, '$$$', 2) != 'PingCAP')\n    )\n    and value > 1\n) sub",
           "refId": "count-gt-1",
           "select": [
             [
@@ -193,7 +193,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n    and (\n      '[[exclude_top_contribuing_company]]' = false\n      or ('[[exclude_top_contribuing_company]]' = true and split_part(name, '$$$', 2) != 'PingCAP')\n    )\n    and value > 4\n) sub",
+          "rawSql": "select \n  count(distinct lower(split_part(sub.name, '$$$', 1)))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n    and (\n      '[[exclude_top_contribuing_company]]' = false\n      or ('[[exclude_top_contribuing_company]]' = true and split_part(name, '$$$', 2) != 'PingCAP')\n    )\n    and value > 4\n) sub",
           "refId": "count-gt-4",
           "select": [
             [
@@ -221,7 +221,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n    and (\n      '[[exclude_top_contribuing_company]]' = false\n      or ('[[exclude_top_contribuing_company]]' = true and split_part(name, '$$$', 2) != 'PingCAP')\n    )\n    and value > 8\n) sub",
+          "rawSql": "select \n  count(distinct lower(split_part(sub.name, '$$$', 1)))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and ('[[companies:csv]]' = 'null' or split_part(name, '$$$', 2) in ([[companies]]))\n    and (\n      '[[exclude_top_contribuing_company]]' = false\n      or ('[[exclude_top_contribuing_company]]' = true and split_part(name, '$$$', 2) != 'PingCAP')\n    )\n    and value > 8\n) sub",
           "refId": "count-gt-8",
           "select": [
             [
@@ -283,7 +283,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "PingCAP"
+                "value": "The top contributing company"
               },
               {
                 "id": "color",
@@ -302,7 +302,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Not PingCAP"
+                "value": "Other companies"
               },
               {
                 "id": "color",
@@ -350,7 +350,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        split_part(name, '$$$', 2) = 'PingCAP'\n    )\n) sub",
+          "rawSql": "select \n  count(distinct lower(split_part(sub.name, '$$$', 1)))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        split_part(name, '$$$', 2) = 'PingCAP'\n    )\n) sub",
           "refId": "pingcap",
           "select": [
             [
@@ -379,7 +379,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select \n  count(distinct split_part(sub.name, '$$$', 1))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        split_part(name, '$$$', 2) != 'PingCAP'\n    )\n) sub",
+          "rawSql": "select \n  count(distinct lower(split_part(sub.name, '$$$', 1)))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        split_part(name, '$$$', 2) != 'PingCAP'\n    )\n) sub",
           "refId": "notpingcap",
           "select": [
             [
@@ -522,7 +522,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "PingCAP"
+                "value": "The top contributing company"
               }
             ]
           },
@@ -534,7 +534,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Not PingCAP"
+                "value": "Other companies"
               }
             ]
           }
@@ -817,7 +817,7 @@
         }
       ],
       "timeFrom": null,
-      "title": "[[full_name]] Developers statistics ([[metric]], Range: [[period_name]], Repository group: [[repogroup_name]]), bots excluded",
+      "title": "Developers statistics in [[full_name]]  Org ([[metric]], Range: [[period_name]], Repository group: [[repogroup_name]]), bots excluded",
       "transformations": [
         {
           "id": "merge",
@@ -1205,7 +1205,6 @@
         "allValue": "null",
         "current": {
           "selected": true,
-          "tags": [],
           "text": [
             "All"
           ],

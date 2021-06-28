@@ -1108,8 +1108,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "ChaosMesh",
-          "value": "ChaosMesh"
+          "text": "Chaos Mesh",
+          "value": "Chaos Mesh"
         },
         "datasource": null,
         "definition": "select value_s from gha_vars where name = 'full_name'",

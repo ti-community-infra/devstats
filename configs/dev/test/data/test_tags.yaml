@@ -5,3 +5,8 @@ tags:
     series_name: all_users
     name_tag: users_name
     limit: 4028
+  - name: SIG mentions using labels
+    sql: sig_mentions_labels_sigs_tags
+    series_name: sig_mentions_labels
+    name_tag: sig_mentions_labels_name
+    value_tag: sig_mentions_labels_value

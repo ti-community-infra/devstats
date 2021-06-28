@@ -33,7 +33,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 47,
-  "iteration": 1620638019186,
+  "iteration": 1620636968544,
   "links": [],
   "panels": [
     {
@@ -518,6 +518,7 @@
         "allValue": "",
         "current": {
           "selected": true,
+          "tags": [],
           "text": [
             "All"
           ],

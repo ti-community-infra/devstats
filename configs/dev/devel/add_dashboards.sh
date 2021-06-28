@@ -20,7 +20,7 @@ getFullname()
   fi
   if [ "$1" = "chaosmesh" ]
   then
-    fullname="ChaosMesh"
+    fullname="Chaos Mesh"
   fi
 
   echo $fullname

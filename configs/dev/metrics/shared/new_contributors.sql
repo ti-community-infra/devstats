@@ -16,6 +16,7 @@ from
 where
   created_at >= '{{from}}'
   and created_at < '{{to}}'
+  and (lower(dup_user_login) {{exclude_bots}})
   and user_id not in (select user_id from prev)
 union
 -- Repository group.

@@ -68,6 +68,22 @@ metrics:
     desc: time_diff_as_string
     merge_series: first_non_author
     drop: sfirst_non_author
+  - name: Awaiting PRs by SIG and repository
+    series_name_or_func: multi_row_multi_column
+    sql: awaiting_prs_by_sig_repos
+    periods: d
+    merge_series: awaiting_prs_by_sig_repos
+    multi_value: true
+    drop: sawaiting_prs_by_sig_repos
+  - name: Inactive PRs by SIG and repository
+    series_name_or_func: multi_row_multi_column
+    sql: inactive_prs_by_sig_repos
+    periods: d
+    merge_series: inactive_prs_by_sig_repos
+    multi_value: true
+    drop: sinactive_prs_by_sig_repos
+    env:
+      GHA2DB_NCPUS?: 8
   - name: PRs age
     series_name_or_func: multi_row_multi_column
     sql: prs_age

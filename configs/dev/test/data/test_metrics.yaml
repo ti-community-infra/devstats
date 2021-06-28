@@ -1,52 +1,85 @@
 ---
 metrics:
   # Contributor
-  - name: New and episodic PR contributors
-    series_name_or_func: multi_row_multi_column
-    sql: episodic_contributors
-    periods: d,w,m,q,y
-    aggregate: 1,28
-    skip: d,w28,m28,q28,y28
-    merge_series: episodic_contributors
-    drop: sepisodic_contributors
+
+  # - name: New and episodic PR contributors
+  #   series_name_or_func: multi_row_multi_column
+  #   sql: episodic_contributors
+  #   periods: d,w,m,q,y
+  #   aggregate: 1,28
+  #   skip: d,w28,m28,q28,y28
+  #   merge_series: episodic_contributors
+  #   drop: sepisodic_contributors
     
-  - name: New and episodic PR contributors
+  # - name: New and episodic PR contributors
+  #   series_name_or_func: multi_row_multi_column
+  #   sql: new_contributors
+  #   periods: d,w,m,q,y
+  #   aggregate: 1,28
+  #   skip: d,w28,m28,q28,y28
+  #   merge_series: new_contributors
+  #   drop: snew_contributors
+
+  # PR
+
+  # - name: PR opened to merged group by SIG
+  #   series_name_or_func: multi_row_multi_column
+  #   sql: pr_opened_to_merged_sig
+  #   periods: d,w,m,q,y
+  #   aggregate: 1,7
+  #   skip: d,w7,m7,q7,y7
+  #   desc: time_diff_as_string
+  #   merge_series: pr_opened_to_merged_sig
+  #   drop: spr_opened_to_merged_sig
+
+  - name: Stale PRs by SIG
     series_name_or_func: multi_row_multi_column
-    sql: new_contributors
-    periods: d,w,m,q,y
-    aggregate: 1,28
-    skip: d,w28,m28,q28,y28
-    merge_series: new_contributors
-    drop: snew_contributors
+    sql: pr_stale_by_sig
+    periods: d
+    merge_series: pr_stale_by_sig
+    multi_value: true
+    drop: spr_stale_by_sig
+    env:
+      GHA2DB_NCPUS?: 8
+
+  #  - name: PR first non-author activity group by sig
+  #    series_name_or_func: multi_row_multi_column
+  #    sql: pr_first_non_author_activity_sig
+  #    periods: d,w,m,q,y
+  #    aggregate: 1,7
+  #    skip: d,w7,m7,q7,y7
+  #    desc: time_diff_as_string
+  #    merge_series: pr_first_non_author_activity_sig
+  #    drop: spr_first_non_author_activity_sig
 
   # PR Count
 
-  - name: PRs opened group by company
-    series_name_or_func: multi_row_single_column
-    sql: pr_opened_company
-    periods: d,w,m,q,y
-    aggregate: 1,7
-    skip: w7,m7,q7,y7
-    merge_series: pr_opened_company
-    drop: spr_opened_company
+  # - name: PRs opened group by company
+  #   series_name_or_func: multi_row_single_column
+  #   sql: pr_opened_company
+  #   periods: d,w,m,q,y
+  #   aggregate: 1,7
+  #   skip: w7,m7,q7,y7
+  #   merge_series: pr_opened_company
+  #   drop: spr_opened_company
 
-  - name: PRs closed group by company
-    series_name_or_func: multi_row_single_column
-    sql: pr_closed_company
-    periods: d,w,m,q,y
-    aggregate: 1,7
-    skip: w7,m7,q7,y7
-    merge_series: pr_closed_company
-    drop: spr_closed_company
+  # - name: PRs closed group by company
+  #   series_name_or_func: multi_row_single_column
+  #   sql: pr_closed_company
+  #   periods: d,w,m,q,y
+  #   aggregate: 1,7
+  #   skip: w7,m7,q7,y7
+  #   merge_series: pr_closed_company
+  #   drop: spr_closed_company
 
-  - name: PRs merged group by company
-    series_name_or_func: multi_row_single_column
-    sql: pr_merged_company
-    periods: d,w,m,q,y
-    aggregate: 1,7
-    skip: w7,m7,q7,y7
-    merge_series: pr_merged_company
-    drop: spr_merged_company
+  # - name: PRs merged group by company
+  #   series_name_or_func: multi_row_single_column
+  #   sql: pr_merged_company
+  #   periods: d,w,m,q,y
+  #   aggregate: 1,7
+  #   skip: w7,m7,q7,y7
+  #   merge_series: pr_merged_company
+  #   drop: spr_merged_company
 
   # Issue
 
