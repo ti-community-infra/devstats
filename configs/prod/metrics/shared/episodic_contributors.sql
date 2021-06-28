@@ -6,6 +6,7 @@ with prev as (
   where
     created_at >= date '{{from}}' - '3 months'::interval
     and created_at < '{{from}}'
+    and (lower(dup_user_login) {{exclude_bots}})
 ), prev_cnt as (
   select 
     user_id, 
@@ -14,6 +15,7 @@ with prev as (
     gha_pull_requests
   where
     created_at < '{{from}}'
+    and (lower(dup_user_login) {{exclude_bots}})
   group by
     user_id
 )
