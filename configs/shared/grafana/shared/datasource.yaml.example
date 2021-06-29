@@ -12,7 +12,7 @@ datasources:
     editable: true
     jsonData:
       sslmode: disable
-      postgresVersion: 1000
+      postgresVersion: 1100
       timeInterval: 1h
     secureJsonData:
       password: {{PG_PASS}}
@@ -26,7 +26,7 @@ datasources:
     editable: true
     jsonData:
       sslmode: disable
-      postgresVersion: 1000
+      postgresVersion: 1100
       timeInterval: 1h
     secureJsonData:
       password: {{PG_PASS}}
@@ -40,7 +40,7 @@ datasources:
     editable: true
     jsonData:
       sslmode: disable
-      postgresVersion: 1000
+      postgresVersion: 1100
       timeInterval: 1h
     secureJsonData:
       password: {{PG_PASS}}
@@ -54,7 +54,7 @@ datasources:
     editable: true
     jsonData:
       sslmode: disable
-      postgresVersion: 1000
+      postgresVersion: 1100
       timeInterval: 1h
     secureJsonData:
       password: {{PG_PASS}}

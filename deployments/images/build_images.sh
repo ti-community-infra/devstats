@@ -30,6 +30,7 @@ cwd="$(pwd)"
 # Configuration file directory.
 DEV_CONFIG_DIR="${cwd}/configs/dev"
 PROD_CONFIG_DIR="${cwd}/configs/prod"
+SHARED_CONFIG_DIR="${cwd}/configs/shared"
 
 # Submodule directory.
 DEVSTATS_DIR="${cwd}/devstats"
@@ -49,16 +50,10 @@ DEVSTATS_DOCKER_IMAGES_TAR="${TEMP_DIR}/devstats-docker-images.tar"
 GRAFANA_BIN_TAR="${TEMP_DIR}/grafana-bins.tar"
 API_SERVER_BIN_TAR="${TEMP_DIR}/api-bins.tar"
 
-# The path to static file package.
-HTML_FILES="${TEMP_DIR}/index_*.html"
-SVG_FILES="${TEMP_DIR}/*.svg"
-
 # The path to config file package.
 DEV_CONFIG_TAR="${TEMP_DIR}/devstats-config-dev.tar"
 PROD_CONFIG_TAR="${TEMP_DIR}/devstats-config-prod.tar"
-
-DEV_GRAFANA_CONFIG_TAR="${TEMP_DIR}/devstats-grafana-config-dev.tar"
-PROD_GRAFANA_CONFIG_TAR="${TEMP_DIR}/devstats-grafana-config-prod.tar"
+GRAFANA_CONFIG_TAR="${TEMP_DIR}/devstats-grafana-config.tar"
 
 DEV_API_CONFIG_TAR="${TEMP_DIR}/devstats-api-config-dev.tar"
 PROD_API_CONFIG_TAR="${TEMP_DIR}/devstats-api-config-prod.tar"
@@ -107,9 +102,9 @@ tar cf "$DEVSTATS_REPORTS_TAR" sh sql affs rep contributors velocity find.sh || 
 # Package the files in devstats repository for common config.
 cd "$DEVSTATS_DIR" || exit 7
 
-if [ -n "$DEVSTATS_TAR" ] && [ -n "$HTML_FILES" ] && [ -n "$SVG_FILES" ]
+if [ -n "$DEVSTATS_TAR" ]
 then
-  rm -f "$DEVSTATS_TAR" "$HTML_FILES" "$SVG_FILES" 2>/dev/null
+  rm -f "$DEVSTATS_TAR" 2>/dev/null
 fi
 
 tar cf "$DEVSTATS_TAR" hide git metrics devel shared scripts partials cron docs jsons/.keep util_sql util_sh github_users.json companies.yaml skip_dates.yaml  || exit 8
@@ -118,7 +113,6 @@ tar cf "$DEVSTATS_TAR" hide git metrics devel shared scripts partials cron docs 
 cd "$DEVSTATS_DIR" || exit 7
 
 cp apache/www/index_*.html "${TEMP_DIR}/" || exit 22
-cp grafana/img/*.svg "${TEMP_DIR}/" || exit 32
 
 # Package the files in devstats-docker-images repository.
 cd "$DEPLOYMENT_DOCKER_IMAGES_DIR" || exit 10
@@ -145,7 +139,6 @@ then
   cd "$DEV_CONFIG_DIR" || exit 61
 
   tar rf "$DEV_CONFIG_TAR" pingcap tikv chaosmesh metrics partials scripts devel docs shared projects.yaml
-  tar rf "$DEV_GRAFANA_CONFIG_TAR" grafana/*
   tar cf "$DEV_API_CONFIG_TAR" projects.yaml
 fi
 
@@ -156,8 +149,15 @@ then
   cd "$PROD_CONFIG_DIR" || exit 62
 
   tar rf "$PROD_CONFIG_TAR" pingcap tikv chaosmesh metrics partials scripts devel docs shared projects.yaml
-  tar rf "$PROD_GRAFANA_CONFIG_TAR" grafana/*
   tar cf "$PROD_API_CONFIG_TAR" projects.yaml
+fi
+
+# Package the grafana config file.
+if [ -z "$SKIP_GRAFANA" ]
+then
+  cd "$SHARED_CONFIG_DIR" || exit 62
+
+  tar cf "$GRAFANA_CONFIG_TAR" grafana/*
 fi
 
 #
@@ -192,14 +192,7 @@ fi
 
 if [ -z "$SKIP_GRAFANA" ]
 then
-  if [ -z "$SKIP_TEST" ]
-  then
-    docker build -f Dockerfile.grafana.dev -t "${DOCKER_USER}/devstats-grafana-dev:${IMAGE_TAG}" . || exit 14
-  fi
-  if [ -z "$SKIP_PROD" ]
-  then
-    docker build -f Dockerfile.grafana.prod -t "${DOCKER_USER}/devstats-grafana-prod:${IMAGE_TAG}" . || exit 36
-  fi
+  docker build -f Dockerfile.grafana -t "${DOCKER_USER}/devstats-grafana:${IMAGE_TAG}" . || exit 36
 fi
 
 if [ -z "$SKIP_TESTS" ]
