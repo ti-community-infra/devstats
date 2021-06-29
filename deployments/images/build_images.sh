@@ -157,7 +157,7 @@ if [ -z "$SKIP_GRAFANA" ]
 then
   cd "$SHARED_CONFIG_DIR" || exit 62
 
-  tar cf "$GRAFANA_CONFIG_TAR" grafana/*
+  tar cf "$GRAFANA_CONFIG_TAR" grafana
 fi
 
 #
