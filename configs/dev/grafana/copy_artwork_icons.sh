@@ -4,54 +4,9 @@
 . ./devel/all_projs.sh || exit 2
 for proj in $all
 do
-  if ( [ "$proj" = "opencontainers" ] || [ "$proj" = "cdf" ] || [ "$proj" = "prestodb" ] || [ "$proj" = "godotengine" ] )
-  then
-    continue
-  fi
   suff=$proj
   icon=$proj
   mid="icon"
-  if [ "$suff" = "kubernetes" ]
-  then
-    suff="k8s"
-  fi
-  if [ "$icon" = "all" ]
-  then
-    icon="cncf"
-  fi
-  if [ "$icon" = "allcdf" ]
-  then
-    icon="cdf"
-  fi
-  if [ "$icon" = "intoto" ]
-  then
-    icon="in-toto"
-  fi
-  if [ "$icon" = "smi" ]
-  then
-    icon="servicemeshinterface"
-  fi
-  if [ "$icon" = "litmuschaos" ]
-  then
-    icon="litmus"
-  fi
-  if [ "$icon" = "certmanager" ]
-  then
-    icon="cert-manager"
-  fi
-  if [ "$icon" = "kubeovn" ]
-  then
-    icon="kube-ovn"
-  fi
-  if [ "$icon" = "gitops" ]
-  then
-    icon="opengitops"
-  fi
-  # TODO: remove when we have icons
-  if ( [ "$icon" = "wasmedge" ] || [ "$icon" = "chaosblade" ] || [ "$icon" = "vineyard" ] || [ "$icon" = "antrea" ] || [ "$icon" = "fluid" ] || [ "$icon" = "submariner" ] || [ "$icon" = "emissaryingress" ] || [ "$icon" = "ingraind" ] || [ "$icon" = "trickster" ] || [ "$icon" = "k8dash" ] || [ "$icon" = "distribution" ] || [ "$icon" = "cnigenie" ] || [ "$icon" = "istio" ] || [ "$icon" = "knative" ] || [ "$icon" = "contrib" ] || [ "$icon" = "sam" ] || [ "$icon" = "azf" ] || [ "$icon" = "riff" ] || [ "$icon" = "fn" ] || [ "$icon" = "openwhisk" ] || [ "$icon" = "openfaas" ] || [ "$icon" = "cii" ] )
-  then
-    icon="cncf"
-  fi
   icontype=`./devel/get_icon_type.sh "$proj"` || exit 1
   iconorg=`./devel/get_icon_source.sh "$proj"` || exit 18
   path=$icon
@@ -93,33 +48,5 @@ do
   cp grafana/img/*.svg "/usr/share/grafana.$suff/public/img/projects/" || exit 18
 
 done
-
-# Special cases
-# Special OCI case (not a CNCF project)
-if [[ $all = *"opencontainers"* ]]
-then
-  cp ./images/OCI.svg /usr/share/grafana.opencontainers/public/img/grafana_icon.svg || exit 14
-  cp ./images/OCI.svg /usr/share/grafana.opencontainers/public/img/grafana_com_auth_icon.svg || exit 15
-  cp ./images/OCI.svg /usr/share/grafana.opencontainers/public/img/grafana_net_logo.svg || exit 16
-  cp ./images/OCI.svg /usr/share/grafana.opencontainers/public/img/grafana_mask_icon.svg || exit 17
-fi
-
-# Special Presto DB case (not a CNCF project)
-if [[ $all = *"prestodb"* ]]
-then
-  cp ./images/presto-logo-stacked.svg /usr/share/grafana.prestodb/public/img/grafana_icon.svg || exit 19
-  cp ./images/presto-logo-stacked.svg /usr/share/grafana.prestodb/public/img/grafana_com_auth_icon.svg || exit 20
-  cp ./images/presto-logo-stacked.svg /usr/share/grafana.prestodb/public/img/grafana_net_logo.svg || exit 21
-  cp ./images/presto-logo-stacked.svg /usr/share/grafana.prestodb/public/img/grafana_mask_icon.svg || exit 22
-fi
-
-# Special Godot Engine case (not a CNCF project)
-if [[ $all = *"godotengine"* ]]
-then
-  cp ./images/godotengine-logo-stacked.svg /usr/share/grafana.godotengine/public/img/grafana_icon.svg || exit 23
-  cp ./images/godotengine-logo-stacked.svg /usr/share/grafana.godotengine/public/img/grafana_com_auth_icon.svg || exit 24
-  cp ./images/godotengine-logo-stacked.svg /usr/share/grafana.godotengine/public/img/grafana_net_logo.svg || exit 25
-  cp ./images/godotengine-logo-stacked.svg /usr/share/grafana.godotengine/public/img/grafana_mask_icon.svg || exit 26
-fi
 
 echo 'OK'
