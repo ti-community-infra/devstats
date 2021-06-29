@@ -14,7 +14,6 @@ ADD temp/devstats-docker-images.tar .
 ADD temp/grafana-bins.tar .
 
 ADD temp/devstats-config-prod.tar .
-ADD temp/devstats-grafana-config-prod.tar .
 
 RUN cp replacer patches/patch.sh /usr/bin/
 # TODO: Patch the link.
