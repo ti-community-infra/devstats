@@ -43,7 +43,6 @@ TEMP_DIR="${cwd}/deployments/images/temp"
 # The path to devstats packages.
 DEVSTATS_TAR="${TEMP_DIR}/devstats.tar"
 DEVSTATS_CODE_TAR="${TEMP_DIR}/devstatscode.tar"
-DEVSTATS_GRAFANA_TAR="${TEMP_DIR}/devstats-grafana.tar"
 DEVSTATS_REPORTS_TAR="${TEMP_DIR}/devstats-reports.tar"
 DEVSTATS_DOCKER_IMAGES_TAR="${TEMP_DIR}/devstats-docker-images.tar"
 
@@ -108,13 +107,12 @@ tar cf "$DEVSTATS_REPORTS_TAR" sh sql affs rep contributors velocity find.sh || 
 # Package the files in devstats repository for common config.
 cd "$DEVSTATS_DIR" || exit 7
 
-if [ -n "$DEVSTATS_TAR" ] && [ -n "$DEVSTATS_GRAFANA_TAR" ] && [ -n "$HTML_FILES" ] && [ -n "$SVG_FILES" ]
+if [ -n "$DEVSTATS_TAR" ] && [ -n "$HTML_FILES" ] && [ -n "$SVG_FILES" ]
 then
-  rm -f "$DEVSTATS_TAR" "$DEVSTATS_GRAFANA_TAR" "$HTML_FILES" "$SVG_FILES" 2>/dev/null
+  rm -f "$DEVSTATS_TAR" "$HTML_FILES" "$SVG_FILES" 2>/dev/null
 fi
 
 tar cf "$DEVSTATS_TAR" hide git metrics devel shared scripts partials cron docs jsons/.keep util_sql util_sh github_users.json companies.yaml skip_dates.yaml  || exit 8
-tar cf "$DEVSTATS_GRAFANA_TAR" grafana/shared || exit 9
 
 # Copy static file to temp directory, for copying to the docker image.
 cd "$DEVSTATS_DIR" || exit 7
@@ -147,9 +145,7 @@ then
   cd "$DEV_CONFIG_DIR" || exit 61
 
   tar rf "$DEV_CONFIG_TAR" pingcap tikv chaosmesh metrics partials scripts devel docs shared projects.yaml
-  tar rf "$DEV_GRAFANA_CONFIG_TAR" grafana/img/*.svg grafana/img/*.png grafana/*/change_title_and_icons.sh grafana/*/grafana_start.sh grafana/dashboards/*/*.json
-  tar rf "$DEV_GRAFANA_CONFIG_TAR" grafana/*/custom_sqlite.sql
-  tar rf "$DEV_GRAFANA_CONFIG_TAR" grafana/shared/*
+  tar rf "$DEV_GRAFANA_CONFIG_TAR" grafana/*
   tar cf "$DEV_API_CONFIG_TAR" projects.yaml
 fi
 
@@ -160,9 +156,7 @@ then
   cd "$PROD_CONFIG_DIR" || exit 62
 
   tar rf "$PROD_CONFIG_TAR" pingcap tikv chaosmesh metrics partials scripts devel docs shared projects.yaml
-  tar rf "$PROD_GRAFANA_CONFIG_TAR" grafana/img/*.svg grafana/img/*.png grafana/*/change_title_and_icons.sh grafana/*/grafana_start.sh grafana/dashboards/*/*.json
-  tar rf "$PROD_GRAFANA_CONFIG_TAR" grafana/*/custom_sqlite.sql
-  tar rf "$PROD_GRAFANA_CONFIG_TAR" grafana/shared/*
+  tar rf "$PROD_GRAFANA_CONFIG_TAR" grafana/*
   tar cf "$PROD_API_CONFIG_TAR" projects.yaml
 fi
 
