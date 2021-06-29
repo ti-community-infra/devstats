@@ -24,7 +24,7 @@ then
     sqlitedb "./sqlite/grafana.$proj.db" || exit 2
 
     # Sort the keys of JSON files to reduce code changes.
-    rm -f grafana/dashboards/$proj/*.json || exit 4
+    rm -f ../shared/grafana/dashboards/$proj/*.json || exit 4
     if [ -z "${NOSORT}" ]
     then
       for f in sqlite/*.json
@@ -34,7 +34,7 @@ then
     fi
 
     # Copy the dashboard config file to the Grafana config folder.
-    mv sqlite/*.json grafana/dashboards/$proj/ || exit 6
+    mv sqlite/*.json ../shared/grafana/dashboards/$proj/ || exit 6
   done
 else
   # Only handle one project.
@@ -48,7 +48,7 @@ else
   sqlitedb "./sqlite/grafana.$proj.db" || exit 2
 
   # Sort the keys of JSON files to reduce code changes.
-  rm -f grafana/dashboards/$proj/*.json || exit 4
+  rm -f ../shared/grafana/dashboards/$proj/*.json || exit 4
   if [ -z "${NOSORT}" ]
   then
     for f in sqlite/*.json
@@ -58,7 +58,7 @@ else
   fi
 
   # Copy the dashboard config file to the Grafana config folder.
-  mv sqlite/*.json grafana/dashboards/$proj/ || exit 6
+  mv sqlite/*.json ../shared/grafana/dashboards/$proj/ || exit 6
 fi
 
 echo 'OK'

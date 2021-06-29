@@ -32,12 +32,16 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 51,
-  "iteration": 1624873188611,
+  "iteration": 1624976397352,
   "links": [],
   "panels": [
     {
       "collapsed": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -56,7 +60,7 @@
       "dashes": false,
       "datasource": "pingcap",
       "decimals": 0,
-      "description": "The Number of pull requests opened in PingCAP Org.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -88,19 +92,13 @@
       },
       "lines": false,
       "linewidth": 1,
-      "links": [
-        {
-          "targetBlank": true,
-          "title": "PRs Opened of PingCAP Org",
-          "url": "https://pingcap-devstats.tidb.io/d/15/prs-opened-in-repository-groups?orgId=1&${period:queryparam}&from=${__from}&to=${__to}"
-        }
-      ],
+      "links": [],
       "nullPointMode": "null",
       "options": {
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -227,7 +225,7 @@
       "dashes": false,
       "datasource": "pingcap",
       "decimals": 0,
-      "description": "The Number of new pull requests merged in PingCAP Org.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -265,7 +263,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -392,7 +390,7 @@
       "dashes": false,
       "datasource": "pingcap",
       "decimals": 0,
-      "description": "The Number of pull requests opened in TiDB Repo.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -424,18 +422,13 @@
       },
       "lines": false,
       "linewidth": 1,
-      "links": [
-        {
-          "title": "PRs opened in repository group",
-          "url": "https://pingcap-devstats.tidb.io/d/15/prs-opened-in-repository-groups?orgId=1&${period:queryparam}&from=${__from}&to=${__to}&var-repogroup_name=TiDB"
-        }
-      ],
+      "links": [],
       "nullPointMode": "null",
       "options": {
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -562,7 +555,7 @@
       "dashes": false,
       "datasource": "pingcap",
       "decimals": 0,
-      "description": "The Number of new pull requests merged in TIDB Repo.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -600,7 +593,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -725,9 +718,9 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pingcap",
+      "datasource": "tikv",
       "decimals": 0,
-      "description": "The Number of pull requests opened in PingCAP Repo.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -759,19 +752,13 @@
       },
       "lines": false,
       "linewidth": 1,
-      "links": [
-        {
-          "targetBlank": true,
-          "title": "PRs opened in repository group",
-          "url": "https://pingcap-devstats.tidb.io/d/15/prs-opened-in-repository-groups?orgId=1&${period:queryparam}&from=${__from}&to=${__to}&var-repogroup_name=PingCAP"
-        }
-      ],
+      "links": [],
       "nullPointMode": "null",
       "options": {
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -793,7 +780,7 @@
           "policy": "autogen",
           "query": "",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  pingcap.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companypingcapexcludebotsistop'\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  tikv.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companytikvexcludebotsistop'\n  and period = '[[period]]'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -822,7 +809,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  pingcap.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companypingcapexcludebotsnottop'\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  tikv.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companytikvexcludebotsnottop'\n  and period = '[[period]]'\norder by\n  time",
           "refId": "B",
           "select": [
             [
@@ -850,7 +837,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "PRs opened in  PingCAP Repo ([[period]])",
+      "title": "PRs opened in  TiKV Repo ([[period]])",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -896,9 +883,9 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pingcap",
+      "datasource": "tikv",
       "decimals": 0,
-      "description": "The Number of new pull requests merged in PingCAP Repo.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -936,7 +923,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -958,7 +945,7 @@
           "policy": "autogen",
           "query": "",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  pingcap.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companypingcapexcludebotsistop')\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  tikv.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companytikvexcludebotsistop')\n  and period = '[[period]]'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -987,7 +974,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  pingcap.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companypingcapexcludebotsnottop')\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  tikv.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companytikvexcludebotsnottop')\n  and period = '[[period]]'\norder by\n  time",
           "refId": "B",
           "select": [
             [
@@ -1015,7 +1002,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "PRs merged in PingCAP Repo ([[period]])",
+      "title": "PRs merged in TiKV Repo ([[period]])",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1061,9 +1048,9 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pingcap",
+      "datasource": "tikv",
       "decimals": 0,
-      "description": "The Number of pull requests opened in PD Repo.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -1095,19 +1082,13 @@
       },
       "lines": false,
       "linewidth": 1,
-      "links": [
-        {
-          "targetBlank": true,
-          "title": "PRs opened in repository group",
-          "url": "https://pingcap-devstats.tidb.io/d/15/prs-opened-in-repository-groups?orgId=1&${period:queryparam}&from=${__from}&to=${__to}&var-repogroup_name=pingcap/pd"
-        }
-      ],
+      "links": [],
       "nullPointMode": "null as zero",
       "options": {
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1129,7 +1110,7 @@
           "policy": "autogen",
           "query": "",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  pingcap.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companypingcappdexcludebotsistop'\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  tikv.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companytikvpdexcludebotsistop'\n  and period = '[[period]]'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1158,7 +1139,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  pingcap.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companypingcappdexcludebotsnottop'\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  tikv.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companytikvpdexcludebotsnottop'\n  and period = '[[period]]'\norder by\n  time",
           "refId": "B",
           "select": [
             [
@@ -1232,9 +1213,9 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pingcap",
+      "datasource": "tikv",
       "decimals": 0,
-      "description": "The Number of new pull requests merged in PD Repo.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -1272,7 +1253,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1294,7 +1275,7 @@
           "policy": "autogen",
           "query": "",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  pingcap.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companypingcappdexcludebotsistop')\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  tikv.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companytikvpdexcludebotsistop')\n  and period = '[[period]]'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1323,7 +1304,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  pingcap.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companypingcappdexcludebotsnottop')\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  tikv.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companytikvpdexcludebotsnottop')\n  and period = '[[period]]'\norder by\n  time",
           "refId": "B",
           "select": [
             [
@@ -1399,7 +1380,7 @@
       "dashes": false,
       "datasource": "chaosmesh",
       "decimals": 0,
-      "description": "The Number of new pull requests opened in Chaos Mesh Repo.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -1431,19 +1412,13 @@
       },
       "lines": false,
       "linewidth": 1,
-      "links": [
-        {
-          "targetBlank": true,
-          "title": "PRs opened in repository group",
-          "url": "https://chaosmesh-devstats.tidb.io/d/15/prs-opened-in-repository-groups?orgId=1&${period:queryparam}&from=${__from}&to=${__to}&var-repogroup_name=Chaos%20Mesh"
-        }
-      ],
+      "links": [],
       "nullPointMode": "null",
       "options": {
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1570,7 +1545,7 @@
       "dashes": false,
       "datasource": "chaosmesh",
       "decimals": 0,
-      "description": "The Number of new pull requests merged in Chaos Mesh Repo.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -1608,7 +1583,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1731,6 +1706,10 @@
     {
       "collapsed": true,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1741,7 +1720,7 @@
       "panels": [
         {
           "datasource": "-- Mixed --",
-          "description": "Median time before any comments or activities from someone other than the author, compared with top contributing company.",
+          "description": "",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1757,7 +1736,8 @@
                 "hideFrom": {
                   "graph": false,
                   "legend": false,
-                  "tooltip": false
+                  "tooltip": false,
+                  "viz": false
                 },
                 "lineInterpolation": "linear",
                 "lineStyle": {
@@ -1769,7 +1749,14 @@
                   "type": "linear"
                 },
                 "showPoints": "never",
-                "spanNulls": true
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
               },
               "mappings": [],
               "min": 0,
@@ -1794,7 +1781,7 @@
             "h": 14,
             "w": 24,
             "x": 0,
-            "y": 2
+            "y": 47
           },
           "id": 34,
           "links": [],
@@ -1810,7 +1797,7 @@
               "displayMode": "table",
               "placement": "right"
             },
-            "tooltipOptions": {
+            "tooltip": {
               "mode": "multi"
             }
           },
@@ -1877,13 +1864,13 @@
               ]
             },
             {
-              "datasource": "pingcap",
+              "datasource": "tikv",
               "format": "time_series",
               "group": [],
               "hide": false,
               "metricColumn": "none",
               "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"PingCAP Repo\"\nfrom\n  pingcap.public.spr_first_non_author_activity_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_companypingcapnottopcontributingcompanymed'\norder by\n  time",
+              "rawSql": "select\n  time,\n  value as \"TiKV Repo\"\nfrom\n  tikv.public.spr_first_non_author_activity_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_companytikvnottopcontributingcompanymed'\norder by\n  time",
               "refId": "C",
               "select": [
                 [
@@ -1907,13 +1894,13 @@
               ]
             },
             {
-              "datasource": "pingcap",
+              "datasource": "tikv",
               "format": "time_series",
               "group": [],
               "hide": false,
               "metricColumn": "none",
               "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"PD Repo\"\nfrom\n  pingcap.public.spr_first_non_author_activity_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_companypingcappdnottopcontributingcompanymed'\norder by\n  time",
+              "rawSql": "select\n  time,\n  value as \"PD Repo\"\nfrom\n  tikv.public.spr_first_non_author_activity_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_companytikvpdnottopcontributingcompanymed'\norder by\n  time",
               "refId": "D",
               "select": [
                 [
@@ -1979,18 +1966,14 @@
           "dashes": false,
           "datasource": "psql",
           "decimals": 2,
-          "description": "Median time before any comments or activities from someone other than the author, compared with top contributing company.",
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
+          "description": "",
           "fill": 0,
           "fillGradient": 0,
           "gridPos": {
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 16
+            "y": 61
           },
           "hiddenSeries": false,
           "id": 24,
@@ -2014,7 +1997,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.5.0",
+          "pluginVersion": "8.0.3",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -2142,18 +2125,14 @@
           "dashes": false,
           "datasource": "psql",
           "decimals": 2,
-          "description": "Median time before any comments or activities from someone other than the author, compared with top contributing company.",
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
+          "description": "",
           "fill": 0,
           "fillGradient": 0,
           "gridPos": {
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 16
+            "y": 61
           },
           "hiddenSeries": false,
           "id": 23,
@@ -2177,7 +2156,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.5.0",
+          "pluginVersion": "8.0.3",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -2303,23 +2282,19 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "pingcap",
+          "datasource": "tikv",
           "decimals": 2,
-          "description": "Median time before any comments or activities from someone other than the author, compared with top contributing company.",
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
+          "description": "",
           "fill": 0,
           "fillGradient": 0,
           "gridPos": {
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 25
+            "y": 70
           },
           "hiddenSeries": false,
-          "id": 26,
+          "id": 25,
           "legend": {
             "alignAsTable": true,
             "avg": true,
@@ -2340,7 +2315,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.5.0",
+          "pluginVersion": "8.0.3",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -2360,7 +2335,7 @@
               "policy": "default",
               "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
               "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"Top Contributing Company Median time\"\nfrom\n  spr_first_non_author_activity_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_companypingcappdistopcontributingcompanymed'\norder by\n  time",
+              "rawSql": "select\n  time,\n  value as \"Top Contributing Company Median time\"\nfrom\n  spr_first_non_author_activity_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_companytikvistopcontributingcompanymed'\norder by\n  time",
               "refId": "A",
               "resultFormat": "time_series",
               "select": [
@@ -2394,7 +2369,166 @@
               "policy": "default",
               "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_percentile_15_[[period]]\" WHERE $timeFilter",
               "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"Not Top Contributing Company Median time\"\nfrom\n  spr_first_non_author_activity_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_companypingcappdnottopcontributingcompanymed'\norder by\n  time",
+              "rawSql": "select\n  time,\n  value as \"Not Top Contributing Company Median time\"\nfrom\n  spr_first_non_author_activity_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_companytikvnottopcontributingcompanymed'\norder by\n  time",
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [],
+              "timeColumn": "time",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Median time of (Not) Top  Contributing Company (TiKV Repo, [[period]])",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:418",
+              "format": "h",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "$$hashKey": "object:419",
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "tikv",
+          "decimals": 2,
+          "description": "",
+          "fill": 0,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 70
+          },
+          "hiddenSeries": false,
+          "id": 26,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "hideEmpty": false,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "8.0.3",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "",
+              "dsType": "influxdb",
+              "format": "time_series",
+              "group": [],
+              "groupBy": [],
+              "metricColumn": "none",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
+              "rawQuery": true,
+              "rawSql": "select\n  time,\n  value as \"Top Contributing Company Median time\"\nfrom\n  spr_first_non_author_activity_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_companytikvpdistopcontributingcompanymed'\norder by\n  time",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [],
+              "timeColumn": "time",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            },
+            {
+              "alias": "",
+              "dsType": "influxdb",
+              "format": "time_series",
+              "group": [],
+              "groupBy": [],
+              "metricColumn": "none",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_percentile_15_[[period]]\" WHERE $timeFilter",
+              "rawQuery": true,
+              "rawSql": "select\n  time,\n  value as \"Not Top Contributing Company Median time\"\nfrom\n  spr_first_non_author_activity_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_companytikvpdnottopcontributingcompanymed'\norder by\n  time",
               "refId": "B",
               "resultFormat": "time_series",
               "select": [
@@ -2466,183 +2600,16 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "pingcap",
-          "decimals": 2,
-          "description": "Median time before any comments or activities from someone other than the author, compared with top contributing company.",
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
-          "fill": 0,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 9,
-            "w": 12,
-            "x": 12,
-            "y": 25
-          },
-          "hiddenSeries": false,
-          "id": 25,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "hideEmpty": false,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "percentage": false,
-          "pluginVersion": "7.5.0",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "alias": "",
-              "dsType": "influxdb",
-              "format": "time_series",
-              "group": [],
-              "groupBy": [],
-              "metricColumn": "none",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
-              "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"Top Contributing Company Median time\"\nfrom\n  spr_first_non_author_activity_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_companypingcapistopcontributingcompanymed'\norder by\n  time",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [],
-              "timeColumn": "time",
-              "where": [
-                {
-                  "name": "$__timeFilter",
-                  "params": [],
-                  "type": "macro"
-                }
-              ]
-            },
-            {
-              "alias": "",
-              "dsType": "influxdb",
-              "format": "time_series",
-              "group": [],
-              "groupBy": [],
-              "metricColumn": "none",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_percentile_15_[[period]]\" WHERE $timeFilter",
-              "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"Not Top Contributing Company Median time\"\nfrom\n  spr_first_non_author_activity_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_companypingcapnottopcontributingcompanymed'\norder by\n  time",
-              "refId": "B",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [],
-              "timeColumn": "time",
-              "where": [
-                {
-                  "name": "$__timeFilter",
-                  "params": [],
-                  "type": "macro"
-                }
-              ]
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Median time of (Not) Top  Contributing Company (PingCAP Repo, [[period]])",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:418",
-              "format": "h",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "$$hashKey": "object:419",
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": "chaosmesh",
           "decimals": 2,
-          "description": "Median time before any comments or activities from someone other than the author, compared with top contributing company.",
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
+          "description": "",
           "fill": 0,
           "fillGradient": 0,
           "gridPos": {
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 34
+            "y": 79
           },
           "hiddenSeries": false,
           "id": 27,
@@ -2666,7 +2633,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.5.0",
+          "pluginVersion": "8.0.3",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -2794,6 +2761,10 @@
     {
       "collapsed": true,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -2804,7 +2775,7 @@
       "panels": [
         {
           "datasource": "-- Mixed --",
-          "description": "Median time before any comments or activities from someone other than the author, compared with top contributing company.",
+          "description": "",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2820,7 +2791,8 @@
                 "hideFrom": {
                   "graph": false,
                   "legend": false,
-                  "tooltip": false
+                  "tooltip": false,
+                  "viz": false
                 },
                 "lineInterpolation": "linear",
                 "lineStyle": {
@@ -2832,7 +2804,14 @@
                   "type": "linear"
                 },
                 "showPoints": "never",
-                "spanNulls": true
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
               },
               "mappings": [],
               "min": 0,
@@ -2873,7 +2852,7 @@
               "displayMode": "table",
               "placement": "right"
             },
-            "tooltipOptions": {
+            "tooltip": {
               "mode": "multi"
             }
           },
@@ -2940,13 +2919,13 @@
               ]
             },
             {
-              "datasource": "pingcap",
+              "datasource": "tikv",
               "format": "time_series",
               "group": [],
               "hide": false,
               "metricColumn": "none",
               "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"PingCAP Repo\"\nfrom\n  pingcap.public.spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companypingcapnottopcontributingcompanymed'\norder by\n  time",
+              "rawSql": "select\n  time,\n  value as \"TiKV Repo\"\nfrom\n  tikv.public.spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companytikvnottopcontributingcompanymed'\norder by\n  time",
               "refId": "C",
               "select": [
                 [
@@ -2970,13 +2949,13 @@
               ]
             },
             {
-              "datasource": "pingcap",
+              "datasource": "tikv",
               "format": "time_series",
               "group": [],
               "hide": false,
               "metricColumn": "none",
               "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"PD Repo\"\nfrom\n  pingcap.public.spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companypingcappdnottopcontributingcompanymed'\norder by\n  time",
+              "rawSql": "select\n  time,\n  value as \"PD Repo\"\nfrom\n  tikv.public.spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companytikvpdnottopcontributingcompanymed'\norder by\n  time",
               "refId": "D",
               "select": [
                 [
@@ -3042,179 +3021,13 @@
           "dashes": false,
           "datasource": "psql",
           "decimals": 2,
-          "description": "Median percentile of the number of hours from open to merging for PR",
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
+          "description": "",
           "fill": 0,
           "fillGradient": 0,
           "gridPos": {
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 16
-          },
-          "hiddenSeries": false,
-          "id": 30,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "percentage": false,
-          "pluginVersion": "7.5.0",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "alias": "",
-              "dsType": "influxdb",
-              "format": "time_series",
-              "group": [],
-              "groupBy": [],
-              "metricColumn": "none",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT \"value\" FROM \"opened_to_merged_[[repogroup]]_percentile_85_[[period]]\" WHERE $timeFilter",
-              "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"Median time of the top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companytidbistopcontributingcompanymed'\norder by\n  time",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [],
-              "timeColumn": "time",
-              "where": [
-                {
-                  "name": "$__timeFilter",
-                  "params": [],
-                  "type": "macro"
-                }
-              ]
-            },
-            {
-              "alias": "",
-              "dsType": "influxdb",
-              "format": "time_series",
-              "group": [],
-              "groupBy": [],
-              "metricColumn": "none",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT \"value\" FROM \"opened_to_merged_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
-              "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"Median time of not top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companytidbnottopcontributingcompanymed'\norder by\n  time",
-              "refId": "B",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [],
-              "timeColumn": "time",
-              "where": [
-                {
-                  "name": "$__timeFilter",
-                  "params": [],
-                  "type": "macro"
-                }
-              ]
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Open to Merged Median Time  Compare (TiDB Repo, [[period]])",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:2629",
-              "format": "h",
-              "label": "Opened to merged (median percentile)",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "$$hashKey": "object:2630",
-              "format": "short",
-              "label": "Opened to merged (15th percentile)",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "psql",
-          "decimals": 2,
-          "description": "Median percentile of the number of hours from open to merging for PR",
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
-          "fill": 0,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 9,
-            "w": 12,
-            "x": 12,
             "y": 16
           },
           "hiddenSeries": false,
@@ -3238,7 +3051,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.5.0",
+          "pluginVersion": "8.0.3",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -3364,23 +3177,19 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "pingcap",
+          "datasource": "psql",
           "decimals": 2,
-          "description": "Median percentile of the number of hours from open to merging for PR",
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
+          "description": "",
           "fill": 0,
           "fillGradient": 0,
           "gridPos": {
             "h": 9,
             "w": 12,
-            "x": 0,
-            "y": 25
+            "x": 12,
+            "y": 16
           },
           "hiddenSeries": false,
-          "id": 32,
+          "id": 30,
           "legend": {
             "alignAsTable": true,
             "avg": true,
@@ -3400,7 +3209,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.5.0",
+          "pluginVersion": "8.0.3",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -3420,7 +3229,7 @@
               "policy": "default",
               "query": "SELECT \"value\" FROM \"opened_to_merged_[[repogroup]]_percentile_85_[[period]]\" WHERE $timeFilter",
               "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"Median time of the top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companypingcappdistopcontributingcompanymed'\norder by\n  time",
+              "rawSql": "select\n  time,\n  value as \"Median time of the top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companytidbistopcontributingcompanymed'\norder by\n  time",
               "refId": "A",
               "resultFormat": "time_series",
               "select": [
@@ -3454,7 +3263,323 @@
               "policy": "default",
               "query": "SELECT \"value\" FROM \"opened_to_merged_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
               "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"Median time of not top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companypingcappdnottopcontributingcompanymed'\norder by\n  time",
+              "rawSql": "select\n  time,\n  value as \"Median time of not top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companytidbnottopcontributingcompanymed'\norder by\n  time",
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [],
+              "timeColumn": "time",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Open to Merged Median Time  Compare (TiDB Repo, [[period]])",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:2629",
+              "format": "h",
+              "label": "Opened to merged (median percentile)",
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "$$hashKey": "object:2630",
+              "format": "short",
+              "label": "Opened to merged (15th percentile)",
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "tikv",
+          "decimals": 2,
+          "description": "",
+          "fill": 0,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 25
+          },
+          "hiddenSeries": false,
+          "id": 31,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "8.0.3",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "",
+              "dsType": "influxdb",
+              "format": "time_series",
+              "group": [],
+              "groupBy": [],
+              "metricColumn": "none",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"opened_to_merged_[[repogroup]]_percentile_85_[[period]]\" WHERE $timeFilter",
+              "rawQuery": true,
+              "rawSql": "select\n  time,\n  value as \"Median time of the top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companytikvistopcontributingcompanymed'\norder by\n  time",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [],
+              "timeColumn": "time",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            },
+            {
+              "alias": "",
+              "dsType": "influxdb",
+              "format": "time_series",
+              "group": [],
+              "groupBy": [],
+              "metricColumn": "none",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"opened_to_merged_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
+              "rawQuery": true,
+              "rawSql": "select\n  time,\n  value as \"Median time of not top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companytikvnottopcontributingcompanymed'\norder by\n  time",
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [],
+              "timeColumn": "time",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Open to Merged Median Time  Compare (TiKV Repo, [[period]])",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:2629",
+              "format": "h",
+              "label": "Opened to merged (median percentile)",
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "$$hashKey": "object:2630",
+              "format": "short",
+              "label": "Opened to merged (15th percentile)",
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "tikv",
+          "decimals": 2,
+          "description": "",
+          "fill": 0,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 25
+          },
+          "hiddenSeries": false,
+          "id": 32,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "8.0.3",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "",
+              "dsType": "influxdb",
+              "format": "time_series",
+              "group": [],
+              "groupBy": [],
+              "metricColumn": "none",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"opened_to_merged_[[repogroup]]_percentile_85_[[period]]\" WHERE $timeFilter",
+              "rawQuery": true,
+              "rawSql": "select\n  time,\n  value as \"Median time of the top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companytikvpdistopcontributingcompanymed'\norder by\n  time",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [],
+              "timeColumn": "time",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            },
+            {
+              "alias": "",
+              "dsType": "influxdb",
+              "format": "time_series",
+              "group": [],
+              "groupBy": [],
+              "metricColumn": "none",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"opened_to_merged_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
+              "rawQuery": true,
+              "rawSql": "select\n  time,\n  value as \"Median time of not top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companytikvpdnottopcontributingcompanymed'\norder by\n  time",
               "refId": "B",
               "resultFormat": "time_series",
               "select": [
@@ -3526,175 +3651,9 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "pingcap",
-          "decimals": 2,
-          "description": "Median percentile of the number of hours from open to merging for PR",
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
-          "fill": 0,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 9,
-            "w": 12,
-            "x": 12,
-            "y": 25
-          },
-          "hiddenSeries": false,
-          "id": 31,
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "max": true,
-            "min": true,
-            "rightSide": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "alertThreshold": true
-          },
-          "percentage": false,
-          "pluginVersion": "7.5.0",
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "alias": "",
-              "dsType": "influxdb",
-              "format": "time_series",
-              "group": [],
-              "groupBy": [],
-              "metricColumn": "none",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT \"value\" FROM \"opened_to_merged_[[repogroup]]_percentile_85_[[period]]\" WHERE $timeFilter",
-              "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"Median time of the top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companypingcapistopcontributingcompanymed'\norder by\n  time",
-              "refId": "A",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [],
-              "timeColumn": "time",
-              "where": [
-                {
-                  "name": "$__timeFilter",
-                  "params": [],
-                  "type": "macro"
-                }
-              ]
-            },
-            {
-              "alias": "",
-              "dsType": "influxdb",
-              "format": "time_series",
-              "group": [],
-              "groupBy": [],
-              "metricColumn": "none",
-              "orderByTime": "ASC",
-              "policy": "default",
-              "query": "SELECT \"value\" FROM \"opened_to_merged_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
-              "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"Median time of not top contributing company (in hours)\"\nfrom\n  spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companypingcapnottopcontributingcompanymed'\norder by\n  time",
-              "refId": "B",
-              "resultFormat": "time_series",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "value"
-                    ],
-                    "type": "field"
-                  }
-                ]
-              ],
-              "tags": [],
-              "timeColumn": "time",
-              "where": [
-                {
-                  "name": "$__timeFilter",
-                  "params": [],
-                  "type": "macro"
-                }
-              ]
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Open to Merged Median Time  Compare (PingCAP Repo, [[period]])",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:2629",
-              "format": "h",
-              "label": "Opened to merged (median percentile)",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "$$hashKey": "object:2630",
-              "format": "short",
-              "label": "Opened to merged (15th percentile)",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": false
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
           "datasource": "chaosmesh",
           "decimals": 2,
-          "description": "Median percentile of the number of hours from open to merging for PR",
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
+          "description": "",
           "fill": 0,
           "fillGradient": 0,
           "gridPos": {
@@ -3724,7 +3683,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.5.0",
+          "pluginVersion": "8.0.3",
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
@@ -3851,7 +3810,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 27,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [
     "dashboard",
@@ -3934,7 +3893,6 @@
         "skipUrlSync": true,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -3942,8 +3900,8 @@
     ]
   },
   "time": {
-    "from": "2021-03-22T16:00:00.000Z",
-    "to": "2021-06-20T15:59:59.000Z"
+    "from": "now-90d-1w",
+    "to": "now-1w"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -3973,5 +3931,5 @@
   "timezone": "",
   "title": "Weekly Report",
   "uid": "weekly",
-  "version": 2
+  "version": 7
 }
