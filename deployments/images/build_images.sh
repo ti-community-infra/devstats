@@ -288,14 +288,7 @@ fi
 # Build docker image for grafana.
 if [ -z "$SKIP_GRAFANA" ]
 then
-  if [ -z "$SKIP_TEST" ]
-  then
-      docker push "${DOCKER_USER}/devstats-grafana-dev:${IMAGE_TAG}" || exit 19
-  fi
-  if [ -z "$SKIP_PROD" ]
-  then
-      docker push "${DOCKER_USER}/devstats-grafana-prod:${IMAGE_TAG}" || exit 19
-  fi
+  docker push "${DOCKER_USER}/devstats-grafana:${IMAGE_TAG}" || exit 19
 fi
 
 # Build docker image for tests.
