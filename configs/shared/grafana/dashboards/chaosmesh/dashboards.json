@@ -32,7 +32,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 15,
-  "iteration": 1625019452046,
+  "iteration": 1625058216718,
   "links": [
     {
       "icon": "dashboard",
@@ -222,7 +222,7 @@
       "datasource": null,
       "description": "",
       "gridPos": {
-        "h": 24,
+        "h": 26,
         "w": 12,
         "x": 0,
         "y": 6
@@ -332,10 +332,10 @@
     {
       "datasource": null,
       "gridPos": {
-        "h": 22,
+        "h": 24,
         "w": 12,
         "x": 12,
-        "y": 18
+        "y": 19
       },
       "id": 12,
       "options": {
@@ -444,7 +444,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 40
+        "y": 43
       },
       "id": 14,
       "options": {
@@ -556,7 +556,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 48
+        "y": 51
       },
       "id": 16,
       "options": {
@@ -611,7 +611,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 56
+        "y": 59
       },
       "id": 4,
       "links": [],
@@ -643,7 +643,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 61
+        "y": 64
       },
       "id": 6,
       "links": [],
@@ -724,8 +724,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "devstats.tidb.io",
-          "value": "devstats.tidb.io"
+          "text": "dev.devstats.tidb.io",
+          "value": "dev.devstats.tidb.io"
         },
         "datasource": "psql",
         "definition": "",
@@ -782,5 +782,5 @@
   "timezone": "",
   "title": "Dashboards",
   "uid": "8",
-  "version": 2
+  "version": 3
 }

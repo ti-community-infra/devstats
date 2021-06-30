@@ -31,9 +31,22 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1007,
-  "iteration": 1624862911451,
-  "links": [],
+  "id": 46,
+  "iteration": 1625058050645,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Open Stale PR Table",
+      "tooltip": "",
+      "type": "link",
+      "url": "/d/stale-pr-table/stale-pr-table?to=${__to}"
+    }
+  ],
   "panels": [
     {
       "aliasColors": {},
@@ -44,7 +57,15 @@
       "decimals": 0,
       "description": "",
       "fieldConfig": {
-        "defaults": {},
+        "defaults": {
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "Open Stale PR Table",
+              "url": "/d/_EqYs0z7z/stale-pr-table?from=${__to-1y}&to=${__to}"
+            }
+          ]
+        },
         "overrides": []
       },
       "fill": 6,
@@ -440,10 +461,6 @@
     {
       "datasource": null,
       "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 10,
         "w": 24,
@@ -491,7 +508,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 27,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [
     "dashboard",
@@ -514,22 +531,67 @@
           ]
         },
         "datasource": "psql",
-        "definition": "",
+        "definition": "select '\"' || sig_mentions_labels_name || '\"' from tsig_mentions_labels_with_non order by 1",
         "description": null,
-        "error": null,
+        "error": {
+          "config": {
+            "data": {
+              "from": "1617282050497",
+              "queries": [
+                {
+                  "datasourceId": 1,
+                  "format": "table",
+                  "rawSql": "select '\"' || sig_mentions_labels_name || '\"' from tsig_mentions_labels_with_non order by 1",
+                  "refId": "sigs"
+                }
+              ],
+              "to": "1625058050497"
+            },
+            "headers": {
+              "X-Grafana-Org-Id": 1
+            },
+            "hideFromInspector": false,
+            "method": "POST",
+            "requestId": "sigs",
+            "retry": 0,
+            "url": "api/ds/query"
+          },
+          "data": {
+            "results": {
+              "sigs": {
+                "error": "db query error: pq: relation \"tsig_mentions_labels_with_non\" does not exist",
+                "frames": [
+                  {
+                    "data": {
+                      "values": []
+                    },
+                    "schema": {
+                      "fields": [],
+                      "meta": {
+                        "executedQueryString": "select '\"' || sig_mentions_labels_name || '\"' from tsig_mentions_labels_with_non order by 1"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "message": "Query error: 400 ",
+          "status": 400,
+          "statusText": ""
+        },
         "hide": 0,
         "includeAll": true,
         "label": "SIG",
         "multi": true,
         "name": "sigs",
         "options": [],
-        "query": "select '\"' || sig_mentions_labels_name || '\"' from tsig_mentions_labels order by 1",
+        "query": "select '\"' || sig_mentions_labels_name || '\"' from tsig_mentions_labels_with_non order by 1",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -557,36 +619,6 @@
         "skipUrlSync": true,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
-        },
-        "datasource": "psql",
-        "definition": "select value_s from gha_vars where name = 'inactive_prs_by_sig_docs_html'",
-        "description": null,
-        "error": null,
-        "hide": 2,
-        "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "docs",
-        "options": [],
-        "query": "select value_s from gha_vars where name = 'inactive_prs_by_sig_docs_html'",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": true,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -625,5 +657,5 @@
   "timezone": "",
   "title": "Stale PRs by SIG",
   "uid": "pr-stale",
-  "version": 4
+  "version": 13
 }
