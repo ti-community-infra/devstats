@@ -25,7 +25,7 @@ getFullname()
   fi
   if [ "$1" = "chaosmesh" ]
   then
-    fullname="ChaosMesh"
+    fullname="Chaos Mesh"
   fi
 
   echo $fullname
@@ -43,8 +43,8 @@ do
   to_fullname=`getFullname ${to_proj}`
 
   echo "Copy dashboard config file from project $from_fullname to project $to_fullname"
-  cp "./grafana/dashboards/${from_proj}/${1}" "./grafana/dashboards/${to_proj}/"
+  cp "../shared/grafana/dashboards/${from_proj}/${1}" "../shared/grafana/dashboards/${to_proj}/"
 
-  FROM="${from_proj}" TO="${to_proj}" FILES=`find ./grafana/dashboards/$to_proj/ -iname "$1"` MODE=ss0 ./devel/mass_replace.sh
-  FROM="${from_fullname}" TO="${to_fullname}" FILES=`find ./grafana/dashboards/$to_proj/ -iname "$1"` MODE=ss0 ./devel/mass_replace.sh
+  FROM="${from_proj}" TO="${to_proj}" FILES=`find ../shared/grafana/dashboards/$to_proj/ -iname "$1"` MODE=ss0 ./devel/mass_replace.sh
+  FROM="${from_fullname}" TO="${to_fullname}" FILES=`find ../shared/grafana/dashboards/$to_proj/ -iname "$1"` MODE=ss0 ./devel/mass_replace.sh
 done

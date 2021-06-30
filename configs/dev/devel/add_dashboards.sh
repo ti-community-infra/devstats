@@ -38,8 +38,8 @@ do
   to_fullname=`getFullname ${to_proj}`
 
   echo "Copy dashboard config file from project $from_fullname to project $to_fullname"
-  cp ./grafana/dashboards/${from_proj}/*.json "grafana/dashboards/${to_proj}/"
+  cp ../shared/grafana/dashboards/${from_proj}/*.json "../shared/grafana/dashboards/${to_proj}/"
 
-  FROM="${from_proj}" TO="${to_proj}" FILES="./grafana/dashboards/${to_proj}/*.json" MODE=ss0 ./devel/mass_replace.sh
-  FROM="${from_fullname}" TO="${to_fullname}" FILES="./grafana/dashboards/${to_proj}/*.json" MODE=ss0 ./devel/mass_replace.sh
+  FROM="${from_proj}" TO="${to_proj}" FILES="../shared/grafana/dashboards/${to_proj}/*.json" MODE=ss0 ./devel/mass_replace.sh
+  FROM="${from_fullname}" TO="${to_fullname}" FILES="../shared/grafana/dashboards/${to_proj}/*.json" MODE=ss0 ./devel/mass_replace.sh
 done
