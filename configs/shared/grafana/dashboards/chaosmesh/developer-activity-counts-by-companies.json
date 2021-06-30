@@ -127,7 +127,7 @@
         "showUnfilled": true,
         "text": {}
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "table",
@@ -343,7 +343,7 @@
         },
         "text": {}
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "table",
@@ -455,7 +455,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "table",
@@ -568,7 +568,7 @@
         },
         "text": {}
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "table",
@@ -762,7 +762,7 @@
           }
         ]
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "alias": "",
@@ -847,7 +847,7 @@
         "content": "${docs:raw}",
         "mode": "html"
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "title": "Dashboard documentation",
       "type": "text"
     }

@@ -79,7 +79,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -215,7 +215,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -349,7 +349,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -455,7 +455,7 @@
         "content": "### Stale PRs by SIG\n\n- The metrics will only calculate the PR created within one year, and the PR created before more than one year will be ignored\n\n- The events of `PullRequestEvent` / `PullRequestReviewEvent` / `PullRequestReviewCommentEvent` / `IssueEvent`  / `IssueCommentEvent` happened on PR are considered as response, and the period from the last response time to the current time is regarded as the stale time\n\n- The number of PR whose stale time was more than 7 days, 30 days and 90 days was counted by SIG\n\n         ",
         "mode": "markdown"
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "time_series",

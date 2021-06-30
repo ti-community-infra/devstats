@@ -354,7 +354,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 1,
       "points": false,
       "renderer": "flot",
@@ -710,7 +710,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 1,
       "points": false,
       "renderer": "flot",
@@ -1169,7 +1169,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.5.0",
+          "pluginVersion": "8.0.3",
           "pointradius": 1,
           "points": false,
           "renderer": "flot",
@@ -1630,7 +1630,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "7.5.0",
+          "pluginVersion": "8.0.3",
           "pointradius": 1,
           "points": false,
           "renderer": "flot",
@@ -1808,7 +1808,7 @@
         "content": "${docs:raw}",
         "mode": "html"
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "title": "Dashboard documentation",
       "type": "text"
     }

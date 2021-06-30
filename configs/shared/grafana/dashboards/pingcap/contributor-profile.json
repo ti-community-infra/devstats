@@ -37,7 +37,7 @@
         "content": "![Github Stats](https://github-readme-stats.vercel.app/api?username=[[users]]&show_icons=true&theme=dark&hide_border=true)\n",
         "mode": "markdown"
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "time_series",
@@ -113,7 +113,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -231,7 +231,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -349,7 +349,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -470,7 +470,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -588,7 +588,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -685,7 +685,7 @@
         "content": "![Languages](https://github-readme-stats.vercel.app/api/top-langs/?layout=compact&username=[[users]]&show_icons=true&theme=dark&hide_border=true&hide_title=true)",
         "mode": "markdown"
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "time_series",
@@ -759,7 +759,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -877,7 +877,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
