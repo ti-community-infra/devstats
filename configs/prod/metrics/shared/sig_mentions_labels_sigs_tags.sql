@@ -1,3 +1,4 @@
+-- Notice: Only the SIG with more than 10 PR or issue in two years were counted.
 select
     -- string_agg(sub2.sig, ',')
     sub2.sig

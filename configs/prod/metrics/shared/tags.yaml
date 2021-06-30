@@ -82,3 +82,8 @@ tags:
     series_name: sig_mentions_labels
     name_tag: sig_mentions_labels_name
     value_tag: sig_mentions_labels_value
+  - name: SIG mentions with non-category using labels
+    sql: sig_mentions_labels_with_non_sigs_tags
+    series_name: sig_mentions_labels_with_non
+    name_tag: sig_mentions_labels_name
+    value_tag: sig_mentions_labels_value

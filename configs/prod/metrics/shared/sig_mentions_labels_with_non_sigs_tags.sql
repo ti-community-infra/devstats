@@ -1,0 +1,41 @@
+-- Notice: Only the SIG with more than 10 PR or issue in two years were counted.
+select
+    -- string_agg(sub2.sig, ',')
+    sub2.sig
+from (
+    (
+        select
+            sub.sig,
+            count(distinct sub.issue_id) as cnt
+        from (
+            -- 
+            select
+                sel.sig as sig,
+                sel.issue_id
+            from (
+                select
+                    distinct issue_id,
+                    lower(substring(dup_label_name from '(?i)sig/(.*)')) as sig
+                from
+                    gha_issues_labels
+                where
+                    dup_created_at > now() - '2 years'::interval
+            ) sel
+            where
+                sel.sig is not null
+        ) sub
+        group by
+            sub.sig
+        having
+            count(distinct sub.issue_id) > 10
+    )
+    union
+    (
+        select 'non-category' as sig, 9999999 as cnt
+    )
+) sub2
+order by
+    sub2.cnt desc,
+    sub2.sig asc
+limit {{lim}}
+;

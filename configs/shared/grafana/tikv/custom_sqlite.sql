@@ -122,7 +122,8 @@ where
     'prs-authors-table',
     'prs-mergers-table',
     'time-to-merge-in-repository-groups',
-    'stale-prs-by-sig'
+    'stale-prs-by-sig',
+    'stale-pr-table'
   )
 ;
 

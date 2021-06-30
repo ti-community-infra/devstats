@@ -32,7 +32,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 32,
-  "iteration": 1625020304147,
+  "iteration": 1625053712730,
   "links": [],
   "panels": [
     {
@@ -772,16 +772,62 @@
           "value": "$__all"
         },
         "datasource": null,
-        "definition": "select  sig_mentions_labels_name from tsig_mentions_labels order by 1",
+        "definition": "select  sig_mentions_labels_name from tsig_mentions_labels_with_non order by 1",
         "description": null,
-        "error": null,
+        "error": {
+          "config": {
+            "data": {
+              "from": "1593517732004",
+              "queries": [
+                {
+                  "datasourceId": 1,
+                  "format": "table",
+                  "rawSql": "select  sig_mentions_labels_name from tsig_mentions_labels_with_non order by 1",
+                  "refId": "sig"
+                }
+              ],
+              "to": "1624448932004"
+            },
+            "headers": {
+              "X-Grafana-Org-Id": 1
+            },
+            "hideFromInspector": false,
+            "method": "POST",
+            "requestId": "sig",
+            "retry": 0,
+            "url": "api/ds/query"
+          },
+          "data": {
+            "results": {
+              "sig": {
+                "error": "db query error: pq: relation \"tsig_mentions_labels_with_non\" does not exist",
+                "frames": [
+                  {
+                    "data": {
+                      "values": []
+                    },
+                    "schema": {
+                      "fields": [],
+                      "meta": {
+                        "executedQueryString": "select  sig_mentions_labels_name from tsig_mentions_labels_with_non order by 1"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "message": "Query error: 400 ",
+          "status": 400,
+          "statusText": ""
+        },
         "hide": 0,
         "includeAll": true,
         "label": "SIG",
         "multi": false,
         "name": "sig",
         "options": [],
-        "query": "select  sig_mentions_labels_name from tsig_mentions_labels order by 1",
+        "query": "select  sig_mentions_labels_name from tsig_mentions_labels_with_non order by 1",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -790,6 +836,76 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "all",
+          "value": "all"
+        },
+        "datasource": null,
+        "definition": "select value  from (\n    (\n        select\n            sig_mentions_labels_value as value,\n            1 as ord\n        from\n             tsig_mentions_labels_with_non\n        where\n              sig_mentions_labels_name = '${sig:raw}'\n    )\n    union\n        select  'all' as value, 2 as ord\n) sub\norder by ord\nlimit 1",
+        "description": null,
+        "error": {
+          "config": {
+            "data": {
+              "from": "1593517757551",
+              "queries": [
+                {
+                  "datasourceId": 1,
+                  "format": "table",
+                  "rawSql": "select value  from (\n    (\n        select\n            sig_mentions_labels_value as value,\n            1 as ord\n        from\n             tsig_mentions_labels_with_non\n        where\n              sig_mentions_labels_name = 'all'\n    )\n    union\n        select  'all' as value, 2 as ord\n) sub\norder by ord\nlimit 1",
+                  "refId": "sig_value"
+                }
+              ],
+              "to": "1624448957551"
+            },
+            "headers": {
+              "X-Grafana-Org-Id": 1
+            },
+            "hideFromInspector": false,
+            "method": "POST",
+            "requestId": "sig_value",
+            "retry": 0,
+            "url": "api/ds/query"
+          },
+          "data": {
+            "results": {
+              "sig_value": {
+                "error": "db query error: pq: relation \"tsig_mentions_labels_with_non\" does not exist",
+                "frames": [
+                  {
+                    "data": {
+                      "values": []
+                    },
+                    "schema": {
+                      "fields": [],
+                      "meta": {
+                        "executedQueryString": "select value  from (\n    (\n        select\n            sig_mentions_labels_value as value,\n            1 as ord\n        from\n             tsig_mentions_labels_with_non\n        where\n              sig_mentions_labels_name = 'all'\n    )\n    union\n        select  'all' as value, 2 as ord\n) sub\norder by ord\nlimit 1"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "message": "Query error: 400 ",
+          "status": 400,
+          "statusText": ""
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "sig_value",
+        "options": [],
+        "query": "select value  from (\n    (\n        select\n            sig_mentions_labels_value as value,\n            1 as ord\n        from\n             tsig_mentions_labels_with_non\n        where\n              sig_mentions_labels_name = '${sig:raw}'\n    )\n    union\n        select  'all' as value, 2 as ord\n) sub\norder by ord\nlimit 1",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       },
       {
         "allValue": "all",
@@ -831,30 +947,6 @@
         "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "all",
-          "value": "all"
-        },
-        "datasource": null,
-        "definition": "select value  from (\n    (\n        select\n            sig_mentions_labels_value as value,\n            1 as ord\n        from\n             tsig_mentions_labels\n        where\n              sig_mentions_labels_name = '${sig:raw}'\n    )\n    union\n        select  'all' as value, 2 as ord\n) sub\norder by ord\nlimit 1",
-        "description": null,
-        "error": null,
-        "hide": 2,
-        "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "sig_value",
-        "options": [],
-        "query": "select value  from (\n    (\n        select\n            sig_mentions_labels_value as value,\n            1 as ord\n        from\n             tsig_mentions_labels\n        where\n              sig_mentions_labels_name = '${sig:raw}'\n    )\n    union\n        select  'all' as value, 2 as ord\n) sub\norder by ord\nlimit 1",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
       }
     ]
   },

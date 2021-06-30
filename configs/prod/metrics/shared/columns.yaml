@@ -4,7 +4,7 @@ columns:
     tag: trepo_groups
     column: repo_group_name
   - table_regexp: '^(spr_stale_by_sig)'
-    tag: tsig_mentions_labels
+    tag: tsig_mentions_labels_with_non
     column: sig_mentions_labels_name
   - table_regexp: '^scompany_activity$'
     tag: tcompanies
