@@ -190,9 +190,8 @@ with dtto as (
         pr.pr_key = l.pr_key
 )
 select
-    'pr_stale_by_sig;' || sub.sig || ';w1,w2,d30,d90' as metric,
+    'pr_stale_by_sig;' || sub.sig || ';w1,d30,d90' as metric,
     count(distinct sub.pr_key || sub.sig) filter (where sub.stale_for > 604800)  as stale_7,
-    count(distinct sub.pr_key || sub.sig) filter (where sub.stale_for > 1209600) as stale_14,
     count(distinct sub.pr_key || sub.sig) filter (where sub.stale_for > 2592000) as stale_30,
     count(distinct sub.pr_key || sub.sig) filter (where sub.stale_for > 7776000) as stale_90
 from (
