@@ -32,7 +32,7 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana:0.3.2-beta.1'
+grafanaImage: 'miniantdev/devstats-grafana:0.3.2'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
 grafanaNReplicas: 1
@@ -49,7 +49,7 @@ limitsGrafanasMemory: '8Gi'
 useGrafanasResourcesLimits: 1
 
 # Provision configurations.
-provisionImage: 'miniantdev/devstats-dev:0.3.2-beta.1'
+provisionImage: 'miniantdev/devstats-dev:0.3.2'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
@@ -79,7 +79,7 @@ usePostgresResourcesLimits: 1
 
 # Cron sync jobs configurations.
 syncCommand: devstats
-syncImage: 'miniantdev/devstats-minimal-dev:0.3.2-beta.1'
+syncImage: 'miniantdev/devstats-minimal-dev:0.3.2'
 syncPodName: devstats
 syncRestartPolicy: Never
 indexCronsFrom: 0
@@ -91,7 +91,7 @@ requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
 
 # Execute Pod configurations.
-executeImage: 'miniantdev/devstats-minimal-dev:0.3.2-beta.1'
+executeImage: 'miniantdev/devstats-minimal-dev:0.3.2'
 executePodName: 'devstats-execute'
 executeTargetProject: 'pingcap'
 executeCommand: 'sleep'
@@ -110,7 +110,7 @@ requestsExecuteMemory: '1Gi'
 useExecuteResourcesLimits: 1
 
 # Affiliations Sync.
-affiliationsImage: 'miniantdev/devstats-dev:0.3.2-beta.1'
+affiliationsImage: 'miniantdev/devstats-dev:0.3.2'
 affiliationsPodName: 'devstats-affiliations'
 affiliationsRestartPolicy: Never
 affiliationsCommand: './shared/affs.sh'
