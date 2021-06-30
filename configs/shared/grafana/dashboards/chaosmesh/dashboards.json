@@ -32,7 +32,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 15,
-  "iteration": 1624876928457,
+  "iteration": 1625019452046,
   "links": [
     {
       "icon": "dashboard",
@@ -74,10 +74,6 @@
       "datasource": "psql",
       "decimals": 0,
       "description": "Numbers of GitHub events in all repositories hourly",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 5,
       "fillGradient": 0,
       "gridPos": {
@@ -112,7 +108,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 1,
       "points": false,
       "renderer": "flot",
@@ -205,10 +201,6 @@
     {
       "datasource": null,
       "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 6,
         "w": 4,
@@ -222,19 +214,15 @@
         "content": "Please report any bugs by opening an issue on <a href=\"https://github.com/ti-community-infra/devstats/issues\">ti-community-infra/devstats</a>.\n",
         "mode": "html"
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "transparent": true,
       "type": "text"
     },
     {
       "datasource": null,
       "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
-        "h": 21,
+        "h": 24,
         "w": 12,
         "x": 0,
         "y": 6
@@ -252,7 +240,7 @@
           "active"
         ]
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "time_series",
@@ -289,12 +277,8 @@
     },
     {
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
-        "h": 12,
+        "h": 13,
         "w": 12,
         "x": 12,
         "y": 6
@@ -310,7 +294,7 @@
         "showStarred": false,
         "tags": []
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "time_series",
@@ -347,12 +331,8 @@
     },
     {
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
-        "h": 20,
+        "h": 22,
         "w": 12,
         "x": 12,
         "y": 18
@@ -368,7 +348,7 @@
         "showStarred": false,
         "tags": []
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "time_series",
@@ -406,15 +386,11 @@
     {
       "datasource": null,
       "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
-        "h": 12,
+        "h": 14,
         "w": 12,
         "x": 0,
-        "y": 27
+        "y": 30
       },
       "id": 8,
       "options": {
@@ -427,7 +403,7 @@
         "showStarred": false,
         "tags": []
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "time_series",
@@ -464,15 +440,11 @@
     },
     {
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 38
+        "y": 40
       },
       "id": 14,
       "options": {
@@ -485,7 +457,7 @@
         "showStarred": false,
         "tags": []
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "time_series",
@@ -525,15 +497,11 @@
     {
       "datasource": null,
       "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
-        "h": 12,
+        "h": 13,
         "w": 12,
         "x": 0,
-        "y": 39
+        "y": 44
       },
       "id": 18,
       "options": {
@@ -546,7 +514,7 @@
         "showStarred": false,
         "tags": []
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "time_series",
@@ -584,15 +552,11 @@
     {
       "datasource": null,
       "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 46
+        "y": 48
       },
       "id": 16,
       "options": {
@@ -605,7 +569,7 @@
         "showStarred": false,
         "tags": []
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "targets": [
         {
           "format": "time_series",
@@ -643,15 +607,11 @@
     {
       "datasource": null,
       "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 54
+        "y": 56
       },
       "id": 4,
       "links": [],
@@ -668,7 +628,7 @@
           "chaosmesh"
         ]
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "tags": [
         "dashboard",
         "chaosmesh"
@@ -679,15 +639,11 @@
     },
     {
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 59
+        "y": 61
       },
       "id": 6,
       "links": [],
@@ -695,13 +651,13 @@
         "content": "${docs:raw}",
         "mode": "html"
       },
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "title": "Dashboard documentation",
       "type": "text"
     }
   ],
   "refresh": "15m",
-  "schemaVersion": 27,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [
     "home",
@@ -733,7 +689,6 @@
         "skipUrlSync": true,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -761,7 +716,6 @@
         "skipUrlSync": true,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -770,8 +724,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "dev.devstats.tidb.io",
-          "value": "dev.devstats.tidb.io"
+          "text": "devstats.tidb.io",
+          "value": "devstats.tidb.io"
         },
         "datasource": "psql",
         "definition": "",
@@ -789,7 +743,6 @@
         "skipUrlSync": true,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -829,5 +782,5 @@
   "timezone": "",
   "title": "Dashboards",
   "uid": "8",
-  "version": 3
+  "version": 2
 }

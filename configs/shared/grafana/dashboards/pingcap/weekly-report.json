@@ -1801,7 +1801,7 @@
               "mode": "multi"
             }
           },
-          "pluginVersion": "7.5.0",
+          "pluginVersion": "8.0.3",
           "targets": [
             {
               "datasource": "pingcap",
@@ -2856,7 +2856,7 @@
               "mode": "multi"
             }
           },
-          "pluginVersion": "7.5.0",
+          "pluginVersion": "8.0.3",
           "targets": [
             {
               "datasource": "pingcap",

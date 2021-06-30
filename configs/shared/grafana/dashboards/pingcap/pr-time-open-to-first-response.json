@@ -31,8 +31,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 33,
-  "iteration": 1624872215350,
+  "id": 32,
+  "iteration": 1625020304147,
   "links": [],
   "panels": [
     {
@@ -43,10 +43,6 @@
       "datasource": "psql",
       "decimals": 2,
       "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fill": 0,
       "fillGradient": 0,
       "gridPos": {
@@ -78,7 +74,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -98,7 +94,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_percentile_85_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"85th percentile time\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series =  'non_auth_sig${repogroup}${author_type:raw}${sig:raw}p85'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"85th percentile time\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series =  'non_auth_sig${repogroup}${author_type:raw}${sig_value}p85'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -132,7 +128,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Median time\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}${author_type:raw}${sig:raw}med'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"Median time\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}${author_type:raw}${sig_value}med'\norder by\n  time",
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -166,7 +162,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_percentile_15_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"15th percentile time\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}${author_type:raw}${sig:raw}p15'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"15th percentile time\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}${author_type:raw}${sig_value}p15'\norder by\n  time",
           "refId": "C",
           "resultFormat": "time_series",
           "select": [
@@ -237,10 +233,6 @@
       "columns": [],
       "datasource": "psql",
       "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "fontSize": "90%",
       "gridPos": {
         "h": 11,
@@ -306,7 +298,7 @@
           "policy": "default",
           "query": "SELECT \"descr\" FROM \"non_author_[[repogroup]]_percentile_15_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time as \"Time\",\n  descr as \"15th percentile\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}${author_type:raw}${sig:raw}p15'\norder by\n  time",
+          "rawSql": "select\n  time as \"Time\",\n  descr as \"15th percentile\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}${author_type:raw}${sig_value}p15'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -357,7 +349,7 @@
           "policy": "default",
           "query": "SELECT \"descr\" FROM \"non_author_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time as \"Time\",\n  descr as \"Median\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}${author_type:raw}${sig:raw}med'\norder by\n  time",
+          "rawSql": "select\n  time as \"Time\",\n  descr as \"Median\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}${author_type:raw}${sig_value}med'\norder by\n  time",
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -408,7 +400,7 @@
           "policy": "default",
           "query": "SELECT \"descr\" FROM \"non_author_[[repogroup]]_percentile_85_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time as \"Time\",\n  descr as \"85th percentile\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}${author_type:raw}${sig:raw}p85'\norder by\n  time",
+          "rawSql": "select\n  time as \"Time\",\n  descr as \"85th percentile\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}${author_type:raw}${sig_value}p85'\norder by\n  time",
           "refId": "C",
           "resultFormat": "time_series",
           "select": [
@@ -484,7 +476,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.0",
+      "pluginVersion": "8.0.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -504,7 +496,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"From the top contributing company\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}topcontrib${sig:raw}med'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"From the top contributing company\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}topcontrib${sig_value}med'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -538,7 +530,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_percentile_15_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"From not top contributing company\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}othercompany${sig:raw}med'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"From not top contributing company\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}othercompany${sig_value}med'\norder by\n  time",
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -567,7 +559,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"From Bots\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}onlybots${sig:raw}med'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"From Bots\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '${period}'\n  and series = 'non_auth_sig${repogroup}onlybots${sig_value}med'\norder by\n  time",
           "refId": "C",
           "select": [
             [
@@ -635,7 +627,7 @@
       }
     }
   ],
-  "schemaVersion": 27,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [
     "dashboard",
@@ -668,7 +660,6 @@
         "skipUrlSync": true,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -742,7 +733,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -770,7 +760,6 @@
         "skipUrlSync": true,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -798,7 +787,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -843,6 +831,30 @@
         "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "all",
+          "value": "all"
+        },
+        "datasource": null,
+        "definition": "select value  from (\n    (\n        select\n            sig_mentions_labels_value as value,\n            1 as ord\n        from\n             tsig_mentions_labels\n        where\n              sig_mentions_labels_name = '${sig:raw}'\n    )\n    union\n        select  'all' as value, 2 as ord\n) sub\norder by ord\nlimit 1",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "sig_value",
+        "options": [],
+        "query": "select value  from (\n    (\n        select\n            sig_mentions_labels_value as value,\n            1 as ord\n        from\n             tsig_mentions_labels\n        where\n              sig_mentions_labels_name = '${sig:raw}'\n    )\n    union\n        select  'all' as value, 2 as ord\n) sub\norder by ord\nlimit 1",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -878,5 +890,5 @@
   "timezone": "",
   "title": "PR Time Open to First Response",
   "uid": "10",
-  "version": 13
+  "version": 2
 }
