@@ -210,7 +210,7 @@
                 "mode": "exclude",
                 "names": [
                   "count",
-                  "pingcap/pd"
+                  "tidb/pd"
                 ],
                 "prefix": "All except:",
                 "readOnly": true
@@ -659,7 +659,7 @@
     "dashboard",
     "active",
     "SIGs",
-    "pingcap"
+    "tidb"
   ],
   "templating": {
     "list": [

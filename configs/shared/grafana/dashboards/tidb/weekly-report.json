@@ -58,7 +58,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pingcap",
+      "datasource": "tidb",
       "decimals": 0,
       "description": "",
       "fieldConfig": {
@@ -120,7 +120,7 @@
           "policy": "autogen",
           "query": "",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  pingcap.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companyallexcludebotsistop'\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  tidb.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companyallexcludebotsistop'\n  and period = '[[period]]'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -149,7 +149,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  pingcap.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companyallexcludebotsnottop'\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  tidb.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companyallexcludebotsnottop'\n  and period = '[[period]]'\norder by\n  time",
           "refId": "B",
           "select": [
             [
@@ -223,7 +223,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pingcap",
+      "datasource": "tidb",
       "decimals": 0,
       "description": "",
       "fieldConfig": {
@@ -285,7 +285,7 @@
           "policy": "autogen",
           "query": "",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  pingcap.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companyallexcludebotsistop')\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  tidb.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companyallexcludebotsistop')\n  and period = '[[period]]'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -314,7 +314,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  pingcap.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companyallexcludebotsnottop')\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  tidb.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companyallexcludebotsnottop')\n  and period = '[[period]]'\norder by\n  time",
           "refId": "B",
           "select": [
             [
@@ -388,7 +388,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pingcap",
+      "datasource": "tidb",
       "decimals": 0,
       "description": "",
       "fieldConfig": {
@@ -450,7 +450,7 @@
           "policy": "autogen",
           "query": "",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  pingcap.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companytidbexcludebotsistop'\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  tidb.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companytidbexcludebotsistop'\n  and period = '[[period]]'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -479,7 +479,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  pingcap.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companytidbexcludebotsnottop'\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  tidb.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companytidbexcludebotsnottop'\n  and period = '[[period]]'\norder by\n  time",
           "refId": "B",
           "select": [
             [
@@ -553,7 +553,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "pingcap",
+      "datasource": "tidb",
       "decimals": 0,
       "description": "",
       "fieldConfig": {
@@ -615,7 +615,7 @@
           "policy": "autogen",
           "query": "",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  pingcap.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companytidbexcludebotsistop')\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  tidb.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companytidbexcludebotsistop')\n  and period = '[[period]]'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -644,7 +644,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  pingcap.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companytidbexcludebotsnottop')\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  tidb.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companytidbexcludebotsnottop')\n  and period = '[[period]]'\norder by\n  time",
           "refId": "B",
           "select": [
             [
@@ -1804,13 +1804,13 @@
           "pluginVersion": "8.0.3",
           "targets": [
             {
-              "datasource": "pingcap",
+              "datasource": "tidb",
               "format": "time_series",
               "group": [],
               "hide": false,
               "metricColumn": "none",
               "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"PingCAP Org\"\nfrom\n  pingcap.public.spr_first_non_author_activity_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_companyallnottopcontributingcompanymed'\norder by\n  time",
+              "rawSql": "select\n  time,\n  value as \"PingCAP Org\"\nfrom\n  tidb.public.spr_first_non_author_activity_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_companyallnottopcontributingcompanymed'\norder by\n  time",
               "refId": "A",
               "select": [
                 [
@@ -1834,13 +1834,13 @@
               ]
             },
             {
-              "datasource": "pingcap",
+              "datasource": "tidb",
               "format": "time_series",
               "group": [],
               "hide": false,
               "metricColumn": "none",
               "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"TiDB Repo\"\nfrom\n  pingcap.public.spr_first_non_author_activity_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_companytidbnottopcontributingcompanymed'\norder by\n  time",
+              "rawSql": "select\n  time,\n  value as \"TiDB Repo\"\nfrom\n  tidb.public.spr_first_non_author_activity_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_companytidbnottopcontributingcompanymed'\norder by\n  time",
               "refId": "B",
               "select": [
                 [
@@ -2859,13 +2859,13 @@
           "pluginVersion": "8.0.3",
           "targets": [
             {
-              "datasource": "pingcap",
+              "datasource": "tidb",
               "format": "time_series",
               "group": [],
               "hide": false,
               "metricColumn": "none",
               "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"PingCAP Org\"\nfrom\n  pingcap.public.spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companyallnottopcontributingcompanymed'\norder by\n  time",
+              "rawSql": "select\n  time,\n  value as \"PingCAP Org\"\nfrom\n  tidb.public.spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companyallnottopcontributingcompanymed'\norder by\n  time",
               "refId": "A",
               "select": [
                 [
@@ -2889,13 +2889,13 @@
               ]
             },
             {
-              "datasource": "pingcap",
+              "datasource": "tidb",
               "format": "time_series",
               "group": [],
               "hide": false,
               "metricColumn": "none",
               "rawQuery": true,
-              "rawSql": "select\n  time,\n  value as \"TiDB Repo\"\nfrom\n  pingcap.public.spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companytidbnottopcontributingcompanymed'\norder by\n  time",
+              "rawSql": "select\n  time,\n  value as \"TiDB Repo\"\nfrom\n  tidb.public.spr_opened_to_merged_company\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'open2merge_companytidbnottopcontributingcompanymed'\norder by\n  time",
               "refId": "B",
               "select": [
                 [
@@ -3814,7 +3814,7 @@
   "style": "dark",
   "tags": [
     "dashboard",
-    "pingcap",
+    "tidb",
     "active"
   ],
   "templating": {
@@ -3874,8 +3874,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "PingCAP",
-          "value": "PingCAP"
+          "text": "TiDB",
+          "value": "TiDB"
         },
         "datasource": "psql",
         "definition": "",

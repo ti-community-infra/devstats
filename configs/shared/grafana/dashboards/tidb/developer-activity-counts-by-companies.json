@@ -278,7 +278,7 @@
           {
             "matcher": {
               "id": "byFrameRefID",
-              "options": "pingcap"
+              "options": "tidb"
             },
             "properties": [
               {
@@ -297,7 +297,7 @@
           {
             "matcher": {
               "id": "byFrameRefID",
-              "options": "notpingcap"
+              "options": "nottidb"
             },
             "properties": [
               {
@@ -351,7 +351,7 @@
           "metricColumn": "none",
           "rawQuery": true,
           "rawSql": "select \n  count(distinct lower(split_part(sub.name, '$$$', 1)))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        split_part(name, '$$$', 2) = 'PingCAP'\n    )\n) sub",
-          "refId": "pingcap",
+          "refId": "tidb",
           "select": [
             [
               {
@@ -380,7 +380,7 @@
           "metricColumn": "none",
           "rawQuery": true,
           "rawSql": "select \n  count(distinct lower(split_part(sub.name, '$$$', 1)))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        split_part(name, '$$$', 2) != 'PingCAP'\n    )\n) sub",
-          "refId": "notpingcap",
+          "refId": "nottidb",
           "select": [
             [
               {
@@ -517,7 +517,7 @@
           {
             "matcher": {
               "id": "byFrameRefID",
-              "options": "pingcap"
+              "options": "tidb"
             },
             "properties": [
               {
@@ -529,7 +529,7 @@
           {
             "matcher": {
               "id": "byFrameRefID",
-              "options": "notpingcap"
+              "options": "nottidb"
             },
             "properties": [
               {
@@ -576,7 +576,7 @@
           "metricColumn": "none",
           "rawQuery": true,
           "rawSql": "select \n  sum(value)\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and  split_part(name, '$$$', 2) = 'PingCAP'\n) sub",
-          "refId": "pingcap",
+          "refId": "tidb",
           "select": [
             [
               {
@@ -605,7 +605,7 @@
           "metricColumn": "none",
           "rawQuery": true,
           "rawSql": "select \n  sum(value)\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and split_part(name, '$$$', 2) != 'PingCAP'\n) sub",
-          "refId": "notpingcap",
+          "refId": "nottidb",
           "select": [
             [
               {
@@ -860,7 +860,7 @@
     "repogroups",
     "table",
     "companies",
-    "pingcap",
+    "tidb",
     "active"
   ],
   "templating": {
@@ -1006,8 +1006,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "PingCAP",
-          "value": "PingCAP"
+          "text": "TiDB",
+          "value": "TiDB"
         },
         "datasource": "psql",
         "definition": "",
@@ -1090,8 +1090,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "<h1 id=\"dashboard-header\">PingCAP Developer Activity Counts by Companies dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/project_developer_stats.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>Developer summary</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/pingcap/developer-activity-counts-by-companies.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows various developer metrics groupped by their affiliated companies.</li>\n<li>You can select last day, month, week etc. range or date range between releases, for example <code>v1.9 - v1.10</code>.</li>\n<li>You can select single repository group or summary for all of them.</li>\n<li>You can select country from a drop-down or summary for all countries.</li>\n<li>You can select company/companies from a drop-down or all to display all companies.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots when calculating statistics, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n<li>We are determining user's company affiliation from <a href=\"https://github.com/cncf/devstats/blob/master/github_users.json\" target=\"_blank\">this file</a>, which is imported from <code>cncf/gitdm</code>.</li>\n</ul>",
-          "value": "<h1 id=\"dashboard-header\">PingCAP Developer Activity Counts by Companies dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/project_developer_stats.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>Developer summary</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/pingcap/developer-activity-counts-by-companies.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows various developer metrics groupped by their affiliated companies.</li>\n<li>You can select last day, month, week etc. range or date range between releases, for example <code>v1.9 - v1.10</code>.</li>\n<li>You can select single repository group or summary for all of them.</li>\n<li>You can select country from a drop-down or summary for all countries.</li>\n<li>You can select company/companies from a drop-down or all to display all companies.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots when calculating statistics, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n<li>We are determining user's company affiliation from <a href=\"https://github.com/cncf/devstats/blob/master/github_users.json\" target=\"_blank\">this file</a>, which is imported from <code>cncf/gitdm</code>.</li>\n</ul>"
+          "text": "<h1 id=\"dashboard-header\">TiDB Developer Activity Counts by Companies dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/project_developer_stats.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>Developer summary</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/tidb/developer-activity-counts-by-companies.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows various developer metrics groupped by their affiliated companies.</li>\n<li>You can select last day, month, week etc. range or date range between releases, for example <code>v1.9 - v1.10</code>.</li>\n<li>You can select single repository group or summary for all of them.</li>\n<li>You can select country from a drop-down or summary for all countries.</li>\n<li>You can select company/companies from a drop-down or all to display all companies.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots when calculating statistics, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n<li>We are determining user's company affiliation from <a href=\"https://github.com/cncf/devstats/blob/master/github_users.json\" target=\"_blank\">this file</a>, which is imported from <code>cncf/gitdm</code>.</li>\n</ul>",
+          "value": "<h1 id=\"dashboard-header\">TiDB Developer Activity Counts by Companies dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Metric <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/project_developer_stats.sql\" target=\"_blank\">SQL file</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/metrics.yaml\" target=\"_blank\">series definition</a>. Search for <code>Developer summary</code></li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/tidb/developer-activity-counts-by-companies.json\" target=\"_blank\">JSON</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>This dashboard shows various developer metrics groupped by their affiliated companies.</li>\n<li>You can select last day, month, week etc. range or date range between releases, for example <code>v1.9 - v1.10</code>.</li>\n<li>You can select single repository group or summary for all of them.</li>\n<li>You can select country from a drop-down or summary for all countries.</li>\n<li>You can select company/companies from a drop-down or all to display all companies.</li>\n<li>See <a href=\"https://github.com/cncf/devstats/blob/master/docs/repository_groups.md\" target=\"_blank\">here</a> for more informations about repository groups.</li>\n<li>We are skipping bots when calculating statistics, see <a href=\"https://github.com/cncf/devstats/blob/master/docs/excluding_bots.md\" target=\"_blank\">excluding bots</a> for details.</li>\n<li>We are determining user's company affiliation from <a href=\"https://github.com/cncf/devstats/blob/master/github_users.json\" target=\"_blank\">this file</a>, which is imported from <code>cncf/gitdm</code>.</li>\n</ul>"
         },
         "datasource": "psql",
         "definition": "select value_s from gha_vars where name = 'developer_company_stats_docs_html'",

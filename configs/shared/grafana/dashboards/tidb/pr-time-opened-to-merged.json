@@ -630,7 +630,7 @@
   "style": "dark",
   "tags": [
     "dashboard",
-    "pingcap",
+    "tidb",
     "active",
     "PRs"
   ],
@@ -640,8 +640,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "PingCAP",
-          "value": "PingCAP"
+          "text": "TiDB",
+          "value": "TiDB"
         },
         "datasource": "psql",
         "definition": "",

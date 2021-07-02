@@ -726,7 +726,7 @@
   "style": "dark",
   "tags": [
     "dashboard",
-    "pingcap",
+    "tidb",
     "issue"
   ],
   "templating": {

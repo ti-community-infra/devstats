@@ -39,10 +39,10 @@
       "keepTime": true,
       "tags": [],
       "targetBlank": true,
-      "title": "PingCAP",
-      "tooltip": "Opens PingCAP dashboards",
+      "title": "TiDB",
+      "tooltip": "Opens TiDB dashboards",
       "type": "link",
-      "url": "https://pingcap-[[hostname]]"
+      "url": "https://tidb-[[hostname]]"
     },
     {
       "icon": "dashboard",
@@ -625,13 +625,13 @@
         "showStarred": false,
         "tags": [
           "dashboard",
-          "pingcap"
+          "tidb"
         ]
       },
       "pluginVersion": "8.0.3",
       "tags": [
         "dashboard",
-        "pingcap"
+        "tidb"
       ],
       "title": "Other Dashboards",
       "transparent": true,
@@ -662,7 +662,7 @@
   "tags": [
     "home",
     "all",
-    "pingcap"
+    "tidb"
   ],
   "templating": {
     "list": [
@@ -670,8 +670,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "<h1 id=\"-full_name-home-dashboard\">PingCAP Home dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Postgres <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/events.sql\" target=\"_blank\">SQL file</a>, database <a href=\"https://dev.devstats.tidb.io/backups\" target=\"_blank\">dumps</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/pingcap/metrics.yaml\" target=\"_blank\">series definition</a> (search for <code>name: GitHub activity</code>).</li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/pingcap/dashboards.json\" target=\"_blank\">JSON</a>.</li>\n<li>Developer <a href=\"https://github.com/cncf/devstats/blob/master/docs/dashboards/dashboards_devel.md\" target=\"_blank\">documentation</a>.</li>\n<li>Direct <a href=\"https://pingcap.dev.devstats.tidb.io\" target=\"_blank\">link</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>First we&#39;re displaying links to all CNCF projects defined.</li>\n<li>Next we&#39;re showing current project&#39;s hourly activity - this is the number of all GitHub events that happened for PingCAP project hourly.</li>\n<li>This also includes bots activity (most other dashboards skip bot activity).</li>\n<li>Next we&#39;re showing HTML panel that shows all CNCF projects icons and links.</li>\n<li>Next there is a dashboard that shows a list of all dashboards defined for PingCAP project.</li>\n</ul>",
-          "value": "<h1 id=\"-full_name-home-dashboard\">PingCAP Home dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Postgres <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/events.sql\" target=\"_blank\">SQL file</a>, database <a href=\"https://dev.devstats.tidb.io/backups\" target=\"_blank\">dumps</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/pingcap/metrics.yaml\" target=\"_blank\">series definition</a> (search for <code>name: GitHub activity</code>).</li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/pingcap/dashboards.json\" target=\"_blank\">JSON</a>.</li>\n<li>Developer <a href=\"https://github.com/cncf/devstats/blob/master/docs/dashboards/dashboards_devel.md\" target=\"_blank\">documentation</a>.</li>\n<li>Direct <a href=\"https://pingcap.dev.devstats.tidb.io\" target=\"_blank\">link</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>First we&#39;re displaying links to all CNCF projects defined.</li>\n<li>Next we&#39;re showing current project&#39;s hourly activity - this is the number of all GitHub events that happened for PingCAP project hourly.</li>\n<li>This also includes bots activity (most other dashboards skip bot activity).</li>\n<li>Next we&#39;re showing HTML panel that shows all CNCF projects icons and links.</li>\n<li>Next there is a dashboard that shows a list of all dashboards defined for PingCAP project.</li>\n</ul>"
+          "text": "<h1 id=\"-full_name-home-dashboard\">TiDB Home dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Postgres <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/events.sql\" target=\"_blank\">SQL file</a>, database <a href=\"https://dev.devstats.tidb.io/backups\" target=\"_blank\">dumps</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/tidb/metrics.yaml\" target=\"_blank\">series definition</a> (search for <code>name: GitHub activity</code>).</li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/tidb/dashboards.json\" target=\"_blank\">JSON</a>.</li>\n<li>Developer <a href=\"https://github.com/cncf/devstats/blob/master/docs/dashboards/dashboards_devel.md\" target=\"_blank\">documentation</a>.</li>\n<li>Direct <a href=\"https://tidb.dev.devstats.tidb.io\" target=\"_blank\">link</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>First we&#39;re displaying links to all CNCF projects defined.</li>\n<li>Next we&#39;re showing current project&#39;s hourly activity - this is the number of all GitHub events that happened for TiDB project hourly.</li>\n<li>This also includes bots activity (most other dashboards skip bot activity).</li>\n<li>Next we&#39;re showing HTML panel that shows all CNCF projects icons and links.</li>\n<li>Next there is a dashboard that shows a list of all dashboards defined for TiDB project.</li>\n</ul>",
+          "value": "<h1 id=\"-full_name-home-dashboard\">TiDB Home dashboard</h1>\n<p>Links:</p>\n<ul>\n<li>Postgres <a href=\"https://github.com/cncf/devstats/blob/master/metrics/shared/events.sql\" target=\"_blank\">SQL file</a>, database <a href=\"https://dev.devstats.tidb.io/backups\" target=\"_blank\">dumps</a>.</li>\n<li>TSDB <a href=\"https://github.com/cncf/devstats/blob/master/metrics/tidb/metrics.yaml\" target=\"_blank\">series definition</a> (search for <code>name: GitHub activity</code>).</li>\n<li>Grafana dashboard <a href=\"https://github.com/cncf/devstats/blob/master/grafana/dashboards/tidb/dashboards.json\" target=\"_blank\">JSON</a>.</li>\n<li>Developer <a href=\"https://github.com/cncf/devstats/blob/master/docs/dashboards/dashboards_devel.md\" target=\"_blank\">documentation</a>.</li>\n<li>Direct <a href=\"https://tidb.dev.devstats.tidb.io\" target=\"_blank\">link</a>.</li>\n</ul>\n<h1 id=\"description\">Description</h1>\n<ul>\n<li>First we&#39;re displaying links to all CNCF projects defined.</li>\n<li>Next we&#39;re showing current project&#39;s hourly activity - this is the number of all GitHub events that happened for TiDB project hourly.</li>\n<li>This also includes bots activity (most other dashboards skip bot activity).</li>\n<li>Next we&#39;re showing HTML panel that shows all CNCF projects icons and links.</li>\n<li>Next there is a dashboard that shows a list of all dashboards defined for TiDB project.</li>\n</ul>"
         },
         "datasource": "psql",
         "definition": "",
@@ -697,8 +697,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "PingCAP",
-          "value": "PingCAP"
+          "text": "TiDB",
+          "value": "TiDB"
         },
         "datasource": "psql",
         "definition": "",

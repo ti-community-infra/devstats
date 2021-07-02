@@ -514,7 +514,7 @@
     "dashboard",
     "SIGs",
     "PRs",
-    "pingcap",
+    "tidb",
     "active"
   ],
   "templating": {
@@ -600,8 +600,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "PingCAP",
-          "value": "PingCAP"
+          "text": "TiDB",
+          "value": "TiDB"
         },
         "datasource": "psql",
         "definition": "",

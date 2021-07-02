@@ -962,7 +962,7 @@
   "style": "dark",
   "tags": [
     "contributor",
-    "pingcap",
+    "tidb",
     "dashboard",
     "repogroups",
     "active"
@@ -1108,8 +1108,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "PingCAP",
-          "value": "PingCAP"
+          "text": "TiDB",
+          "value": "TiDB"
         },
         "datasource": null,
         "definition": "select value_s from gha_vars where name = 'full_name'",
