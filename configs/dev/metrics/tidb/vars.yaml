@@ -5,10 +5,10 @@ vars:
     value: devstats-dev.tidb.io
   - name: full_name
     type: s
-    value: PingCAP
+    value: TiDB
   - name: lower_name
     type: s
-    value: pingcap
+    value: tidb
   - name: activity_docs_html
     type: s
     command:
