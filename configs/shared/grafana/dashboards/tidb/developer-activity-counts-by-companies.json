@@ -17,7 +17,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 16,
-  "iteration": 1624873230622,
+  "iteration": 1625223508674,
   "links": [],
   "panels": [
     {
@@ -259,26 +259,20 @@
           "color": {
             "mode": "palette-classic"
           },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
         },
         "overrides": [
           {
             "matcher": {
               "id": "byFrameRefID",
-              "options": "tidb"
+              "options": "pingcap"
             },
             "properties": [
               {
@@ -297,7 +291,7 @@
           {
             "matcher": {
               "id": "byFrameRefID",
-              "options": "nottidb"
+              "options": "notpingcap"
             },
             "properties": [
               {
@@ -341,7 +335,10 @@
           "fields": "",
           "values": false
         },
-        "text": {}
+        "text": {},
+        "tooltip": {
+          "mode": "single"
+        }
       },
       "pluginVersion": "8.0.3",
       "targets": [
@@ -351,7 +348,7 @@
           "metricColumn": "none",
           "rawQuery": true,
           "rawSql": "select \n  count(distinct lower(split_part(sub.name, '$$$', 1)))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        split_part(name, '$$$', 2) = 'PingCAP'\n    )\n) sub",
-          "refId": "tidb",
+          "refId": "pingcap",
           "select": [
             [
               {
@@ -380,7 +377,7 @@
           "metricColumn": "none",
           "rawQuery": true,
           "rawSql": "select \n  count(distinct lower(split_part(sub.name, '$$$', 1)))\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and (\n        split_part(name, '$$$', 2) != 'PingCAP'\n    )\n) sub",
-          "refId": "nottidb",
+          "refId": "notpingcap",
           "select": [
             [
               {
@@ -498,26 +495,20 @@
           "color": {
             "mode": "palette-classic"
           },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
         },
         "overrides": [
           {
             "matcher": {
               "id": "byFrameRefID",
-              "options": "tidb"
+              "options": "pingcap"
             },
             "properties": [
               {
@@ -529,7 +520,7 @@
           {
             "matcher": {
               "id": "byFrameRefID",
-              "options": "nottidb"
+              "options": "notpingcap"
             },
             "properties": [
               {
@@ -566,7 +557,10 @@
           "fields": "",
           "values": false
         },
-        "text": {}
+        "text": {},
+        "tooltip": {
+          "mode": "single"
+        }
       },
       "pluginVersion": "8.0.3",
       "targets": [
@@ -576,7 +570,7 @@
           "metricColumn": "none",
           "rawQuery": true,
           "rawSql": "select \n  sum(value)\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and  split_part(name, '$$$', 2) = 'PingCAP'\n) sub",
-          "refId": "tidb",
+          "refId": "pingcap",
           "select": [
             [
               {
@@ -605,7 +599,7 @@
           "metricColumn": "none",
           "rawQuery": true,
           "rawSql": "select \n  sum(value)\nfrom (\n  select\n    name,\n    value\n  from\n    shdev\n  where\n    series = 'hdev_[[metric]][[repogroup]][[country]]'\n    and period = '[[period]]'\n    and split_part(name, '$$$', 2) != 'PingCAP'\n) sub",
-          "refId": "nottidb",
+          "refId": "notpingcap",
           "select": [
             [
               {
@@ -817,7 +811,7 @@
         }
       ],
       "timeFrom": null,
-      "title": "Developers statistics in [[full_name]]  Org ([[metric]], Range: [[period_name]], Repository group: [[repogroup_name]]), bots excluded",
+      "title": "Developers statistics in [[full_name]]  Project ([[metric]], Range: [[period_name]], Repository group: [[repogroup_name]]), bots excluded",
       "transformations": [
         {
           "id": "merge",
@@ -831,10 +825,6 @@
     {
       "datasource": null,
       "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 11,
         "w": 24,
@@ -853,7 +843,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 27,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [
     "dashboard",
@@ -888,7 +878,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -997,7 +986,6 @@
         "skipUrlSync": true,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1025,7 +1013,6 @@
         "skipUrlSync": true,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1053,7 +1040,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1081,7 +1067,6 @@
         "skipUrlSync": true,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1109,7 +1094,6 @@
         "skipUrlSync": true,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1137,7 +1121,6 @@
         "skipUrlSync": true,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1165,7 +1148,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1228,7 +1210,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
