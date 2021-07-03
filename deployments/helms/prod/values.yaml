@@ -150,10 +150,10 @@ storageClass: gp2
 
 projects:
   - i: 0
-    proj: pingcap
-    db: pingcap
-    icon: 'pingcap'
-    org: 'PingCAP'
+    proj: tidb
+    db: tidb
+    icon: 'tidb'
+    org: 'TiDB'
     repo: 'pingcap/tidb'
     cron: '05 * * * *'
     affCron: '0 14 * * 0'

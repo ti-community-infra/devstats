@@ -9,7 +9,9 @@ projects:
     env:
       GHA2DB_EXCLUDE_REPOS:
         "pingcap/tikv,pingcap/pd,pingcap/pd-web,pingcap/chaos-mesh,\
-         pingcap/ticdc-lib,pingcap/tidb-ansible"
+         pingcap/ticdc-lib,pingcap/tidb-ansible,pingcap/tidb-helper,\
+         pingcap/tidb-lightning,pingcap/tikv-client-lib-java,pingcap/etcdv3-gateway,\
+         pingcap/tso,pingcap/mysqlrelay,pingcap/tidb-lmdb,pingcap/sqllogictest"
     psql_db: tidb
     main_repo: pingcap/tidb
     start_date: 2021-01-01T00:00:00Z
@@ -22,7 +24,7 @@ projects:
     name: TiKV
     status: Graduated
     command_line:
-      - "tikv,pingcap/tikv"
+      - "tikv,pingcap/tikv,pingcap/pd"
     start_date: 2020-01-01T00:00:00Z
     join_date: 2020-01-01T00:00:00Z
     graduated_date: 2020-09-02T00:00:00Z

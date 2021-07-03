@@ -35,6 +35,13 @@ where name in (
   'pingcap/tikv'
 );
 
+update gha_repos
+set repo_group = 'PD', alias = 'PD'
+where name in (
+  'tikv/pd',
+  'pingcap/pd'
+);
+
 select
   repo_group,
   count(*) as number_of_repos
