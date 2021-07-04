@@ -33,7 +33,7 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana:0.3.4'
+grafanaImage: 'miniantdev/devstats-grafana:0.3.5'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
 grafanaNReplicas: 1
@@ -50,7 +50,7 @@ limitsGrafanasMemory: '8Gi'
 useGrafanasResourcesLimits: 1
 
 # Provision configurations.
-provisionImage: 'miniantdev/devstats-prod:0.3.4'
+provisionImage: 'miniantdev/devstats-prod:0.3.5'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
@@ -80,7 +80,7 @@ usePostgresResourcesLimits: 1
 
 # Cron sync jobs configurations.
 syncCommand: devstats
-syncImage: 'miniantdev/devstats-minimal-prod:0.3.4'
+syncImage: 'miniantdev/devstats-minimal-prod:0.3.5'
 syncPodName: devstats
 syncRestartPolicy: Never
 indexCronsFrom: 0
@@ -92,7 +92,7 @@ requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
 
 # Execute Pod configurations.
-executeImage: 'miniantdev/devstats-minimal-prod:0.3.4'
+executeImage: 'miniantdev/devstats-minimal-prod:0.3.5'
 executePodName: 'devstats-execute'
 executeTargetProject: 'tikv'
 executeCommand: 'sleep'
@@ -111,7 +111,7 @@ requestsExecuteMemory: '1Gi'
 useExecuteResourcesLimits: 1
 
 # Affiliations Sync.
-affiliationsImage: 'miniantdev/devstats-prod:0.3.4'
+affiliationsImage: 'miniantdev/devstats-prod:0.3.5'
 affiliationsPodName: 'devstats-affiliations'
 affiliationsRestartPolicy: Never
 affiliationsCommand: './shared/affs.sh'
@@ -150,10 +150,10 @@ storageClass: gp2
 
 projects:
   - i: 0
-    proj: pingcap
-    db: pingcap
-    icon: 'pingcap'
-    org: 'PingCAP'
+    proj: tidb
+    db: tidb
+    icon: 'tidb'
+    org: 'TiDB'
     repo: 'pingcap/tidb'
     cron: '05 * * * *'
     affCron: '0 14 * * 0'

@@ -16,12 +16,12 @@ datasources:
       timeInterval: 1h
     secureJsonData:
       password: {{PG_PASS}}
-  - name: pingcap
+  - name: tidb
     type: postgres
     access: direct
     orgId: 1
     url: {{url}}
-    database: pingcap
+    database: tidb
     user: {{PG_USER}}
     editable: true
     jsonData:

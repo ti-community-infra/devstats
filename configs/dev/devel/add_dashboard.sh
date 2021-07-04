@@ -15,9 +15,9 @@ getFullname()
 {
   fullname="$1"
 
-  if [ "$1" = "pingcap" ]
+  if [ "$1" = "tidb" ]
   then
-    fullname="PingCAP"
+    fullname="TiDB"
   fi
   if [ "$1" = "tikv" ]
   then
