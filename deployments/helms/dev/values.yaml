@@ -29,6 +29,7 @@ limitsBootstrapCPU: '2000m'
 limitsBootstrapMemory: '2Gi'
 useBootstrapResourcesLimits: 1
 waitForPostgres: 15
+mergeMode: '1'
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
