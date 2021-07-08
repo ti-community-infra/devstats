@@ -17,6 +17,7 @@ projects:
     start_date: 2021-01-01T00:00:00Z
     join_date: null
     graduated_date: null
+    project_scale: 5.0
     annotation_regexp: '^v\d+\.\d+\.\d+$'
     files_skip_pattern: '(^|/)_?(vendor|Godeps|_workspace)/'
   tikv:
@@ -30,6 +31,7 @@ projects:
     graduated_date: 2020-09-02T00:00:00Z
     psql_db: tikv
     main_repo: tikv/tikv
+    project_scale: 5.0
     annotation_regexp: '^v\d+\.\d+\.\d+$'
     files_skip_pattern: '(^|/)_?(vendor|Godeps|_workspace)/'
   chaosmesh:
@@ -42,6 +44,7 @@ projects:
     join_date: 2020-01-01T00:00:00Z
     psql_db: chaosmesh
     main_repo: chaos-mesh/chaos-mesh
+    project_scale: 5.0
     annotation_regexp: '^v\d+\.\d+\.\d+$'
     files_skip_pattern: '(^|/)_?(vendor|Godeps|_workspace)/'
   all:
@@ -56,7 +59,6 @@ projects:
     main_repo: ''
     annotation_regexp: ''
     files_skip_pattern: ''
-    sync_probabilty: 0.6
     project_scale: 5.0
     env:
       GHA2DB_EXCLUDE_REPOS:
