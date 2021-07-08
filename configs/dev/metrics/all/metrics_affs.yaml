@@ -83,3 +83,33 @@ metrics:
     project: '!kubernetes'
     env:
       GHA2DB_NCPUS?: 8
+  # First non-author activity
+  - name: PR first non-author activity group by sig
+    series_name_or_func: multi_row_multi_column
+    sql: pr_first_non_author_activity_sig
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: d,w7,m7,q7,y7
+    desc: time_diff_as_string
+    merge_series: pr_first_non_author_activity_sig
+    drop: spr_first_non_author_activity_sig
+  # Opened to merged
+  - name: PR opened to merged group by SIG
+    series_name_or_func: multi_row_multi_column
+    sql: pr_opened_to_merged_sig
+    periods: d,w,m,q,y
+    aggregate: 1,7
+    skip: d,w7,m7,q7,y7
+    desc: time_diff_as_string
+    merge_series: pr_opened_to_merged_sig
+    drop: spr_opened_to_merged_sig
+  # Stale PRs by SIG
+  - name: Stale PRs by SIG
+    series_name_or_func: multi_row_multi_column
+    sql: pr_stale_by_sig
+    periods: d
+    merge_series: pr_stale_by_sig
+    multi_value: true
+    drop: spr_stale_by_sig
+    env:
+      GHA2DB_NCPUS?: 8

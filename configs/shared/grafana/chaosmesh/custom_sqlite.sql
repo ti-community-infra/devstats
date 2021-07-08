@@ -1,7 +1,6 @@
 delete from dashboard_tag where dashboard_id = (select id from dashboard where slug = 'dashboards');
 
 insert into dashboard_tag(dashboard_id, term) values((select id from dashboard where slug = 'dashboards'), 'home');
-insert into dashboard_tag(dashboard_id, term) values((select id from dashboard where slug = 'dashboards'), 'all');
 insert into dashboard_tag(dashboard_id, term) values((select id from dashboard where slug = 'dashboards'), 'chaosmesh');
 
 update dashboard set id = 1001  where slug = 'community-sizing-and-health-assessment';
