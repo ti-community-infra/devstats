@@ -15,13 +15,14 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 15,
-  "iteration": 1561708084581,
+  "id": 17,
+  "iteration": 1625725538303,
   "links": [],
   "panels": [
     {
       "cacheTimeout": null,
       "columns": [],
+      "datasource": null,
       "description": "Shows average, median, 15th and 85th percentiles for commits lines added, lines removed and files changed. Alerts: green: OK, blue - value too low, red - value too high.",
       "fontSize": "80%",
       "gridPos": {
@@ -33,7 +34,6 @@
       "id": 4,
       "interval": "1h",
       "links": [],
-      "options": {},
       "pageSize": null,
       "scroll": false,
       "showHeader": true,
@@ -44,6 +44,7 @@
       "styles": [
         {
           "alias": "",
+          "align": "auto",
           "colorMode": "cell",
           "colors": [
             "#1F60C4",
@@ -61,6 +62,7 @@
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": "cell",
           "colors": [
             "#1F60C4",
@@ -80,6 +82,7 @@
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": "cell",
           "colors": [
             "#1F60C4",
@@ -99,6 +102,7 @@
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": "cell",
           "colors": [
             "#1F60C4",
@@ -118,6 +122,7 @@
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": "cell",
           "colors": [
             "#1F60C4",
@@ -137,6 +142,7 @@
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": "cell",
           "colors": [
             "#1F60C4",
@@ -156,6 +162,7 @@
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": "cell",
           "colors": [
             "#1F60C4",
@@ -175,6 +182,7 @@
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": "cell",
           "colors": [
             "#1F60C4",
@@ -194,6 +202,7 @@
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": "cell",
           "colors": [
             "#1F60C4",
@@ -213,6 +222,7 @@
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": "cell",
           "colors": [
             "#1F60C4",
@@ -232,6 +242,7 @@
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": "cell",
           "colors": [
             "#1F60C4",
@@ -251,6 +262,7 @@
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": "cell",
           "colors": [
             "#1F60C4",
@@ -270,6 +282,7 @@
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": "cell",
           "colors": [
             "#1F60C4",
@@ -289,6 +302,7 @@
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": "cell",
           "colors": [
             "#1F60C4",
@@ -308,6 +322,7 @@
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": "cell",
           "colors": [
             "#1F60C4",
@@ -361,19 +376,30 @@
       "title": "Last month LOC statistics",
       "transform": "table",
       "transparent": true,
-      "type": "table"
+      "type": "table-old"
     },
     {
-      "aliasColors": {},
-      "breakPoint": "50%",
       "cacheTimeout": null,
-      "combine": {
-        "label": "Others",
-        "threshold": "0.01"
-      },
+      "datasource": null,
       "description": "Number of distinct commits modifying files with a given extension during the last month",
-      "fontSize": "60%",
-      "format": "short",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 15,
         "w": 6,
@@ -382,26 +408,37 @@
       },
       "id": 2,
       "interval": "1h",
-      "legend": {
-        "percentage": true,
-        "percentageDecimals": 1,
-        "show": true,
-        "values": true
-      },
-      "legendType": "On graph",
       "links": [],
       "maxDataPoints": 3,
-      "nullPointMode": "connected",
-      "options": {},
-      "pieType": "donut",
-      "strokeWidth": 1,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
       "targets": [
         {
-          "format": "time_series",
+          "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  now() as \"time\",\n  count(distinct ecf.sha) as \"value\",\n  ecf.ext as \"name\"\nfrom\n  gha_events_commits_files ecf,\n  gha_events e,\n  gha_repos r\nwhere\n  e.id = ecf.event_id\n  and e.repo_id = r.id\n  and e.dup_repo_name = r.name\n  and r.repo_group in ([[repogroups]])\n  and $__timeFilter(e.created_at)\n  and ecf.ext not like '%/%'\n  and ecf.ext != ''\n  and (e.dup_actor_login in ([[contributors]]) or '[[contributors:csv]]' = 'null')\n  and lower(e.dup_actor_login) not like all(array['devstats-sync', 'googlebot', 'coveralls', 'rktbot', 'coreosbot', 'web-flow', 'prometheus-roobot', 'cncf-bot', 'kernelprbot', 'istio-testing', 'spinnakerbot', 'pikbot', 'spinnaker-release', 'docker-jenkins', 'golangcibot', 'opencontrail-ci-admin', 'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%-jenkins', '%-ci%bot', '%-testing', 'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%'])\ngroup by\n  ecf.ext\norder by\n  \"value\" desc\nlimit 50",
+          "rawSql": "select\n  count(distinct ecf.sha) as \"value\",\n  ecf.ext as \"name\"\nfrom\n  gha_events_commits_files ecf,\n  gha_events e,\n  gha_repos r\nwhere\n  e.id = ecf.event_id\n  and e.repo_id = r.id\n  and e.dup_repo_name = r.name\n  and r.repo_group in ([[repogroups]])\n  and $__timeFilter(e.created_at)\n  and ecf.ext not like '%/%'\n  and ecf.ext != ''\n  and (e.dup_actor_login in ([[contributors]]) or '[[contributors:csv]]' = 'null')\n  and lower(e.dup_actor_login) not like all(array['devstats-sync', 'googlebot', 'coveralls', 'rktbot', 'coreosbot', 'web-flow', 'prometheus-roobot', 'cncf-bot', 'kernelprbot', 'istio-testing', 'spinnakerbot', 'pikbot', 'spinnaker-release', 'docker-jenkins', 'golangcibot', 'opencontrail-ci-admin', 'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%-jenkins', '%-ci%bot', '%-testing', 'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%'])\ngroup by\n  ecf.ext\norder by\n  \"value\" desc\nlimit 15",
           "refId": "A",
           "select": [
             [
@@ -428,24 +465,27 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "Last month top commits files extensions",
+      "transformations": [],
       "transparent": true,
-      "type": "grafana-piechart-panel",
-      "valueName": "current"
+      "type": "piechart"
     },
     {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+      "datasource": null,
       "decimals": null,
       "description": "Chart for all LOC statistics for all days during the last month. Displays 30th and 70th percentiles.",
       "fill": 0,
+      "fillGradient": 0,
       "gridPos": {
         "h": 15,
         "w": 18,
         "x": 6,
         "y": 3
       },
+      "hiddenSeries": false,
       "id": 6,
       "interval": "1h",
       "legend": {
@@ -463,8 +503,11 @@
       "linewidth": 2,
       "links": [],
       "nullPointMode": "null as zero",
-      "options": {},
+      "options": {
+        "alertThreshold": true
+      },
       "percentage": false,
+      "pluginVersion": "8.0.3",
       "pointradius": 2,
       "points": true,
       "renderer": "flot",
@@ -636,6 +679,7 @@
     },
     {
       "columns": [],
+      "datasource": null,
       "description": "Throughput measures the amount of productive code written by a developer. By that we mean new lines of code written.",
       "fontSize": "80%",
       "gridPos": {
@@ -647,7 +691,6 @@
       "id": 8,
       "interval": "1h",
       "links": [],
-      "options": {},
       "pageSize": 200,
       "scroll": true,
       "showHeader": true,
@@ -658,12 +701,14 @@
       "styles": [
         {
           "alias": "Time",
+          "align": "auto",
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "pattern": "Time",
           "type": "date"
         },
         {
           "alias": "",
+          "align": "auto",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -712,11 +757,11 @@
       "title": "Throughput",
       "transform": "table",
       "transparent": true,
-      "type": "table"
+      "type": "table-old"
     }
   ],
   "refresh": "15m",
-  "schemaVersion": 18,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [
     "all",
@@ -727,11 +772,18 @@
       {
         "allValue": null,
         "current": {
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": "psql",
         "definition": "select distinct repo_group from gha_repos where repo_group is not null order by 1",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Repository  groups",
@@ -744,7 +796,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -752,24 +803,30 @@
       {
         "allValue": "null",
         "current": {
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": "psql",
-        "definition": "select sub.actor from (select e.dup_actor_login as actor, count(distinct e.id) as cnt from gha_events e, gha_repos r where $__timeFilter(e.created_at) and e.repo_id = r.id and e.dup_repo_name = r.name and r.repo_group in ($repogroups) and lower(dup_actor_login) not like all(array['devstats-sync', 'googlebot', 'coveralls', 'rktbot', 'coreosbot', 'web-flow', 'prometheus-roobot', 'cncf-bot', 'kernelprbot', 'istio-testing', 'spinnakerbot', 'pikbot', 'spinnaker-release', 'docker-jenkins', 'golangcibot', 'opencontrail-ci-admin', 'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%-jenkins', '%-ci%bot', '%-testing', 'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%']) group by e.dup_actor_login order by cnt desc limit 200) sub",
+        "definition": "select sub.actor from (select e.dup_actor_login as actor, count(distinct e.id) as cnt from gha_events e, gha_repos r where $__timeFilter(e.created_at) and e.repo_id = r.id and e.dup_repo_name = r.name and r.repo_group in ($repogroups) and lower(dup_actor_login) not like all(array['ti-srebot', 'devstats-sync', 'googlebot', 'coveralls', 'rktbot', 'coreosbot', 'web-flow', 'prometheus-roobot', 'cncf-bot', 'kernelprbot', 'istio-testing', 'spinnakerbot', 'pikbot', 'spinnaker-release', 'docker-jenkins', 'golangcibot', 'opencontrail-ci-admin', 'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%-jenkins', '%-ci%bot', '%-testing', 'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%']) group by e.dup_actor_login order by cnt desc limit 200) sub",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Contributors",
         "multi": true,
         "name": "contributors",
         "options": [],
-        "query": "select sub.actor from (select e.dup_actor_login as actor, count(distinct e.id) as cnt from gha_events e, gha_repos r where $__timeFilter(e.created_at) and e.repo_id = r.id and e.dup_repo_name = r.name and r.repo_group in ($repogroups) and lower(dup_actor_login) not like all(array['devstats-sync', 'googlebot', 'coveralls', 'rktbot', 'coreosbot', 'web-flow', 'prometheus-roobot', 'cncf-bot', 'kernelprbot', 'istio-testing', 'spinnakerbot', 'pikbot', 'spinnaker-release', 'docker-jenkins', 'golangcibot', 'opencontrail-ci-admin', 'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%-jenkins', '%-ci%bot', '%-testing', 'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%']) group by e.dup_actor_login order by cnt desc limit 200) sub",
+        "query": "select sub.actor from (select e.dup_actor_login as actor, count(distinct e.id) as cnt from gha_events e, gha_repos r where $__timeFilter(e.created_at) and e.repo_id = r.id and e.dup_repo_name = r.name and r.repo_group in ($repogroups) and lower(dup_actor_login) not like all(array['ti-srebot', 'devstats-sync', 'googlebot', 'coveralls', 'rktbot', 'coreosbot', 'web-flow', 'prometheus-roobot', 'cncf-bot', 'kernelprbot', 'istio-testing', 'spinnakerbot', 'pikbot', 'spinnaker-release', 'docker-jenkins', 'golangcibot', 'opencontrail-ci-admin', 'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%-jenkins', '%-ci%bot', '%-testing', 'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%']) group by e.dup_actor_login order by cnt desc limit 200) sub",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -809,5 +866,5 @@
   "timezone": "",
   "title": "Home2",
   "uid": "home2",
-  "version": 7
+  "version": 8
 }
