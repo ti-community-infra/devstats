@@ -31,8 +31,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 49,
-  "iteration": 1625731093298,
+  "id": 52,
+  "iteration": 1625737441029,
   "links": [],
   "panels": [
     {
@@ -1106,7 +1106,7 @@
           "policy": "autogen",
           "query": "",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  tikv.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companytikvpdexcludebotsistop'\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  tikv.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companypdexcludebotsistop'\n  and period = '[[period]]'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1135,7 +1135,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  tikv.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companytikvpdexcludebotsnottop'\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  tikv.public.spr_opened_company\nwhere\n  $__timeFilter(time)\n  and series = 'pr_opened_companypdexcludebotsnottop'\n  and period = '[[period]]'\norder by\n  time",
           "refId": "B",
           "select": [
             [
@@ -1271,7 +1271,7 @@
           "policy": "autogen",
           "query": "",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  tikv.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companytikvpdexcludebotsistop')\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"The top contribuing company\"\nfrom\n  tikv.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companypdexcludebotsistop')\n  and period = '[[period]]'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1300,7 +1300,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  tikv.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companytikvpdexcludebotsnottop')\n  and period = '[[period]]'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"Not top contribuing company\"\nfrom\n  tikv.public.spr_merged_company\nwhere\n  $__timeFilter(time)\n  and series = lower('pr_merged_companypdexcludebotsnottop')\n  and period = '[[period]]'\norder by\n  time",
           "refId": "B",
           "select": [
             [
@@ -1959,7 +1959,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "tidb",
+      "datasource": "psql",
       "decimals": 2,
       "description": "",
       "fill": 0,
@@ -2012,7 +2012,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_median_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Top Contributing Company Median time\"\nfrom\n  tidb.public.spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_sigalltopcontriballmed'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"Top Contributing Company Median time\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_sigalltopcontriballmed'\norder by\n  time",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -2046,7 +2046,7 @@
           "policy": "default",
           "query": "SELECT \"value\" FROM \"non_author_[[repogroup]]_percentile_15_[[period]]\" WHERE $timeFilter",
           "rawQuery": true,
-          "rawSql": "select\n  time,\n  value as \"Not Top Contributing Company Median time\"\nfrom\n  tidb.public.spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_sigallothercompanyallmed'\norder by\n  time",
+          "rawSql": "select\n  time,\n  value as \"Not Top Contributing Company Median time\"\nfrom\n  spr_first_non_author_activity_sig\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = 'non_auth_sigallothercompanyallmed'\norder by\n  time",
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -3800,8 +3800,8 @@
   "style": "dark",
   "tags": [
     "dashboard",
-    "tidb",
-    "active"
+    "active",
+    "tikv"
   ],
   "templating": {
     "list": [
@@ -3860,8 +3860,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "All Community",
-          "value": "All Community"
+          "text": "TiKV",
+          "value": "TiKV"
         },
         "datasource": "psql",
         "definition": "",
@@ -3916,6 +3916,6 @@
   },
   "timezone": "",
   "title": "Weekly Report",
-  "uid": "wdCIdni7z",
-  "version": 2
+  "uid": "weekly",
+  "version": 5
 }
