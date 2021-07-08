@@ -16,8 +16,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 2,
-  "id": 16,
-  "iteration": 1625723550877,
+  "id": 21,
+  "iteration": 1625735715843,
   "links": [],
   "panels": [
     {
@@ -301,11 +301,11 @@
       ],
       "datasource": null,
       "decimals": 0,
-      "description": "Number of active contributors during the last month.",
+      "description": "",
       "esMetric": "Count",
       "gridPos": {
         "h": 8,
-        "w": 7,
+        "w": 8,
         "x": 16,
         "y": 0
       },
@@ -757,7 +757,7 @@
           "color": {
             "mode": "thresholds"
           },
-          "displayName": "Median time to merge PRs (the last month):",
+          "displayName": "Median time to merge PRs (the previous month):",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -776,7 +776,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -786,7 +786,7 @@
         "x": 4,
         "y": 5
       },
-      "id": 12,
+      "id": 14,
       "interval": "1h",
       "links": [],
       "maxDataPoints": 100,
@@ -812,7 +812,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  percentile_disc(0.5) within group (order by sub.time_to_merge asc) as \"value\"\nfrom (\n  select distinct\n    pr.id,\n    max(pr.merged_at) - max(pr.created_at) as time_to_merge\n  from\n    gha_pull_requests pr,\n    gha_repos r\n  where\n    pr.dup_repo_id = r.id\n    and pr.dup_repo_name = r.name\n    and r.repo_group in ([[repogroups]])\n    and pr.merged_at is not null\n    and pr.dup_type = 'PullRequestEvent'\n    and $__timeFilter(pr.merged_at)\n    and (pr.dup_user_login in ([[contributors]]) or '[[contributors:csv]]' = 'null')\n  group by\n    pr.id\n) sub",
+          "rawSql": "select\n  percentile_disc(0.5) within group (order by sub.time_to_merge asc) as \"value\"\nfrom (\n  select distinct\n    pr.id,\n    max(pr.merged_at) - max(pr.created_at) as time_to_merge\n  from\n    gha_pull_requests pr,\n    gha_repos r\n  where\n    pr.dup_repo_id = r.id\n    and pr.dup_repo_name = r.name\n    and r.repo_group in ([[repogroups]])\n    and pr.merged_at is not null\n    and pr.dup_type = 'PullRequestEvent'\n    and pr.merged_at >= now() - '2 months'::interval\n    and pr.merged_at < now() - '1 month'::interval\n    and (pr.dup_user_login in ([[contributors]]) or '[[contributors:csv]]' = 'null')\n  group by\n    pr.id\n) sub",
           "refId": "A",
           "select": [
             [
@@ -850,7 +850,7 @@
           "color": {
             "mode": "thresholds"
           },
-          "displayName": "Median time to merge PRs (the previous month):",
+          "displayName": "Median time to merge PRs (the last month):",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -869,7 +869,7 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -879,7 +879,7 @@
         "x": 4,
         "y": 6
       },
-      "id": 14,
+      "id": 12,
       "interval": "1h",
       "links": [],
       "maxDataPoints": 100,
@@ -905,7 +905,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  percentile_disc(0.5) within group (order by sub.time_to_merge asc) as \"value\"\nfrom (\n  select distinct\n    pr.id,\n    max(pr.merged_at) - max(pr.created_at) as time_to_merge\n  from\n    gha_pull_requests pr,\n    gha_repos r\n  where\n    pr.dup_repo_id = r.id\n    and pr.dup_repo_name = r.name\n    and r.repo_group in ([[repogroups]])\n    and pr.merged_at is not null\n    and pr.dup_type = 'PullRequestEvent'\n    and pr.merged_at >= now() - '2 months'::interval\n    and pr.merged_at < now() - '1 month'::interval\n    and (pr.dup_user_login in ([[contributors]]) or '[[contributors:csv]]' = 'null')\n  group by\n    pr.id\n) sub",
+          "rawSql": "select\n  percentile_disc(0.5) within group (order by sub.time_to_merge asc) as \"value\"\nfrom (\n  select distinct\n    pr.id,\n    max(pr.merged_at) - max(pr.created_at) as time_to_merge\n  from\n    gha_pull_requests pr,\n    gha_repos r\n  where\n    pr.dup_repo_id = r.id\n    and pr.dup_repo_name = r.name\n    and r.repo_group in ([[repogroups]])\n    and pr.merged_at is not null\n    and pr.dup_type = 'PullRequestEvent'\n    and $__timeFilter(pr.merged_at)\n    and (pr.dup_user_login in ([[contributors]]) or '[[contributors:csv]]' = 'null')\n  group by\n    pr.id\n) sub",
           "refId": "A",
           "select": [
             [
@@ -1051,9 +1051,9 @@
         },
         "legendColors": {
           "base": "transparent",
-          "empty": "rgb(0, 0, 0)",
+          "empty": "rgba(0,0,0,0)",
           "max": "#37872D",
-          "min": "rgb(0, 0, 0)"
+          "min": "rgba(0, 0, 0, 1)"
         },
         "legendStr": "",
         "legendTitleFormat": {
@@ -1071,10 +1071,10 @@
         "verticalOrientation": true
       },
       "datasource": null,
-      "description": "Commits per day of month and hour.",
+      "description": "",
       "gridPos": {
         "h": 16,
-        "w": 5,
+        "w": 6,
         "x": 0,
         "y": 8
       },
@@ -1140,7 +1140,7 @@
     {
       "cacheTimeout": null,
       "datasource": null,
-      "description": "Top 50 repositories by the number of contributions, all having less than 1% merged into 'Others'.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1160,7 +1160,7 @@
       "gridPos": {
         "h": 11,
         "w": 6,
-        "x": 5,
+        "x": 6,
         "y": 8
       },
       "id": 16,
@@ -1226,7 +1226,7 @@
     {
       "cacheTimeout": null,
       "datasource": null,
-      "description": "Top 50 contributing companies, all companies having less than 1% merged into 'Others'.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1248,7 +1248,7 @@
       "gridPos": {
         "h": 10,
         "w": 6,
-        "x": 11,
+        "x": 12,
         "y": 8
       },
       "id": 17,
@@ -1319,7 +1319,7 @@
     {
       "cacheTimeout": null,
       "datasource": null,
-      "description": "Top 50 contributors, all contributors having less than 1% merged into 'Others'.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1341,7 +1341,7 @@
       "gridPos": {
         "h": 10,
         "w": 6,
-        "x": 17,
+        "x": 18,
         "y": 8
       },
       "id": 20,
@@ -1412,7 +1412,7 @@
     {
       "cacheTimeout": null,
       "datasource": null,
-      "description": "Top 50 committing companies, all companies having less than 1% merged into 'Others'.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1434,7 +1434,7 @@
       "gridPos": {
         "h": 10,
         "w": 6,
-        "x": 11,
+        "x": 12,
         "y": 18
       },
       "id": 21,
@@ -1505,7 +1505,7 @@
     {
       "cacheTimeout": null,
       "datasource": null,
-      "description": "Top 50 committers, all contributors having less than 1% merged into 'Others'.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1527,7 +1527,7 @@
       "gridPos": {
         "h": 10,
         "w": 6,
-        "x": 17,
+        "x": 18,
         "y": 18
       },
       "id": 22,
@@ -1599,11 +1599,11 @@
       "bgColor": "rgb(204, 204, 220)",
       "cacheTimeout": null,
       "datasource": null,
-      "description": "Contributions graph",
+      "description": "",
       "gridPos": {
         "h": 9,
         "w": 6,
-        "x": 5,
+        "x": 6,
         "y": 19
       },
       "id": 19,
@@ -1775,6 +1775,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
+      "title": "Contributions Graph",
       "transparent": true,
       "type": "snuids-radar-panel"
     },
@@ -2000,5 +2001,5 @@
   "timezone": "",
   "title": "Home",
   "uid": "home",
-  "version": 16
+  "version": 3
 }
