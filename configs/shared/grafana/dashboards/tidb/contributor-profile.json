@@ -17,15 +17,11 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 12,
-  "iteration": 1621849936260,
+  "iteration": 1625737339585,
   "links": [],
   "panels": [
     {
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 7,
         "w": 7,
@@ -670,10 +666,6 @@
     {
       "datasource": null,
       "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 5,
         "w": 7,
@@ -955,10 +947,194 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Activity"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 1004
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 23,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 14,
+      "options": {
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Time"
+          }
+        ]
+      },
+      "pluginVersion": "8.0.3",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\r\n    i.dup_repo_name \"Repository\",\r\n    i.dup_repo_name || '#' || i.number as \"PR / Issue\",\r\n    'Create an issue: ' || i.title as \"Activity\",\r\n    e.created_at \"Time\"\r\nfrom\r\n    gha_events e,\r\n    gha_payloads p,\r\n    gha_issues i\r\nwhere\r\n    e.type = 'IssueEvent'\r\n    and e.dup_actor_login = '${users}'\r\n    and p.event_id = e.id\r\n    and p.action = 'opened'\r\n    and i.event_id = e.id\r\n    and i.is_pull_request = false\r\norder by\r\n    e.created_at desc",
+          "refId": "IssueEvent",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "srcomments",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\r\n    i.dup_repo_name \"Repository\",\r\n    i.dup_repo_name || '#' || i.number as \"PR / Issue\",\r\n    'Create a comment: ' || c.body as \"Activity\",\r\n    e.created_at \"Time\"\r\nfrom\r\n    gha_events e,\r\n    gha_payloads p,\r\n    gha_issues i,\r\n    gha_comments c\r\nwhere\r\n    e.type = 'IssueCommentEvent'\r\n    and e.dup_actor_login = '${users}'\r\n    and p.event_id = e.id\r\n    and p.action = 'created'\r\n    and i.event_id = e.id\r\n    and c.event_id = e.id \r\norder by\r\n    e.created_at desc",
+          "refId": "IssueCommentEvent",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "srcomments",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\r\n    pr.dup_repo_name \"Repository\",\r\n    pr.dup_repo_name || '#' || pr.number as \"PR / Issue\",\r\n    'Create a Pull Request: ' || pr.title as \"Activity\",\r\n    e.created_at \"Time\"\r\nfrom\r\n    gha_events e,\r\n    gha_payloads p,\r\n    gha_pull_requests pr\r\nwhere\r\n    e.type = 'PullRequestEvent'\r\n    and e.dup_actor_login = '${users}'\r\n    and p.event_id = e.id\r\n    and p.action = 'opened'\r\n    and pr.event_id = e.id\r\norder by\r\n    e.created_at desc",
+          "refId": "PullRequestEvent",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "srcomments",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Events",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Time"
+              }
+            ]
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
     }
   ],
   "refresh": false,
-  "schemaVersion": 27,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [
     "contributor",
@@ -992,7 +1168,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1071,7 +1246,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1099,7 +1273,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1127,7 +1300,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1135,7 +1307,7 @@
     ]
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-1y",
     "to": "now"
   },
   "timepicker": {},

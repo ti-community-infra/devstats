@@ -17,281 +17,9 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 46,
-  "iteration": 1625130515845,
+  "iteration": 1625736392128,
   "links": [],
   "panels": [
-    {
-      "datasource": null,
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 6,
-        "x": 0,
-        "y": 0
-      },
-      "id": 6,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "text": {
-          "valueSize": 72
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.0.3",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "with dtto as (\r\n    select case $__timeTo()::timestamp > now()\r\n       when true then now()\r\n       else $__timeTo()::timestamp\r\n    end as dtto\r\n), prs as (\r\n    select\r\n        *\r\n    from\r\n        (\r\n            select\r\n                distinct id,\r\n                pre.dup_repo_name || '#' || pre.number as pr_key,\r\n                dup_repo_id repo_id,\r\n                dup_repo_name repo_name,\r\n                number,\r\n                user_id author_id,\r\n                dup_user_login author_login,\r\n                created_at,\r\n                last_value(updated_at) over pre_ordered_by_update as last_updated_at,\r\n                last_value(merged_at) over pre_ordered_by_update as last_merged_at,\r\n                last_value(closed_at) over pre_ordered_by_update as last_closed_at\r\n            from\r\n                gha_pull_requests pre\r\n            where\r\n                -- Notice: The metric only counts PRs created within one year.\r\n                created_at >= $__timeFrom()\r\n                and created_at < $__timeTo()\r\n                and updated_at < $__timeTo()\r\n                and event_id > 0\r\n            window\r\n                pre_ordered_by_update as (\r\n                    partition by id\r\n                    order by\r\n                        updated_at asc,\r\n                        event_id asc\r\n                    range between current row\r\n                    and unbounded following\r\n                )\r\n        ) sub\r\n    where\r\n        last_merged_at is null\r\n        and last_closed_at is null\r\n), prs_reponse_events as (\r\n    (\r\n        select\r\n            event_id,\r\n            pr_key,\r\n            updated_at\r\n        from\r\n            gha_issues ie,\r\n            prs pr\r\n        where\r\n            -- Ignore the response from the PR author.\r\n            ie.dup_actor_id != pr.author_id\r\n            and ie.dup_repo_name = pr.repo_name\r\n            and ie.number = pr.number\r\n            and ie.updated_at > pr.created_at + '30 seconds'::interval\r\n            and ie.updated_at < $__timeTo()\r\n            -- The event type contains IssueEvent and IssueCommentEvent.\r\n            and ie.dup_type like '%Event'\r\n            -- Ignore the robot's response.\r\n            and (lower(ie.dup_actor_login) not like all(array[\r\n              'ti-chi-bot', 'ti-community-prow-bot', 'ti-srebot', 'sre-bot', 'tidb-ci-bot', 'CLAassistant', 'web-flow', 'prowbot', 'travis%bot',\r\n              'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot', '%-testing',\r\n              'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%envoy-filter-example%', '%cibot', '%-ci']))\r\n        order by\r\n            ie.updated_at asc\r\n    )\r\n    union\r\n    (\r\n        select\r\n            event_id,\r\n            pr_key,\r\n            updated_at\r\n        from\r\n            gha_pull_requests pre,\r\n            prs pr\r\n        where\r\n            -- Ignore the response from the PR author.\r\n            pre.dup_actor_id != pr.author_id\r\n            and pre.dup_repo_name = pr.repo_name\r\n            and pre.number = pr.number\r\n            and pre.updated_at > pr.created_at + '30 seconds'::interval\r\n            and pre.updated_at < $__timeTo()\r\n            -- The event type contains PullRequestEvent, PullRequestReviewEvent and PullRequestReviewCommentEvent.\r\n            and pre.dup_type like '%Event'\r\n            -- Ignore the robot's response.\r\n            and (lower(pre.dup_actor_login) not like all(array[\r\n              'ti-chi-bot', 'ti-community-prow-bot', 'ti-srebot', 'sre-bot', 'tidb-ci-bot', 'CLAassistant', 'web-flow', 'prowbot', 'travis%bot',\r\n              'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot', '%-testing',\r\n              'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%envoy-filter-example%', '%cibot', '%-ci']))\r\n        order by\r\n            pre.updated_at asc\r\n    )\r\n), pr_sig_labels as (\r\n    select\r\n        pr_key,\r\n        sig\r\n    from\r\n    (\r\n        select\r\n            distinct pr_key,\r\n            lower(substring(il.dup_label_name from '(?i)sig/(.*)')) as sig\r\n        from\r\n            gha_issues_labels il,\r\n            prs p\r\n        where\r\n            il.dup_repo_id = p.repo_id\r\n            and il.dup_repo_name = p.repo_name\r\n            and il.dup_issue_number = p.number\r\n    ) sub\r\n    where\r\n        sig is not null\r\n        and sig in (select sig_mentions_labels_name from tsig_mentions_labels)\r\n), prs_with_stale_time as (\r\n    select\r\n        pr.pr_key,\r\n        repo_name,\r\n        number,\r\n        pr.author_login,\r\n        pr.created_at,\r\n        sub.last_response_at,\r\n        r.repo_group,\r\n        coalesce(l.sig, 'non-category') as sig,\r\n        -- So far, PingCAP is the company with the largest contribution to the TiDB community,\r\n        -- but other companies may still become the company with the largest contribution.\r\n        case when aa.company_name = 'PingCAP' then 'top-contrib'\r\n             when lower(pr.author_login) like any(array[\r\n                'dependabot', 'ti-srebot', 'codecov-io', 'web-flow',  'prowbot', 'travis%bot', 'k8s-%', '%-bot',\r\n                '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot',\r\n                '%-testing', 'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%cibot', '%-ci'\r\n             ]) then 'only-bots'\r\n             else 'other-company'\r\n        end as author_type,\r\n        coalesce(\r\n            extract(epoch from d.dtto - last_response_at),\r\n            extract(epoch from d.dtto - pr.created_at)\r\n        ) as stale_for\r\n    from\r\n        dtto d,\r\n        prs pr\r\n    left join\r\n        -- Get the last response time for each PR.\r\n        (\r\n            select\r\n                distinct on(prre.pr_key) pr_key,\r\n                last_value(updated_at) over events_ordered_by_update as last_response_at\r\n            from\r\n                prs_reponse_events prre\r\n            window\r\n                events_ordered_by_update as (\r\n                    partition by pr_key\r\n                    order by\r\n                        updated_at asc,\r\n                        event_id asc\r\n                    range between current row\r\n                    and unbounded following\r\n                )\r\n        ) sub\r\n    on\r\n        pr.pr_key = sub.pr_key\r\n    -- Notice: A PR belongs to only one repo group.\r\n    left join\r\n        gha_repos r\r\n    on\r\n        pr.repo_id = r.id\r\n        and pr.repo_name = r.name\r\n    -- Notice: The author of the PR may belong to multiple companies at the same time.\r\n    left join\r\n        gha_actors_affiliations aa\r\n    on\r\n        aa.actor_id = pr.author_id\r\n        and aa.dt_from <= pr.created_at\r\n        and aa.dt_to > pr.created_at\r\n    -- Notice: A PR may belong to multiple SIGs.\r\n    left join\r\n        pr_sig_labels l\r\n    on\r\n        pr.pr_key = l.pr_key\r\n)\r\nselect\r\n  count(distinct pr_key)\r\nfrom\r\n  prs_with_stale_time\r\nwhere\r\n   ('${author_type:raw}' = 'all' or author_type = '${author_type:raw}')\r\n   and ('${sig:raw}' = 'all' or sig = '${sig:raw}')\r\n   and ('${repogroup_name}' = 'All' or repo_group = '${repogroup_name}')\r\n   and ('${repo:raw}' = 'all' or repo_name = '${repo:raw}')",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "\"China\""
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "scountries",
-          "timeColumn": "\"time\"",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Stale PR total",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": null,
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": []
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 5,
-        "x": 7,
-        "y": 0
-      },
-      "id": 4,
-      "options": {
-        "displayLabels": [],
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "pieType": "donut",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.0.3",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "with dtto as (\r\n    select case $__timeTo()::timestamp > now()\r\n       when true then now()\r\n       else $__timeTo()::timestamp\r\n    end as dtto\r\n), prs as (\r\n    select\r\n        *\r\n    from\r\n        (\r\n            select\r\n                distinct id,\r\n                pre.dup_repo_name || '#' || pre.number as pr_key,\r\n                dup_repo_id repo_id,\r\n                dup_repo_name repo_name,\r\n                number,\r\n                user_id author_id,\r\n                dup_user_login author_login,\r\n                created_at,\r\n                last_value(updated_at) over pre_ordered_by_update as last_updated_at,\r\n                last_value(merged_at) over pre_ordered_by_update as last_merged_at,\r\n                last_value(closed_at) over pre_ordered_by_update as last_closed_at\r\n            from\r\n                gha_pull_requests pre\r\n            where\r\n                -- Notice: The metric only counts PRs created within one year.\r\n                created_at >= $__timeFrom()\r\n                and created_at < $__timeTo()\r\n                and updated_at < $__timeTo()\r\n                and event_id > 0\r\n            window\r\n                pre_ordered_by_update as (\r\n                    partition by id\r\n                    order by\r\n                        updated_at asc,\r\n                        event_id asc\r\n                    range between current row\r\n                    and unbounded following\r\n                )\r\n        ) sub\r\n    where\r\n        last_merged_at is null\r\n        and last_closed_at is null\r\n), prs_reponse_events as (\r\n    (\r\n        select\r\n            event_id,\r\n            pr_key,\r\n            updated_at\r\n        from\r\n            gha_issues ie,\r\n            prs pr\r\n        where\r\n            -- Ignore the response from the PR author.\r\n            ie.dup_actor_id != pr.author_id\r\n            and ie.dup_repo_name = pr.repo_name\r\n            and ie.number = pr.number\r\n            and ie.updated_at > pr.created_at + '30 seconds'::interval\r\n            and ie.updated_at < $__timeTo()\r\n            -- The event type contains IssueEvent and IssueCommentEvent.\r\n            and ie.dup_type like '%Event'\r\n            -- Ignore the robot's response.\r\n            and (lower(ie.dup_actor_login) not like all(array[\r\n              'ti-chi-bot', 'ti-community-prow-bot', 'ti-srebot', 'sre-bot', 'tidb-ci-bot', 'CLAassistant', 'web-flow', 'prowbot', 'travis%bot',\r\n              'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot', '%-testing',\r\n              'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%envoy-filter-example%', '%cibot', '%-ci']))\r\n        order by\r\n            ie.updated_at asc\r\n    )\r\n    union\r\n    (\r\n        select\r\n            event_id,\r\n            pr_key,\r\n            updated_at\r\n        from\r\n            gha_pull_requests pre,\r\n            prs pr\r\n        where\r\n            -- Ignore the response from the PR author.\r\n            pre.dup_actor_id != pr.author_id\r\n            and pre.dup_repo_name = pr.repo_name\r\n            and pre.number = pr.number\r\n            and pre.updated_at > pr.created_at + '30 seconds'::interval\r\n            and pre.updated_at < $__timeTo()\r\n            -- The event type contains PullRequestEvent, PullRequestReviewEvent and PullRequestReviewCommentEvent.\r\n            and pre.dup_type like '%Event'\r\n            -- Ignore the robot's response.\r\n            and (lower(pre.dup_actor_login) not like all(array[\r\n              'ti-chi-bot', 'ti-community-prow-bot', 'ti-srebot', 'sre-bot', 'tidb-ci-bot', 'CLAassistant', 'web-flow', 'prowbot', 'travis%bot',\r\n              'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot', '%-testing',\r\n              'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%envoy-filter-example%', '%cibot', '%-ci']))\r\n        order by\r\n            pre.updated_at asc\r\n    )\r\n), pr_sig_labels as (\r\n    select\r\n        pr_key,\r\n        sig\r\n    from\r\n    (\r\n        select\r\n            distinct pr_key,\r\n            lower(substring(il.dup_label_name from '(?i)sig/(.*)')) as sig\r\n        from\r\n            gha_issues_labels il,\r\n            prs p\r\n        where\r\n            il.dup_repo_id = p.repo_id\r\n            and il.dup_repo_name = p.repo_name\r\n            and il.dup_issue_number = p.number\r\n    ) sub\r\n    where\r\n        sig is not null\r\n        and sig in (select sig_mentions_labels_name from tsig_mentions_labels)\r\n), prs_with_stale_time as (\r\n    select\r\n        pr.pr_key,\r\n        repo_name,\r\n        number,\r\n        pr.author_login,\r\n        pr.created_at,\r\n        sub.last_response_at,\r\n        r.repo_group,\r\n        coalesce(l.sig, 'non-category') as sig,\r\n        -- So far, PingCAP is the company with the largest contribution to the TiDB community,\r\n        -- but other companies may still become the company with the largest contribution.\r\n        case when aa.company_name = 'PingCAP' then 'top-contrib'\r\n             when lower(pr.author_login) like any(array[\r\n                'dependabot', 'ti-srebot', 'codecov-io', 'web-flow',  'prowbot', 'travis%bot', 'k8s-%', '%-bot',\r\n                '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot',\r\n                '%-testing', 'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%cibot', '%-ci'\r\n             ]) then 'only-bots'\r\n             else 'other-company'\r\n        end as author_type,\r\n        coalesce(\r\n            extract(epoch from d.dtto - last_response_at),\r\n            extract(epoch from d.dtto - pr.created_at)\r\n        ) as stale_for\r\n    from\r\n        dtto d,\r\n        prs pr\r\n    left join\r\n        -- Get the last response time for each PR.\r\n        (\r\n            select\r\n                distinct on(prre.pr_key) pr_key,\r\n                last_value(updated_at) over events_ordered_by_update as last_response_at\r\n            from\r\n                prs_reponse_events prre\r\n            window\r\n                events_ordered_by_update as (\r\n                    partition by pr_key\r\n                    order by\r\n                        updated_at asc,\r\n                        event_id asc\r\n                    range between current row\r\n                    and unbounded following\r\n                )\r\n        ) sub\r\n    on\r\n        pr.pr_key = sub.pr_key\r\n    -- Notice: A PR belongs to only one repo group.\r\n    left join\r\n        gha_repos r\r\n    on\r\n        pr.repo_id = r.id\r\n        and pr.repo_name = r.name\r\n    -- Notice: The author of the PR may belong to multiple companies at the same time.\r\n    left join\r\n        gha_actors_affiliations aa\r\n    on\r\n        aa.actor_id = pr.author_id\r\n        and aa.dt_from <= pr.created_at\r\n        and aa.dt_to > pr.created_at\r\n    -- Notice: A PR may belong to multiple SIGs.\r\n    left join\r\n        pr_sig_labels l\r\n    on\r\n        pr.pr_key = l.pr_key\r\n)\r\nselect\r\n  case when author_type = 'top-contrib' then 'From the top contributing company'\r\n       when author_type = 'other-company' then 'From not top contributing company'\r\n       when author_type = 'only-bots' then 'Bots'\r\n       else 'Others'\r\n  end as \"Author Type\",\r\n  count(distinct pr_key)\r\nfrom\r\n  prs_with_stale_time\r\nwhere\r\n   ('${author_type:raw}' = 'all' or author_type = '${author_type:raw}')\r\n   and ('${sig:raw}' = 'all' or sig = '${sig:raw}')\r\n   and ('${repogroup_name}' = 'All' or repo_group = '${repogroup_name}')\r\n   and ('${repo:raw}' = 'all' or repo_name = '${repo:raw}')\r\ngroup by\r\n  author_type",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "\"China\""
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "scountries",
-          "timeColumn": "\"time\"",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Count by Author Type",
-      "transparent": true,
-      "type": "piechart"
-    },
-    {
-      "datasource": null,
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": [],
-          "unit": "short"
-        },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "count",
-                  "tikv/pd"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
-      "id": 5,
-      "options": {
-        "displayLabels": [],
-        "legend": {
-          "displayMode": "list",
-          "placement": "right",
-          "values": [
-            "value"
-          ]
-        },
-        "pieType": "donut",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.0.3",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "with dtto as (\r\n    select case $__timeTo()::timestamp > now()\r\n       when true then now()\r\n       else $__timeTo()::timestamp\r\n    end as dtto\r\n), prs as (\r\n    select\r\n        *\r\n    from\r\n        (\r\n            select\r\n                distinct id,\r\n                pre.dup_repo_name || '#' || pre.number as pr_key,\r\n                dup_repo_id repo_id,\r\n                dup_repo_name repo_name,\r\n                number,\r\n                user_id author_id,\r\n                dup_user_login author_login,\r\n                created_at,\r\n                last_value(updated_at) over pre_ordered_by_update as last_updated_at,\r\n                last_value(merged_at) over pre_ordered_by_update as last_merged_at,\r\n                last_value(closed_at) over pre_ordered_by_update as last_closed_at\r\n            from\r\n                gha_pull_requests pre\r\n            where\r\n                -- Notice: The metric only counts PRs created within one year.\r\n                created_at >= $__timeFrom()\r\n                and created_at < $__timeTo()\r\n                and updated_at < $__timeTo()\r\n                and event_id > 0\r\n            window\r\n                pre_ordered_by_update as (\r\n                    partition by id\r\n                    order by\r\n                        updated_at asc,\r\n                        event_id asc\r\n                    range between current row\r\n                    and unbounded following\r\n                )\r\n        ) sub\r\n    where\r\n        last_merged_at is null\r\n        and last_closed_at is null\r\n), prs_reponse_events as (\r\n    (\r\n        select\r\n            event_id,\r\n            pr_key,\r\n            updated_at\r\n        from\r\n            gha_issues ie,\r\n            prs pr\r\n        where\r\n            -- Ignore the response from the PR author.\r\n            ie.dup_actor_id != pr.author_id\r\n            and ie.dup_repo_name = pr.repo_name\r\n            and ie.number = pr.number\r\n            and ie.updated_at > pr.created_at + '30 seconds'::interval\r\n            and ie.updated_at < $__timeTo()\r\n            -- The event type contains IssueEvent and IssueCommentEvent.\r\n            and ie.dup_type like '%Event'\r\n            -- Ignore the robot's response.\r\n            and (lower(ie.dup_actor_login) not like all(array[\r\n              'ti-chi-bot', 'ti-community-prow-bot', 'ti-srebot', 'sre-bot', 'tidb-ci-bot', 'CLAassistant', 'web-flow', 'prowbot', 'travis%bot',\r\n              'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot', '%-testing',\r\n              'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%envoy-filter-example%', '%cibot', '%-ci']))\r\n        order by\r\n            ie.updated_at asc\r\n    )\r\n    union\r\n    (\r\n        select\r\n            event_id,\r\n            pr_key,\r\n            updated_at\r\n        from\r\n            gha_pull_requests pre,\r\n            prs pr\r\n        where\r\n            -- Ignore the response from the PR author.\r\n            pre.dup_actor_id != pr.author_id\r\n            and pre.dup_repo_name = pr.repo_name\r\n            and pre.number = pr.number\r\n            and pre.updated_at > pr.created_at + '30 seconds'::interval\r\n            and pre.updated_at < $__timeTo()\r\n            -- The event type contains PullRequestEvent, PullRequestReviewEvent and PullRequestReviewCommentEvent.\r\n            and pre.dup_type like '%Event'\r\n            -- Ignore the robot's response.\r\n            and (lower(pre.dup_actor_login) not like all(array[\r\n              'ti-chi-bot', 'ti-community-prow-bot', 'ti-srebot', 'sre-bot', 'tidb-ci-bot', 'CLAassistant', 'web-flow', 'prowbot', 'travis%bot',\r\n              'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot', '%-testing',\r\n              'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%envoy-filter-example%', '%cibot', '%-ci']))\r\n        order by\r\n            pre.updated_at asc\r\n    )\r\n), pr_sig_labels as (\r\n    select\r\n        pr_key,\r\n        sig\r\n    from\r\n    (\r\n        select\r\n            distinct pr_key,\r\n            lower(substring(il.dup_label_name from '(?i)sig/(.*)')) as sig\r\n        from\r\n            gha_issues_labels il,\r\n            prs p\r\n        where\r\n            il.dup_repo_id = p.repo_id\r\n            and il.dup_repo_name = p.repo_name\r\n            and il.dup_issue_number = p.number\r\n    ) sub\r\n    where\r\n        sig is not null\r\n        and sig in (select sig_mentions_labels_name from tsig_mentions_labels)\r\n), prs_with_stale_time as (\r\n    select\r\n        pr.pr_key,\r\n        repo_name,\r\n        number,\r\n        pr.author_login,\r\n        pr.created_at,\r\n        sub.last_response_at,\r\n        r.repo_group,\r\n        coalesce(l.sig, 'non-category') as sig,\r\n        -- So far, PingCAP is the company with the largest contribution to the TiDB community,\r\n        -- but other companies may still become the company with the largest contribution.\r\n        case when aa.company_name = 'PingCAP' then 'top-contrib'\r\n             when lower(pr.author_login) like any(array[\r\n                'dependabot', 'ti-srebot', 'codecov-io', 'web-flow',  'prowbot', 'travis%bot', 'k8s-%', '%-bot',\r\n                '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot',\r\n                '%-testing', 'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%cibot', '%-ci'\r\n             ]) then 'only-bots'\r\n             else 'other-company'\r\n        end as author_type,\r\n        coalesce(\r\n            extract(epoch from d.dtto - last_response_at),\r\n            extract(epoch from d.dtto - pr.created_at)\r\n        ) as stale_for\r\n    from\r\n        dtto d,\r\n        prs pr\r\n    left join\r\n        -- Get the last response time for each PR.\r\n        (\r\n            select\r\n                distinct on(prre.pr_key) pr_key,\r\n                last_value(updated_at) over events_ordered_by_update as last_response_at\r\n            from\r\n                prs_reponse_events prre\r\n            window\r\n                events_ordered_by_update as (\r\n                    partition by pr_key\r\n                    order by\r\n                        updated_at asc,\r\n                        event_id asc\r\n                    range between current row\r\n                    and unbounded following\r\n                )\r\n        ) sub\r\n    on\r\n        pr.pr_key = sub.pr_key\r\n    -- Notice: A PR belongs to only one repo group.\r\n    left join\r\n        gha_repos r\r\n    on\r\n        pr.repo_id = r.id\r\n        and pr.repo_name = r.name\r\n    -- Notice: The author of the PR may belong to multiple companies at the same time.\r\n    left join\r\n        gha_actors_affiliations aa\r\n    on\r\n        aa.actor_id = pr.author_id\r\n        and aa.dt_from <= pr.created_at\r\n        and aa.dt_to > pr.created_at\r\n    -- Notice: A PR may belong to multiple SIGs.\r\n    left join\r\n        pr_sig_labels l\r\n    on\r\n        pr.pr_key = l.pr_key\r\n)\r\nselect\r\n  repo_name,\r\n  count(distinct pr_key) cnt\r\nfrom\r\n  prs_with_stale_time\r\nwhere\r\n   ('${author_type:raw}' = 'all' or author_type = '${author_type:raw}')\r\n   and ('${sig:raw}' = 'all' or sig = '${sig:raw}')\r\n   and ('${repogroup_name}' = 'All' or repo_group = '${repogroup_name}')\r\n   and ('${repo:raw}' = 'all' or repo_name = '${repo:raw}')\r\ngroup by\r\n  repo_name\r\norder by\r\n  cnt desc\r\nlimit 20",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "\"China\""
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "scountries",
-          "timeColumn": "\"time\"",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Top 20 Repositories",
-      "transparent": true,
-      "type": "piechart"
-    },
     {
       "datasource": null,
       "description": "",
@@ -330,7 +58,7 @@
         "h": 5,
         "w": 6,
         "x": 0,
-        "y": 5
+        "y": 0
       },
       "id": 7,
       "options": {
@@ -382,6 +110,332 @@
         }
       ],
       "title": "Average of Stale Time",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 5,
+        "x": 6,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.3",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "with dtto as (\r\n    select case $__timeTo()::timestamp > now()\r\n       when true then now()\r\n       else $__timeTo()::timestamp\r\n    end as dtto\r\n), prs as (\r\n    select\r\n        *\r\n    from\r\n        (\r\n            select\r\n                distinct id,\r\n                pre.dup_repo_name || '#' || pre.number as pr_key,\r\n                dup_repo_id repo_id,\r\n                dup_repo_name repo_name,\r\n                number,\r\n                user_id author_id,\r\n                dup_user_login author_login,\r\n                created_at,\r\n                last_value(updated_at) over pre_ordered_by_update as last_updated_at,\r\n                last_value(merged_at) over pre_ordered_by_update as last_merged_at,\r\n                last_value(closed_at) over pre_ordered_by_update as last_closed_at\r\n            from\r\n                gha_pull_requests pre\r\n            where\r\n                -- Notice: The metric only counts PRs created within one year.\r\n                created_at >= $__timeFrom()\r\n                and created_at < $__timeTo()\r\n                and updated_at < $__timeTo()\r\n                and event_id > 0\r\n            window\r\n                pre_ordered_by_update as (\r\n                    partition by id\r\n                    order by\r\n                        updated_at asc,\r\n                        event_id asc\r\n                    range between current row\r\n                    and unbounded following\r\n                )\r\n        ) sub\r\n    where\r\n        last_merged_at is null\r\n        and last_closed_at is null\r\n), prs_reponse_events as (\r\n    (\r\n        select\r\n            event_id,\r\n            pr_key,\r\n            updated_at\r\n        from\r\n            gha_issues ie,\r\n            prs pr\r\n        where\r\n            -- Ignore the response from the PR author.\r\n            ie.dup_actor_id != pr.author_id\r\n            and ie.dup_repo_name = pr.repo_name\r\n            and ie.number = pr.number\r\n            and ie.updated_at > pr.created_at + '30 seconds'::interval\r\n            and ie.updated_at < $__timeTo()\r\n            -- The event type contains IssueEvent and IssueCommentEvent.\r\n            and ie.dup_type like '%Event'\r\n            -- Ignore the robot's response.\r\n            and (lower(ie.dup_actor_login) not like all(array[\r\n              'ti-chi-bot', 'ti-community-prow-bot', 'ti-srebot', 'sre-bot', 'tidb-ci-bot', 'CLAassistant', 'web-flow', 'prowbot', 'travis%bot',\r\n              'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot', '%-testing',\r\n              'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%envoy-filter-example%', '%cibot', '%-ci']))\r\n        order by\r\n            ie.updated_at asc\r\n    )\r\n    union\r\n    (\r\n        select\r\n            event_id,\r\n            pr_key,\r\n            updated_at\r\n        from\r\n            gha_pull_requests pre,\r\n            prs pr\r\n        where\r\n            -- Ignore the response from the PR author.\r\n            pre.dup_actor_id != pr.author_id\r\n            and pre.dup_repo_name = pr.repo_name\r\n            and pre.number = pr.number\r\n            and pre.updated_at > pr.created_at + '30 seconds'::interval\r\n            and pre.updated_at < $__timeTo()\r\n            -- The event type contains PullRequestEvent, PullRequestReviewEvent and PullRequestReviewCommentEvent.\r\n            and pre.dup_type like '%Event'\r\n            -- Ignore the robot's response.\r\n            and (lower(pre.dup_actor_login) not like all(array[\r\n              'ti-chi-bot', 'ti-community-prow-bot', 'ti-srebot', 'sre-bot', 'tidb-ci-bot', 'CLAassistant', 'web-flow', 'prowbot', 'travis%bot',\r\n              'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot', '%-testing',\r\n              'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%envoy-filter-example%', '%cibot', '%-ci']))\r\n        order by\r\n            pre.updated_at asc\r\n    )\r\n), pr_sig_labels as (\r\n    select\r\n        pr_key,\r\n        sig\r\n    from\r\n    (\r\n        select\r\n            distinct pr_key,\r\n            lower(substring(il.dup_label_name from '(?i)sig/(.*)')) as sig\r\n        from\r\n            gha_issues_labels il,\r\n            prs p\r\n        where\r\n            il.dup_repo_id = p.repo_id\r\n            and il.dup_repo_name = p.repo_name\r\n            and il.dup_issue_number = p.number\r\n    ) sub\r\n    where\r\n        sig is not null\r\n        and sig in (select sig_mentions_labels_name from tsig_mentions_labels)\r\n), prs_with_stale_time as (\r\n    select\r\n        pr.pr_key,\r\n        repo_name,\r\n        number,\r\n        pr.author_login,\r\n        pr.created_at,\r\n        sub.last_response_at,\r\n        r.repo_group,\r\n        coalesce(l.sig, 'non-category') as sig,\r\n        -- So far, PingCAP is the company with the largest contribution to the TiDB community,\r\n        -- but other companies may still become the company with the largest contribution.\r\n        case when aa.company_name = 'PingCAP' then 'top-contrib'\r\n             when lower(pr.author_login) like any(array[\r\n                'dependabot', 'ti-srebot', 'codecov-io', 'web-flow',  'prowbot', 'travis%bot', 'k8s-%', '%-bot',\r\n                '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot',\r\n                '%-testing', 'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%cibot', '%-ci'\r\n             ]) then 'only-bots'\r\n             else 'other-company'\r\n        end as author_type,\r\n        coalesce(\r\n            extract(epoch from d.dtto - last_response_at),\r\n            extract(epoch from d.dtto - pr.created_at)\r\n        ) as stale_for\r\n    from\r\n        dtto d,\r\n        prs pr\r\n    left join\r\n        -- Get the last response time for each PR.\r\n        (\r\n            select\r\n                distinct on(prre.pr_key) pr_key,\r\n                last_value(updated_at) over events_ordered_by_update as last_response_at\r\n            from\r\n                prs_reponse_events prre\r\n            window\r\n                events_ordered_by_update as (\r\n                    partition by pr_key\r\n                    order by\r\n                        updated_at asc,\r\n                        event_id asc\r\n                    range between current row\r\n                    and unbounded following\r\n                )\r\n        ) sub\r\n    on\r\n        pr.pr_key = sub.pr_key\r\n    -- Notice: A PR belongs to only one repo group.\r\n    left join\r\n        gha_repos r\r\n    on\r\n        pr.repo_id = r.id\r\n        and pr.repo_name = r.name\r\n    -- Notice: The author of the PR may belong to multiple companies at the same time.\r\n    left join\r\n        gha_actors_affiliations aa\r\n    on\r\n        aa.actor_id = pr.author_id\r\n        and aa.dt_from <= pr.created_at\r\n        and aa.dt_to > pr.created_at\r\n    -- Notice: A PR may belong to multiple SIGs.\r\n    left join\r\n        pr_sig_labels l\r\n    on\r\n        pr.pr_key = l.pr_key\r\n)\r\nselect\r\n  case when author_type = 'top-contrib' then 'From the top contributing company'\r\n       when author_type = 'other-company' then 'From not top contributing company'\r\n       when author_type = 'only-bots' then 'Bots'\r\n       else 'Others'\r\n  end as \"Author Type\",\r\n  count(distinct pr_key)\r\nfrom\r\n  prs_with_stale_time\r\nwhere\r\n   ('${author_type:raw}' = 'all' or author_type = '${author_type:raw}')\r\n   and ('${sig:raw}' = 'all' or sig = '${sig:raw}')\r\n   and ('${repogroup_name}' = 'All' or repo_group = '${repogroup_name}')\r\n   and ('${repo:raw}' = 'all' or repo_name = '${repo:raw}')\r\n   and stale_for > 604800\r\ngroup by\r\n  author_type",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "\"China\""
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "scountries",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Count by Author Type (stale more than 1 week)",
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "count",
+                  "tidb/pd"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 13,
+        "x": 11,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "displayLabels": [],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.0.3",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "with dtto as (\r\n    select case $__timeTo()::timestamp > now()\r\n       when true then now()\r\n       else $__timeTo()::timestamp\r\n    end as dtto\r\n), prs as (\r\n    select\r\n        *\r\n    from\r\n        (\r\n            select\r\n                distinct id,\r\n                pre.dup_repo_name || '#' || pre.number as pr_key,\r\n                dup_repo_id repo_id,\r\n                dup_repo_name repo_name,\r\n                number,\r\n                user_id author_id,\r\n                dup_user_login author_login,\r\n                created_at,\r\n                last_value(updated_at) over pre_ordered_by_update as last_updated_at,\r\n                last_value(merged_at) over pre_ordered_by_update as last_merged_at,\r\n                last_value(closed_at) over pre_ordered_by_update as last_closed_at\r\n            from\r\n                gha_pull_requests pre\r\n            where\r\n                -- Notice: The metric only counts PRs created within one year.\r\n                created_at >= $__timeFrom()\r\n                and created_at < $__timeTo()\r\n                and updated_at < $__timeTo()\r\n                and event_id > 0\r\n            window\r\n                pre_ordered_by_update as (\r\n                    partition by id\r\n                    order by\r\n                        updated_at asc,\r\n                        event_id asc\r\n                    range between current row\r\n                    and unbounded following\r\n                )\r\n        ) sub\r\n    where\r\n        last_merged_at is null\r\n        and last_closed_at is null\r\n), prs_reponse_events as (\r\n    (\r\n        select\r\n            event_id,\r\n            pr_key,\r\n            updated_at\r\n        from\r\n            gha_issues ie,\r\n            prs pr\r\n        where\r\n            -- Ignore the response from the PR author.\r\n            ie.dup_actor_id != pr.author_id\r\n            and ie.dup_repo_name = pr.repo_name\r\n            and ie.number = pr.number\r\n            and ie.updated_at > pr.created_at + '30 seconds'::interval\r\n            and ie.updated_at < $__timeTo()\r\n            -- The event type contains IssueEvent and IssueCommentEvent.\r\n            and ie.dup_type like '%Event'\r\n            -- Ignore the robot's response.\r\n            and (lower(ie.dup_actor_login) not like all(array[\r\n              'ti-chi-bot', 'ti-community-prow-bot', 'ti-srebot', 'sre-bot', 'tidb-ci-bot', 'CLAassistant', 'web-flow', 'prowbot', 'travis%bot',\r\n              'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot', '%-testing',\r\n              'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%envoy-filter-example%', '%cibot', '%-ci']))\r\n        order by\r\n            ie.updated_at asc\r\n    )\r\n    union\r\n    (\r\n        select\r\n            event_id,\r\n            pr_key,\r\n            updated_at\r\n        from\r\n            gha_pull_requests pre,\r\n            prs pr\r\n        where\r\n            -- Ignore the response from the PR author.\r\n            pre.dup_actor_id != pr.author_id\r\n            and pre.dup_repo_name = pr.repo_name\r\n            and pre.number = pr.number\r\n            and pre.updated_at > pr.created_at + '30 seconds'::interval\r\n            and pre.updated_at < $__timeTo()\r\n            -- The event type contains PullRequestEvent, PullRequestReviewEvent and PullRequestReviewCommentEvent.\r\n            and pre.dup_type like '%Event'\r\n            -- Ignore the robot's response.\r\n            and (lower(pre.dup_actor_login) not like all(array[\r\n              'ti-chi-bot', 'ti-community-prow-bot', 'ti-srebot', 'sre-bot', 'tidb-ci-bot', 'CLAassistant', 'web-flow', 'prowbot', 'travis%bot',\r\n              'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot', '%-testing',\r\n              'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%envoy-filter-example%', '%cibot', '%-ci']))\r\n        order by\r\n            pre.updated_at asc\r\n    )\r\n), pr_sig_labels as (\r\n    select\r\n        pr_key,\r\n        sig\r\n    from\r\n    (\r\n        select\r\n            distinct pr_key,\r\n            lower(substring(il.dup_label_name from '(?i)sig/(.*)')) as sig\r\n        from\r\n            gha_issues_labels il,\r\n            prs p\r\n        where\r\n            il.dup_repo_id = p.repo_id\r\n            and il.dup_repo_name = p.repo_name\r\n            and il.dup_issue_number = p.number\r\n    ) sub\r\n    where\r\n        sig is not null\r\n        and sig in (select sig_mentions_labels_name from tsig_mentions_labels)\r\n), prs_with_stale_time as (\r\n    select\r\n        pr.pr_key,\r\n        repo_name,\r\n        number,\r\n        pr.author_login,\r\n        pr.created_at,\r\n        sub.last_response_at,\r\n        r.repo_group,\r\n        coalesce(l.sig, 'non-category') as sig,\r\n        -- So far, PingCAP is the company with the largest contribution to the TiDB community,\r\n        -- but other companies may still become the company with the largest contribution.\r\n        case when aa.company_name = 'PingCAP' then 'top-contrib'\r\n             when lower(pr.author_login) like any(array[\r\n                'dependabot', 'ti-srebot', 'codecov-io', 'web-flow',  'prowbot', 'travis%bot', 'k8s-%', '%-bot',\r\n                '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot',\r\n                '%-testing', 'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%cibot', '%-ci'\r\n             ]) then 'only-bots'\r\n             else 'other-company'\r\n        end as author_type,\r\n        coalesce(\r\n            extract(epoch from d.dtto - last_response_at),\r\n            extract(epoch from d.dtto - pr.created_at)\r\n        ) as stale_for\r\n    from\r\n        dtto d,\r\n        prs pr\r\n    left join\r\n        -- Get the last response time for each PR.\r\n        (\r\n            select\r\n                distinct on(prre.pr_key) pr_key,\r\n                last_value(updated_at) over events_ordered_by_update as last_response_at\r\n            from\r\n                prs_reponse_events prre\r\n            window\r\n                events_ordered_by_update as (\r\n                    partition by pr_key\r\n                    order by\r\n                        updated_at asc,\r\n                        event_id asc\r\n                    range between current row\r\n                    and unbounded following\r\n                )\r\n        ) sub\r\n    on\r\n        pr.pr_key = sub.pr_key\r\n    -- Notice: A PR belongs to only one repo group.\r\n    left join\r\n        gha_repos r\r\n    on\r\n        pr.repo_id = r.id\r\n        and pr.repo_name = r.name\r\n    -- Notice: The author of the PR may belong to multiple companies at the same time.\r\n    left join\r\n        gha_actors_affiliations aa\r\n    on\r\n        aa.actor_id = pr.author_id\r\n        and aa.dt_from <= pr.created_at\r\n        and aa.dt_to > pr.created_at\r\n    -- Notice: A PR may belong to multiple SIGs.\r\n    left join\r\n        pr_sig_labels l\r\n    on\r\n        pr.pr_key = l.pr_key\r\n)\r\nselect\r\n  repo_name,\r\n  count(distinct pr_key) cnt\r\nfrom\r\n  prs_with_stale_time\r\nwhere\r\n   ('${author_type:raw}' = 'all' or author_type = '${author_type:raw}')\r\n   and ('${sig:raw}' = 'all' or sig = '${sig:raw}')\r\n   and ('${repogroup_name}' = 'All' or repo_group = '${repogroup_name}')\r\n   and ('${repo:raw}' = 'all' or repo_name = '${repo:raw}')\r\n   and stale_for > 604800\r\ngroup by\r\n  repo_name\r\norder by\r\n  cnt desc\r\nlimit 20",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "\"China\""
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "scountries",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Top 20 Repositories (stale more than 1 week)",
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 0,
+        "y": 5
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": true
+        },
+        "text": {
+          "titleSize": 16
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.0.3",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "with dtto as (\r\n    select case $__timeTo()::timestamp > now()\r\n       when true then now()\r\n       else $__timeTo()::timestamp\r\n    end as dtto\r\n), prs as (\r\n    select\r\n        *\r\n    from\r\n        (\r\n            select\r\n                distinct id,\r\n                pre.dup_repo_name || '#' || pre.number as pr_key,\r\n                dup_repo_id repo_id,\r\n                dup_repo_name repo_name,\r\n                number,\r\n                user_id author_id,\r\n                dup_user_login author_login,\r\n                created_at,\r\n                last_value(updated_at) over pre_ordered_by_update as last_updated_at,\r\n                last_value(merged_at) over pre_ordered_by_update as last_merged_at,\r\n                last_value(closed_at) over pre_ordered_by_update as last_closed_at\r\n            from\r\n                gha_pull_requests pre\r\n            where\r\n                -- Notice: The metric only counts PRs created within one year.\r\n                created_at >= $__timeFrom()\r\n                and created_at < $__timeTo()\r\n                and updated_at < $__timeTo()\r\n                and event_id > 0\r\n            window\r\n                pre_ordered_by_update as (\r\n                    partition by id\r\n                    order by\r\n                        updated_at asc,\r\n                        event_id asc\r\n                    range between current row\r\n                    and unbounded following\r\n                )\r\n        ) sub\r\n    where\r\n        last_merged_at is null\r\n        and last_closed_at is null\r\n), prs_reponse_events as (\r\n    (\r\n        select\r\n            event_id,\r\n            pr_key,\r\n            updated_at\r\n        from\r\n            gha_issues ie,\r\n            prs pr\r\n        where\r\n            -- Ignore the response from the PR author.\r\n            ie.dup_actor_id != pr.author_id\r\n            and ie.dup_repo_name = pr.repo_name\r\n            and ie.number = pr.number\r\n            and ie.updated_at > pr.created_at + '30 seconds'::interval\r\n            and ie.updated_at < $__timeTo()\r\n            -- The event type contains IssueEvent and IssueCommentEvent.\r\n            and ie.dup_type like '%Event'\r\n            -- Ignore the robot's response.\r\n            and (lower(ie.dup_actor_login) not like all(array[\r\n              'ti-chi-bot', 'ti-community-prow-bot', 'ti-srebot', 'sre-bot', 'tidb-ci-bot', 'CLAassistant', 'web-flow', 'prowbot', 'travis%bot',\r\n              'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot', '%-testing',\r\n              'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%envoy-filter-example%', '%cibot', '%-ci']))\r\n        order by\r\n            ie.updated_at asc\r\n    )\r\n    union\r\n    (\r\n        select\r\n            event_id,\r\n            pr_key,\r\n            updated_at\r\n        from\r\n            gha_pull_requests pre,\r\n            prs pr\r\n        where\r\n            -- Ignore the response from the PR author.\r\n            pre.dup_actor_id != pr.author_id\r\n            and pre.dup_repo_name = pr.repo_name\r\n            and pre.number = pr.number\r\n            and pre.updated_at > pr.created_at + '30 seconds'::interval\r\n            and pre.updated_at < $__timeTo()\r\n            -- The event type contains PullRequestEvent, PullRequestReviewEvent and PullRequestReviewCommentEvent.\r\n            and pre.dup_type like '%Event'\r\n            -- Ignore the robot's response.\r\n            and (lower(pre.dup_actor_login) not like all(array[\r\n              'ti-chi-bot', 'ti-community-prow-bot', 'ti-srebot', 'sre-bot', 'tidb-ci-bot', 'CLAassistant', 'web-flow', 'prowbot', 'travis%bot',\r\n              'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot', '%-testing',\r\n              'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%envoy-filter-example%', '%cibot', '%-ci']))\r\n        order by\r\n            pre.updated_at asc\r\n    )\r\n), pr_sig_labels as (\r\n    select\r\n        pr_key,\r\n        sig\r\n    from\r\n    (\r\n        select\r\n            distinct pr_key,\r\n            lower(substring(il.dup_label_name from '(?i)sig/(.*)')) as sig\r\n        from\r\n            gha_issues_labels il,\r\n            prs p\r\n        where\r\n            il.dup_repo_id = p.repo_id\r\n            and il.dup_repo_name = p.repo_name\r\n            and il.dup_issue_number = p.number\r\n    ) sub\r\n    where\r\n        sig is not null\r\n        and sig in (select sig_mentions_labels_name from tsig_mentions_labels)\r\n), prs_with_stale_time as (\r\n    select\r\n        pr.pr_key,\r\n        repo_name,\r\n        number,\r\n        pr.author_login,\r\n        pr.created_at,\r\n        sub.last_response_at,\r\n        r.repo_group,\r\n        coalesce(l.sig, 'non-category') as sig,\r\n        -- So far, PingCAP is the company with the largest contribution to the TiDB community,\r\n        -- but other companies may still become the company with the largest contribution.\r\n        case when aa.company_name = 'PingCAP' then 'top-contrib'\r\n             when lower(pr.author_login) like any(array[\r\n                'dependabot', 'ti-srebot', 'codecov-io', 'web-flow',  'prowbot', 'travis%bot', 'k8s-%', '%-bot',\r\n                '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot',\r\n                '%-testing', 'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%cibot', '%-ci'\r\n             ]) then 'only-bots'\r\n             else 'other-company'\r\n        end as author_type,\r\n        coalesce(\r\n            extract(epoch from d.dtto - last_response_at),\r\n            extract(epoch from d.dtto - pr.created_at)\r\n        ) as stale_for\r\n    from\r\n        dtto d,\r\n        prs pr\r\n    left join\r\n        -- Get the last response time for each PR.\r\n        (\r\n            select\r\n                distinct on(prre.pr_key) pr_key,\r\n                last_value(updated_at) over events_ordered_by_update as last_response_at\r\n            from\r\n                prs_reponse_events prre\r\n            window\r\n                events_ordered_by_update as (\r\n                    partition by pr_key\r\n                    order by\r\n                        updated_at asc,\r\n                        event_id asc\r\n                    range between current row\r\n                    and unbounded following\r\n                )\r\n        ) sub\r\n    on\r\n        pr.pr_key = sub.pr_key\r\n    -- Notice: A PR belongs to only one repo group.\r\n    left join\r\n        gha_repos r\r\n    on\r\n        pr.repo_id = r.id\r\n        and pr.repo_name = r.name\r\n    -- Notice: The author of the PR may belong to multiple companies at the same time.\r\n    left join\r\n        gha_actors_affiliations aa\r\n    on\r\n        aa.actor_id = pr.author_id\r\n        and aa.dt_from <= pr.created_at\r\n        and aa.dt_to > pr.created_at\r\n    -- Notice: A PR may belong to multiple SIGs.\r\n    left join\r\n        pr_sig_labels l\r\n    on\r\n        pr.pr_key = l.pr_key\r\n)\r\nselect\r\n  count(distinct pr_key) as \"stale > 1 week\"\r\nfrom\r\n  prs_with_stale_time\r\nwhere\r\n   ('${author_type:raw}' = 'all' or author_type = '${author_type:raw}')\r\n   and ('${sig:raw}' = 'all' or sig = '${sig:raw}')\r\n   and ('${repogroup_name}' = 'All' or repo_group = '${repogroup_name}')\r\n   and ('${repo:raw}' = 'all' or repo_name = '${repo:raw}')\r\n   and stale_for > 604800",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "\"China\""
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "scountries",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "with dtto as (\r\n    select case $__timeTo()::timestamp > now()\r\n       when true then now()\r\n       else $__timeTo()::timestamp\r\n    end as dtto\r\n), prs as (\r\n    select\r\n        *\r\n    from\r\n        (\r\n            select\r\n                distinct id,\r\n                pre.dup_repo_name || '#' || pre.number as pr_key,\r\n                dup_repo_id repo_id,\r\n                dup_repo_name repo_name,\r\n                number,\r\n                user_id author_id,\r\n                dup_user_login author_login,\r\n                created_at,\r\n                last_value(updated_at) over pre_ordered_by_update as last_updated_at,\r\n                last_value(merged_at) over pre_ordered_by_update as last_merged_at,\r\n                last_value(closed_at) over pre_ordered_by_update as last_closed_at\r\n            from\r\n                gha_pull_requests pre\r\n            where\r\n                -- Notice: The metric only counts PRs created within one year.\r\n                created_at >= $__timeFrom()\r\n                and created_at < $__timeTo()\r\n                and updated_at < $__timeTo()\r\n                and event_id > 0\r\n            window\r\n                pre_ordered_by_update as (\r\n                    partition by id\r\n                    order by\r\n                        updated_at asc,\r\n                        event_id asc\r\n                    range between current row\r\n                    and unbounded following\r\n                )\r\n        ) sub\r\n    where\r\n        last_merged_at is null\r\n        and last_closed_at is null\r\n), prs_reponse_events as (\r\n    (\r\n        select\r\n            event_id,\r\n            pr_key,\r\n            updated_at\r\n        from\r\n            gha_issues ie,\r\n            prs pr\r\n        where\r\n            -- Ignore the response from the PR author.\r\n            ie.dup_actor_id != pr.author_id\r\n            and ie.dup_repo_name = pr.repo_name\r\n            and ie.number = pr.number\r\n            and ie.updated_at > pr.created_at + '30 seconds'::interval\r\n            and ie.updated_at < $__timeTo()\r\n            -- The event type contains IssueEvent and IssueCommentEvent.\r\n            and ie.dup_type like '%Event'\r\n            -- Ignore the robot's response.\r\n            and (lower(ie.dup_actor_login) not like all(array[\r\n              'ti-chi-bot', 'ti-community-prow-bot', 'ti-srebot', 'sre-bot', 'tidb-ci-bot', 'CLAassistant', 'web-flow', 'prowbot', 'travis%bot',\r\n              'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot', '%-testing',\r\n              'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%envoy-filter-example%', '%cibot', '%-ci']))\r\n        order by\r\n            ie.updated_at asc\r\n    )\r\n    union\r\n    (\r\n        select\r\n            event_id,\r\n            pr_key,\r\n            updated_at\r\n        from\r\n            gha_pull_requests pre,\r\n            prs pr\r\n        where\r\n            -- Ignore the response from the PR author.\r\n            pre.dup_actor_id != pr.author_id\r\n            and pre.dup_repo_name = pr.repo_name\r\n            and pre.number = pr.number\r\n            and pre.updated_at > pr.created_at + '30 seconds'::interval\r\n            and pre.updated_at < $__timeTo()\r\n            -- The event type contains PullRequestEvent, PullRequestReviewEvent and PullRequestReviewCommentEvent.\r\n            and pre.dup_type like '%Event'\r\n            -- Ignore the robot's response.\r\n            and (lower(pre.dup_actor_login) not like all(array[\r\n              'ti-chi-bot', 'ti-community-prow-bot', 'ti-srebot', 'sre-bot', 'tidb-ci-bot', 'CLAassistant', 'web-flow', 'prowbot', 'travis%bot',\r\n              'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot', '%-testing',\r\n              'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%envoy-filter-example%', '%cibot', '%-ci']))\r\n        order by\r\n            pre.updated_at asc\r\n    )\r\n), pr_sig_labels as (\r\n    select\r\n        pr_key,\r\n        sig\r\n    from\r\n    (\r\n        select\r\n            distinct pr_key,\r\n            lower(substring(il.dup_label_name from '(?i)sig/(.*)')) as sig\r\n        from\r\n            gha_issues_labels il,\r\n            prs p\r\n        where\r\n            il.dup_repo_id = p.repo_id\r\n            and il.dup_repo_name = p.repo_name\r\n            and il.dup_issue_number = p.number\r\n    ) sub\r\n    where\r\n        sig is not null\r\n        and sig in (select sig_mentions_labels_name from tsig_mentions_labels)\r\n), prs_with_stale_time as (\r\n    select\r\n        pr.pr_key,\r\n        repo_name,\r\n        number,\r\n        pr.author_login,\r\n        pr.created_at,\r\n        sub.last_response_at,\r\n        r.repo_group,\r\n        coalesce(l.sig, 'non-category') as sig,\r\n        -- So far, PingCAP is the company with the largest contribution to the TiDB community,\r\n        -- but other companies may still become the company with the largest contribution.\r\n        case when aa.company_name = 'PingCAP' then 'top-contrib'\r\n             when lower(pr.author_login) like any(array[\r\n                'dependabot', 'ti-srebot', 'codecov-io', 'web-flow',  'prowbot', 'travis%bot', 'k8s-%', '%-bot',\r\n                '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot',\r\n                '%-testing', 'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%cibot', '%-ci'\r\n             ]) then 'only-bots'\r\n             else 'other-company'\r\n        end as author_type,\r\n        coalesce(\r\n            extract(epoch from d.dtto - last_response_at),\r\n            extract(epoch from d.dtto - pr.created_at)\r\n        ) as stale_for\r\n    from\r\n        dtto d,\r\n        prs pr\r\n    left join\r\n        -- Get the last response time for each PR.\r\n        (\r\n            select\r\n                distinct on(prre.pr_key) pr_key,\r\n                last_value(updated_at) over events_ordered_by_update as last_response_at\r\n            from\r\n                prs_reponse_events prre\r\n            window\r\n                events_ordered_by_update as (\r\n                    partition by pr_key\r\n                    order by\r\n                        updated_at asc,\r\n                        event_id asc\r\n                    range between current row\r\n                    and unbounded following\r\n                )\r\n        ) sub\r\n    on\r\n        pr.pr_key = sub.pr_key\r\n    -- Notice: A PR belongs to only one repo group.\r\n    left join\r\n        gha_repos r\r\n    on\r\n        pr.repo_id = r.id\r\n        and pr.repo_name = r.name\r\n    -- Notice: The author of the PR may belong to multiple companies at the same time.\r\n    left join\r\n        gha_actors_affiliations aa\r\n    on\r\n        aa.actor_id = pr.author_id\r\n        and aa.dt_from <= pr.created_at\r\n        and aa.dt_to > pr.created_at\r\n    -- Notice: A PR may belong to multiple SIGs.\r\n    left join\r\n        pr_sig_labels l\r\n    on\r\n        pr.pr_key = l.pr_key\r\n)\r\nselect\r\n  count(distinct pr_key) as \"stale > 30 days\"\r\nfrom\r\n  prs_with_stale_time\r\nwhere\r\n   ('${author_type:raw}' = 'all' or author_type = '${author_type:raw}')\r\n   and ('${sig:raw}' = 'all' or sig = '${sig:raw}')\r\n   and ('${repogroup_name}' = 'All' or repo_group = '${repogroup_name}')\r\n   and ('${repo:raw}' = 'all' or repo_name = '${repo:raw}')\r\n   and stale_for > 2592000",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "\"China\""
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "scountries",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "with dtto as (\r\n    select case $__timeTo()::timestamp > now()\r\n       when true then now()\r\n       else $__timeTo()::timestamp\r\n    end as dtto\r\n), prs as (\r\n    select\r\n        *\r\n    from\r\n        (\r\n            select\r\n                distinct id,\r\n                pre.dup_repo_name || '#' || pre.number as pr_key,\r\n                dup_repo_id repo_id,\r\n                dup_repo_name repo_name,\r\n                number,\r\n                user_id author_id,\r\n                dup_user_login author_login,\r\n                created_at,\r\n                last_value(updated_at) over pre_ordered_by_update as last_updated_at,\r\n                last_value(merged_at) over pre_ordered_by_update as last_merged_at,\r\n                last_value(closed_at) over pre_ordered_by_update as last_closed_at\r\n            from\r\n                gha_pull_requests pre\r\n            where\r\n                -- Notice: The metric only counts PRs created within one year.\r\n                created_at >= $__timeFrom()\r\n                and created_at < $__timeTo()\r\n                and updated_at < $__timeTo()\r\n                and event_id > 0\r\n            window\r\n                pre_ordered_by_update as (\r\n                    partition by id\r\n                    order by\r\n                        updated_at asc,\r\n                        event_id asc\r\n                    range between current row\r\n                    and unbounded following\r\n                )\r\n        ) sub\r\n    where\r\n        last_merged_at is null\r\n        and last_closed_at is null\r\n), prs_reponse_events as (\r\n    (\r\n        select\r\n            event_id,\r\n            pr_key,\r\n            updated_at\r\n        from\r\n            gha_issues ie,\r\n            prs pr\r\n        where\r\n            -- Ignore the response from the PR author.\r\n            ie.dup_actor_id != pr.author_id\r\n            and ie.dup_repo_name = pr.repo_name\r\n            and ie.number = pr.number\r\n            and ie.updated_at > pr.created_at + '30 seconds'::interval\r\n            and ie.updated_at < $__timeTo()\r\n            -- The event type contains IssueEvent and IssueCommentEvent.\r\n            and ie.dup_type like '%Event'\r\n            -- Ignore the robot's response.\r\n            and (lower(ie.dup_actor_login) not like all(array[\r\n              'ti-chi-bot', 'ti-community-prow-bot', 'ti-srebot', 'sre-bot', 'tidb-ci-bot', 'CLAassistant', 'web-flow', 'prowbot', 'travis%bot',\r\n              'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot', '%-testing',\r\n              'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%envoy-filter-example%', '%cibot', '%-ci']))\r\n        order by\r\n            ie.updated_at asc\r\n    )\r\n    union\r\n    (\r\n        select\r\n            event_id,\r\n            pr_key,\r\n            updated_at\r\n        from\r\n            gha_pull_requests pre,\r\n            prs pr\r\n        where\r\n            -- Ignore the response from the PR author.\r\n            pre.dup_actor_id != pr.author_id\r\n            and pre.dup_repo_name = pr.repo_name\r\n            and pre.number = pr.number\r\n            and pre.updated_at > pr.created_at + '30 seconds'::interval\r\n            and pre.updated_at < $__timeTo()\r\n            -- The event type contains PullRequestEvent, PullRequestReviewEvent and PullRequestReviewCommentEvent.\r\n            and pre.dup_type like '%Event'\r\n            -- Ignore the robot's response.\r\n            and (lower(pre.dup_actor_login) not like all(array[\r\n              'ti-chi-bot', 'ti-community-prow-bot', 'ti-srebot', 'sre-bot', 'tidb-ci-bot', 'CLAassistant', 'web-flow', 'prowbot', 'travis%bot',\r\n              'k8s-%', '%-bot', '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot', '%-testing',\r\n              'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%envoy-filter-example%', '%cibot', '%-ci']))\r\n        order by\r\n            pre.updated_at asc\r\n    )\r\n), pr_sig_labels as (\r\n    select\r\n        pr_key,\r\n        sig\r\n    from\r\n    (\r\n        select\r\n            distinct pr_key,\r\n            lower(substring(il.dup_label_name from '(?i)sig/(.*)')) as sig\r\n        from\r\n            gha_issues_labels il,\r\n            prs p\r\n        where\r\n            il.dup_repo_id = p.repo_id\r\n            and il.dup_repo_name = p.repo_name\r\n            and il.dup_issue_number = p.number\r\n    ) sub\r\n    where\r\n        sig is not null\r\n        and sig in (select sig_mentions_labels_name from tsig_mentions_labels)\r\n), prs_with_stale_time as (\r\n    select\r\n        pr.pr_key,\r\n        repo_name,\r\n        number,\r\n        pr.author_login,\r\n        pr.created_at,\r\n        sub.last_response_at,\r\n        r.repo_group,\r\n        coalesce(l.sig, 'non-category') as sig,\r\n        -- So far, PingCAP is the company with the largest contribution to the TiDB community,\r\n        -- but other companies may still become the company with the largest contribution.\r\n        case when aa.company_name = 'PingCAP' then 'top-contrib'\r\n             when lower(pr.author_login) like any(array[\r\n                'dependabot', 'ti-srebot', 'codecov-io', 'web-flow',  'prowbot', 'travis%bot', 'k8s-%', '%-bot',\r\n                '%-robot', 'bot-%', 'robot-%', '%[bot]%', '%[robot]%', '%-jenkins', 'jenkins-%', '%-ci%bot',\r\n                '%-testing', 'codecov-%', '%clabot%', '%cla-bot%', '%-gerrit', '%-bot-%', '%cibot', '%-ci'\r\n             ]) then 'only-bots'\r\n             else 'other-company'\r\n        end as author_type,\r\n        coalesce(\r\n            extract(epoch from d.dtto - last_response_at),\r\n            extract(epoch from d.dtto - pr.created_at)\r\n        ) as stale_for\r\n    from\r\n        dtto d,\r\n        prs pr\r\n    left join\r\n        -- Get the last response time for each PR.\r\n        (\r\n            select\r\n                distinct on(prre.pr_key) pr_key,\r\n                last_value(updated_at) over events_ordered_by_update as last_response_at\r\n            from\r\n                prs_reponse_events prre\r\n            window\r\n                events_ordered_by_update as (\r\n                    partition by pr_key\r\n                    order by\r\n                        updated_at asc,\r\n                        event_id asc\r\n                    range between current row\r\n                    and unbounded following\r\n                )\r\n        ) sub\r\n    on\r\n        pr.pr_key = sub.pr_key\r\n    -- Notice: A PR belongs to only one repo group.\r\n    left join\r\n        gha_repos r\r\n    on\r\n        pr.repo_id = r.id\r\n        and pr.repo_name = r.name\r\n    -- Notice: The author of the PR may belong to multiple companies at the same time.\r\n    left join\r\n        gha_actors_affiliations aa\r\n    on\r\n        aa.actor_id = pr.author_id\r\n        and aa.dt_from <= pr.created_at\r\n        and aa.dt_to > pr.created_at\r\n    -- Notice: A PR may belong to multiple SIGs.\r\n    left join\r\n        pr_sig_labels l\r\n    on\r\n        pr.pr_key = l.pr_key\r\n)\r\nselect\r\n  count(distinct pr_key) as \"stale > 90 days\"\r\nfrom\r\n  prs_with_stale_time\r\nwhere\r\n   ('${author_type:raw}' = 'all' or author_type = '${author_type:raw}')\r\n   and ('${sig:raw}' = 'all' or sig = '${sig:raw}')\r\n   and ('${repogroup_name}' = 'All' or repo_group = '${repogroup_name}')\r\n   and ('${repo:raw}' = 'all' or repo_name = '${repo:raw}')\r\n   and stale_for > 7776000",
+          "refId": "C",
+          "select": [
+            [
+              {
+                "params": [
+                  "\"China\""
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "scountries",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Stale PR total (stale more than 1 week)",
       "transparent": true,
       "type": "stat"
     },
@@ -646,7 +700,7 @@
           ]
         }
       ],
-      "title": "Stale PR Table ",
+      "title": "Open PR Table ",
       "transparent": true,
       "type": "table"
     }
@@ -659,14 +713,14 @@
     "dashboard",
     "active",
     "SIGs",
-    "tikv"
+    "tidb"
   ],
   "templating": {
     "list": [
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "All"
         },
@@ -779,12 +833,12 @@
     ]
   },
   "time": {
-    "from": "now-1y",
+    "from": "now-6M",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Stale PR Table",
   "uid": "stale-pr-table",
-  "version": 6
+  "version": 3
 }

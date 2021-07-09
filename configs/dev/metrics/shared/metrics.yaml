@@ -41,6 +41,7 @@ metrics:
     aggregate: 1,7,24
     skip: h7,w7,m7,q7,y7,d24,w24,m24,q24,y24
     drop: sall_prs_merged
+  # Opened to merged
   - name: Opened to merged
     series_name_or_func: multi_row_multi_column
     sql: opened_to_merged
@@ -86,6 +87,7 @@ metrics:
     desc: time_diff_as_string
     merge_series: pr_time_metric_company
     drop: spr_time_metric_company
+  # First non-author activity
   - name: First non-author activity
     series_name_or_func: multi_row_multi_column
     sql: first_non_author_activity
@@ -113,6 +115,7 @@ metrics:
     desc: time_diff_as_string
     merge_series: pr_first_non_author_activity_sig
     drop: spr_first_non_author_activity_sig
+  # Stale PRs by SIG
   - name: Stale PRs by SIG
     series_name_or_func: multi_row_multi_column
     sql: pr_stale_by_sig

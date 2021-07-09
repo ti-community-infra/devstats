@@ -39,6 +39,16 @@
       "keepTime": true,
       "tags": [],
       "targetBlank": true,
+      "title": "All",
+      "tooltip": "Opens All Project dashboards",
+      "type": "link",
+      "url": "https://all-[[hostname]]"
+    },
+    {
+      "icon": "dashboard",
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
       "title": "TiDB",
       "tooltip": "Opens TiDB dashboards",
       "type": "link",
