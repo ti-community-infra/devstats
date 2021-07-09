@@ -48,20 +48,19 @@ projects:
     annotation_regexp: '^v\d+\.\d+\.\d+$'
     files_skip_pattern: '(^|/)_?(vendor|Godeps|_workspace)/'
   all:
-    order: 255
+    order: 4
     name: All Community
     status: "-"
     command_line:
       - "pingcap,tikv,chaos-mesh"
-    start_date: 2014-01-01T00:00:00Z
-    join_date: 2016-03-10T00:00:00Z
-    psql_db: allprj
-    main_repo: ''
-    annotation_regexp: ''
-    files_skip_pattern: ''
-    project_scale: 5.0
     env:
       GHA2DB_EXCLUDE_REPOS:
         "pingcap/ticdc-lib,pingcap/tidb-ansible,pingcap/tidb-helper,\
          pingcap/tidb-lightning,pingcap/tikv-client-lib-java,pingcap/etcdv3-gateway,\
          pingcap/tso,pingcap/mysqlrelay,pingcap/tidb-lmdb,pingcap/sqllogictest"
+    psql_db: allprj
+    main_repo: ''
+    project_scale: 5.0
+    start_date: 2020-01-01T00:00:00Z
+    annotation_regexp: ''
+    files_skip_pattern: ''

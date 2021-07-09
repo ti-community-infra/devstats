@@ -74,6 +74,8 @@ spec:
       value: {{ $root.Values.projectsFile }}
     - name: GHA2DB_AFFILIATIONS_JSON
       value: '{{ $root.Values.affiliations }}'
+    - name: MERGE_MODE
+      value: '{{ $root.Values.mergeMode }}'
     - name: GHA2DB_COMPUTE_ALL
       value: '{{ $root.Values.forceComputeAll }}'
     - name: GHA2DB_SKIP_METRICS

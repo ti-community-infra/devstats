@@ -64,6 +64,7 @@ limitsProvisionsCPU: '8000m'
 limitsProvisionsMemory: '64Gi'
 useProvisionsResourcesLimits: 1
 waitForBootstrap: 60
+mergeMode: '1'
 
 # Postgres configurations.
 postgresPort: 5432
@@ -176,3 +177,12 @@ projects:
     cron: '50 * * * *'
     affCron: '0 18 * * 0'
     disk: 50Gi
+  - i: 3
+    proj: all
+    db: allprj
+    icon: 'all'
+    org: 'All'
+    repo: '-'
+    cron: '40 * * * *'
+    affCron: '0 20 * * 0'
+    disk: 100Gi

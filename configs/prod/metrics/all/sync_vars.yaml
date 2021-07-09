@@ -1,0 +1,6 @@
+---
+vars:
+  - name: os_hostname
+    type: s
+    command: [hostname]
+    no_write: true
