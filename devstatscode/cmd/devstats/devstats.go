@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
-	lib "github.com/cncf/devstatscode"
 	"github.com/lib/pq"
+	lib "github.com/ti-community-infra/devstats"
 	yaml "gopkg.in/yaml.v2"
 )
 

@@ -17,8 +17,8 @@ import (
 	"strings"
 	"time"
 
-	lib "github.com/cncf/devstatscode"
 	jsoniter "github.com/json-iterator/go"
+	lib "github.com/ti-community-infra/devstats"
 )
 
 // Payload signature verification based on:

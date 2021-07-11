@@ -5,12 +5,10 @@ import (
 	"os"
 	"testing"
 
-	lib "github.com/cncf/devstatscode"
-	testlib "github.com/cncf/devstatscode/test"
+	testlib "github.com/ti-community-infra/devstats/test"
 )
 
 func TestEnv(t *testing.T) {
-
 	// Test cases
 	var testCases = []struct {
 		name         string
@@ -130,7 +128,7 @@ func TestEnv(t *testing.T) {
 		}
 
 		// Call EnvReplace
-		saved := lib.EnvReplace(test.prefix, test.suffix)
+		saved := EnvReplace(test.prefix, test.suffix)
 
 		// Get replaced environment
 		replacedEnv := make(map[string]string)
@@ -142,7 +140,7 @@ func TestEnv(t *testing.T) {
 		}
 
 		// Call EnvRestore
-		lib.EnvRestore(saved)
+		EnvRestore(saved)
 
 		// Get restored environment
 		restoredEnv := make(map[string]string)

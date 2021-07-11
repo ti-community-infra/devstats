@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	lib "github.com/cncf/devstatscode"
 	jsoniter "github.com/json-iterator/go"
+	lib "github.com/ti-community-infra/devstats"
 	yaml "gopkg.in/yaml.v2"
 )
 

@@ -12,8 +12,8 @@ import (
 	"sync"
 	"time"
 
-	lib "github.com/cncf/devstatscode"
 	"github.com/google/go-github/github"
+	lib "github.com/ti-community-infra/devstats"
 )
 
 // getAPIParams connects to GitHub and Postgres

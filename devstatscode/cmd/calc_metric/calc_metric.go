@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	lib "github.com/cncf/devstatscode"
+	lib "github.com/ti-community-infra/devstats"
 )
 
 // calcMetricData structure to hold metric calculation data

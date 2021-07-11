@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	lib "github.com/cncf/devstatscode"
+	lib "github.com/ti-community-infra/devstats"
 )
 
 type esRawCommit struct {

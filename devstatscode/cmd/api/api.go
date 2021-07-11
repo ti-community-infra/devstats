@@ -14,8 +14,8 @@ import (
 	"syscall"
 	"time"
 
-	lib "github.com/cncf/devstatscode"
 	"github.com/rs/cors"
+	lib "github.com/ti-community-infra/devstats"
 	yaml "gopkg.in/yaml.v2"
 )
 

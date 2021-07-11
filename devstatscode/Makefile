@@ -1,9 +1,9 @@
 GO_LIB_FILES=pg_conn.go error.go mgetc.go map.go threads.go gha.go json.go time.go context.go exec.go structure.go log.go hash.go unicode.go const.go string.go annotations.go env.go ghapi.go io.go tags.go yaml.go es_conn.go ts_points.go convert.go
 GO_BIN_FILES=cmd/structure/structure.go cmd/runq/runq.go cmd/gha2db/gha2db.go cmd/calc_metric/calc_metric.go cmd/gha2db_sync/gha2db_sync.go cmd/import_affs/import_affs.go cmd/annotations/annotations.go cmd/tags/tags.go cmd/webhook/webhook.go cmd/devstats/devstats.go cmd/get_repos/get_repos.go cmd/merge_dbs/merge_dbs.go cmd/replacer/replacer.go cmd/vars/vars.go cmd/ghapi2db/ghapi2db.go cmd/columns/columns.go cmd/hide_data/hide_data.go cmd/sqlitedb/sqlitedb.go cmd/website_data/website_data.go cmd/sync_issues/sync_issues.go cmd/gha2es/gha2es.go cmd/api/api.go
 GO_TEST_FILES=context_test.go gha_test.go map_test.go mgetc_test.go threads_test.go time_test.go unicode_test.go string_test.go regexp_test.go annotations_test.go env_test.go convert_test.go
-GO_DBTEST_FILES=pg_test.go series_test.go
+GO_DBTEST_FILES=dbtest/pg_test.go dbtest/series_test.go
 GO_LIBTEST_FILES=test/compare.go test/time.go
-GO_BIN_CMDS=github.com/cncf/devstatscode/cmd/structure github.com/cncf/devstatscode/cmd/runq github.com/cncf/devstatscode/cmd/gha2db github.com/cncf/devstatscode/cmd/calc_metric github.com/cncf/devstatscode/cmd/gha2db_sync github.com/cncf/devstatscode/cmd/import_affs github.com/cncf/devstatscode/cmd/annotations github.com/cncf/devstatscode/cmd/tags github.com/cncf/devstatscode/cmd/webhook github.com/cncf/devstatscode/cmd/devstats github.com/cncf/devstatscode/cmd/get_repos github.com/cncf/devstatscode/cmd/merge_dbs github.com/cncf/devstatscode/cmd/replacer github.com/cncf/devstatscode/cmd/vars github.com/cncf/devstatscode/cmd/ghapi2db github.com/cncf/devstatscode/cmd/columns github.com/cncf/devstatscode/cmd/hide_data github.com/cncf/devstatscode/cmd/sqlitedb github.com/cncf/devstatscode/cmd/website_data github.com/cncf/devstatscode/cmd/sync_issues github.com/cncf/devstatscode/cmd/gha2es github.com/cncf/devstatscode/cmd/api
+GO_BIN_CMDS=github.com/ti-community-infra/devstats/cmd/structure github.com/ti-community-infra/devstats/cmd/runq github.com/ti-community-infra/devstats/cmd/gha2db github.com/ti-community-infra/devstats/cmd/calc_metric github.com/ti-community-infra/devstats/cmd/gha2db_sync github.com/ti-community-infra/devstats/cmd/import_affs github.com/ti-community-infra/devstats/cmd/annotations github.com/ti-community-infra/devstats/cmd/tags github.com/ti-community-infra/devstats/cmd/webhook github.com/ti-community-infra/devstats/cmd/devstats github.com/ti-community-infra/devstats/cmd/get_repos github.com/ti-community-infra/devstats/cmd/merge_dbs github.com/ti-community-infra/devstats/cmd/replacer github.com/ti-community-infra/devstats/cmd/vars github.com/ti-community-infra/devstats/cmd/ghapi2db github.com/ti-community-infra/devstats/cmd/columns github.com/ti-community-infra/devstats/cmd/hide_data github.com/ti-community-infra/devstats/cmd/sqlitedb github.com/ti-community-infra/devstats/cmd/website_data github.com/ti-community-infra/devstats/cmd/sync_issues github.com/ti-community-infra/devstats/cmd/gha2es github.com/ti-community-infra/devstats/cmd/api
 BUILD_TIME=`date -u '+%Y-%m-%d_%I:%M:%S%p'`
 COMMIT=`git rev-parse HEAD`
 HOSTNAME=`uname -a | sed "s/ /_/g"`
@@ -12,14 +12,14 @@ GO_VERSION=`go version | sed "s/ /_/g"`
 #GO_ENV=CGO_ENABLED=1
 GO_ENV=CGO_ENABLED=0
 # -ldflags '-s -w': create release binary - without debug info
-GO_BUILD=go build -ldflags "-s -w -X github.com/cncf/devstatscode.BuildStamp=$(BUILD_TIME) -X github.com/cncf/devstatscode.GitHash=$(COMMIT) -X github.com/cncf/devstatscode.HostName=$(HOSTNAME) -X github.com/cncf/devstatscode.GoVersion=$(GO_VERSION)"
-#GO_BUILD=go build -ldflags "-s -w -X github.com/cncf/devstatscode.BuildStamp=$(BUILD_TIME) -X github.com/cncf/devstatscode.GitHash=$(COMMIT) -X github.com/cncf/devstatscode.HostName=$(HOSTNAME) -X github.com/cncf/devstatscode.GoVersion=$(GO_VERSION)" -race
+GO_BUILD=go build -ldflags "-s -w -X github.com/ti-community-infra/devstats.BuildStamp=$(BUILD_TIME) -X github.com/ti-community-infra/devstats.GitHash=$(COMMIT) -X github.com/ti-community-infra/devstats.HostName=$(HOSTNAME) -X github.com/ti-community-infra/devstats.GoVersion=$(GO_VERSION)"
+#GO_BUILD=go build -ldflags "-s -w -X github.com/ti-community-infra/devstats.BuildStamp=$(BUILD_TIME) -X github.com/ti-community-infra/devstats.GitHash=$(COMMIT) -X github.com/ti-community-infra/devstats.HostName=$(HOSTNAME) -X github.com/ti-community-infra/devstats.GoVersion=$(GO_VERSION)" -race
 #  -ldflags '-s': instal stripped binary
 #GO_INSTALL=go install
 #For static gcc linking
 GCC_STATIC=
 #GCC_STATIC=-ldflags '-extldflags "-static"'
-GO_INSTALL=go install -ldflags "-s -w -X github.com/cncf/devstatscode.BuildStamp=$(BUILD_TIME) -X github.com/cncf/devstatscode.GitHash=$(COMMIT) -X github.com/cncf/devstatscode.HostName=$(HOSTNAME) -X github.com/cncf/devstatscode.GoVersion=$(GO_VERSION)"
+GO_INSTALL=go install -ldflags "-s -w -X github.com/ti-community-infra/devstats.BuildStamp=$(BUILD_TIME) -X github.com/ti-community-infra/devstats.GitHash=$(COMMIT) -X github.com/ti-community-infra/devstats.HostName=$(HOSTNAME) -X github.com/ti-community-infra/devstats.GoVersion=$(GO_VERSION)"
 GO_FMT=gofmt -s -w
 GO_LINT=golint -set_exit_status
 GO_VET=go vet
@@ -120,7 +120,7 @@ errcheck: ${GO_BIN_FILES} ${GO_LIB_FILES} ${GO_TEST_FILES} ${GO_DBTEST_FILES} ${
 	${GO_ERRCHECK} $(go list ./... | grep -v /vendor/)
 
 test:
-	${GO_TEST} ${GO_TEST_FILES}
+	${GO_TEST} ${go list ./... | grep -v "dbtest"}
 
 dbtest:
 	${GO_TEST} ${GO_DBTEST_FILES}

@@ -9,8 +9,8 @@ import (
 	"sync"
 	"time"
 
-	lib "github.com/cncf/devstatscode"
 	"github.com/google/go-github/github"
+	lib "github.com/ti-community-infra/devstats"
 )
 
 // Sync issues state given by query from GHA2DB_ISSUES_SYNC_SQL env

@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	lib "github.com/cncf/devstatscode"
+	lib "github.com/ti-community-infra/devstats"
 )
 
 // replacer - replace regexp or string with regesp or string

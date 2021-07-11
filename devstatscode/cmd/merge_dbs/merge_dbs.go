@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"time"
 
-	lib "github.com/cncf/devstatscode"
 	"github.com/lib/pq"
+	lib "github.com/ti-community-infra/devstats"
 )
 
 func mergePDBs() {

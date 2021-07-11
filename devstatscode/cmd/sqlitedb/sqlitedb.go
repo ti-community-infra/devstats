@@ -10,9 +10,9 @@ import (
 	"strings"
 	"time"
 
-	lib "github.com/cncf/devstatscode"
 	jsoniter "github.com/json-iterator/go"
 	_ "github.com/mattn/go-sqlite3"
+	lib "github.com/ti-community-infra/devstats"
 )
 
 // dashboard stores main dashoard keys title and uid
