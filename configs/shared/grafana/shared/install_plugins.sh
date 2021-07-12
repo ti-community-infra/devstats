@@ -1,4 +1,5 @@
 #!/bin/bash
+
 install_plugin () {
   echo "Installing ${1}"
   trials=0
@@ -21,6 +22,7 @@ install_plugin () {
   done
   return -1
 }
+
 install_plugin grafana-worldmap-panel || exit 1
 install_plugin grafana-piechart-panel || exit 2
 install_plugin michaeldmoore-annunciator-panel || exit 3
@@ -40,4 +42,6 @@ install_plugin yesoreyeram-boomtable-panel || exit 16
 install_plugin digrich-bubblechart-panel || exit 17
 install_plugin neocat-cal-heatmap-panel || exit 18
 install_plugin petrslavotinek-carpetplot-panel || exit 19
+install_plugin gapit-htmlgraphics-panel || exit 20
+
 echo 'Plugins installed'
