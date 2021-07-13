@@ -1,0 +1,1237 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "",
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 12,
+  "iteration": 1626161263293,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 18,
+      "panels": [
+        {
+          "datasource": null,
+          "gridPos": {
+            "h": 7,
+            "w": 7,
+            "x": 0,
+            "y": 1
+          },
+          "id": 2,
+          "options": {
+            "content": "<a href=\"https://github.com/${users}\" target=\"_blank\">![Github Stats](https://github-readme-stats.vercel.app/api?username=[[users]]&show_icons=true&theme=dark&hide_border=true)</a>\n",
+            "mode": "markdown"
+          },
+          "pluginVersion": "8.0.3",
+          "targets": [
+            {
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": false,
+              "rawSql": "SELECT\n  created_at AS \"time\",\n  license_prob\nFROM gha_repos\nWHERE\n  $__timeFilter(created_at)\nORDER BY 1",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "license_prob"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "gha_repos",
+              "timeColumn": "created_at",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Github Stats",
+          "transparent": true,
+          "type": "text"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": null,
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 9,
+            "x": 7,
+            "y": 1
+          },
+          "hiddenSeries": false,
+          "id": 9,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "8.0.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "format": "table",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "select\n  time,\n  value\nfrom\n  sall_user_activity\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = lower(regexp_replace('user[[users]][[repogroup]]contributions', '[^\\w]+',''))\norder by\n  time",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "license_prob"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "gha_repos",
+              "timeColumn": "created_at",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Contributor Contributions In [[repogroup_name]]",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": null,
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 16,
+            "y": 1
+          },
+          "hiddenSeries": false,
+          "id": 8,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "8.0.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "format": "table",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "select\n  time,\n  value\nfrom\n  sall_user_activity\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = lower(regexp_replace('user[[users]][[repogroup]]prs', '[^\\w]+',''))\norder by\n  time",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "license_prob"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "gha_repos",
+              "timeColumn": "created_at",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Contributor PRs In  [[repogroup_name]]",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": null,
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 6,
+            "w": 7,
+            "x": 0,
+            "y": 8
+          },
+          "hiddenSeries": false,
+          "id": 6,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "8.0.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "format": "table",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "select\n  time,\n  value\nfrom\n  sall_user_activity\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = lower(regexp_replace('user[[users]][[repogroup]]activity', '[^\\w]+',''))\norder by\n  time",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "license_prob"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "gha_repos",
+              "timeColumn": "created_at",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Contributor Activity In [[repogroup_name]]",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": true,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "$$hashKey": "object:77",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "$$hashKey": "object:78",
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": null,
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 9,
+            "x": 7,
+            "y": 8
+          },
+          "hiddenSeries": false,
+          "id": 7,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "8.0.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "format": "table",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "select\n  time,\n  value\nfrom\n  sall_user_activity\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = lower(regexp_replace('user[[users]][[repogroup]]issues', '[^\\w]+',''))\norder by\n  time",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "license_prob"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "gha_repos",
+              "timeColumn": "created_at",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Contributor Issues In [[repogroup_name]]",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": null,
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 16,
+            "y": 8
+          },
+          "hiddenSeries": false,
+          "id": 11,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "8.0.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "format": "table",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "select\n  time,\n  value\nfrom\n  sall_user_activity\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = lower(regexp_replace('user[[users]][[repogroup]]commits', '[^\\w]+',''))\norder by\n  time",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "license_prob"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "gha_repos",
+              "timeColumn": "created_at",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Contributor Commits In  [[repogroup_name]]",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "datasource": null,
+          "description": "",
+          "gridPos": {
+            "h": 6,
+            "w": 7,
+            "x": 0,
+            "y": 14
+          },
+          "id": 4,
+          "options": {
+            "content": "![Languages](https://github-readme-stats.vercel.app/api/top-langs/?layout=compact&username=[[users]]&show_icons=true&theme=dark&hide_border=true&hide_title=true)",
+            "mode": "markdown"
+          },
+          "pluginVersion": "8.0.3",
+          "targets": [
+            {
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": false,
+              "rawSql": "SELECT\n  created_at AS \"time\",\n  license_prob\nFROM gha_repos\nWHERE\n  $__timeFilter(created_at)\nORDER BY 1",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "license_prob"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "gha_repos",
+              "timeColumn": "created_at",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "title": "Developer Languages",
+          "transparent": true,
+          "type": "text"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": null,
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 9,
+            "x": 7,
+            "y": 15
+          },
+          "hiddenSeries": false,
+          "id": 10,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "8.0.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "format": "table",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "select\n  time,\n  value\nfrom\n  sall_user_activity\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = lower(regexp_replace('user[[users]][[repogroup]]comments', '[^\\w]+',''))\norder by\n  time",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "license_prob"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "gha_repos",
+              "timeColumn": "created_at",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Contributor Comments In [[repogroup_name]]",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": null,
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 8,
+            "x": 16,
+            "y": 15
+          },
+          "hiddenSeries": false,
+          "id": 12,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "8.0.3",
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "format": "table",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "select\n  time,\n  value\nfrom\n  sall_user_activity\nwhere\n  $__timeFilter(time)\n  and period = '[[period]]'\n  and series = lower(regexp_replace('user[[users]][[repogroup]]pushes', '[^\\w]+',''))\norder by\n  time",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "license_prob"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "gha_repos",
+              "timeColumn": "created_at",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Contributor Pushes In [[repogroup_name]]",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "title": "Overall",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 20,
+      "panels": [],
+      "title": "Activities",
+      "type": "row"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 37,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 16,
+      "options": {
+        "SVGBaseFix": true,
+        "add100Percentage": true,
+        "centerAlignContent": true,
+        "codeData": "{\n  \"text\": \"Random text\"\n}",
+        "css": "* {\n  font-family: Open Sans;\n}\n\na {\n  color: #c1c1c1;\n}\n\n#container::-webkit-scrollbar  {\n  width: 8px;\n}\n#container::-webkit-scrollbar-thumb {\n  border-radius:10px;\n  background:rgba(0,0,0,0.1);\n  -webkit-box-shadow:inset006pxrgba(0,0,0,0.5);\n}\n#container::-webkit-scrollbar-thumb:window-inactive {\n  background:rgba(255,0,0,0.4);\n}\n\n.item {\n  background-color: #191b1f;\n  padding: 10px;\n  margin: 10px 0 20px;\n  border-radius: 5px;\n}\n.item-header {\n  display: flex;\n  justify-content: space-between;\n}\n.item-body {\n  display: flex;\n}\n.item-content {\n  display: flex;\n  background-color: #2f3136;\n  width: 100%;\n  padding: 10px;\n  margin-top: 10px;\n  border-radius: 5px;\n  text-decoration: none;\n  text-align: left;\n}",
+        "dynamicData": false,
+        "html": "<div id=\"container\" style=\"text-align: center;\"></div>\n",
+        "onInit": "",
+        "onRender": "// Sets the value from the first series on every refresh\nconst container = htmlNode.getElementById('container');\n\nconst getFieldValuesByName = (seriesRefId, fieldName) => {\n  const series = data.series.find((item) => item.refId === seriesRefId);\n  \n  if (!series) return null;\n\n  const fields = series.fields;\n  \n  return fields.find((field) => field.name === fieldName);\n};\n\nif (container) {\n  const repoField = getFieldValuesByName('Activity', 'repoName');\n  const numberField = getFieldValuesByName('Activity', 'number');\n  const eventTypeField = getFieldValuesByName('Activity', 'eventType');\n  const titleField = getFieldValuesByName('Activity', 'title');\n  const statusField = getFieldValuesByName('Activity', 'status');\n  const commentIdField = getFieldValuesByName('Activity', 'commentId');\n  const commentField = getFieldValuesByName('Activity', 'comment');\n  const timestampField = getFieldValuesByName('Activity', 'timestamp');\n  const isPullRequestField = getFieldValuesByName('Activity', 'isPullRequest');\n\n  const repoFieldValues = repoField?.values ? repoField.values.toArray() : [];\n  const numberFieldValues = numberField?.values ? numberField.values.toArray() : [];\n  const eventTypeFieldValues = eventTypeField?.values ? eventTypeField.values.toArray() : [];\n  const titleFieldValues = titleField?.values ? titleField.values.toArray() : [];\n  const statusFieldValues = statusField?.values ? statusField.values.toArray() : [];\n  const commentIdFieldValues = commentIdField?.values ? commentIdField.values.toArray() : [];\n  const commentFieldValues = commentField?.values ? commentField.values.toArray() : [];\n  const timestampFieldValues = timestampField?.values ? timestampField.values.toArray() : [];\n  const isPullRequestFieldValues = isPullRequestField?.values ? isPullRequestField.values.toArray() : [];\n\n  let html = '';\n\n  for (let i = 0; i < eventTypeFieldValues.length; i++) {\n    const activity = {\n      eventType: eventTypeFieldValues[i],\n      repoName: repoFieldValues[i],\n      number: numberFieldValues[i],\n      title: titleFieldValues[i],\n      status: statusFieldValues[i],\n      comment: commentFieldValues[i],\n      commentId: commentIdFieldValues[i],\n      isPullRequest: isPullRequestFieldValues[i],\n      timestamp: timestampFieldValues[i]\n    }\n\n    html = html + renderItem(activity);\n  }\n\n  container.innerHTML = html;\n}\n\nfunction renderItem(activity) {\n  const { repoName, number, eventType, timestamp, title, status, commentId, comment, isPullRequest } = activity;\n  const d =new Date(timestamp);\n  const datestr = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}`;\n  \n  if (eventType === 'pull_request_event_open_action') {\n    return `\n      <div class=\"item\">\n        <div class=\"item-header\">\n          <div class=\"item-header-left\">\n            <span class=\"item-action\">Create a Pull Request </span>\n            <a class=\"item-number\" target=\"_blank\" href=\"https://github.com/${repoName}/pull/${number}\">#${number}</a>\n            on\n            <a class=\"item-repository\" target=\"_blank\" href=\"https://github.com/${repoName}\">${repoName}</a>\n          </div>\n          <div class=\"item-header-right\">\n            ${datestr}\n          </div>\n        </div>\n        <div class=\"item-body\">\n          <a class=\"item-content\" target=\"_blank\" href=\"https://github.com/${repoName}/pull/${number}\">\n            <div>\n              #${number} ${title}\n            </div>\n          </a>\n        </div>\n      </div>\n    `;\n  } else if (eventType === 'issue_event_open_action') {\n      return `\n        <div class=\"item\">\n          <div class=\"item-header\">\n            <div class=\"item-header-left\">\n              <span class=\"item-action\">Create an Issue </span>\n              <a class=\"item-number\" target=\"_blank\" href=\"https://github.com/${repoName}/issues/${number}\">#${number}</a>\n              on\n              <a class=\"item-repository\" target=\"_blank\" href=\"https://github.com/${repoName}\">${repoName}</a>\n            </div>\n            <div class=\"item-header-right\">\n              ${datestr}\n            </div>\n          </div>\n          <div class=\"item-body\">\n            <a class=\"item-content\" target=\"_blank\" href=\"https://github.com/${repoName}/issues/${number}\">\n              <div>\n                #${number} ${title}\n              </div>\n            </a>\n          </div>\n        </div>\n      `;\n  } else if (eventType === 'comment_event_create_action') {\n      return `\n        <div class=\"item\">\n          <div class=\"item-header\">\n            <div class=\"item-header-left\">\n              <span class=\"item-action\">Commented on </span>\n              <a class=\"item-number\" target=\"_blank\" href=\"https://github.com/${repoName}/issues/${number}\">#${number}</a>\n              on\n              <a class=\"item-repository\" target=\"_blank\" href=\"https://github.com/${repoName}\">${repoName}</a>\n            </div>\n            <div class=\"item-header-right\">\n              ${datestr}\n            </div>\n          </div>\n          <div class=\"item-body\">\n            ${\n              isPullRequest ?\n              `\n                <a class=\"item-content\" target=\"_blank\" href=\"https://github.com/${repoName}/pull/${number}#issuecomment-${commentId}\">\n                <div>\n                  ${comment}\n                </div>\n              </a>\n              `:\n              `\n                <a class=\"item-content\" target=\"_blank\" href=\"https://github.com/${repoName}/issues/${number}#issuecomment-${commentId}\">\n                <div>\n                  ${comment}\n                </div>\n              </a>\n              `\n            }\n          </div>\n        </div>\n      `;\n  }\n}",
+        "overflow": "auto",
+        "panelupdateOnMount": true,
+        "renderOnMount": true
+      },
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "with prs_leatest as (\n  select\n      distinct id,\n      case when state = 'open' then 'open'\n           when state = 'closed' and (merged = true or merged_at IS NOT NULL)  then 'merged'\n           when state = 'closed' then 'closed'\n      end as status\n  from\n      gha_pull_requests pr\n  where\n      event_id in (select event_id from gha_pull_requests pr2 where pr2.event_id = pr.event_id order by updated_at limit 1)\n)\nselect\n  \"repoName\", \"number\", \"eventType\", \"title\", \"status\", \"commentId\", \"comment\", \"timestamp\", \"isPullRequest\"\nfrom \n(\n  -- PullRequestEvent\n  (\n    select\n        pr.dup_repo_name as \"repoName\",\n        pr.number as \"number\",\n        'pull_request_event_open_action' as \"eventType\",\n        pr.title as \"title\",\n        prl.status as \"status\",\n        0 as \"commentId\",\n        '' as \"comment\",\n        e.created_at as \"timestamp\",\n        true as \"isPullRequest\"\n    from\n        gha_events e,\n        gha_payloads p,\n        gha_pull_requests pr,\n        prs_leatest prl\n    where\n        'pull_request' in (${activity_type:singlequote})\n        and e.type = 'PullRequestEvent'\n        and e.dup_actor_login = '${users}'\n        and p.event_id = e.id\n        and p.action = 'opened'\n        and pr.event_id = e.id\n        and pr.id = prl.id\n        and e.created_at > $__timeFrom()\n        and e.created_at <= $__timeTo()\n  )\n  union\n  (\n    -- IssueEvent\n    select\n        i.dup_repo_name as \"repoName\",\n        i.number as \"number\",\n        'issue_event_open_action' as \"eventType\",\n        i.title as \"title\",\n        '-' as \"status\",\n        0 as \"commentId\",\n        '' as \"comment\",\n        e.created_at as \"timestamp\",\n        false as \"isPullRequest\"\n    from\n        gha_events e,\n        gha_payloads p,\n        gha_issues i\n    where\n        'issue' in (${activity_type:singlequote})\n        and e.type = 'IssueEvent'\n        and e.dup_actor_login = '${users}'\n        and p.event_id = e.id\n        and p.action = 'opened'\n        and i.event_id = e.id\n        and i.is_pull_request = false\n        and e.created_at > $__timeFrom()\n        and e.created_at <= $__timeTo()\n  )\n  union\n  (\n    -- Issue Comment Event\n    select\n        i.dup_repo_name \"repoName\",\n        i.number as \"number\",\n        'comment_event_create_action' as \"eventType\",\n        i.title as \"title\",\n        '-' as \"status\",\n        c.id as \"commentId\",\n        c.body as \"comment\",\n        e.created_at as \"timestamp\",\n        i.is_pull_request as \"isPullRequest\"\n    from\n        gha_events e,\n        gha_payloads p,\n        gha_issues i,\n        gha_comments c\n    where\n        'comment' in (${activity_type:singlequote})\n        and e.type in ('IssueCommentEvent', 'PullRequestReviewEvent', 'PullRequestReviewCommentEvent', 'CommitCommentEvent')\n        and e.dup_actor_login = '${users}'\n        and p.event_id = e.id\n        and i.event_id = e.id\n        and c.event_id = e.id\n        and e.created_at > $__timeFrom()\n        and e.created_at <= $__timeTo()\n  )\n) sub\norder by \"timestamp\" desc",
+          "refId": "Activity",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "snum_stats",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "type": "gapit-htmlgraphics-panel"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 30,
+  "style": "dark",
+  "tags": [
+    "contributor",
+    "tidb",
+    "dashboard",
+    "repogroups",
+    "active"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "hi-rustin",
+          "value": "hi-rustin"
+        },
+        "datasource": null,
+        "definition": "select users_name from tusers order by time asc",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Users",
+        "multi": false,
+        "name": "users",
+        "options": [],
+        "query": "select users_name from tusers order by time asc",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "7 Days MA",
+          "value": "d7"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Period",
+        "multi": false,
+        "name": "period",
+        "options": [
+          {
+            "selected": false,
+            "text": "Day",
+            "value": "d"
+          },
+          {
+            "selected": true,
+            "text": "7 Days MA",
+            "value": "d7"
+          },
+          {
+            "selected": false,
+            "text": "Week",
+            "value": "w"
+          },
+          {
+            "selected": false,
+            "text": "Month",
+            "value": "m"
+          },
+          {
+            "selected": false,
+            "text": "Quarter",
+            "value": "q"
+          },
+          {
+            "selected": false,
+            "text": "Year",
+            "value": "y"
+          }
+        ],
+        "query": "d,7d,w,m,q,y",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "all",
+          "value": "all"
+        },
+        "datasource": null,
+        "definition": "select all_repo_group_value from tall_repo_groups where all_repo_group_name = '[[repogroup_name]]'",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "repogroup",
+        "options": [],
+        "query": "select all_repo_group_value from tall_repo_groups where all_repo_group_name = '[[repogroup_name]]'",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "All"
+        },
+        "datasource": null,
+        "definition": "select all_repo_group_name from tall_repo_groups order by 1",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Repository group",
+        "multi": false,
+        "name": "repogroup_name",
+        "options": [],
+        "query": "select all_repo_group_name from tall_repo_groups order by 1",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "",
+        "current": {
+          "selected": true,
+          "text": [
+            "Pull Request"
+          ],
+          "value": [
+            "pull_request"
+          ]
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "Activity Type",
+        "multi": true,
+        "name": "activity_type",
+        "options": [
+          {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": true,
+            "text": "Pull Request",
+            "value": "pull_request"
+          },
+          {
+            "selected": false,
+            "text": "Issue",
+            "value": "issue"
+          },
+          {
+            "selected": false,
+            "text": "Comment",
+            "value": "comment"
+          }
+        ],
+        "query": "Pull Request : pull_request, Issue : issue, Comment :  comment",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1y",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Contributor Profile",
+  "uid": "contributor-profile",
+  "version": 63
+}

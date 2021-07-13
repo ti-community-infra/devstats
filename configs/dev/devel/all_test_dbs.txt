@@ -1,1 +1,1 @@
-allprj tidb tikv chaosmesh
+allprj tidb tikv chaosmesh ob
