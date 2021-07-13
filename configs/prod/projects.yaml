@@ -62,3 +62,15 @@ projects:
     start_date: 2015-09-06T00:00:00Z
     annotation_regexp: ''
     files_skip_pattern: ''
+  ob:
+    order: 5
+    name: OceanBase
+    status: "-"
+    command_line:
+      - "oceanbase"
+    psql_db: ob
+    main_repo: ''
+    project_scale: 1
+    start_date: 2021-05-31T00:00:00Z
+    annotation_regexp: ''
+    files_skip_pattern: ''
