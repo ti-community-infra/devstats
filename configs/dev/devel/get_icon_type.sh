@@ -10,6 +10,7 @@ icontypes=(
   ["tidb"]="color"
   ["tikv"]="color"
   ["chaosmesh"]="color"
+  ["ob"]="color"
 )
 icontype=${icontypes[$1]}
 if [ -z "$icontype" ]

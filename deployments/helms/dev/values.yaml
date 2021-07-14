@@ -32,7 +32,7 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana:0.3.8'
+grafanaImage: 'miniantdev/devstats-grafana:0.3.9'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
 grafanaNReplicas: 1
@@ -49,7 +49,7 @@ limitsGrafanasMemory: '8Gi'
 useGrafanasResourcesLimits: 1
 
 # Provision configurations.
-provisionImage: 'miniantdev/devstats-dev:0.3.8'
+provisionImage: 'miniantdev/devstats-dev:0.3.9'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
@@ -80,7 +80,7 @@ usePostgresResourcesLimits: 1
 
 # Cron sync jobs configurations.
 syncCommand: devstats
-syncImage: 'miniantdev/devstats-minimal-dev:0.3.8'
+syncImage: 'miniantdev/devstats-minimal-dev:0.3.9'
 syncPodName: devstats
 syncRestartPolicy: Never
 indexCronsFrom: 0
@@ -92,7 +92,7 @@ requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
 
 # Execute Pod configurations.
-executeImage: 'miniantdev/devstats-minimal-dev:0.3.8'
+executeImage: 'miniantdev/devstats-minimal-dev:0.3.9'
 executePodName: 'devstats-execute'
 executeTargetProject: 'pingcap'
 executeCommand: 'sleep'
@@ -111,7 +111,7 @@ requestsExecuteMemory: '1Gi'
 useExecuteResourcesLimits: 1
 
 # Affiliations Sync.
-affiliationsImage: 'miniantdev/devstats-dev:0.3.8'
+affiliationsImage: 'miniantdev/devstats-dev:0.3.9'
 affiliationsPodName: 'devstats-affiliations'
 affiliationsRestartPolicy: Never
 affiliationsCommand: './shared/affs.sh'
@@ -186,3 +186,13 @@ projects:
     cron: '40 * * * *'
     affCron: '0 20 * * 0'
     disk: 100Gi
+  - i: 4
+    proj: ob
+    db: ob
+    icon: 'ob'
+    org: 'OceanBase'
+    repo: 'oceanbase/oceanbase'
+    cron: '55 * * * *'
+    affCron: '0 21 * * 0'
+    disk: 20Gi
+

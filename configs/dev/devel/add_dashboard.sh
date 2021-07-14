@@ -27,6 +27,10 @@ getFullname()
   then
     fullname="Chaos Mesh"
   fi
+  if [ "$1" = "ob" ]
+  then
+    fullname="OceanBase"
+  fi
 
   echo $fullname
 }
