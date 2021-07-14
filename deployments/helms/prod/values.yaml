@@ -186,3 +186,12 @@ projects:
     cron: '40 * * * *'
     affCron: '0 20 * * 0'
     disk: 100Gi
+  - i: 4
+    proj: ob
+    db: ob
+    icon: 'ob'
+    org: 'OceanBase'
+    repo: 'oceanbase/oceanbase'
+    cron: '55 * * * *'
+    affCron: '0 21 * * 0'
+    disk: 30Gi
