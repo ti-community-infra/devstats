@@ -19,9 +19,8 @@ GHA2DB_PROJECT=all PG_DB=allprj GHA2DB_LOCAL=1 GHA2DB_MGETC=y structure 2>>error
 ./devel/db.sh psql allprj -c "create extension if not exists pgcrypto" || exit 2
 if [ -z "$MERGE_MODE" ]
 then
-  exclude="pingcap/pd-web,pingcap/ticdc-lib,pingcap/tidb-ansible,pingcap/tidb-helper,pingcap/tidb-lightning,pingcap/tikv-client-lib-java,pingcap/etcdv3-gateway,pingcap/tso,pingcap/mysqlrelay,pingcap/tidb-lmdb,pingcap/sqllogictest"
-  args="pingcap,tikv,chaos-mesh"
-  GHA2DB_EXCLUDE_REPOS=$exclude GHA2DB_PROJECT=all PG_DB=allprj GHA2DB_LOCAL=1 gha2db 2015-09-06 0 today now "$args" 2>>errors.txt | tee -a run.log || exit 3
+  args="tidb,tikv,chaos-mesh"
+  GHA2DB_PROJECT=all PG_DB=allprj GHA2DB_LOCAL=1 gha2db 2015-09-06 0 today now "$args" 2>>errors.txt | tee -a run.log || exit 3
 else
   GHA2DB_INPUT_DBS="tidb,tikv,chaosmesh" GHA2DB_OUTPUT_DB="allprj" merge_dbs || exit 2
 fi
