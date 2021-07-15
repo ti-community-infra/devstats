@@ -64,7 +64,6 @@ limitsProvisionsCPU: '8000m'
 limitsProvisionsMemory: '64Gi'
 useProvisionsResourcesLimits: 1
 waitForBootstrap: 60
-mergeMode: '1'
 
 # Postgres configurations.
 postgresPort: 5432
