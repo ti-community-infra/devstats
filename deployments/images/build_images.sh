@@ -85,7 +85,7 @@ then
   rm -f "$DEVSTATS_CODE_TAR" "$GRAFANA_BIN_TAR" "$API_SERVER_BIN_TAR" 2>/dev/null
 fi
 
-tar cf "$DEVSTATS_CODE_TAR" cmd vendor *.go || exit 5
+tar cf "$DEVSTATS_CODE_TAR" cmd *.go || exit 5
 tar cf "$GRAFANA_BIN_TAR" replacer sqlitedb runq || exit 6
 tar cf "$API_SERVER_BIN_TAR" api || exit 44
 
