@@ -1,6 +1,6 @@
 #!/bin/bash
 # ARTWORK
-# GET=1 (attempt to fetch Postgres database from the test server)
+# GET=1 (attempt to fetch Postgres database from the testlib server)
 # INIT=1 (needs PG_PASS_RO, PG_PASS_TEAM, initialize from no postgres database state, creates postgres logs database and users)
 # ONLYINIT=1 (only run init_database.sh and then exit success)
 # SKIPVARS=1 (if set it will skip final Postgres vars regeneration)

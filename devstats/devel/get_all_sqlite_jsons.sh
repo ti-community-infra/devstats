@@ -1,5 +1,5 @@
 #!/bin/bash
-# PROD=1 - use prod server instead of test
+# PROD=1 - use prod server instead of testlib
 # NOSORT=1 - skip sorting JSONs received from Grafana DB dump
 . ./devel/all_projs.sh || exit 2
 mkdir sqlite 1>/dev/null 2>/dev/null

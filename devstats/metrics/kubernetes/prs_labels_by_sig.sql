@@ -118,7 +118,7 @@ with dtfrom as (
       'do-not-merge/hold',
       'do-not-merge/release-note-label-needed',
       'do-not-merge/work-in-progress',
-      'needs-ok-to-test',
+      'needs-ok-to-testlib',
       'needs-rebase',
       'needs-priority',
       'priority/critical-urgent',

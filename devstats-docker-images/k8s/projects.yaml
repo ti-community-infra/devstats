@@ -155,7 +155,7 @@ projects:
          kubernetes-graveyard,kubernetes-incubator-retired,kubernetes-sig-testing,\
          kubernetes-providers,kubernetes-addons,kubernetes-retired,
          kubernetes-extensions,kubernetes-federation,kubernetes-security,\
-         kubernetes-sidecars,kubernetes-tools,kubernetes-test,kubernetes-sigs"
+         kubernetes-sidecars,kubernetes-tools,kubernetes-testlib,kubernetes-sigs"
     start_date: 2014-06-01T00:00:00Z
     join_date: 2016-03-10T00:00:00Z
     graduated_date: 2018-03-06T00:00:00Z
@@ -394,7 +394,7 @@ projects:
     annotation_regexp: ''
     files_skip_pattern: '(^|/)_?(vendor|Godeps|_workspace)/'
     env:
-      GHA2DB_EXCLUDE_REPOS: 'spiffe/spire,spiffe/spire-k8s,spiffe/spire-test,spiffe/spire-tutorials,spiffe/spire-examples,spiffe/spire-circleci-test'
+      GHA2DB_EXCLUDE_REPOS: 'spiffe/spire,spiffe/spire-k8s,spiffe/spire-testlib,spiffe/spire-tutorials,spiffe/spire-examples,spiffe/spire-circleci-testlib'
   spire:
     order: 31
     name: SPIRE

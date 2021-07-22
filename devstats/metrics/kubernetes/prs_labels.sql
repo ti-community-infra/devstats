@@ -88,7 +88,7 @@ with dtfrom as (
       'do-not-merge/release-note-label-needed',
       'do-not-merge/work-in-progress',
       'priority/critical-urgent',
-      'needs-ok-to-test',
+      'needs-ok-to-testlib',
       'needs-rebase',
       'needs-priority',
       'release-note-label-needed'

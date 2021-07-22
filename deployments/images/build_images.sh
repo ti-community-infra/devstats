@@ -8,7 +8,7 @@
 # DOCKER_USER=miniantdev SKIP_PUSH=1 SKIP_PATRONI=1 SKIP_TESTS=1 SKIP_PROD=1 ./deployments/images/build_images.sh
 
 #
-# SKIP_TEST=1 (skip test images)
+# SKIP_TEST=1 (skip testlib images)
 # SKIP_PROD=1 (skip prod images)
 # SKIP_PUSH=1 (skip push the images)
 #
@@ -132,7 +132,7 @@ tar cf "$DEVSTATS_DOCKER_IMAGES_TAR" patches Makefile.* || exit 11
 # so that we don't need to update the build_images.sh when we add a new project.
 #
 
-# Package the devstat config file for test environment.
+# Package the devstat config file for testlib environment.
 if [ -z "$SKIP_TEST" ]
 then
   # Patch the custom config file.

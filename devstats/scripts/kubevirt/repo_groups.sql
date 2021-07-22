@@ -49,7 +49,7 @@ update gha_repos set repo_group = 'SIG compute' where name in (
   'kubevirt/secrets',
   'kubevirt/ssp-operator',
   'kubevirt/storage-demo',
-  'kubevirt/test-infra-containers',
+  'kubevirt/testlib-infra-containers',
   'kubevirt/v2v-job',
   'kubevirt/vAdvisor',
   'kubevirt/vm-import-operator',

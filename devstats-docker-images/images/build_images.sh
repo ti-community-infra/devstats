@@ -1,7 +1,7 @@
 #!/bin/bash
 # DOCKER_USER=lukaszgryglicki SKIP_TEST=1 SKIP_PROD=1 SKIP_FULL=1 SKIP_MIN=1 SKIP_GRAFANA=1 SKIP_TESTS=1 SKIP_PATRONI=1 SKIP_STATIC=1 SKIP_REPORTS=1 SKIP_API=1 SKIP_PUSH=1 ./images/build_images.sh
 # DOCKER_USER=lukaszgryglicki ./images/remove_images.sh
-# SKIP_TEST=1 (skip test images)
+# SKIP_TEST=1 (skip testlib images)
 # SKIP_PROD=1 (skip prod images)
 if [ -z "${DOCKER_USER}" ]
 then
@@ -40,7 +40,7 @@ if [ -z "$SKIP_FULL" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker build -f ./images/Dockerfile.full.test -t "${DOCKER_USER}/devstats-test" . || exit 12
+    docker build -f ./images/Dockerfile.full.testlib -t "${DOCKER_USER}/devstats-test" . || exit 12
   fi
   if [ -z "$SKIP_PROD" ]
   then
@@ -52,7 +52,7 @@ if [ -z "$SKIP_MIN" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker build -f ./images/Dockerfile.minimal.test -t "${DOCKER_USER}/devstats-minimal-test" . || exit 13
+    docker build -f ./images/Dockerfile.minimal.testlib -t "${DOCKER_USER}/devstats-minimal-test" . || exit 13
   fi
   if [ -z "$SKIP_PROD" ]
   then
@@ -81,7 +81,7 @@ if [ -z "$SKIP_STATIC" ]
 then
   if [ -z "$SKIP_TEST" ]
   then
-    docker build -f ./images/Dockerfile.static.test -t "${DOCKER_USER}/devstats-static-test" . || exit 24
+    docker build -f ./images/Dockerfile.static.testlib -t "${DOCKER_USER}/devstats-static-test" . || exit 24
   fi
   if [ -z "$SKIP_PROD" ]
   then

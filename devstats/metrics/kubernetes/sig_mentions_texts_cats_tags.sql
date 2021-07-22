@@ -8,7 +8,7 @@ from (
     ('api-review'),
     ('feature-request'),
     ('proposal'),
-    ('test-failure'),
+    ('testlib-failure'),
     ('design-proposal'),
     ('owners'),
   ) as temp(cat)

@@ -5,11 +5,12 @@
 *.so
 *.dylib
 
-# Test binary, built with `go test -c`
+# Test binary, built with `go testlib -c`
 *.test
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+coverage.txt
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
@@ -25,3 +26,80 @@ deployments/images/temp/
 # The temporary grafana dashboard configuration file generated from the SQLite database file
 configs/dev/sqlite/*.json
 configs/dev/sqlite/*.db
+
+# Tools
+bin/
+
+# Test coverage
+coverage.txt
+
+# Mac OS X
+.DS_Store
+
+# Binary file
+/db2influx
+/structure
+/gha2db
+/gha2es
+/calc_metric
+/gha2db_sync
+/runq
+/import_affs
+/annotations
+/tags
+/columns
+/webhook
+/devstats
+/get_repos
+/merge_dbs
+/replacer
+/vars
+/ghapi2db
+/hide_data
+/sqlitedb
+/website_data
+/sync_issues
+/idb_backup
+/idb_tags
+/idb_tst
+/idb_vars
+/merge_pdbs
+/pdb_vars
+/z2influx
+/api
+/devstats_api_server
+
+# Other ignore file
+# TODO: remove unnecessary ignore item.
+jsons/*.json
+jsons/*.yaml
+*.swp
+*.db
+/tmp
+/FROM
+/TO
+errors.txt
+run.log
+out
+temp.sql
+drop.sql
+/TODO
+/MAIL
+/wip.sql
+/log
+/debug
+/node_modules/
+sqlite/*.sql
+/*.csv
+/devstats.tar
+/csv/*.csv
+/report_6months.txt
+/report_alltime.txt
+*.secret
+/error.yaml
+/in.json
+!/contributors_and_emails.csv
+!/contributing_actors*.csv
+!/k8s_contributors_and_emails.csv
+!/top_50_k8s_yearly_contributors.csv
+!/k8s_yearly_contributors_with_50.csv

@@ -23,7 +23,7 @@ with issues as (
 ), issues_labels as (
   select 'All' as repo_group,
     round(count(distinct i.pr_id) / {{n}}, 2) as all_prs,
-    round(count(distinct i.pr_id) filter (where il.dup_label_name = 'needs-ok-to-test') / {{n}}, 2) as needs_ok_to_test,
+    round(count(distinct i.pr_id) filter (where il.dup_label_name = 'needs-ok-to-testlib') / {{n}}, 2) as needs_ok_to_test,
     round(count(distinct i.pr_id) filter (where il.dup_label_name = 'release-note-label-needed') / {{n}}, 2) as release_note_label_needed,
     round(count(distinct i.pr_id) filter (where il.dup_label_name = 'lgtm') / {{n}}, 2) as lgtm,
     round(count(distinct i.pr_id) filter (where il.dup_label_name = 'approved') / {{n}}, 2) as approved,
@@ -38,13 +38,13 @@ with issues as (
     and il.dup_created_at < '{{to}}'
     and (
       il.dup_label_name in (
-        'needs-ok-to-test', 'release-note-label-needed', 'lgtm', 'approved'
+        'needs-ok-to-testlib', 'release-note-label-needed', 'lgtm', 'approved'
       )
       or il.dup_label_name like 'do-not-merge%'
     )
   union select sub.repo_group,
     round(count(distinct sub.pr_id) / {{n}}, 2) as all_prs,
-    round(count(distinct sub.pr_id) filter (where sub.dup_label_name = 'needs-ok-to-test') / {{n}}, 2) as needs_ok_to_test,
+    round(count(distinct sub.pr_id) filter (where sub.dup_label_name = 'needs-ok-to-testlib') / {{n}}, 2) as needs_ok_to_test,
     round(count(distinct sub.pr_id) filter (where sub.dup_label_name = 'release-note-label-needed') / {{n}}, 2) as release_note_label_needed,
     round(count(distinct sub.pr_id) filter (where sub.dup_label_name = 'lgtm') / {{n}}, 2) as lgtm,
     round(count(distinct sub.pr_id) filter (where sub.dup_label_name = 'approved') / {{n}}, 2) as approved,
@@ -72,7 +72,7 @@ with issues as (
       and il.dup_created_at < '{{to}}'
       and (
         il.dup_label_name in (
-          'needs-ok-to-test', 'release-note-label-needed', 'lgtm', 'approved'
+          'needs-ok-to-testlib', 'release-note-label-needed', 'lgtm', 'approved'
         )
         or il.dup_label_name like 'do-not-merge%'
       )
