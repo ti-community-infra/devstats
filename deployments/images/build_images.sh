@@ -5,11 +5,11 @@
 #
 # For example:
 # ```
-# DOCKER_USER=miniantdev SKIP_PUSH=1 SKIP_PATRONI=1 SKIP_TESTS=1 SKIP_PROD=1 ./deployments/images/build_images.sh
+# DOCKER_USER=ti-community-infra SKIP_PUSH=1 SKIP_PATRONI=1 SKIP_TESTS=1 SKIP_PROD=1 ./deployments/images/build_images.sh
 
 #
-# SKIP_TEST=1 (skip testlib images)
-# SKIP_PROD=1 (skip prod images)
+# SKIP_DEV=1 (skip dev env images)
+# SKIP_PROD=1 (skip prod env images)
 # SKIP_PUSH=1 (skip push the images)
 #
 
@@ -22,11 +22,12 @@ fi
 if [ -z "${IMAGE_TAG}" ]
 then
   echo "$0: you need to set docker image tag via IMAGE_TAG=tag"
-  exit 1
+  exit 2
 fi
 
 cwd="$(pwd)"
 
+# Project root directory.
 DEVSTATS_ROOT="${cwd}"
 
 # Configuration file directory.
@@ -36,27 +37,26 @@ SHARED_CONFIG_DIR="${cwd}/configs/shared"
 
 # Submodule directory.
 DEVSTATS_CNCF_CONFIG_DIR="${cwd}/devstats"
-DEVSTATS_REPORT_DIR="${cwd}/devstats-reports"
+DEVSTATS_REPORTS_DIR="${cwd}/devstats-reports"
 
 # Docker images directory.
 DEPLOYMENT_DOCKER_IMAGES_DIR="${cwd}/deployments/images"
 TEMP_DIR="${cwd}/deployments/images/temp"
 
 # The path to devstats packages.
-DEVSTATS_CNCF_CONFIG_TAR="${TEMP_DIR}/devstats-config-cncf.tar"
 DEVSTATS_CODE_TAR="${TEMP_DIR}/devstatscode.tar"
 DEVSTATS_REPORTS_TAR="${TEMP_DIR}/devstats-reports.tar"
-
+DEVSTATS_API_SERVER_BIN_TAR="${TEMP_DIR}/devstats-api-bins.tar"
 GRAFANA_TOOL_BIN_TAR="${TEMP_DIR}/grafana-tool-bins.tar"
-API_SERVER_BIN_TAR="${TEMP_DIR}/api-bins.tar"
 
 # The path to config file package.
-DEV_CONFIG_TAR="${TEMP_DIR}/devstats-config-dev.tar"
-PROD_CONFIG_TAR="${TEMP_DIR}/devstats-config-prod.tar"
-GRAFANA_CONFIG_TAR="${TEMP_DIR}/devstats-grafana-config.tar"
+DEVSTATS_CNCF_CONFIG_TAR="${TEMP_DIR}/devstats-config-cncf.tar"
+DEVSTATS_DEV_CONFIG_TAR="${TEMP_DIR}/devstats-config-dev.tar"
+DEVSTATS_PROD_CONFIG_TAR="${TEMP_DIR}/devstats-config-prod.tar"
+DEVSTATS_SHARED_CONFIG_TAR="${TEMP_DIR}/devstats-config-shared.tar"
 
-DEV_API_CONFIG_TAR="${TEMP_DIR}/devstats-api-config-dev.tar"
-PROD_API_CONFIG_TAR="${TEMP_DIR}/devstats-api-config-prod.tar"
+DEVSTATS_API_DEV_CONFIG_TAR="${TEMP_DIR}/devstats-api-config-dev.tar"
+DEVSTATS_API_PROD_CONFIG_TAR="${TEMP_DIR}/devstats-api-config-prod.tar"
 
 
 #
@@ -64,8 +64,8 @@ PROD_API_CONFIG_TAR="${TEMP_DIR}/devstats-api-config-prod.tar"
 #
 
 # Ensure those directory is exist.
-cd "${DEVSTATS_CNCF_CONFIG_DIR}" || exit 2
-cd "${DEVSTATS_REPORT_DIR}" || exit 39
+cd "${DEVSTATS_CNCF_CONFIG_DIR}" || exit 3
+cd "${DEVSTATS_REPORTS_DIR}" || exit 4
 
 # Create a directory to temporarily store files that need to be written to the image.
 mkdir -p "$TEMP_DIR"
@@ -74,21 +74,21 @@ mkdir -p "$TEMP_DIR"
 # Package Stage
 #
 
-# Package the files in devstatscode repository.
-cd "${DEVSTATS_ROOT}" || exit 3
-make replacer sqlitedb runq api || exit 4
+# Package the sourcecode and binary of devstats.
+cd "${DEVSTATS_ROOT}" || exit 6
+make replacer sqlitedb runq api || exit 7
 
-if [ -n "$DEVSTATS_CODE_TAR" ] && [ -n "$GRAFANA_TOOL_BIN_TAR" ] && [ -n "$API_SERVER_BIN_TAR" ]
+if [ -n "$DEVSTATS_CODE_TAR" ] && [ -n "$DEVSTATS_API_SERVER_BIN_TAR" ] && [ -n "$GRAFANA_TOOL_BIN_TAR" ]
 then
-  rm -f "$DEVSTATS_CODE_TAR" "$GRAFANA_TOOL_BIN_TAR" "$API_SERVER_BIN_TAR" 2>/dev/null
+  rm -f "$DEVSTATS_CODE_TAR" "$DEVSTATS_API_SERVER_BIN_TAR" "$GRAFANA_TOOL_BIN_TAR" 2>/dev/null
 fi
 
-tar cf "$DEVSTATS_CODE_TAR" cmd cron devel git internal tools || exit 5
+tar cf "$DEVSTATS_CODE_TAR" cmd cron devel git internal tools go.mod .golangci.yaml Makefile || exit 5
+tar cf "$DEVSTATS_API_SERVER_BIN_TAR" api || exit 44
 tar cf "$GRAFANA_TOOL_BIN_TAR" replacer sqlitedb runq || exit 6
-tar cf "$API_SERVER_BIN_TAR" api || exit 44
 
 # Package the files in devstats-report repository.
-cd "$DEVSTATS_REPORT_DIR" || exit 40
+cd "$DEVSTATS_REPORTS_DIR" || exit 40
 
 if [ -n "$DEVSTATS_REPORTS_TAR" ]
 then
@@ -97,7 +97,7 @@ fi
 
 tar cf "$DEVSTATS_REPORTS_TAR" sh sql affs rep contributors velocity find.sh || exit 41
 
-# Package the files in devstats repository for common config.
+# Package the files in devstats from cncf/devstats.
 cd "$DEVSTATS_CNCF_CONFIG_DIR" || exit 7
 
 if [ -n "$DEVSTATS_CNCF_CONFIG_TAR" ]
@@ -120,32 +120,30 @@ cp apache/www/index_*.html "${TEMP_DIR}/" || exit 22
 # so that we don't need to update the build_images.sh when we add a new project.
 #
 
-# Package the devstat config file for testlib environment.
-if [ -z "$SKIP_TEST" ]
+# Package the shared config file.
+# Notice: This file will override the config files from cncf/devstats repository.
+cd "$SHARED_CONFIG_DIR" || exit 62
+
+tar cf "$DEVSTATS_SHARED_CONFIG_TAR" grafana
+
+# Package the devstats config file for dev environment.
+# Notice: This file will override the config files from shared directory and cncf/devstats repository.
+if [ -z "$SKIP_DEV" ]
 then
-  # Patch the custom config file.
   cd "$DEV_CONFIG_DIR" || exit 61
 
-  tar rf "$DEV_CONFIG_TAR" all tidb tikv chaosmesh ob metrics scripts devel docs shared projects.yaml
-  tar cf "$DEV_API_CONFIG_TAR" projects.yaml
+  tar rf "$DEVSTATS_DEV_CONFIG_TAR" all tidb tikv chaosmesh ob metrics scripts devel docs shared projects.yaml
+  tar cf "$DEVSTATS_API_DEV_CONFIG_TAR" projects.yaml
 fi
 
-# Package the devstat config file for prod environment.
+# Package the devstats config file for prod environment.
+# Notice: This file will override the config files from shared directory and cncf/devstats repository.
 if [ -z "$SKIP_PROD" ]
 then
-  # Patch the custom config file.
   cd "$PROD_CONFIG_DIR" || exit 62
 
-  tar rf "$PROD_CONFIG_TAR" all tidb tikv chaosmesh ob metrics scripts devel docs shared projects.yaml
-  tar cf "$PROD_API_CONFIG_TAR" projects.yaml
-fi
-
-# Package the grafana config file.
-if [ -z "$SKIP_GRAFANA" ]
-then
-  cd "$SHARED_CONFIG_DIR" || exit 62
-
-  tar cf "$GRAFANA_CONFIG_TAR" grafana
+  tar rf "$DEVSTATS_PROD_CONFIG_TAR" all tidb tikv chaosmesh ob metrics scripts devel docs shared projects.yaml
+  tar cf "$DEVSTATS_API_PROD_CONFIG_TAR" projects.yaml
 fi
 
 #
@@ -156,7 +154,7 @@ cd "${DEPLOYMENT_DOCKER_IMAGES_DIR}" || exit 11
 
 if [ -z "$SKIP_FULL" ]
 then
-  if [ -z "$SKIP_TEST" ]
+  if [ -z "$SKIP_DEV" ]
   then
     docker build -f Dockerfile.full.dev -t "${DOCKER_USER}/devstats-dev:${IMAGE_TAG}" . || exit 12
   fi
@@ -168,7 +166,7 @@ fi
 
 if [ -z "$SKIP_MIN" ]
 then
-  if [ -z "$SKIP_TEST" ]
+  if [ -z "$SKIP_DEV" ]
   then
     docker build -f Dockerfile.minimal.dev -t "${DOCKER_USER}/devstats-minimal-dev:${IMAGE_TAG}" . || exit 13
   fi
@@ -197,7 +195,7 @@ fi
 
 if [ -z "$SKIP_STATIC" ]
 then
-  if [ -z "$SKIP_TEST" ]
+  if [ -z "$SKIP_DEV" ]
   then
     docker build -f Dockerfile.static.dev -t "${DOCKER_USER}/devstats-static-dev:${IMAGE_TAG}" . || exit 24
   fi
@@ -216,7 +214,7 @@ fi
 
 if [ -z "$SKIP_API" ]
 then
-  if [ -z "$SKIP_TEST" ]
+  if [ -z "$SKIP_DEV" ]
   then
     docker build -f Dockerfile.api.dev -t "${DOCKER_USER}/devstats-api-dev:${IMAGE_TAG}" . || exit 48
   fi
@@ -250,7 +248,7 @@ fi
 # Build docker image for full sync.
 if [ -z "$SKIP_FULL" ]
 then
-  if [ -z "$SKIP_TEST" ]
+  if [ -z "$SKIP_DEV" ]
   then
     docker push "${DOCKER_USER}/devstats-dev:${IMAGE_TAG}" || exit 17
   fi
@@ -263,7 +261,7 @@ fi
 # Build docker image for minimal sync.
 if [ -z "$SKIP_MIN" ]
 then
-  if [ -z "$SKIP_TEST" ]
+  if [ -z "$SKIP_DEV" ]
   then
     docker push "${DOCKER_USER}/devstats-minimal-dev:${IMAGE_TAG}" || exit 18
   fi
@@ -296,7 +294,7 @@ fi
 # Build docker image for static files.
 if [ -z "$SKIP_STATIC" ]
 then
-  if [ -z "$SKIP_TEST" ]
+  if [ -z "$SKIP_DEV" ]
   then
     docker push "${DOCKER_USER}/devstats-static-dev:${IMAGE_TAG}" || exit 28
   fi
@@ -320,7 +318,7 @@ then
   then
     docker push "${DOCKER_USER}/devstats-api-prod:${IMAGE_TAG}" || exit 47
   fi
-  if [ -z "$SKIP_TEST" ]
+  if [ -z "$SKIP_DEV" ]
   then
     docker push "${DOCKER_USER}/devstats-api-dev:${IMAGE_TAG}" || exit 49
   fi
