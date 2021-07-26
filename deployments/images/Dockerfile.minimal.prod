@@ -10,7 +10,7 @@ WORKDIR /go/src/github.com/cncf/devstatscode
 ADD temp/devstats.tar .
 ADD temp/devstatscode.tar .
 ADD temp/devstats-docker-images.tar .
-ADD temp/grafana-bins.tar .
+ADD temp/grafana-tool-bins.tar .
 
 ADD temp/devstats-config-prod.tar .
 

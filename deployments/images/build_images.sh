@@ -27,14 +27,15 @@ fi
 
 cwd="$(pwd)"
 
+DEVSTATS_ROOT="${cwd}"
+
 # Configuration file directory.
 DEV_CONFIG_DIR="${cwd}/configs/dev"
 PROD_CONFIG_DIR="${cwd}/configs/prod"
 SHARED_CONFIG_DIR="${cwd}/configs/shared"
 
 # Submodule directory.
-DEVSTATS_DIR="${cwd}/devstats"
-DEVSTATS_CODE_DIR="${cwd}/devstatscode"
+DEVSTATS_CNCF_CONFIG_DIR="${cwd}/devstats"
 DEVSTATS_REPORT_DIR="${cwd}/devstats-reports"
 
 # Docker images directory.
@@ -45,9 +46,8 @@ TEMP_DIR="${cwd}/deployments/images/temp"
 DEVSTATS_TAR="${TEMP_DIR}/devstats.tar"
 DEVSTATS_CODE_TAR="${TEMP_DIR}/devstatscode.tar"
 DEVSTATS_REPORTS_TAR="${TEMP_DIR}/devstats-reports.tar"
-DEVSTATS_DOCKER_IMAGES_TAR="${TEMP_DIR}/devstats-docker-images.tar"
 
-GRAFANA_BIN_TAR="${TEMP_DIR}/grafana-bins.tar"
+GRAFANA_TOOL_BIN_TAR="${TEMP_DIR}/grafana-tool-bins.tar"
 API_SERVER_BIN_TAR="${TEMP_DIR}/api-bins.tar"
 
 # The path to config file package.
@@ -64,29 +64,27 @@ PROD_API_CONFIG_TAR="${TEMP_DIR}/devstats-api-config-prod.tar"
 #
 
 # Ensure those directory is exist.
-cd "${DEVSTATS_DIR}" || exit 2
+cd "${DEVSTATS_CNCF_CONFIG_DIR}" || exit 2
 cd "${DEVSTATS_REPORT_DIR}" || exit 39
-cd "${DEVSTATS_CODE_DIR}" || exit 3
 
 # Create a directory to temporarily store files that need to be written to the image.
 mkdir -p "$TEMP_DIR"
-
 
 #
 # Package Stage
 #
 
 # Package the files in devstatscode repository.
-cd "${DEVSTATS_CODE_DIR}" || exit 3
+cd "${DEVSTATS_ROOT}" || exit 3
 make replacer sqlitedb runq api || exit 4
 
-if [ -n "$DEVSTATS_CODE_TAR" ] && [ -n "$GRAFANA_BIN_TAR" ] && [ -n "$API_SERVER_BIN_TAR" ]
+if [ -n "$DEVSTATS_CODE_TAR" ] && [ -n "$GRAFANA_TOOL_BIN_TAR" ] && [ -n "$API_SERVER_BIN_TAR" ]
 then
-  rm -f "$DEVSTATS_CODE_TAR" "$GRAFANA_BIN_TAR" "$API_SERVER_BIN_TAR" 2>/dev/null
+  rm -f "$DEVSTATS_CODE_TAR" "$GRAFANA_TOOL_BIN_TAR" "$API_SERVER_BIN_TAR" 2>/dev/null
 fi
 
-tar cf "$DEVSTATS_CODE_TAR" cmd *.go || exit 5
-tar cf "$GRAFANA_BIN_TAR" replacer sqlitedb runq || exit 6
+tar cf "$DEVSTATS_CODE_TAR" cmd cron devel git internal tools || exit 5
+tar cf "$GRAFANA_TOOL_BIN_TAR" replacer sqlitedb runq || exit 6
 tar cf "$API_SERVER_BIN_TAR" api || exit 44
 
 # Package the files in devstats-report repository.
@@ -100,7 +98,7 @@ fi
 tar cf "$DEVSTATS_REPORTS_TAR" sh sql affs rep contributors velocity find.sh || exit 41
 
 # Package the files in devstats repository for common config.
-cd "$DEVSTATS_DIR" || exit 7
+cd "$DEVSTATS_CNCF_CONFIG_DIR" || exit 7
 
 if [ -n "$DEVSTATS_TAR" ]
 then
@@ -110,19 +108,9 @@ fi
 tar cf "$DEVSTATS_TAR" hide git metrics devel shared scripts cron docs jsons/.keep util_sql util_sh github_users.json companies.yaml skip_dates.yaml  || exit 8
 
 # Copy static file to temp directory, for copying to the docker image.
-cd "$DEVSTATS_DIR" || exit 7
+cd "$DEVSTATS_CNCF_CONFIG_DIR" || exit 7
 
 cp apache/www/index_*.html "${TEMP_DIR}/" || exit 22
-
-# Package the files in devstats-docker-images repository.
-cd "$DEPLOYMENT_DOCKER_IMAGES_DIR" || exit 10
-
-if [ -n "$DEVSTATS_DOCKER_IMAGES_TAR" ]
-then
-  rm -f "$DEVSTATS_DOCKER_IMAGES_TAR" 2>/dev/null
-fi
-
-tar cf "$DEVSTATS_DOCKER_IMAGES_TAR" patches Makefile.* || exit 11
 
 #
 # Pack the configuration files of different environments into different compressed packages,
