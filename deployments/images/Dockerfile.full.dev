@@ -7,14 +7,13 @@ RUN mkdir -p /go/src/github.com/ti-community-infra/devstats
 
 WORKDIR /go/src/github.com/ti-community-infra/devstats
 
-ADD temp/devstats-config-cncf.tar .
 ADD temp/devstatscode.tar .
 ADD temp/grafana-tool-bins.tar .
-
+ADD temp/devstats-config-cncf.tar .
 ADD temp/devstats-config-dev.tar .
 
-RUN make -f Makefile.full dockerinstall
-RUN make -f Makefile.full links
+RUN make docker_full_install
+RUN make links
 
 #FROM alpine
 #RUN apk add git bash postgresql-client xz curl
@@ -23,7 +22,7 @@ FROM postgres:13-alpine
 RUN apk add git curl xz
 
 COPY --from=builder /etc/gha2db /etc/gha2db
-COPY --from=builder /go/src/github.com/cncf/devstatscode /go/src/devstats
-COPY --from=builder /devstats-minimal/* /usr/bin/
+COPY --from=builder /go/src/github.com/ti-community-infra/devstats /go/src/devstats
+COPY --from=builder /devstats-bins/* /usr/bin/
 
 WORKDIR /go/src/devstats

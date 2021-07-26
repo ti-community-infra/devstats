@@ -15,13 +15,8 @@ BUILD_TIME		= `date -u '+%Y-%m-%d_%I:%M:%S%p'`
 COMMIT			= `git rev-parse HEAD`
 HOSTNAME		= `uname -a | sed "s/ /_/g"`
 GO_VERSION		= `go version | sed "s/ /_/g"`
-BINARY_PATH		= /devstats-minimal/
-
-ifdef GHA2DB_DATA_DIR
-	DATA_DIR=${GHA2DB_DATA_DIR}
-else
-	DATA_DIR=/etc/gha2db
-endif
+BINARY_PATH		= /devstats-bins/
+DATA_DIR		= /etc/gha2db
 
 GO              := GO111MODULE=on go
 GOBUILD         := $(GO) build
@@ -185,13 +180,12 @@ copy_data: util_scripts
 	mkdir -p ${DATA_DIR} || echo "..."
 	chmod 777 ${DATA_DIR} || echo "..."
 ifneq "$(DATA_DIR)" ""
-	rm -fr ${DATA_DIR}/* || exit 3
+	rm -rf ${DATA_DIR}/* || exit 3
 endif
 	cp -R metrics/ ${DATA_DIR}/metrics/ || exit 4
 	cp -R util_sql/ ${DATA_DIR}/util_sql/ || exit 5
 	cp -R util_sh/ ${DATA_DIR}/util_sh/ || exit 6
 	cp -R docs/ ${DATA_DIR}/docs/ || exit 7
-	cp -R partials/ ${DATA_DIR}/partials/ || exit 8
 	cp -R scripts/ ${DATA_DIR}/scripts/ || exit 9
 	cp devel/*.txt ${DATA_DIR}/ || exit 11
 	cp projects.yaml skip_dates.yaml ${DATA_DIR}/ || exit 12
@@ -209,7 +203,7 @@ docker_full_install: ${DOCKER_FULL_BINARIES} copy_data
 	cp -v ${GIT_SCRIPTS} ${GOPATH}/bin || exit 12
 	cd ${GOPATH}/bin || exit 13
 	mkdir ${BINARY_PATH} || exit 14
-	cp -v ${DOCKER_BINARIES} ${BINARY_PATH} || exit 15
+	cp -v ${DOCKER_FULL_BINARIES} ${BINARY_PATH} || exit 15
 	cp -v ${CRON_SCRIPTS} ${BINARY_PATH} || exit 16
 	cp -v ${GIT_SCRIPTS} ${BINARY_PATH} || exit 17
 	cp -v ${UTIL_SCRIPTS} ${BINARY_PATH} || exit 18
@@ -220,14 +214,11 @@ docker_minimal_install: ${DOCKER_MINIMAL_BINARIES} copy_data
 	cp -v ${GIT_SCRIPTS} ${GOPATH}/bin || exit 15
 	cd ${GOPATH}/bin || exit 16
 	mkdir ${BINARY_PATH} || exit 17
-	cp -v ${DOCKER_BINARIES} ${BINARY_PATH} || exit 18
+	cp -v ${DOCKER_MINIMAL_BINARIES} ${BINARY_PATH} || exit 18
 	cp -v ${GIT_SCRIPTS} ${BINARY_PATH} || exit 19
 
-# Deploy
-
-# Notice: this stage only work in docker image.
-deploy:
-	./deploy.sh || exit 1
+links: util_scripts clean
+	./util_sh/make_binary_links.sh ${BINARIES} || exit 1
 
 # Clean
 

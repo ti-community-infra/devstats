@@ -5,7 +5,7 @@
 #
 # For example:
 # ```
-# DOCKER_USER=ti-community-infra SKIP_PUSH=1 SKIP_PATRONI=1 SKIP_TESTS=1 SKIP_PROD=1 ./deployments/images/build_images.sh
+# DOCKER_USER=ti-community-infra IMAGE_TAG=v0.0.1 SKIP_PUSH=1 SKIP_PATRONI=1 SKIP_TESTS=1 SKIP_PROD=1 ./deployments/images/build_images.sh
 
 #
 # SKIP_DEV=1 (skip dev env images)
@@ -29,19 +29,17 @@ cwd="$(pwd)"
 
 # Project root directory.
 DEVSTATS_ROOT="${cwd}"
-
-# Configuration file directory.
-DEV_CONFIG_DIR="${cwd}/configs/dev"
-PROD_CONFIG_DIR="${cwd}/configs/prod"
-SHARED_CONFIG_DIR="${cwd}/configs/shared"
-
-# Submodule directory.
-DEVSTATS_CNCF_CONFIG_DIR="${cwd}/devstats"
 DEVSTATS_REPORTS_DIR="${cwd}/devstats-reports"
 
 # Docker images directory.
 DEPLOYMENT_DOCKER_IMAGES_DIR="${cwd}/deployments/images"
 TEMP_DIR="${cwd}/deployments/images/temp"
+
+# Configuration file directory.
+DEVSTATS_CNCF_CONFIG_DIR="${cwd}/devstats"
+DEVSTATS_SHARED_CONFIG_DIR="${cwd}/configs/shared"
+DEVSTATS_DEV_CONFIG_DIR="${cwd}/configs/dev"
+DEVSTATS_PROD_CONFIG_DIR="${cwd}/configs/prod"
 
 # The path to devstats packages.
 DEVSTATS_CODE_TAR="${TEMP_DIR}/devstatscode.tar"
@@ -51,9 +49,9 @@ GRAFANA_TOOL_BIN_TAR="${TEMP_DIR}/grafana-tool-bins.tar"
 
 # The path to config file package.
 DEVSTATS_CNCF_CONFIG_TAR="${TEMP_DIR}/devstats-config-cncf.tar"
+DEVSTATS_SHARED_CONFIG_TAR="${TEMP_DIR}/devstats-config-shared.tar"
 DEVSTATS_DEV_CONFIG_TAR="${TEMP_DIR}/devstats-config-dev.tar"
 DEVSTATS_PROD_CONFIG_TAR="${TEMP_DIR}/devstats-config-prod.tar"
-DEVSTATS_SHARED_CONFIG_TAR="${TEMP_DIR}/devstats-config-shared.tar"
 
 DEVSTATS_API_DEV_CONFIG_TAR="${TEMP_DIR}/devstats-api-config-dev.tar"
 DEVSTATS_API_PROD_CONFIG_TAR="${TEMP_DIR}/devstats-api-config-prod.tar"
@@ -66,6 +64,7 @@ DEVSTATS_API_PROD_CONFIG_TAR="${TEMP_DIR}/devstats-api-config-prod.tar"
 # Ensure those directory is exist.
 cd "${DEVSTATS_CNCF_CONFIG_DIR}" || exit 3
 cd "${DEVSTATS_REPORTS_DIR}" || exit 4
+cd "${DEPLOYMENT_DOCKER_IMAGES_DIR}" || exit 4
 
 # Create a directory to temporarily store files that need to be written to the image.
 mkdir -p "$TEMP_DIR"
@@ -78,12 +77,22 @@ mkdir -p "$TEMP_DIR"
 cd "${DEVSTATS_ROOT}" || exit 6
 make replacer sqlitedb runq api || exit 7
 
-if [ -n "$DEVSTATS_CODE_TAR" ] && [ -n "$DEVSTATS_API_SERVER_BIN_TAR" ] && [ -n "$GRAFANA_TOOL_BIN_TAR" ]
+if [ -n "$DEVSTATS_CODE_TAR" ]
 then
-  rm -f "$DEVSTATS_CODE_TAR" "$DEVSTATS_API_SERVER_BIN_TAR" "$GRAFANA_TOOL_BIN_TAR" 2>/dev/null
+  rm -f "$DEVSTATS_CODE_TAR" 2>/dev/null
 fi
 
-tar cf "$DEVSTATS_CODE_TAR" cmd cron devel git internal tools go.mod .golangci.yaml Makefile || exit 5
+if [ -n "$DEVSTATS_API_SERVER_BIN_TAR" ]
+then
+  rm -f "$DEVSTATS_API_SERVER_BIN_TAR" 2>/dev/null
+fi
+
+if [ -n "$GRAFANA_TOOL_BIN_TAR" ]
+then
+  rm -f "$GRAFANA_TOOL_BIN_TAR" 2>/dev/null
+fi
+
+tar cf "$DEVSTATS_CODE_TAR" cmd cron devel git internal tools go.mod go.sum .git .golangci.yml Makefile || exit 5
 tar cf "$DEVSTATS_API_SERVER_BIN_TAR" api || exit 44
 tar cf "$GRAFANA_TOOL_BIN_TAR" replacer sqlitedb runq || exit 6
 
@@ -97,7 +106,7 @@ fi
 
 tar cf "$DEVSTATS_REPORTS_TAR" sh sql affs rep contributors velocity find.sh || exit 41
 
-# Package the files in devstats from cncf/devstats.
+# Package the configs files from cncf/devstats.
 cd "$DEVSTATS_CNCF_CONFIG_DIR" || exit 7
 
 if [ -n "$DEVSTATS_CNCF_CONFIG_TAR" ]
@@ -108,8 +117,6 @@ fi
 tar cf "$DEVSTATS_CNCF_CONFIG_TAR" hide git metrics devel shared scripts cron docs jsons/.keep util_sql util_sh github_users.json companies.yaml skip_dates.yaml  || exit 8
 
 # Copy static file to temp directory, for copying to the docker image.
-cd "$DEVSTATS_CNCF_CONFIG_DIR" || exit 7
-
 cp apache/www/index_*.html "${TEMP_DIR}/" || exit 22
 
 #
@@ -122,7 +129,12 @@ cp apache/www/index_*.html "${TEMP_DIR}/" || exit 22
 
 # Package the shared config file.
 # Notice: This file will override the config files from cncf/devstats repository.
-cd "$SHARED_CONFIG_DIR" || exit 62
+cd "$DEVSTATS_SHARED_CONFIG_DIR" || exit 62
+
+if [ -n "$DEVSTATS_SHARED_CONFIG_TAR" ]
+then
+  rm -f "$DEVSTATS_SHARED_CONFIG_TAR" 2>/dev/null
+fi
 
 tar cf "$DEVSTATS_SHARED_CONFIG_TAR" grafana
 
@@ -130,9 +142,14 @@ tar cf "$DEVSTATS_SHARED_CONFIG_TAR" grafana
 # Notice: This file will override the config files from shared directory and cncf/devstats repository.
 if [ -z "$SKIP_DEV" ]
 then
-  cd "$DEV_CONFIG_DIR" || exit 61
+  cd "$DEVSTATS_DEV_CONFIG_DIR" || exit 61
 
-  tar rf "$DEVSTATS_DEV_CONFIG_TAR" all tidb tikv chaosmesh ob metrics scripts devel docs shared projects.yaml
+  if [ -n "$DEVSTATS_DEV_CONFIG_TAR" ]
+  then
+    rm -f "$DEVSTATS_DEV_CONFIG_TAR" 2>/dev/null
+  fi
+
+  tar cf "$DEVSTATS_DEV_CONFIG_TAR" all tidb tikv chaosmesh ob metrics scripts devel docs shared projects.yaml
   tar cf "$DEVSTATS_API_DEV_CONFIG_TAR" projects.yaml
 fi
 
@@ -140,9 +157,9 @@ fi
 # Notice: This file will override the config files from shared directory and cncf/devstats repository.
 if [ -z "$SKIP_PROD" ]
 then
-  cd "$PROD_CONFIG_DIR" || exit 62
+  cd "$DEVSTATS_PROD_CONFIG_DIR" || exit 62
 
-  tar rf "$DEVSTATS_PROD_CONFIG_TAR" all tidb tikv chaosmesh ob metrics scripts devel docs shared projects.yaml
+  tar cf "$DEVSTATS_PROD_CONFIG_TAR" all tidb tikv chaosmesh ob metrics scripts devel docs shared projects.yaml
   tar cf "$DEVSTATS_API_PROD_CONFIG_TAR" projects.yaml
 fi
 
@@ -240,7 +257,7 @@ fi
 #
 
 # Don't push the images, just build.
-if [ ! -z "$SKIP_PUSH" ]
+if [ -n "$SKIP_PUSH" ]
 then
   exit 0
 fi
