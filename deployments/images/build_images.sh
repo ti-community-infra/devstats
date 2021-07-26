@@ -43,7 +43,7 @@ DEPLOYMENT_DOCKER_IMAGES_DIR="${cwd}/deployments/images"
 TEMP_DIR="${cwd}/deployments/images/temp"
 
 # The path to devstats packages.
-DEVSTATS_TAR="${TEMP_DIR}/devstats.tar"
+DEVSTATS_CNCF_CONFIG_TAR="${TEMP_DIR}/devstats-config-cncf.tar"
 DEVSTATS_CODE_TAR="${TEMP_DIR}/devstatscode.tar"
 DEVSTATS_REPORTS_TAR="${TEMP_DIR}/devstats-reports.tar"
 
@@ -100,12 +100,12 @@ tar cf "$DEVSTATS_REPORTS_TAR" sh sql affs rep contributors velocity find.sh || 
 # Package the files in devstats repository for common config.
 cd "$DEVSTATS_CNCF_CONFIG_DIR" || exit 7
 
-if [ -n "$DEVSTATS_TAR" ]
+if [ -n "$DEVSTATS_CNCF_CONFIG_TAR" ]
 then
-  rm -f "$DEVSTATS_TAR" 2>/dev/null
+  rm -f "$DEVSTATS_CNCF_CONFIG_TAR" 2>/dev/null
 fi
 
-tar cf "$DEVSTATS_TAR" hide git metrics devel shared scripts cron docs jsons/.keep util_sql util_sh github_users.json companies.yaml skip_dates.yaml  || exit 8
+tar cf "$DEVSTATS_CNCF_CONFIG_TAR" hide git metrics devel shared scripts cron docs jsons/.keep util_sql util_sh github_users.json companies.yaml skip_dates.yaml  || exit 8
 
 # Copy static file to temp directory, for copying to the docker image.
 cd "$DEVSTATS_CNCF_CONFIG_DIR" || exit 7

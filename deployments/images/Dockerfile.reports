@@ -1,7 +1,7 @@
 FROM alpine AS builder
 WORKDIR /builder
 
-ADD temp/devstats.tar .
+ADD temp/devstats-config-cncf.tar .
 ADD temp/grafana-tool-bins.tar .
 
 #FROM alpine

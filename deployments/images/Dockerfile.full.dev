@@ -7,7 +7,7 @@ RUN mkdir -p /go/src/github.com/ti-community-infra/devstats
 
 WORKDIR /go/src/github.com/ti-community-infra/devstats
 
-ADD temp/devstats.tar .
+ADD temp/devstats-config-cncf.tar .
 ADD temp/devstatscode.tar .
 ADD temp/grafana-tool-bins.tar .
 

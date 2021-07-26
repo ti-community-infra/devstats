@@ -7,7 +7,7 @@ RUN go get -u github.com/cncf/devstatscode
 
 WORKDIR /go/src/github.com/cncf/devstatscode
 
-ADD temp/devstats.tar .
+ADD temp/devstats-config-cncf.tar .
 ADD temp/devstatscode.tar .
 ADD temp/devstats-docker-images.tar .
 ADD temp/grafana-tool-bins.tar .
