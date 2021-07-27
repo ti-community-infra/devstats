@@ -189,7 +189,7 @@ endif
 	cp -R docs/ ${DATA_DIR}/docs/ || exit 7
 	cp -R scripts/ ${DATA_DIR}/scripts/ || exit 9
 	cp devel/*.txt ${DATA_DIR}/ || exit 11
-	cp github_users.json projects.yaml companies.yaml skip_dates.yaml ${DATADIR}/ || exit 12
+	cp github_users.json projects.yaml companies.yaml skip_dates.yaml ${DATA_DIR}/ || exit 12
 
 docker_full_install: ${DOCKER_FULL_BINARIES} copy_full_data
 	${GO_INSTALL} ${GO_DOCKER_FULL_BIN_CMDS}
