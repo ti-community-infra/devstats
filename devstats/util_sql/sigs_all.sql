@@ -2,7 +2,7 @@ select
   sub2.sig
 from (
   select
-    distinct substring(lower(substring(body from '(?i)(?:^|\s)+(@kubernetes/sig-[\w\d-]+)(?:-bug|-feature-request|-pr-reviews|-api-review|-misc|-proposal|-design-proposal|-test-failure|-owners)s?(?:$|[^\w\d-]+)')) from 17) as sig
+    distinct substring(lower(substring(body from '(?i)(?:^|\s)+(@kubernetes/sig-[\w\d-]+)(?:-bug|-feature-request|-pr-reviews|-api-review|-misc|-proposal|-design-proposal|-testlib-failure|-owners)s?(?:$|[^\w\d-]+)')) from 17) as sig
   from
     gha_texts
   where

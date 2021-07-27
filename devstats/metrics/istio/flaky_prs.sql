@@ -20,6 +20,6 @@ with issues as (
     gha_issues_labels il
   on
     i.id = il.issue_id
-    and il.dup_label_name = 'flaky-test'
+    and il.dup_label_name = 'flaky-testlib'
 )
 select * from issues_labels;

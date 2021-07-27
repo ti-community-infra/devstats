@@ -1,0 +1,45 @@
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+# TODO: enable deadcode.
+#    - deadcode
+    - depguard
+# TODO: enable dupl.
+#    - dupl
+    - gochecknoinits
+# TODO: enable gocritic.
+#    - gocritic
+# TODO: enable gocyclo.
+#    - gocyclo
+    - gofmt
+    - goimports
+    - revive
+    - goprintffuncname
+# TODO: enable gosec.
+#    - gosec
+# TODO: enable gosimple.
+#    - gosimple
+    - govet
+# TODO: enable ineffassign.
+#    - ineffassign
+# TODO: enable lll.
+#    - lll
+# TODO: enable misspell.
+#    - misspell
+    - nolintlint
+# TODO: enable rowserrcheck.
+#    - rowserrcheck
+    - exportloopref
+# TODO: enable staticcheck.
+#    - staticcheck
+    - structcheck
+    - typecheck
+# TODO: enable unconvert.
+#    - unconvert
+# TODO: enable unparam.
+#    - unparam
+    - varcheck
+    - whitespace
+# TODO: enable errcheck.
+#    - errcheck

@@ -25,7 +25,7 @@ from (
           select event_id as eid,
             lower(coalesce(
               substring(
-                body from '(?i)(?:^|\s)+(@kubernetes/sig-[\w\d-]+)(?:-bug|-feature-request|-pr-review|-api-review|-misc|-proposal|-design-proposal|-test-failure|-owners)s?(?:$|[^\w\d-]+)'
+                body from '(?i)(?:^|\s)+(@kubernetes/sig-[\w\d-]+)(?:-bug|-feature-request|-pr-review|-api-review|-misc|-proposal|-design-proposal|-testlib-failure|-owners)s?(?:$|[^\w\d-]+)'
               ),
               substring(
                 body from '(?i)(?:^|\s)+(@kubernetes/sig-[\w\d-]*[\w\d]+)(?:$|[^\w\d-]+)'

@@ -31,7 +31,7 @@ update gha_repos set repo_group = alias;
 update gha_repos
 set repo_group = 'LitmusChaos', alias = 'LitmusChaos'
 where name in (
-  'openebs/test-storage',
+  'openebs/testlib-storage',
   'openebs/litmus',
   'litmuschaos/litmus'
 );

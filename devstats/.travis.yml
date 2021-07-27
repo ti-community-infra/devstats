@@ -28,7 +28,7 @@ before_install:
 script:
   - cd /home/travis/gopath/src/github.com/cncf/devstats
   - make check
-  - PG_PORT=5433 PG_PASS=pwd make test
+  - PG_PORT=5433 PG_PASS=pwd make testlib
 addons:
   postgresql: "13"
   apt:

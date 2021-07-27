@@ -1,31 +1,29 @@
-FROM golang:1.15 AS builder
+FROM golang:1.16 AS builder
 
 RUN apt-get update -y && apt-get upgrade -y && apt-get install -y ca-certificates openssh-client postgresql-client git curl make
 
 RUN go get -u github.com/rs/cors
 RUN go get -u github.com/json-iterator/go
-RUN go get -u github.com/cncf/devstatscode
+RUN mkdir -p /go/src/github.com/ti-community-infra/devstats
 
-WORKDIR /go/src/github.com/cncf/devstatscode
+WORKDIR /go/src/github.com/ti-community-infra/devstats
 
-ADD temp/devstats.tar .
 ADD temp/devstatscode.tar .
-ADD temp/devstats-docker-images.tar .
-ADD temp/grafana-bins.tar .
-
+ADD temp/grafana-tool-bins.tar .
+ADD temp/devstats-config-cncf.tar .
 ADD temp/devstats-config-prod.tar .
 
-RUN cp replacer patches/patch.sh /usr/bin/
-# TODO: Patch the link.
-#RUN patch.sh prodsrv devstats.cncf.io 'tidb tikv chaosmesh'
-RUN make -f Makefile.full dockerinstall
-RUN make -f Makefile.full links
+RUN make docker_full_install
+RUN make links
 
 #FROM alpine
 #RUN apk add git bash postgresql-client xz curl
 FROM postgres:13-alpine
+
 RUN apk add git curl xz
+
 COPY --from=builder /etc/gha2db /etc/gha2db
-COPY --from=builder /go/src/github.com/cncf/devstatscode /go/src/devstats
-COPY --from=builder /devstats-minimal/* /usr/bin/
+COPY --from=builder /go/src/github.com/ti-community-infra/devstats /go/src/devstats
+COPY --from=builder /devstats-bins/* /usr/bin/
+
 WORKDIR /go/src/devstats

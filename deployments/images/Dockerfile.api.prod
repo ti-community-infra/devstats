@@ -1,7 +1,7 @@
 FROM alpine AS builder
 WORKDIR /builder
 
-ADD temp/api-bins.tar .
+ADD temp/devstats-api-bins.tar .
 ADD temp/devstats-api-config-prod.tar .
 
 FROM alpine

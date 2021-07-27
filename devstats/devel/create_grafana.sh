@@ -1,5 +1,5 @@
 #!/bin/bash
-# GGET=1 (Get grafana.db from the test server)
+# GGET=1 (Get grafana.db from the testlib server)
 # STOP=1 (Stops running grafana-server instance)
 # RM=1 (only with STOP, get rid of all grafana data before proceeding)
 # SKIPINIT=1 (will skip importing all jsons defined for given project using sqlitedb tool and will skip seting default dashboard etc.)
@@ -158,10 +158,10 @@ then
   if ( [ "$host" = "devstats.cncf.io" ] || [ "$host" = "devstats.cd.foundation" ] )
   then
     MODE=ss FROM='{{ga}}' TO="$ga" replacer "$cfile" || exit 28
-    MODE=ss FROM='{{test}}' TO="-" replacer "$cfile" || exit 29
+    MODE=ss FROM='{{testlib}}' TO="-" replacer "$cfile" || exit 29
   else
     MODE=ss FROM='{{ga}}' TO=";$ga" replacer "$cfile" || exit 30
-    MODE=ss FROM='{{test}}' TO="_test" replacer "$cfile" || exit 31
+    MODE=ss FROM='{{testlib}}' TO="_test" replacer "$cfile" || exit 31
   fi
   MODE=ss FROM='{{org}}' TO="$ORGNAME" replacer "$cfile" || exit 32
 fi

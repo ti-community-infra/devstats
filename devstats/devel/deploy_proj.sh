@@ -1,6 +1,6 @@
 #!/bin/bash
-# GET=1 (attempt to fetch Postgres database and Grafana database from the test server)
-# AGET=1 (attempt to fetch 'All CNCF' Postgres database from the test server)
+# GET=1 (attempt to fetch Postgres database and Grafana database from the testlib server)
+# AGET=1 (attempt to fetch 'All CNCF' Postgres database from the testlib server)
 # SKIPDBS=1 (entirely skip project's database operations)
 # SKIPADDALL=1 (skip adding/merging to allprj)
 # SKIPGRAFANA=1 (skip all grafana related stuff)

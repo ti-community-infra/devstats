@@ -1,8 +1,8 @@
 FROM alpine AS builder
 WORKDIR /builder
 
-ADD temp/devstats.tar .
-ADD temp/grafana-bins.tar .
+ADD temp/devstats-config-cncf.tar .
+ADD temp/grafana-tool-bins.tar .
 
 #FROM alpine
 #RUN apk add git bash postgresql-client xz curl vim zip

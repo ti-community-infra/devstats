@@ -19,7 +19,7 @@ where
       'kubernetes-graveyard', 'kubernetes-incubator-retired', 'kubernetes-sig-testing',
       'kubernetes-providers', 'kubernetes-addons', 'kubernetes-retired',
       'kubernetes-extensions', 'kubernetes-federation', 'kubernetes-security',
-      'kubernetes-sidecars', 'kubernetes-tools', 'kubernetes-test', 'kubernetes-sigs'
+      'kubernetes-sidecars', 'kubernetes-tools', 'kubernetes-testlib', 'kubernetes-sigs'
     )
     or name in (
       'GoogleCloudPlatform/kubernetes', 'kubernetes' , 'kubernetes-client'
@@ -209,10 +209,10 @@ where
   and name not in (
     'spiffe/spire',
     'spiffe/spire-k8s',
-    'spiffe/spire-test',
+    'spiffe/spire-testlib',
     'spiffe/spire-tutorials',
     'spiffe/spire-examples',
-    'spiffe/spire-circleci-test'
+    'spiffe/spire-circleci-testlib'
   )
 ;
 
@@ -399,7 +399,7 @@ set
 where
   org_login in ('openebs')
   and name not in (
-    'openebs/test-storage',
+    'openebs/testlib-storage',
     'openebs/litmus'
   )
 ;
@@ -606,7 +606,7 @@ set
 where
   org_login in ('litmuschaos')
   or name in (
-    'openebs/test-storage',
+    'openebs/testlib-storage',
     'openebs/litmus'
   )
 ;

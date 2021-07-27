@@ -199,7 +199,7 @@ update gha_repos set repo_group = 'SIG Contributor Experience' where lower(name)
   'kubernetes-sigs/contributor-site',
   'kubernetes-sigs/contributor-tweets',
   'kubernetes-sigs/discuss-theme',
-  'kubernetes-sigs/netlify-test',
+  'kubernetes-sigs/netlify-testlib',
   'kubernetes-sigs/slack-infra',
   'kubernetes-sigs/.github',
   'kubernetes/community',
@@ -346,7 +346,7 @@ update gha_repos set repo_group = 'SIG Storage' where lower(name) in (
   'kubernetes-csi/csi-lib-utils',
   'kubernetes-csi/csi-proxy',
   'kubernetes-csi/csi-release-tools',
-  'kubernetes-csi/csi-test',
+  'kubernetes-csi/csi-testlib',
   'kubernetes-csi/docs',
   'kubernetes-csi/driver-registrar',
   'kubernetes-csi/drivers',
@@ -394,7 +394,7 @@ update gha_repos set repo_group = 'SIG Testing' where lower(name) in (
   'kubernetes-sigs/testing_frameworks',
   'kubernetes-sig-testing/frameworks',
   'kubernetes/pr-bot',
-  'kubernetes/test-infra'
+  'kubernetes/testlib-infra'
 );
 
 update gha_repos set repo_group = 'SIG UI' where lower(name) in (
