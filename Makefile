@@ -63,7 +63,7 @@ GIT_SCRIPTS=git/git_reset_pull.sh git/git_files.sh git/git_tags.sh git/last_tag.
 
 # Entry
 
-.PHONY: clean test cover fmt tidy staticcheck dev check
+.PHONY: clean test cover fmt tidy staticcheck dev check build dbtest
 
 dev: check staticcheck test
 
@@ -176,9 +176,10 @@ sqlitedb: cmd/sqlitedb/sqlitedb.go ${GO_LIB_FILES}
 util_scripts:
 	cp -v ${UTIL_SCRIPTS} ${GOPATH}/bin
 
-copy_data: util_scripts
-	mkdir -p ${DATA_DIR} || echo "..."
-	chmod 777 ${DATA_DIR} || echo "..."
+# Full install to image.
+copy_full_data: util_scripts
+	mkdir -p ${DATA_DIR} 2>/dev/null || echo "..."
+	chmod 777 ${DATA_DIR} 2>/dev/null || echo "..."
 ifneq "$(DATA_DIR)" ""
 	rm -rf ${DATA_DIR}/* || exit 3
 endif
@@ -189,15 +190,9 @@ endif
 	cp -R scripts/ ${DATA_DIR}/scripts/ || exit 9
 	cp devel/*.txt ${DATA_DIR}/ || exit 11
 	cp projects.yaml skip_dates.yaml ${DATA_DIR}/ || exit 12
+	cp github_users.json projects.yaml companies.yaml skip_dates.yaml ${DATADIR}/ || exit 12
 
-install: ${BINARIES} copy_data
-	[ ! -f /tmp/deploy.wip ] || exit 1
-	${GO_INSTALL} ${GO_BIN_CMDS}
-	cp -v ${CRON_SCRIPTS} ${GOPATH}/bin
-	cp -v ${GIT_SCRIPTS} ${GOPATH}/bin
-
-# Notice: this stage only work in docker image.
-docker_full_install: ${DOCKER_FULL_BINARIES} copy_data
+docker_full_install: ${DOCKER_FULL_BINARIES} copy_full_data
 	${GO_INSTALL} ${GO_DOCKER_FULL_BIN_CMDS}
 	cp -v ${CRON_SCRIPTS} ${GOPATH}/bin || exit 11
 	cp -v ${GIT_SCRIPTS} ${GOPATH}/bin || exit 12
@@ -208,8 +203,22 @@ docker_full_install: ${DOCKER_FULL_BINARIES} copy_data
 	cp -v ${GIT_SCRIPTS} ${BINARY_PATH} || exit 17
 	cp -v ${UTIL_SCRIPTS} ${BINARY_PATH} || exit 18
 
-# Notice: this stage only work in docker image.
-docker_minimal_install: ${DOCKER_MINIMAL_BINARIES} copy_data
+# Minimal install to image.
+copy_minimal_data: util_scripts
+	mkdir -p ${DATA_DIR} 2>/dev/null || echo "..."
+	chmod 777 ${DATA_DIR} 2>/dev/null || echo "..."
+ifneq "$(DATA_DIR)" ""
+	rm -rf ${DATA_DIR}/* || exit 3
+endif
+	cp -R metrics/ ${DATA_DIR}/metrics/ || exit 4
+	cp -R util_sql/ ${DATA_DIR}/util_sql/ || exit 5
+	cp -R util_sh/ ${DATA_DIR}/util_sh/ || exit 6
+	cp -R docs/ ${DATA_DIR}/docs/ || exit 7
+	cp -R scripts/ ${DATA_DIR}/scripts/ || exit 9
+	cp devel/*.txt ${DATA_DIR}/ || exit 11
+	cp github_users.json projects.yaml companies.yaml skip_dates.yaml ${DATADIR}/ || exit 12
+
+docker_minimal_install: ${DOCKER_MINIMAL_BINARIES} copy_minimal_data
 	${GO_INSTALL} ${GO_DOCKER_MINIMAL_BIN_CMDS}
 	cp -v ${GIT_SCRIPTS} ${GOPATH}/bin || exit 15
 	cd ${GOPATH}/bin || exit 16
@@ -228,4 +237,3 @@ strip: ${BINARIES}
 clean:
 	$(GO) clean -i ./...
 	rm -f ${BINARIES}
-	rm -rf *.out
