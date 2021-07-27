@@ -189,7 +189,6 @@ endif
 	cp -R docs/ ${DATA_DIR}/docs/ || exit 7
 	cp -R scripts/ ${DATA_DIR}/scripts/ || exit 9
 	cp devel/*.txt ${DATA_DIR}/ || exit 11
-	cp projects.yaml skip_dates.yaml ${DATA_DIR}/ || exit 12
 	cp github_users.json projects.yaml companies.yaml skip_dates.yaml ${DATADIR}/ || exit 12
 
 docker_full_install: ${DOCKER_FULL_BINARIES} copy_full_data
@@ -216,7 +215,7 @@ endif
 	cp -R docs/ ${DATA_DIR}/docs/ || exit 7
 	cp -R scripts/ ${DATA_DIR}/scripts/ || exit 9
 	cp devel/*.txt ${DATA_DIR}/ || exit 11
-	cp github_users.json projects.yaml companies.yaml skip_dates.yaml ${DATADIR}/ || exit 12
+	cp projects.yaml skip_dates.yaml ${DATA_DIR}/ || exit 12
 
 docker_minimal_install: ${DOCKER_MINIMAL_BINARIES} copy_minimal_data
 	${GO_INSTALL} ${GO_DOCKER_MINIMAL_BIN_CMDS}
