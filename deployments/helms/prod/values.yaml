@@ -12,6 +12,7 @@ volumeMountName: data
 volumeMountPath: '/root'
 volumeName: data
 nSyncCPUs: 6
+pgSecret: pg-db
 
 # Company configurations.
 affiliations: 'github_users.json'
@@ -64,19 +65,6 @@ limitsProvisionsCPU: '8000m'
 limitsProvisionsMemory: '64Gi'
 useProvisionsResourcesLimits: 1
 waitForBootstrap: 60
-
-# Postgres configurations.
-postgresPort: 5432
-postgresSvcName: 'devstats-postgres'
-postgresImageName: 'lukaszgryglicki/devstats-patroni'
-postgresStorageSize: '200Gi'
-postgresNodes: 3
-pgSecret: pg-db
-limitsPostgresCPU: '8000m'
-limitsPostgresMemory: '24Gi'
-requestsPostgresCPU: '2000m'
-requestsPostgresMemory: '4Gi'
-usePostgresResourcesLimits: 1
 
 # Cron sync jobs configurations.
 syncCommand: devstats
