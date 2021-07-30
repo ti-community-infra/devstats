@@ -11,6 +11,7 @@ skipTemp: 1
 volumeMountName: data
 volumeMountPath: '/root'
 volumeName: data
+pgSecret: pg-db
 
 # Company configurations.
 affiliations: 'github_users.json'
@@ -63,19 +64,6 @@ limitsProvisionsCPU: '4000m'
 limitsProvisionsMemory: '32Gi'
 useProvisionsResourcesLimits: 1
 waitForBootstrap: 60
-
-# Postgres configurations.
-postgresPort: 5432
-postgresSvcName: 'devstats-postgres'
-postgresImageName: 'lukaszgryglicki/devstats-patroni'
-postgresStorageSize: '50Gi'
-postgresNodes: 3
-pgSecret: pg-db
-limitsPostgresCPU: '8000m'
-limitsPostgresMemory: '16Gi'
-requestsPostgresCPU: '2000m'
-requestsPostgresMemory: '4Gi'
-usePostgresResourcesLimits: 1
 
 # Cron sync jobs configurations.
 syncCommand: devstats
