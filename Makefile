@@ -52,7 +52,7 @@ GO_DOCKER_FULL_BIN_CMDS=github.com/ti-community-infra/devstats/cmd/structure git
 GO_DOCKER_MINIMAL_BIN_CMDS=github.com/ti-community-infra/devstats/cmd/structure github.com/ti-community-infra/devstats/cmd/gha2db github.com/ti-community-infra/devstats/cmd/calc_metric github.com/ti-community-infra/devstats/cmd/gha2db_sync github.com/ti-community-infra/devstats/cmd/annotations github.com/ti-community-infra/devstats/cmd/tags github.com/ti-community-infra/devstats/cmd/devstats github.com/ti-community-infra/devstats/cmd/get_repos github.com/ti-community-infra/devstats/cmd/ghapi2db github.com/ti-community-infra/devstats/cmd/columns github.com/ti-community-infra/devstats/cmd/gha2es github.com/ti-community-infra/devstats/cmd/vars github.com/ti-community-infra/devstats/cmd/runq github.com/ti-community-infra/devstats/cmd/api
 
 BINARIES=structure gha2db calc_metric gha2db_sync import_affs annotations tags webhook devstats get_repos merge_dbs replacer vars ghapi2db columns hide_data website_data sync_issues gha2es runq api sqlitedb
-DOCKER_FULL_BINARIES=structure gha2db calc_metric gha2db_sync import_affs annotations tags devstats get_repos vars ghapi2db columns gha2es api runq replacer hide_data merge_dbs
+DOCKER_FULL_BINARIES=structure gha2db calc_metric gha2db_sync import_affs annotations tags devstats get_repos vars ghapi2db columns gha2es api runq replacer hide_data merge_dbs sync_issues
 DOCKER_MINIMAL_BINARIES=structure gha2db calc_metric gha2db_sync annotations tags devstats get_repos ghapi2db columns gha2es vars runq api
 
 # Script file.
