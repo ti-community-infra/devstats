@@ -86,11 +86,15 @@ spec:
         secretKeyRef:
           name: {{ $root.Values.oauthSecret }}
           key: GHA2DB_GITHUB_OAUTH.secret
+    - name: GHA2DB_ISSUES_SYNC_SQL
+      value: {{ $root.Values.executeIssueSyncUrl }}
     - name: PG_HOST
       valueFrom:
         secretKeyRef:
           name: {{ $root.Values.pgSecret }}
           key: PG_HOST.secret
+    - name: PG_DB
+      value: {{ $root.Values.executeTargetDB }}
     - name: PG_PORT
       valueFrom:
         secretKeyRef:
