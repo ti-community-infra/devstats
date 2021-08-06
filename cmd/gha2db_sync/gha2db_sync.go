@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"math/rand"
 	"os"
@@ -713,7 +714,35 @@ func sync(ctx *lib.Ctx, args []string) {
 		)
 		lib.FatalOnError(err)
 	}
+
+	// Refresh the materialized view.
+	refreshMaterializedView(con, ctx)
+
 	lib.Printf("Sync success\n")
+}
+
+// refreshMaterializedView is used to refresh the materialized view.
+func refreshMaterializedView(con *sql.DB, ctx *lib.Ctx) {
+	var existsCurrentState bool
+
+	lib.FatalOnError(lib.QueryRowSQL(con, ctx,
+		"select exists(select schema_name from information_schema.schemata where schema_name = 'current_state');",
+	).Scan(&existsCurrentState))
+
+	if existsCurrentState {
+		lib.Printf("Refreshing materialized view\n")
+		lib.ExecSQLWithErr(con, ctx, "refresh materialized view current_state.pull_requests;")
+		lib.ExecSQLWithErr(con, ctx, "refresh materialized view current_state.issues;")
+		lib.ExecSQLWithErr(con, ctx, "refresh materialized view current_state.issue_labels;")
+		lib.ExecSQLWithErr(con, ctx, "refresh materialized view current_state.comments;")
+		lib.ExecSQLWithErr(con, ctx, "refresh materialized view current_state.commits;")
+		lib.ExecSQLWithErr(con, ctx, "refresh materialized view current_state.pull_request_requested_reviewers;")
+		lib.ExecSQLWithErr(con, ctx, "refresh materialized view current_state.pull_requests_assignees;")
+		lib.ExecSQLWithErr(con, ctx, "refresh materialized view current_state.actors;")
+		lib.Printf("Finished refresh materialized view\n")
+	} else {
+		lib.Printf("Skipping refresh materialized view\n")
+	}
 }
 
 // calcHistogram - calculate single histogram by calling "calc_metric" program with parameters from "hist"
