@@ -146,7 +146,7 @@ projects:
     org: 'TiDB'
     repo: 'pingcap/tidb'
     cron: '05 * * * *'
-    affCron: '0 14 * * 0'
+    affCron: '0 10 * * 5'
     disk: 50Gi
   - i: 1
     proj: tikv
@@ -155,7 +155,7 @@ projects:
     org: 'TiKV'
     repo: 'tikv/tikv'
     cron: '30 * * * *'
-    affCron: '0 16 * * 0'
+    affCron: '0 4 * * 5'
     disk: 50Gi
   - i: 2
     proj: chaosmesh
@@ -164,7 +164,7 @@ projects:
     org: 'ChaosMesh'
     repo: 'chaos-mesh/chaos-mesh'
     cron: '50 * * * *'
-    affCron: '0 18 * * 0'
+    affCron: '0 2 * * 5'
     disk: 50Gi
   - i: 3
     proj: all
@@ -173,7 +173,7 @@ projects:
     org: 'All'
     repo: '-'
     cron: '40 * * * *'
-    affCron: '0 20 * * 0'
+    affCron: '0 16 * * 5'
     disk: 100Gi
   - i: 4
     proj: ob
@@ -182,5 +182,5 @@ projects:
     org: 'OceanBase'
     repo: 'oceanbase/oceanbase'
     cron: '55 * * * *'
-    affCron: '0 21 * * 0'
+    affCron: '0 0 * * 5'
     disk: 30Gi
