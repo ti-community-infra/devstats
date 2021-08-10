@@ -49,7 +49,7 @@ domain = {{project}}-{{domain_name}}
 
 # The full public facing url you use in browser, used for redirects and emails
 # If you use reverse proxy and sub path specify full url (with sub path)
-root_url = {{project}}-{{domain_name}}
+root_url = https://{{project}}-{{domain_name}}/
 
 # Log web requests
 ;router_logging = false
