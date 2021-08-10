@@ -33,7 +33,7 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana:0.4.3-beta.2'
+grafanaImage: 'miniantdev/devstats-grafana:0.4.3-beta.3'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
 grafanaNReplicas: 1
