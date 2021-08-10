@@ -38,10 +38,6 @@ MODE=ss FROM='{{project}}' TO="$PROJ" replacer "$cfile" || exit 17
 MODE=ss FROM='{{url}}' TO="$host" replacer "$cfile" || exit 18
 MODE=ss FROM='{{ga}}' TO="$ga" replacer "$cfile" || exit 19
 MODE=ss FROM='{{org}}' TO="$ORGNAME" replacer "$cfile" || exit 20
-MODE=ss FROM='{{grafana_github_client_id}}' TO="$GF_GITHUB_CLIENT_ID" replacer "$cfile" || exit 21
-MODE=ss FROM='{{grafana_github_client_secret}}' TO="$GF_GITHUB_CLIENT_SECRET" replacer "$cfile" || exit 22
-MODE=ss FROM='{{grafana_github_allowed_organizations}}' TO="$GF_GITHUB_ALLOWED_ORGANIZATIONS" replacer "$cfile" || exit 23
-MODE=ss FROM='{{grafana_github_team_ids}}' TO="$GF_GITHUB_TEAM_IDS" replacer "$cfile" || exit 24
 MODE=ss FROM='{{grafana_google_client_id}}' TO="$GF_GOOGLE_CLIENT_ID" replacer "$cfile" || exit 25
 MODE=ss FROM='{{grafana_google_client_secret}}' TO="$GF_GOOGLE_CLIENT_SECRET" replacer "$cfile" || exit 26
 MODE=ss FROM='{{grafana_google_allowed_domains}}' TO="$GF_GOOGLE_ALLOWED_DOMAINS" replacer "$cfile" || exit 27

@@ -90,26 +90,6 @@ spec:
             secretKeyRef:
               name: {{ $root.Values.grafanaSecret }}
               key: GF_SECURITY_ADMIN_PASSWORD.secret
-        - name: GF_GITHUB_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: {{ $root.Values.grafanaSecret }}
-              key: GF_GITHUB_CLIENT_ID.secret
-        - name: GF_GITHUB_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: {{ $root.Values.grafanaSecret }}
-              key: GF_GITHUB_CLIENT_SECRET.secret
-        - name: GF_GITHUB_ALLOWED_ORGANIZATIONS
-          valueFrom:
-            secretKeyRef:
-              name: {{ $root.Values.grafanaSecret }}
-              key: GF_GITHUB_ALLOWED_ORGANIZATIONS.secret
-        - name: GF_GITHUB_TEAM_IDS
-          valueFrom:
-            secretKeyRef:
-              name: {{ $root.Values.grafanaSecret }}
-              key: GF_GITHUB_TEAM_IDS.secret
         - name: GF_GOOGLE_CLIENT_ID
           valueFrom:
             secretKeyRef:
