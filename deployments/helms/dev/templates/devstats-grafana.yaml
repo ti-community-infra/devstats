@@ -78,7 +78,7 @@ spec:
             secretKeyRef:
               name: {{ $root.Values.pgSecret }}
               key: PG_PASS_RO.secret
-        - name: ROOT_URL
+        - name: DOMAIN_NAME
           value: {{ $root.Values.domainName }}
         - name: GF_SECURITY_ADMIN_USER
           valueFrom:

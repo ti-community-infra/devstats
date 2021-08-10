@@ -41,7 +41,7 @@ plugins = /var/lib/grafana/plugins
 
 # The public facing domain name used to access grafana from a browser
 ;domain = localhost
-domain = {{project}}-{{ROOT_URL}}
+domain = {{project}}-{{domain_name}}
 
 # Redirect to correct domain if host header does not match domain
 # Prevents DNS rebinding attacks
@@ -49,7 +49,7 @@ domain = {{project}}-{{ROOT_URL}}
 
 # The full public facing url you use in browser, used for redirects and emails
 # If you use reverse proxy and sub path specify full url (with sub path)
-root_url = {{project}}-{{ROOT_URL}}
+root_url = {{project}}-{{domain_name}}
 
 # Log web requests
 ;router_logging = false
