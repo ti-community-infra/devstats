@@ -42,7 +42,10 @@ MODE=ss FROM='{{grafana_github_client_id}}' TO="$GF_GITHUB_CLIENT_ID" replacer "
 MODE=ss FROM='{{grafana_github_client_secret}}' TO="$GF_GITHUB_CLIENT_SECRET" replacer "$cfile" || exit 22
 MODE=ss FROM='{{grafana_github_allowed_organizations}}' TO="$GF_GITHUB_ALLOWED_ORGANIZATIONS" replacer "$cfile" || exit 23
 MODE=ss FROM='{{grafana_github_team_ids}}' TO="$GF_GITHUB_TEAM_IDS" replacer "$cfile" || exit 24
-MODE=ss FROM='{{domain_name}}' TO="$DOMAIN_NAME" replacer "$cfile" || exit 24
+MODE=ss FROM='{{grafana_google_client_id}}' TO="$GF_GOOGLE_CLIENT_ID" replacer "$cfile" || exit 25
+MODE=ss FROM='{{grafana_google_client_secret}}' TO="$GF_GOOGLE_CLIENT_SECRET" replacer "$cfile" || exit 26
+MODE=ss FROM='{{grafana_google_allowed_domains}}' TO="$GF_GOOGLE_ALLOWED_DOMAINS" replacer "$cfile" || exit 27
+MODE=ss FROM='{{domain_name}}' TO="$DOMAIN_NAME" replacer "$cfile" || exit 28
 cp ./grafana/shared/robots.txt /usr/share/grafana/public/robots.txt || exit 29
 
 # Setup Grafana provisioning
