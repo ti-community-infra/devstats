@@ -78,6 +78,8 @@ spec:
             secretKeyRef:
               name: {{ $root.Values.pgSecret }}
               key: PG_PASS_RO.secret
+        - name: DOMAIN_NAME
+          value: {{ $root.Values.domainName }}
         - name: GF_SECURITY_ADMIN_USER
           valueFrom:
             secretKeyRef:
@@ -88,6 +90,21 @@ spec:
             secretKeyRef:
               name: {{ $root.Values.grafanaSecret }}
               key: GF_SECURITY_ADMIN_PASSWORD.secret
+        - name: GF_GOOGLE_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ $root.Values.grafanaSecret }}
+              key: GF_GOOGLE_CLIENT_ID.secret
+        - name: GF_GOOGLE_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ $root.Values.grafanaSecret }}
+              key: GF_GOOGLE_CLIENT_SECRET.secret
+        - name: GF_GOOGLE_ALLOWED_DOMAINS
+          valueFrom:
+            secretKeyRef:
+              name: {{ $root.Values.grafanaSecret }}
+              key: GF_GOOGLE_ALLOWED_DOMAINS.secret
         livenessProbe:
           exec:
             command:

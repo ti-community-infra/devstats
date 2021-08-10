@@ -41,7 +41,7 @@ plugins = /var/lib/grafana/plugins
 
 # The public facing domain name used to access grafana from a browser
 ;domain = localhost
-domain = {{project}}.{{url}}
+domain = {{project}}-{{domain_name}}
 
 # Redirect to correct domain if host header does not match domain
 # Prevents DNS rebinding attacks
@@ -49,7 +49,7 @@ domain = {{project}}.{{url}}
 
 # The full public facing url you use in browser, used for redirects and emails
 # If you use reverse proxy and sub path specify full url (with sub path)
-;root_url = http://localhost:3000
+root_url = https://{{project}}-{{domain_name}}/
 
 # Log web requests
 ;router_logging = false
@@ -183,9 +183,9 @@ timeout = 60
 #################################### Snapshots ###########################
 [snapshots]
 # snapshot sharing options
-;external_enabled = true
-;external_snapshot_url = https://snapshots-origin.raintank.io
-;external_snapshot_name = Publish to snapshot.raintank.io
+external_enabled = true
+external_snapshot_url = https://snapshots-origin.raintank.io
+external_snapshot_name = Publish to snapshot.raintank.io
 
 # remove expired snapshot
 ;snapshot_remove_expired = true
@@ -258,7 +258,7 @@ viewers_can_edit = true
 [auth.anonymous]
 # enable anonymous access
 ;enabled = false
-enabled = true
+enabled = false
 
 # specify organization name that should be used for unauthenticated users
 ;org_name = Main Org.
@@ -270,28 +270,28 @@ org_role = Viewer
 
 #################################### Github Auth ##########################
 [auth.github]
-;enabled = false
+;enabled = true
 ;allow_sign_up = true
-;client_id = some_id
-;client_secret = some_secret
+;client_id = {{grafana_github_client_id}}
+;client_secret = {{grafana_github_client_secret}}
 ;scopes = user:email,read:org
 ;auth_url = https://github.com/login/oauth/authorize
 ;token_url = https://github.com/login/oauth/access_token
 ;api_url = https://api.github.com/user
-;team_ids =
-;allowed_organizations =
+;team_ids = {{grafana_github_team_ids}}
+;allowed_organizations = {{grafana_github_allowed_organizations}}
 
 #################################### Google Auth ##########################
 [auth.google]
-;enabled = false
-;allow_sign_up = true
-;client_id = some_client_id
-;client_secret = some_client_secret
-;scopes = https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email
-;auth_url = https://accounts.google.com/o/oauth2/auth
-;token_url = https://accounts.google.com/o/oauth2/token
-;api_url = https://www.googleapis.com/oauth2/v1/userinfo
-;allowed_domains =
+enabled = true
+allow_sign_up = true
+client_id = {{grafana_google_client_id}}
+client_secret =  {{grafana_google_client_secret}}
+scopes = https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email
+auth_url = https://accounts.google.com/o/oauth2/auth
+token_url = https://accounts.google.com/o/oauth2/token
+api_url = https://www.googleapis.com/oauth2/v1/userinfo
+allowed_domains = {{grafana_google_allowed_domains}}
 
 #################################### Generic OAuth ##########################
 [auth.generic_oauth]
