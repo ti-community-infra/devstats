@@ -339,6 +339,9 @@ func sync(ctx *lib.Ctx, args []string) {
 			},
 		)
 		lib.FatalOnError(err)
+
+		// Refresh the materialized view.
+		refreshMaterializedView(con, ctx)
 	}
 
 	// If ElasticSearch output is enabled
@@ -714,9 +717,6 @@ func sync(ctx *lib.Ctx, args []string) {
 		)
 		lib.FatalOnError(err)
 	}
-
-	// Refresh the materialized view.
-	refreshMaterializedView(con, ctx)
 
 	lib.Printf("Sync success\n")
 }
