@@ -162,6 +162,11 @@ func syncIssues(ctx *lib.Ctx) {
 						ch <- false
 						return
 					}
+					if res == lib.IssueIsDeleted {
+						lib.Printf("Warning: issue is deleted: %s/%s %d", org, repo, number)
+						ch <- false
+						return
+					}
 					continue
 				} else {
 					thrMutex.Lock()
