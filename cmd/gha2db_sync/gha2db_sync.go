@@ -734,6 +734,7 @@ func refreshMaterializedView(con *sql.DB, ctx *lib.Ctx) {
 		lib.ExecSQLWithErr(con, ctx, "refresh materialized view current_state.pull_requests;")
 		lib.ExecSQLWithErr(con, ctx, "refresh materialized view current_state.issues;")
 		lib.ExecSQLWithErr(con, ctx, "refresh materialized view current_state.issue_labels;")
+		lib.ExecSQLWithErr(con, ctx, "refresh materialized view current_state.issue_assignees;")
 		lib.ExecSQLWithErr(con, ctx, "refresh materialized view current_state.comments;")
 		lib.ExecSQLWithErr(con, ctx, "refresh materialized view current_state.commits;")
 		lib.ExecSQLWithErr(con, ctx, "refresh materialized view current_state.pull_request_requested_reviewers;")
