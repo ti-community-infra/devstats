@@ -20,6 +20,12 @@ coverage.txt
 .vscode
 .favorites.json
 
+# Cache
+dump.out
+
+# Test data.
+test/data/
+
 # Temporary files generated when compiling the image
 deployments/images/temp/
 
