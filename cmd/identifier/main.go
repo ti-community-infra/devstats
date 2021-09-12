@@ -23,7 +23,7 @@ func main() {
 	log := logrus.WithField("program", "identifier")
 
 	// Init database client.
-	db, err := lib.NewConn(ctx.IdDbDialect, ctx.IdDbHost, ctx.IdDbPort, ctx.IdDbUser, ctx.IdDbPass, ctx.IdDbName)
+	db, err := lib.NewConn(ctx.IDDbDialect, ctx.IDDbHost, ctx.IDDbPort, ctx.IDDbUser, ctx.IDDbPass, ctx.IDDbName)
 	lib.FatalOnError(err)
 
 	// Init database client used to import data.
@@ -41,7 +41,7 @@ func main() {
 	gob.Register(github.Response{})
 	gob.Register(github.User{})
 	gob.Register(github.RateLimits{})
-	gob.Register(identifier.GitHubGetUserByIdResult{})
+	gob.Register(identifier.GitHubGetUserByIDResult{})
 	gob.Register(identifier.LocationCacheEntry{})
 	gob.Register(lib.StringSet{})
 
@@ -50,7 +50,6 @@ func main() {
 		_, err := os.Create(ctx.CacheFilePath)
 		if err != nil {
 			panic(err)
-			return
 		}
 	}
 	err = memCache.LoadFile(ctx.CacheFilePath)
@@ -89,12 +88,12 @@ func main() {
 		// Save the cache to file.
 		err = memCache.SaveFile(ctx.CacheFilePath)
 		if err != nil {
-			log.WithError(err).Errorln("Failed to save the memory cache to file: %s", ctx.CacheFilePath)
+			log.WithError(err).Errorf("Failed to save the memory cache to file: %s", ctx.CacheFilePath)
 			return
 		}
 	}
 
-	if !ctx.SkipOutputGitHubUserJson {
-		identifier.OutputGitHubUserToJson(log, &ctx, db)
+	if !ctx.SkipOutputGitHubUserJSON {
+		identifier.OutputGitHubUserToJSON(log, &ctx, db)
 	}
 }

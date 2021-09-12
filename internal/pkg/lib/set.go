@@ -7,7 +7,7 @@ func (s *StringSet) ToArray() []string {
 	if s == nil {
 		return arr
 	}
-	for key, _ := range *s {
+	for key := range *s {
 		arr = append(arr, key)
 	}
 	return arr

@@ -36,8 +36,8 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-// GitHubUserFromJson - single GitHub user entry from cncf/gitdm `github_users.json` JSON.
-type GitHubUserFromJson struct {
+// GitHubUserFromJSON - single GitHub user entry from cncf/gitdm `github_users.json` JSON.
+type GitHubUserFromJSON struct {
 	Login string `json:"login"`
 	// Email use ! instead of @ for email encoding.
 	Email string `json:"email"`
@@ -82,7 +82,7 @@ type GitHubClient struct {
 	maxRetry    int
 }
 
-type GitHubGetUserByIdResult struct {
+type GitHubGetUserByIDResult struct {
 	User github.User
 	Err  string
 }
@@ -105,13 +105,12 @@ func (c *GitHubClient) GetUserByID(id int64) (*github.User, *github.Response, er
 	cacheKey := "github-get-user-result-" + strconv.Itoa(int(id))
 	resultCached, ok := c.memCache.Get(cacheKey)
 	if ok {
-		result := resultCached.(GitHubGetUserByIdResult)
+		result := resultCached.(GitHubGetUserByIDResult)
 		if len(result.Err) == 0 {
 			// Notice: The result obtained by caching will not contain the response.
 			return &result.User, nil, nil
-		} else {
-			return nil, nil, errors.New(result.Err)
 		}
+		return nil, nil, errors.New(result.Err)
 	}
 
 	// Support failure retry.
@@ -134,7 +133,7 @@ func (c *GitHubClient) GetUserByID(id int64) (*github.User, *github.Response, er
 			c.log.Errorf("Failed to get user by id %d, retrying %d/%d.", id, try, c.maxRetry)
 			continue
 		} else {
-			resultWithoutError := GitHubGetUserByIdResult{
+			resultWithoutError := GitHubGetUserByIDResult{
 				User: *user,
 				Err:  "",
 			}
@@ -145,7 +144,7 @@ func (c *GitHubClient) GetUserByID(id int64) (*github.User, *github.Response, er
 
 	// Cache the error result.
 	err := fmt.Errorf("failed to get user by id %d, it still fails after %d retries", id, c.maxRetry)
-	resultWithError := GitHubGetUserByIdResult{
+	resultWithError := GitHubGetUserByIDResult{
 		Err: err.Error(),
 	}
 	c.memCache.Set(cacheKey, resultWithError, cache.DefaultExpiration)
@@ -197,9 +196,8 @@ func (l *LocationClient) FormattedLocation(location string) (string, string, str
 		l.log.Debugf("Location hit cache: %s %s %s", result.FormattedAddress, result.CountryCode, result.CountryName)
 		if len(result.CountryName) == 0 && len(result.CountryCode) == 0 && len(result.FormattedAddress) == 0 {
 			return "", "", "", errors.New("no matching locations were found")
-		} else {
-			return result.FormattedAddress, result.CountryCode, result.CountryName, nil
 		}
+		return result.FormattedAddress, result.CountryCode, result.CountryName, nil
 	}
 
 	// Get country name and country code through Google Maps API.
@@ -264,7 +262,7 @@ func (l *LocationClient) FormattedLocation(location string) (string, string, str
 
 /*  Employee Manager（Base on Lark） */
 
-const GithubLoginAttrId string = "C-6934211695879389211"
+const GithubLoginAttrID string = "C-6934211695879389211"
 
 const LarkCompany = "PingCAP"
 
@@ -272,7 +270,6 @@ const LarkContactGitHubLoginsCacheKey = "lark-contact-github-logins"
 
 type EmployeeManager struct {
 	background        context.Context
-	ctx               Ctx
 	log               *logrus.Entry
 	larkClient        *lark.Lark
 	memCache          *cache.Cache
@@ -287,7 +284,7 @@ func (m *EmployeeManager) Init(ctx Ctx, log *logrus.Entry, memCache *cache.Cache
 	m.memCache = memCache
 
 	// Init lark client.
-	cli := lark.New(lark.WithAppCredential(ctx.LarkAppId, ctx.LarkAppSecret))
+	cli := lark.New(lark.WithAppCredential(ctx.LarkAppID, ctx.LarkAppSecret))
 	m.larkClient = cli
 
 	// Get tenant access token.
@@ -312,15 +309,15 @@ func (m *EmployeeManager) PrepareGitHubLogins() error {
 	}
 
 	// Get all departments.
-	rootDepartmentId := "0"
-	departmentIds := make([]string, 0)
+	rootDepartmentID := "0"
+	departmentIDs := make([]string, 0)
 	pageSize := int64(50)
 	pageToken := ""
 	isFetchChild := true
 
 	for {
 		req := &lark.GetDepartmentListReq{
-			ParentDepartmentID: &rootDepartmentId,
+			ParentDepartmentID: &rootDepartmentID,
 			FetchChild:         &isFetchChild,
 			PageSize:           &pageSize,
 		}
@@ -332,7 +329,7 @@ func (m *EmployeeManager) PrepareGitHubLogins() error {
 		lib.FatalOnError(err)
 
 		for _, item := range list.Items {
-			departmentIds = append(departmentIds, item.OpenDepartmentID)
+			departmentIDs = append(departmentIDs, item.OpenDepartmentID)
 		}
 
 		if list.HasMore {
@@ -344,14 +341,14 @@ func (m *EmployeeManager) PrepareGitHubLogins() error {
 
 	// Get GitHub Logins.
 	githubLogins := make(lib.StringSet)
-	for _, departmentId := range departmentIds {
-		m.log.Infof("Fetch github login from department: %s", departmentId)
+	for _, departmentID := range departmentIDs {
+		m.log.Infof("Fetch github login from department: %s", departmentID)
 
 		// Get paging user info via api.
 		pageToken = ""
 		for {
 			req := &lark.GetUserListReq{
-				DepartmentID: &departmentId,
+				DepartmentID: &departmentID,
 				PageSize:     &pageSize,
 			}
 			if len(pageToken) > 0 {
@@ -363,7 +360,7 @@ func (m *EmployeeManager) PrepareGitHubLogins() error {
 
 			for _, item := range list.Items {
 				for _, attr := range item.CustomAttrs {
-					if attr.ID == GithubLoginAttrId {
+					if attr.ID == GithubLoginAttrID {
 						githubLogin := attr.Value.Text
 						githubLogins[githubLogin] = struct{}{}
 					}
@@ -399,14 +396,14 @@ func AutoImportProfile(
 	gc *GitHubClient, locationClient *LocationClient, employeeManager *EmployeeManager, memCache *cache.Cache,
 ) {
 	// Ensure the existence of database structure and basic data.
-	ensureStructure(log, ctx, db)
+	ensureStructure(log, db)
 
 	// Import the init data from file to database.
 	loadInitData(log, ctx, db)
 
 	// Get GitHub User profile from json file.
-	githubUsersFromJson := loadGitHubUsersFromJson(ctx.AffiliationsJSON)
-	log.Infof("Found %d GitHub user profile from json file.", len(githubUsersFromJson))
+	githubUsersFromJSON := loadGitHubUsersFromJSON(ctx.AffiliationsJSON)
+	log.Infof("Found %d GitHub user profile from json file.", len(githubUsersFromJSON))
 
 	// Get employee GitHub logins.
 	err := employeeManager.PrepareGitHubLogins()
@@ -429,7 +426,7 @@ func AutoImportProfile(
 		for _, pattern := range organization.Patterns {
 			reg, err := regexp.Compile("(?i)" + pattern.Pattern)
 			if err != nil {
-				log.WithError(err).Errorf("Failed to compile the org pattern: orgId=%d pattern=%s", organization.ID, pattern.Pattern)
+				log.WithError(err).Errorf("Failed to compile the org pattern: orgID=%d pattern=%s", organization.ID, pattern.Pattern)
 				continue
 			}
 			pattern2org[reg] = organization
@@ -456,53 +453,53 @@ func AutoImportProfile(
 	lib.FatalOnError(err)
 	log.Infof("Found %d external identities need to be importd.", len(actors))
 
-	githubId2logins := make(map[uint]lib.StringSet)
-	githubId2emails := make(map[uint]lib.StringSet)
-	githubId2names := make(map[uint]lib.StringSet)
+	githubID2logins := make(map[uint]lib.StringSet)
+	githubID2emails := make(map[uint]lib.StringSet)
+	githubID2names := make(map[uint]lib.StringSet)
 
 	for _, actor := range actors {
-		githubId := actor.ID
-		if githubId < 0 {
+		githubID := actor.ID
+		if githubID < 0 {
 			continue
 		}
 
 		// GitHub login deduplication.
-		logins, ok := githubId2logins[githubId]
+		logins, ok := githubID2logins[githubID]
 		if !ok {
 			logins = make(lib.StringSet)
 		}
 		logins[actor.Login] = struct{}{}
-		githubId2logins[githubId] = logins
+		githubID2logins[githubID] = logins
 
 		// GitHub email deduplication.
-		emails, ok := githubId2emails[githubId]
+		emails, ok := githubID2emails[githubID]
 		if !ok {
 			emails = make(lib.StringSet)
 		}
 		for _, email := range actor.Emails {
 			emails[email.Email] = struct{}{}
 		}
-		githubId2emails[githubId] = emails
+		githubID2emails[githubID] = emails
 
 		// GitHub name deduplication.
-		names, ok := githubId2names[githubId]
+		names, ok := githubID2names[githubID]
 		if !ok {
 			names = make(lib.StringSet)
 		}
 		for _, name := range actor.Names {
 			names[name.Name] = struct{}{}
 		}
-		githubId2names[githubId] = names
+		githubID2names[githubID] = names
 	}
 
-	log.Infof("Found %d github id from devstats datavase.", len(githubId2logins))
+	log.Infof("Found %d github id from devstats datavase.", len(githubID2logins))
 
 	// Merge the affiliation information, and only keep the affiliation with the highest priority.
-	githubLogin2JsonUser := make(map[string]GitHubUserFromJson)
+	githubLogin2JsonUser := make(map[string]GitHubUserFromJSON)
 	source2priority := map[string]int{
 		"notfound": -20, "domain": -10, "": 0, "config": 10, "manual": 20, "user_manual": 30, "user": 40,
 	}
-	for _, newGitHubUser := range githubUsersFromJson {
+	for _, newGitHubUser := range githubUsersFromJSON {
 		source := strings.ToLower(newGitHubUser.Source)
 		if source != "domain" && source != "config" && source != "manual" && source != "user_manual" && source != "user" {
 			continue
@@ -524,7 +521,7 @@ func AutoImportProfile(
 	}
 
 	// Get via GitHub Profile.
-	nGitHubIds := len(githubId2logins)
+	nGitHubIds := len(githubID2logins)
 	i := 0
 
 	nThreads := 0
@@ -533,10 +530,10 @@ func AutoImportProfile(
 	thMtx := sync.Mutex{}
 	startTime = time.Now()
 
-	for githubId, loginSet := range githubId2logins {
+	for githubID, loginSet := range githubID2logins {
 		go processUniqueIdentity(
 			ch, &thMtx, db, log, gc, locationClient, employeeManager,
-			githubId, loginSet, githubId2names, githubId2emails, pattern2org, domain2org,
+			githubID, loginSet, githubID2names, githubID2emails, pattern2org, domain2org,
 			githubLogin2JsonUser,
 		)
 
@@ -569,7 +566,7 @@ func AutoImportProfile(
 }
 
 // ensureStructure is used to ensure the table structure existed in the database.
-func ensureStructure(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
+func ensureStructure(log *logrus.Entry, db *gorm.DB) {
 	// Create data tables.
 	err := db.AutoMigrate(
 		&storage.Project{},
@@ -656,6 +653,10 @@ func loadInitData(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
 		org.Type = mapping.Type
 		if isEducationOrgName(mapping.Name) {
 			org.Type = storage.OrgTypeEducation
+		} else if mapping.Name == "Individual" {
+			org.Type = storage.OrgTypeIndividual
+		} else if strings.HasPrefix(mapping.Name, "@") {
+			org.Type = storage.OrgTypeOpenSource
 		}
 		err := db.Preload("Patterns").Preload("Domains").
 			Where("name = ?", org.Name, false).
@@ -671,7 +672,7 @@ func loadInitData(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
 				continue
 			}
 			var orgPattern storage.OrgPattern
-			orgPattern.OrgId = org.ID
+			orgPattern.OrgID = org.ID
 			orgPattern.Pattern = pattern
 			db.Clauses(clause.OnConflict{
 				Columns: []clause.Column{
@@ -686,7 +687,7 @@ func loadInitData(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
 			if len(domain.Name) == 0 {
 				continue
 			}
-			domain.OrgId = org.ID
+			domain.OrgID = org.ID
 			db.Clauses(clause.OnConflict{
 				Columns: []clause.Column{
 					{Name: "org_id"}, {Name: "name"},
@@ -704,8 +705,8 @@ func loadInitData(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
 
 // loadCountryCodesFromFile - get country code from csv file.
 func loadCountryCodesFromFile(fileName string) ([]storage.Country, error) {
-	bytes, err := ioutil.ReadFile(fileName)
-	r := csv.NewReader(strings.NewReader(string(bytes)))
+	bytesFile, err := ioutil.ReadFile(fileName)
+	r := csv.NewReader(strings.NewReader(string(bytesFile)))
 	rows, _ := r.ReadAll()
 	if err != nil {
 		return nil, fmt.Errorf("failed to open %s", fileName)
@@ -732,41 +733,41 @@ func loadCountryCodesFromFile(fileName string) ([]storage.Country, error) {
 func loadOrgMappingsFromYaml(filepath string) (OrgConfig, error) {
 	var orgConfig OrgConfig
 
-	bytes, err := ioutil.ReadFile(filepath)
+	bytesYaml, err := ioutil.ReadFile(filepath)
 	if err != nil {
 		return orgConfig, err
 	}
 
-	err = yaml.Unmarshal(bytes, &orgConfig)
+	err = yaml.Unmarshal(bytesYaml, &orgConfig)
 	if err != nil {
 		return orgConfig, err
-	} else {
-		logrus.Infof("Read %d bytes remote YAML data from %s.", len(bytes), filepath)
 	}
+
+	logrus.Infof("Read %d bytes remote YAML data from %s.", len(bytesYaml), filepath)
 
 	return orgConfig, nil
 }
 
-// loadGitHubUsersFromJson - get affiliations JSON contents
-func loadGitHubUsersFromJson(uri string) []GitHubUserFromJson {
-	var githubUsers []GitHubUserFromJson
+// loadGitHubUsersFromJSON - get affiliations JSON contents
+func loadGitHubUsersFromJSON(uri string) []GitHubUserFromJSON {
+	var githubUsers []GitHubUserFromJSON
 
-	var bytes []byte
+	var bytesJSON []byte
 	if strings.HasPrefix(uri, "http://") || strings.HasPrefix(uri, "https://") {
 		response, err := http.Get(uri)
 		lib.FatalOnError(err)
 		defer func() { _ = response.Body.Close() }()
-		bytes, err = ioutil.ReadAll(response.Body)
+		bytesJSON, err = ioutil.ReadAll(response.Body)
 		lib.FatalOnError(err)
 	} else {
 		data, err := ioutil.ReadFile(uri)
 		lib.FatalOnError(err)
-		bytes = data
+		bytesJSON = data
 	}
 
-	logrus.Infof("Read %d bytes local JSON data from %s\n", len(bytes), uri)
+	logrus.Infof("Read %d bytes local JSON data from %s\n", len(bytesJSON), uri)
 
-	err := json.Unmarshal(bytes, &githubUsers)
+	err := json.Unmarshal(bytesJSON, &githubUsers)
 	lib.FatalOnError(err)
 
 	return githubUsers
@@ -776,9 +777,9 @@ func loadGitHubUsersFromJson(uri string) []GitHubUserFromJson {
 func processUniqueIdentity(
 	ch chan bool, thMtx *sync.Mutex, db *gorm.DB, log *logrus.Entry,
 	gc *GitHubClient, locationClient *LocationClient, employeeManager *EmployeeManager,
-	githubId uint, loginSet lib.StringSet, githubId2names, githubId2emails map[uint]lib.StringSet,
+	githubID uint, loginSet lib.StringSet, githubID2names, githubID2emails map[uint]lib.StringSet,
 	pattern2org map[*regexp.Regexp]storage.Organization, domain2org map[string]storage.Organization,
-	githubLogin2JsonUser map[string]GitHubUserFromJson,
+	githubLogin2JsonUser map[string]GitHubUserFromJSON,
 ) {
 	if len(loginSet) == 0 {
 		ch <- false
@@ -788,9 +789,9 @@ func processUniqueIdentity(
 	// Found GitHub Logins.
 	var githubLogin string
 	githubUserLogins := make([]storage.GitHubUserLogin, 0)
-	for l, _ := range loginSet {
+	for l := range loginSet {
 		githubUserLogins = append(githubUserLogins, storage.GitHubUserLogin{
-			GitHubUserId: githubId,
+			GitHubUserID: githubID,
 			Login:        l,
 		})
 		githubLogin = l
@@ -798,11 +799,11 @@ func processUniqueIdentity(
 
 	// Found GitHub Names.
 	var githubName string
-	nameSet := githubId2names[githubId]
+	nameSet := githubID2names[githubID]
 	githubUserNames := make([]storage.GitHubUserName, 0)
-	for n, _ := range nameSet {
+	for n := range nameSet {
 		githubUserNames = append(githubUserNames, storage.GitHubUserName{
-			GitHubUserId: githubId,
+			GitHubUserID: githubID,
 			Name:         n,
 		})
 		if len(n) > 0 {
@@ -812,11 +813,11 @@ func processUniqueIdentity(
 
 	// Found GitHub Emails.
 	var githubEmail string
-	emailSet := githubId2emails[githubId]
+	emailSet := githubID2emails[githubID]
 	githubUserEmails := make([]storage.GitHubUserEmail, 0)
-	for e, _ := range emailSet {
+	for e := range emailSet {
 		githubUserEmails = append(githubUserEmails, storage.GitHubUserEmail{
-			GitHubUserId: githubId,
+			GitHubUserID: githubID,
 			Email:        e,
 		})
 		if !strings.HasSuffix(e, GitHubNoReplyEmailSuffix) {
@@ -825,7 +826,7 @@ func processUniqueIdentity(
 	}
 
 	// Fetch GitHub User Profile through GitHub API.
-	githubProfile, _, err := gc.GetUserByID(int64(githubId))
+	githubProfile, _, err := gc.GetUserByID(int64(githubID))
 	if err != nil {
 		log.WithError(err).Errorln("Failed to get github profile through GitHub API.")
 		ch <- false
@@ -834,7 +835,7 @@ func processUniqueIdentity(
 
 	// Fetch existed GitHub profile from database.
 	var githubUser storage.GitHubUser
-	githubUser.ID = githubId
+	githubUser.ID = githubID
 	db.Find(&githubUser)
 
 	// Combine the login, name, and email information in GitHub Profile and devstats.
@@ -843,7 +844,7 @@ func processUniqueIdentity(
 		if _, ok := loginSet[githubLogin]; !ok {
 			loginSet[githubLogin] = struct{}{}
 			githubUserLogins = append(githubUserLogins, storage.GitHubUserLogin{
-				GitHubUserId: githubId,
+				GitHubUserID: githubID,
 				Login:        githubLogin,
 			})
 		}
@@ -853,7 +854,7 @@ func processUniqueIdentity(
 		if _, ok := nameSet[githubName]; !ok {
 			nameSet[githubName] = struct{}{}
 			githubUserNames = append(githubUserNames, storage.GitHubUserName{
-				GitHubUserId: githubId,
+				GitHubUserID: githubID,
 				Name:         githubName,
 			})
 		}
@@ -866,7 +867,7 @@ func processUniqueIdentity(
 		if _, ok := emailSet[githubEmail]; !ok {
 			emailSet[githubEmail] = struct{}{}
 			githubUserEmails = append(githubUserEmails, storage.GitHubUserEmail{
-				GitHubUserId: githubId,
+				GitHubUserID: githubID,
 				Email:        githubEmail,
 			})
 		}
@@ -893,7 +894,7 @@ func processUniqueIdentity(
 	githubLocation := githubProfile.GetLocation()
 	githubBlog := githubProfile.GetBlog()
 	githubBio := githubProfile.GetBio()
-	githubAvatarUrl := githubProfile.GetAvatarURL()
+	githubAvatarURL := githubProfile.GetAvatarURL()
 
 	githubUser.Login = githubLogin
 	githubUser.Name = &githubName
@@ -904,7 +905,7 @@ func processUniqueIdentity(
 	githubUser.Location = &githubLocation
 	githubUser.Blog = &githubBlog
 	githubUser.Bio = &githubBio
-	githubUser.AvatarUrl = &githubAvatarUrl
+	githubUser.AvatarURL = &githubAvatarURL
 
 	err = db.Clauses(clause.OnConflict{
 		Columns: []clause.Column{
@@ -1038,7 +1039,7 @@ func processUniqueIdentity(
 
 				enrollment := storage.Enrollment{
 					UUID:      uniqueIdentity.UUID,
-					OrgId:     org.ID,
+					OrgID:     org.ID,
 					StartDate: dtFrom,
 					EndDate:   dtTo,
 					Source:    source,
@@ -1046,7 +1047,7 @@ func processUniqueIdentity(
 
 				alreadyIn := false
 				for _, en := range enrollments {
-					if en.OrgId == org.ID {
+					if en.OrgID == org.ID {
 						alreadyIn = true
 					}
 				}
@@ -1125,12 +1126,12 @@ func processUniqueIdentity(
 }
 
 func appendEnrollment(
-	enrollments []storage.Enrollment, uuid string, newOrgId uint,
+	enrollments []storage.Enrollment, uuid string, newOrgID uint,
 	source storage.ProfileSource,
 ) []storage.Enrollment {
 	if len(enrollments) == 0 {
 		enrollment := storage.Enrollment{
-			OrgId:     newOrgId,
+			OrgID:     newOrgID,
 			UUID:      uuid,
 			StartDate: storage.DefaultStartDate,
 			EndDate:   storage.DefaultEndDate,
@@ -1145,7 +1146,7 @@ func appendEnrollment(
 		lastIndex := len(enrollments) - 1
 		alreadyIn := false
 		for _, enrollment := range enrollments {
-			if enrollment.OrgId == newOrgId {
+			if enrollment.OrgID == newOrgID {
 				alreadyIn = true
 				break
 			}
@@ -1159,7 +1160,7 @@ func appendEnrollment(
 		enrollments[lastIndex].EndDate = now
 		enrollment := storage.Enrollment{
 			UUID:      uuid,
-			OrgId:     newOrgId,
+			OrgID:     newOrgID,
 			StartDate: now,
 			EndDate:   storage.DefaultEndDate,
 			Source:    source,
@@ -1208,7 +1209,7 @@ func mapNameToOrg(db *gorm.DB, pattern2org map[*regexp.Regexp]storage.Organizati
 		},
 		DoNothing: true,
 	}).Create(&storage.OrgPattern{
-		OrgId:   newOrg.ID,
+		OrgID:   newOrg.ID,
 		Pattern: pattern,
 	})
 	reg := regexp.MustCompile("(?i)" + pattern)
@@ -1252,11 +1253,11 @@ type EnrollmentWithOrg struct {
 	EndDate   time.Time
 }
 
-func OutputGitHubUserToJson(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
+func OutputGitHubUserToJSON(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
 	uniqueIdentities := make([]storage.UniqueIdentity, 0)
 	db.Preload("GitHubUsers").Preload("Country").Find(&uniqueIdentities)
 
-	githubUsersToJson := make([]GitHubUserFromJson, 0)
+	githubUsersToJSON := make([]GitHubUserFromJSON, 0)
 	nUnique := len(uniqueIdentities)
 	i := 0
 	for _, uniqueIdentity := range uniqueIdentities {
@@ -1283,7 +1284,7 @@ func OutputGitHubUserToJson(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
 		for _, user := range githubUsers {
 			for _, login := range user.Logins {
 				for _, email := range user.Emails {
-					var githubUser GitHubUserFromJson
+					var githubUser GitHubUserFromJSON
 
 					githubUser.Login = login.Login
 					githubUser.Email = email.Email
@@ -1299,7 +1300,7 @@ func OutputGitHubUserToJson(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
 						githubUser.Affiliation = getAffStr(enrollments)
 					}
 
-					githubUsersToJson = append(githubUsersToJson, githubUser)
+					githubUsersToJSON = append(githubUsersToJSON, githubUser)
 				}
 			}
 		}
@@ -1309,23 +1310,22 @@ func OutputGitHubUserToJson(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
 	encoder := json.NewEncoder(&bf)
 	encoder.SetIndent("", "\t")
 	encoder.SetEscapeHTML(false)
-	err := encoder.Encode(&githubUsersToJson)
+	err := encoder.Encode(&githubUsersToJSON)
 	if err != nil {
 		log.WithError(err).Errorf("Failed to encode github user json.")
 		return
 	}
 
 	// Output to json file.
-	filename := ctx.GitHubUsersJsonOutputPath
+	filename := ctx.GitHubUsersJSONOutputPath
 	err = ioutil.WriteFile(filename, bf.Bytes(), 0666)
 	if err != nil {
 		log.WithError(err).Errorf("Failed to output github user json.")
 		return
-	} else {
-		log.Infof("Output %s successfully.", filename)
 	}
+	log.Infof("Output %s successfully.", filename)
 
-	if !ctx.S3UploadGitHubUsersJson {
+	if !ctx.S3UploadGitHubUsersJSON {
 		return
 	}
 
@@ -1338,8 +1338,8 @@ func OutputGitHubUserToJson(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
 		Credentials: envCredentials,
 	})
 
-	s3bucket := aws.String(ctx.S3GitHubUsersJsonBucket)
-	s3key := aws.String(ctx.S3GitHubUsersJsonBucketKey)
+	s3bucket := aws.String(ctx.S3GitHubUsersJSONBucket)
+	s3key := aws.String(ctx.S3GitHubUsersJSONBucketKey)
 	background := context.Background()
 
 	_, err = s3Svc.PutObjectWithContext(background, &s3.PutObjectInput{
@@ -1356,7 +1356,7 @@ func OutputGitHubUserToJson(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
 		lib.FatalOnError(err)
 	}
 
-	log.Infof("successfully uploaded file to %s/%s", s3bucket, s3key)
+	log.Infof("successfully uploaded file to %v/%v", s3bucket, s3key)
 }
 
 // getAffStr - generate affiliation information string based on enrollments.

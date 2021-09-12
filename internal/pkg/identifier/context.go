@@ -8,33 +8,33 @@ import (
 )
 
 type Ctx struct {
-	IdDbDialect string // From ID_DB_DIALECT, default "mysql"
-	IdDbHost    string // From ID_DB_HOST, default "localhost"
-	IdDbPort    int    // From ID_DB_PORT, default "3306"
-	IdDbName    string // From ID_DB_NAME, default "sortinghat"
-	IdDbUser    string // From ID_DB_USER, default "root"
-	IdDbPass    string // From ID_DB_PASS, default "password"
-	IdDbSSL     string // From ID_DB_SSL, default "disable"
+	IDDbDialect string // From ID_DB_DIALECT, default "mysql"
+	IDDbHost    string // From ID_DB_HOST, default "localhost"
+	IDDbPort    int    // From ID_DB_PORT, default "3306"
+	IDDbName    string // From ID_DB_NAME, default "sortinghat"
+	IDDbUser    string // From ID_DB_USER, default "root"
+	IDDbPass    string // From ID_DB_PASS, default "password"
+	IDDbSSL     string // From ID_DB_SSL, default "disable"
 
 	SkipBots                 bool // From SKIP_BOTS, default false
 	SkipAutoImportProfile    bool // From SKIP_AUTO_IMPORT_PROFILE, default false.
-	SkipOutputGitHubUserJson bool // From SKIP_OUTPUT_GITHUB_USER_JSON, default false.
+	SkipOutputGitHubUserJSON bool // From SKIP_OUTPUT_GITHUB_USER_JSON, default false.
 
-	GitHubUsersJsonOutputPath string // From ID_GITHUB_USERS_JSON_OUTPUT_PATH
+	GitHubUsersJSONOutputPath string // From ID_GITHUB_USERS_JSON_OUTPUT_PATH
 	CountryCodesFilePath      string // From ID_COUNTRY_CODES_FILE_PATH, default "data/countries.csv"
 	CacheFilePath             string // From ID_CACHE_FILE_PATH, default "data/dump.out"
 	OrganizationsFilePath     string // From ID_ORGANIZATION_CONFIG_YAML, default "data/dump.out"
 
 	GoogleMapAPIKey string // From GOOGLE_MAP_API_KEY
 
-	LarkAPIBaseUrl string // From LARK_API_BASE_URL
-	LarkAppId      string // From LARK_APP_ID
+	LarkAPIBaseURL string // From LARK_API_BASE_URL
+	LarkAppID      string // From LARK_APP_ID
 	LarkAppSecret  string // From LARK_APP_SECRET
 
-	S3UploadGitHubUsersJson    bool   // From S3_UPLOAD_GITHUB_USERS_JSON
-	S3GitHubUsersJsonBucket    string // From S3_GITHUB_USERS_JSON_BUCKET
-	S3GitHubUsersJsonBucketKey string // From S3_GITHUB_USERS_JSON_BUCKET_KEY
-	AwsAccessKeyId             string // From AWS_ACCESS_KEY_ID
+	S3UploadGitHubUsersJSON    bool   // From S3_UPLOAD_GITHUB_USERS_JSON
+	S3GitHubUsersJSONBucket    string // From S3_GITHUB_USERS_JSON_BUCKET
+	S3GitHubUsersJSONBucketKey string // From S3_GITHUB_USERS_JSON_BUCKET_KEY
+	AwsAccessKeyID             string // From AWS_ACCESS_KEY_ID
 	AwsSecretAccessKey         string // From AWS_SECRET_ACCESS_KEY
 	AwsDefaultRegion           string // From AWS_DEFAULT_REGION
 
@@ -45,38 +45,38 @@ func (c *Ctx) Init() error {
 	c.Ctx.Init()
 
 	// Identity database.
-	c.IdDbDialect = "mysql"
+	c.IDDbDialect = "mysql"
 	if os.Getenv("ID_DB_DIALECT") != "" {
-		c.IdDbDialect = os.Getenv("ID_DB_DIALECT")
+		c.IDDbDialect = os.Getenv("ID_DB_DIALECT")
 	}
-	c.IdDbHost = "localhost"
+	c.IDDbHost = "localhost"
 	if os.Getenv("ID_DB_HOST") != "" {
-		c.IdDbHost = os.Getenv("ID_DB_HOST")
+		c.IDDbHost = os.Getenv("ID_DB_HOST")
 	}
-	c.IdDbPort = 3306
+	c.IDDbPort = 3306
 	sDBPort := os.Getenv("ID_DB_PORT")
 	if sDBPort != "" {
 		var err error
-		c.IdDbPort, err = strconv.Atoi(sDBPort)
+		c.IDDbPort, err = strconv.Atoi(sDBPort)
 		if err != nil {
 			return err
 		}
 	}
-	c.IdDbName = "sortinghat"
+	c.IDDbName = "sortinghat"
 	if os.Getenv("ID_DB_NAME") != "" {
-		c.IdDbName = os.Getenv("ID_DB_NAME")
+		c.IDDbName = os.Getenv("ID_DB_NAME")
 	}
-	c.IdDbUser = "root"
+	c.IDDbUser = "root"
 	if os.Getenv("ID_DB_USER") != "" {
-		c.IdDbUser = os.Getenv("ID_DB_USER")
+		c.IDDbUser = os.Getenv("ID_DB_USER")
 	}
-	c.IdDbPass = "password"
+	c.IDDbPass = "password"
 	if os.Getenv("ID_DB_PASS") != "" {
-		c.IdDbPass = os.Getenv("ID_DB_PASS")
+		c.IDDbPass = os.Getenv("ID_DB_PASS")
 	}
-	c.IdDbSSL = "disable"
+	c.IDDbSSL = "disable"
 	if os.Getenv("ID_DB_SSL") != "" {
-		c.IdDbSSL = os.Getenv("ID_DB_SSL")
+		c.IDDbSSL = os.Getenv("ID_DB_SSL")
 	}
 
 	// Country Codes.
@@ -91,9 +91,9 @@ func (c *Ctx) Init() error {
 		c.OrganizationsFilePath = "configs/shared/organizations.yaml"
 	}
 
-	c.GitHubUsersJsonOutputPath = os.Getenv("ID_GITHUB_USERS_JSON_OUTPUT_PATH")
-	if c.GitHubUsersJsonOutputPath == "" {
-		c.GitHubUsersJsonOutputPath = "configs/shared/github_users.json"
+	c.GitHubUsersJSONOutputPath = os.Getenv("ID_GITHUB_USERS_JSON_OUTPUT_PATH")
+	if c.GitHubUsersJSONOutputPath == "" {
+		c.GitHubUsersJSONOutputPath = "configs/shared/github_users.json"
 	}
 
 	// Cache
@@ -113,31 +113,31 @@ func (c *Ctx) Init() error {
 		c.SkipAutoImportProfile = true
 	}
 
-	c.SkipOutputGitHubUserJson = false
+	c.SkipOutputGitHubUserJSON = false
 	if os.Getenv("SKIP_OUTPUT_GITHUB_USER_JSON") != "" {
-		c.SkipOutputGitHubUserJson = true
+		c.SkipOutputGitHubUserJSON = true
 	}
 
 	// Google Maps
 	c.GoogleMapAPIKey = os.Getenv("GOOGLE_MAP_API_KEY")
 
 	// Lark
-	c.LarkAPIBaseUrl = os.Getenv("LARK_API_BASE_URL")
-	if len(c.LarkAPIBaseUrl) == 0 {
-		c.LarkAPIBaseUrl = "https://open.feishu.cn/open-apis"
+	c.LarkAPIBaseURL = os.Getenv("LARK_API_BASE_URL")
+	if len(c.LarkAPIBaseURL) == 0 {
+		c.LarkAPIBaseURL = "https://open.feishu.cn/open-apis"
 	}
-	c.LarkAppId = os.Getenv("LARK_APP_ID")
+	c.LarkAppID = os.Getenv("LARK_APP_ID")
 	c.LarkAppSecret = os.Getenv("LARK_APP_SECRET")
 
 	// S3
-	c.S3UploadGitHubUsersJson = false
+	c.S3UploadGitHubUsersJSON = false
 	if os.Getenv("S3_UPLOAD_GITHUB_USERS_JSON") != "" {
-		c.S3UploadGitHubUsersJson = true
+		c.S3UploadGitHubUsersJSON = true
 	}
 
-	c.S3GitHubUsersJsonBucket = os.Getenv("S3_GITHUB_USERS_JSON_BUCKET")
-	c.S3GitHubUsersJsonBucketKey = os.Getenv("S3_GITHUB_USERS_JSON_BUCKET_KEY")
-	c.AwsAccessKeyId = os.Getenv("AWS_ACCESS_KEY_ID")
+	c.S3GitHubUsersJSONBucket = os.Getenv("S3_GITHUB_USERS_JSON_BUCKET")
+	c.S3GitHubUsersJSONBucketKey = os.Getenv("S3_GITHUB_USERS_JSON_BUCKET_KEY")
+	c.AwsAccessKeyID = os.Getenv("AWS_ACCESS_KEY_ID")
 	c.AwsSecretAccessKey = os.Getenv("AWS_SECRET_ACCESS_KEY")
 	c.AwsDefaultRegion = os.Getenv("AWS_DEFAULT_REGION")
 

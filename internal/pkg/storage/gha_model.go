@@ -11,7 +11,7 @@ type GhaActor struct {
 	ID          uint   `gorm:"primaryKey"`
 	Login       string `gorm:"primaryKey;type:varchar(120)"`
 	Name        string `gorm:"type:varchar(120)"`
-	CountryId   string `gorm:"type:varchar(2)"`
+	CountryID   string `gorm:"type:varchar(2)"`
 	CountryName string `gorm:"type:text"`
 	Sex         string `gorm:"type:varchar(1)"`
 	SexProb     string `gorm:"type:double"`
@@ -28,7 +28,7 @@ func (GhaActor) TableName() string {
 }
 
 type GhaActorName struct {
-	ActorId int    `gorm:"primaryKey"`
+	ActorID int    `gorm:"primaryKey"`
 	Name    string `gorm:"primaryKey"`
 	Origin  int
 }
@@ -38,7 +38,7 @@ func (GhaActorName) TableName() string {
 }
 
 type GhaActorEmail struct {
-	ActorId int    `gorm:"primaryKey"`
+	ActorID int    `gorm:"primaryKey"`
 	Email   string `gorm:"primaryKey"`
 	Origin  int
 }

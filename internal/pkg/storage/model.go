@@ -1,8 +1,9 @@
 package storage
 
 import (
-	"gorm.io/gorm"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type OrganizationType string
@@ -81,7 +82,7 @@ type Organization struct {
 	Fullname  string           `gorm:"type:varchar(255);"`
 	Type      OrganizationType `gorm:"type:varchar(32);default:'company';not null"`
 	Website   string           `gorm:"type:varchar(255);"`
-	isPartner bool
+	IsPartner bool             `gorm:"default: 0"`
 
 	// Invalid - enrollment associated with invalid org will not be displayed and exported,
 	// it can be used to prevent invalid organizations from being added repeatedly.
@@ -101,7 +102,7 @@ type OrgPattern struct {
 	gorm.Model
 
 	Pattern string `gorm:"type:varchar(512);not null;uniqueIndex:uniq_org_pattern"`
-	OrgId   uint   `gorm:"uniqueIndex:uniq_org_pattern"`
+	OrgID   uint   `gorm:"uniqueIndex:uniq_org_pattern"`
 }
 
 func (OrgPattern) TableName() string {
@@ -116,7 +117,7 @@ type OrgDomain struct {
 
 	// Common indicates whether the domain name is a public email domain name, such as `gmail.com`.
 	Common bool
-	OrgId  uint `gorm:"uniqueIndex:uniq_org_org_domain_name"`
+	OrgID  uint `gorm:"uniqueIndex:uniq_org_org_domain_name"`
 }
 
 func (OrgDomain) TableName() string {
@@ -124,7 +125,7 @@ func (OrgDomain) TableName() string {
 }
 
 type Enrollment struct {
-	OrgId     uint      `gorm:"primaryKey;uniqueIndex:uniq_org_enrollment;"`
+	OrgID     uint      `gorm:"primaryKey;uniqueIndex:uniq_org_enrollment;"`
 	UUID      string    `gorm:"primaryKey;uniqueIndex:uniq_org_enrollment;"`
 	StartDate time.Time `gorm:"uniqueIndex:uniq_org_enrollment;"`
 	EndDate   time.Time `gorm:"uniqueIndex:uniq_org_enrollment;"`
@@ -148,7 +149,7 @@ type GitHubUser struct {
 	Bio       *string `gorm:"type:varchar(512);"`
 	Following int     `gorm:"type:int;default:0"`
 	Followers int     `gorm:"type:int;default:0"`
-	AvatarUrl *string `gorm:"type:varchar(255);"`
+	AvatarURL *string `gorm:"type:varchar(255);"`
 	UUID      string  `gorm:"type:varchar(128);"`
 
 	Emails []GitHubUserEmail `gorm:"foreignKey:github_user_id"`
@@ -163,7 +164,7 @@ func (GitHubUser) TableName() string {
 type GitHubUserEmail struct {
 	gorm.Model
 
-	GitHubUserId uint   `gorm:"column:github_user_id;not null;uniqueIndex:uniq_github_user_email"`
+	GitHubUserID uint   `gorm:"column:github_user_id;not null;uniqueIndex:uniq_github_user_email"`
 	Email        string `gorm:"type:varchar(255);not null;uniqueIndex:uniq_github_user_email"`
 }
 
@@ -174,7 +175,7 @@ func (GitHubUserEmail) TableName() string {
 type GitHubUserLogin struct {
 	gorm.Model
 
-	GitHubUserId uint   `gorm:"column:github_user_id;not null;uniqueIndex:uniq_github_user_login"`
+	GitHubUserID uint   `gorm:"column:github_user_id;not null;uniqueIndex:uniq_github_user_login"`
 	Login        string `gorm:"type:varchar(128);not null;uniqueIndex:uniq_github_user_login"`
 }
 
@@ -185,7 +186,7 @@ func (GitHubUserLogin) TableName() string {
 type GitHubUserName struct {
 	gorm.Model
 
-	GitHubUserId uint   `gorm:"column:github_user_id;not null;uniqueIndex:uniq_github_user_name"`
+	GitHubUserID uint   `gorm:"column:github_user_id;not null;uniqueIndex:uniq_github_user_name"`
 	Name         string `gorm:"type:varchar(128);not null;uniqueIndex:uniq_github_user_name"`
 }
 
