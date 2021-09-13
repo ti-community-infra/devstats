@@ -754,12 +754,14 @@ func loadGitHubUsersFromJSON(uri string) []GitHubUserFromJSON {
 
 	var bytesJSON []byte
 	if strings.HasPrefix(uri, "http://") || strings.HasPrefix(uri, "https://") {
+		logrus.Infof("Downloading github_users.json file from remote...")
 		response, err := http.Get(uri)
 		lib.FatalOnError(err)
 		defer func() { _ = response.Body.Close() }()
 		bytesJSON, err = ioutil.ReadAll(response.Body)
 		lib.FatalOnError(err)
 	} else {
+		logrus.Infof("Loading github_users.json file form local...")
 		data, err := ioutil.ReadFile(uri)
 		lib.FatalOnError(err)
 		bytesJSON = data
@@ -1356,7 +1358,7 @@ func OutputGitHubUserToJSON(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
 		lib.FatalOnError(err)
 	}
 
-	log.Infof("successfully uploaded file to %v/%v", s3bucket, s3key)
+	log.Infof("successfully uploaded file to %s/%s", *s3bucket, *s3key)
 }
 
 // getAffStr - generate affiliation information string based on enrollments.
