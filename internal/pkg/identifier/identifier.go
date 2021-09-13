@@ -402,7 +402,7 @@ func AutoImportProfile(
 	loadInitData(log, ctx, db)
 
 	// Get GitHub User profile from json file.
-	githubUsersFromJSON := loadGitHubUsersFromJSON(ctx.AffiliationsJSON)
+	githubUsersFromJSON := loadGitHubUsersFromJSON(ctx.GitHubUsersJSONSourcePath)
 	log.Infof("Found %d GitHub user profile from json file.", len(githubUsersFromJSON))
 
 	// Get employee GitHub logins.

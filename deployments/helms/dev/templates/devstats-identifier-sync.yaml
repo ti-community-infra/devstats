@@ -1,0 +1,180 @@
+{{- $skipIdentifier := .Values.skipIdentifier -}}
+{{ if not $skipIdentifier }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: '{{ .Values.identifierPodName }}'
+  labels:
+    name: devstats
+    type: 'identifier-cron'
+spec:
+  schedule: '{{ .Values.identifierCron }}'
+  successfulJobsHistoryLimit: {{ .Values.identifierCronHistoryLimit }}
+  failedJobsHistoryLimit: {{ .Values.identifierCronFailedHistoryLimit }}
+  startingDeadlineSeconds: {{ .Values.identifierCronStartingDeadlineSeconds }}
+  concurrencyPolicy: {{ .Values.concurrencyPolicy }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: '{{ .Values.identifierPodName }}-all'
+          labels:
+            name: devstats
+            type: identifier
+            proj: all
+        spec:
+          containers:
+          - command:
+            - {{ .Values.identifierCommand }}
+{{ if .Values.identifierCommandArgs }}
+            args:
+{{- with .Values.identifierCommandArgs -}}
+{{ toYaml . | nindent 14 }}
+{{ end }}
+{{ end }}
+{{ if .Values.useIdentifierResourcesLimits }}
+            resources:
+              requests:
+                memory: '{{ .Values.requestsIdentifierMemory }}'
+                cpu: '{{ .Values.requestsIdentifierCPU }}'
+              limits:
+                memory: '{{ .Values.limitsIdentifierMemory }}'
+                cpu: '{{ .Values.limitsIdentifierCPU }}'
+{{ end }}
+            env:
+              - name: GHA2DB_NCPUS
+                value: '{{ .Values.identifierNAffsCPUs }}'
+              - name: GHA2DB_DEBUG
+                value: '{{ .Values.identifierDebug }}'
+              - name: GHA2DB_CMDDEBUG
+                value: '{{ .Values.identifierCmdDebug }}'
+              - name: GHA2DB_GITHUB_DEBUG
+                value: '{{ .Values.identifierGithubDebug }}'
+              - name: GHA2DB_COMPANY_ACQ_YAML
+                value: '{{ .Values.companyAcq }}'
+              - name: GHA2DB_PROJECTS_YAML
+                value: {{ .Values.projectsFile }}
+              # GitHub.
+              - name: GHA2DB_MAX_GHAPI_RETRY
+                value: {{ .Values.identifierMaxGhAPIRetry }}
+              - name: GHA2DB_GITHUB_OAUTH
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.oauthSecret }}
+                    key: GHA2DB_GITHUB_OAUTH.secret
+              # Google Map.
+              - name: GOOGLE_MAP_API_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.googleMapSecret }}
+                    key: GOOGLE_MAP_API_KEY.secret
+              # Lark.
+              - name: LARK_APP_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.larkSecret }}
+                    key: LARK_APP_ID.secret
+              - name: LARK_APP_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.larkSecret }}
+                    key: LARK_APP_SECRET.secret
+              # AWS.
+              - name: AWS_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.awsSecret }}
+                    key: AWS_ACCESS_KEY_ID.secret
+              - name: AWS_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.awsSecret }}
+                    key: AWS_SECRET_ACCESS_KEY.secret
+              - name: AWS_DEFAULT_REGION
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.awsSecret }}
+                    key: AWS_DEFAULT_REGION.secret
+              - name: S3_UPLOAD_GITHUB_USERS_JSON
+                value: {{ .Values.identifierUploadGitHubUsersJSONToS3 }}
+              - name: SKIP_AUTO_IMPORT_PROFILE
+                value: {{ .Values.identifierSkipAutoImportProfile }}
+              - name: SKIP_OUTPUT_GITHUB_USER_JSON
+                value: {{ .Values.identifierSkipOutputGitHubUserJSON }}
+              - name: S3_GITHUB_USERS_JSON_BUCKET
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.awsSecret }}
+                    key: S3_GITHUB_USERS_JSON_BUCKET.secret
+              - name: S3_GITHUB_USERS_JSON_BUCKET_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.awsSecret }}
+                    key: S3_GITHUB_USERS_JSON_BUCKET_KEY.secret
+              # identifier Database.
+              - name: ID_GITHUB_USERS_JSON_SOURCE_PATH
+                value: '{{ .Values.identifierGitHubUsersJSONSourcePath }}'
+              - name: ID_DB_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.identifierSecret }}
+                    key: ID_DB_HOST.secret
+              - name: ID_DB_PORT
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.identifierSecret }}
+                    key: ID_DB_PORT.secret
+              - name: ID_DB_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.identifierSecret }}
+                    key: ID_DB_USER.secret
+              - name: ID_DB_PASS
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.identifierSecret }}
+                    key: ID_DB_PASS.secret
+              - name: ID_DB_NAME
+                value: 'devstats'
+              - name: ID_DB_DIALECT
+                value: 'postgresql'
+              # Devstats Database.
+              - name: PG_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.pgSecret }}
+                    key: PG_HOST.secret
+              - name: PG_PORT
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.pgSecret }}
+                    key: PG_PORT.secret
+              - name: PG_DB
+                value: {{ .Values.identifierPGDB }}
+              - name: PG_PASS
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.pgSecret }}
+                    key: PG_PASS.secret
+              - name: PG_ADMIN_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.pgSecret }}
+                    key: PG_ADMIN_USER.secret
+            image: {{ .Values.identifierImage }}
+            imagePullPolicy: {{ .Values.imagePullPolicy }}
+            name: '{{ .Values.identifierPodName }}-all'
+            volumeMounts:
+            - name: '{{ .Values.volumeMountName }}-all'
+              mountPath: '{{ .Values.volumeMountPath }}'
+          volumes:
+          - name: '{{ .Values.volumeName }}-all'
+            persistentVolumeClaim:
+              claimName: '{{ .Values.pvName }}-all'
+          restartPolicy: {{ .Values.identifierRestartPolicy }}
+          nodeSelector:
+{{- with .Values.identifierNodeSelector -}}
+{{ toYaml . | nindent 12 }}
+{{ end }}
+{{ end }}

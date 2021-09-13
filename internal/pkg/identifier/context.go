@@ -20,10 +20,11 @@ type Ctx struct {
 	SkipAutoImportProfile    bool // From SKIP_AUTO_IMPORT_PROFILE, default false.
 	SkipOutputGitHubUserJSON bool // From SKIP_OUTPUT_GITHUB_USER_JSON, default false.
 
+	GitHubUsersJSONSourcePath string // From ID_GITHUB_USERS_JSON_SOURCE_PATH
 	GitHubUsersJSONOutputPath string // From ID_GITHUB_USERS_JSON_OUTPUT_PATH
 	CountryCodesFilePath      string // From ID_COUNTRY_CODES_FILE_PATH, default "data/countries.csv"
 	CacheFilePath             string // From ID_CACHE_FILE_PATH, default "data/dump.out"
-	OrganizationsFilePath     string // From ID_ORGANIZATION_CONFIG_YAML, default "data/dump.out"
+	OrganizationsFilePath     string // From ID_ORGANIZATION_CONFIG_YAML, default "configs/shared/organizations.yaml"
 
 	GoogleMapAPIKey string // From GOOGLE_MAP_API_KEY
 
@@ -94,6 +95,11 @@ func (c *Ctx) Init() error {
 	c.GitHubUsersJSONOutputPath = os.Getenv("ID_GITHUB_USERS_JSON_OUTPUT_PATH")
 	if c.GitHubUsersJSONOutputPath == "" {
 		c.GitHubUsersJSONOutputPath = "configs/shared/github_users.json"
+	}
+
+	c.GitHubUsersJSONSourcePath = os.Getenv("ID_GITHUB_USERS_JSON_SOURCE_PATH")
+	if c.GitHubUsersJSONSourcePath == "" {
+		c.GitHubUsersJSONSourcePath = "https://media.githubusercontent.com/media/cncf/gitdm/master/src/github_users.json"
 	}
 
 	// Cache
