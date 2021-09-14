@@ -57,7 +57,7 @@ spec:
                 value: {{ .Values.projectsFile }}
               # GitHub.
               - name: GHA2DB_MAX_GHAPI_RETRY
-                value: {{ .Values.identifierMaxGhAPIRetry }}
+                value: '{{ .Values.identifierMaxGhAPIRetry }}'
               - name: GHA2DB_GITHUB_OAUTH
                 valueFrom:
                   secretKeyRef:
@@ -97,7 +97,7 @@ spec:
                     name: {{ .Values.awsSecret }}
                     key: AWS_DEFAULT_REGION.secret
               - name: S3_UPLOAD_GITHUB_USERS_JSON
-                value: {{ .Values.identifierUploadGitHubUsersJSONToS3 }}
+                value: '{{ .Values.identifierUploadGitHubUsersJSONToS3 }}'
               - name: SKIP_AUTO_IMPORT_PROFILE
                 value: {{ .Values.identifierSkipAutoImportProfile }}
               - name: SKIP_OUTPUT_GITHUB_USER_JSON
