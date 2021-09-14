@@ -190,7 +190,7 @@ endif
 	cp -R util_sql/ ${DATA_DIR}/util_sql/ || exit 5
 	cp -R util_sh/ ${DATA_DIR}/util_sh/ || exit 6
 	cp -R docs/ ${DATA_DIR}/docs/ || exit 7
-	mkdir ${DATA_DIR}/jsons/ || exit 8
+	cp -R jsons/ ${DATA_DIR}/jsons/ || exit 8
 	cp -R scripts/ ${DATA_DIR}/scripts/ || exit 9
 	cp devel/*.txt ${DATA_DIR}/ || exit 11
 	cp github_users.json projects.yaml companies.yaml skip_dates.yaml ${DATA_DIR}/ || exit 12
@@ -217,7 +217,7 @@ endif
 	cp -R util_sql/ ${DATA_DIR}/util_sql/ || exit 5
 	cp -R util_sh/ ${DATA_DIR}/util_sh/ || exit 6
 	cp -R docs/ ${DATA_DIR}/docs/ || exit 7
-	mkdir ${DATA_DIR}/jsons/ || exit 8
+	cp -R jsons/ ${DATA_DIR}/jsons/ || exit 8
 	cp -R scripts/ ${DATA_DIR}/scripts/ || exit 9
 	cp devel/*.txt ${DATA_DIR}/ || exit 11
 	cp projects.yaml skip_dates.yaml ${DATA_DIR}/ || exit 12
