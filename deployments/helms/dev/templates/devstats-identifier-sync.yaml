@@ -115,6 +115,12 @@ spec:
               # identifier Database.
               - name: ID_GITHUB_USERS_JSON_SOURCE_PATH
                 value: '{{ .Values.identifierGitHubUsersJSONSourcePath }}'
+              - name: ID_GITHUB_USERS_JSON_OUTPUT_PATH
+                value: '{{ .Values.identifierGitHubUsersJSONOutputPath }}'
+              - name: ID_ORGANIZATION_CONFIG_YAML
+                value: '{{ .Values.identifierOrganizationConfigFile }}'
+              - name: ID_COUNTRY_CODES_FILE_PATH
+                value: '{{ .Values.identifierCountryCodesFilePath }}'
               - name: ID_DB_HOST
                 valueFrom:
                   secretKeyRef:
