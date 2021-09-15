@@ -127,7 +127,7 @@ requestsAffiliationsCPU: '250m'
 requestsAffiliationsMemory: '512Mi'
 
 # Identifier
-identifierImage: 'miniantdev/devstats-dev:0.5.0'
+identifierImage: 'miniantdev/devstats-prod:0.5.0'
 identifierPodName: 'devstats-identifier'
 identifierRestartPolicy: Never
 identifierCommand: './identifier'
