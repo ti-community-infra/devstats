@@ -172,7 +172,7 @@ sqlitedb: cmd/sqlitedb/sqlitedb.go ${GO_LIB_FILES}
 	 ${GO_BUILD} ${GCC_STATIC} -o sqlitedb cmd/sqlitedb/sqlitedb.go
 
 identifier: cmd/identifier/identifier.go ${GO_LIB_FILES}
-	${GO_BUILD} ${GCC_STATIC} -o identifier cmd/identifier/identifier.go
+	${GO_ENV} ${GO_BUILD} ${GCC_STATIC} -o identifier cmd/identifier/identifier.go
 
 # Install
 
