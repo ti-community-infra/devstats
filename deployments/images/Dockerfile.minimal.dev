@@ -10,6 +10,7 @@ WORKDIR /go/src/github.com/ti-community-infra/devstats
 ADD temp/devstatscode.tar .
 ADD temp/grafana-tool-bins.tar .
 ADD temp/devstats-config-cncf.tar .
+ADD temp/devstats-config-shared.tar .
 ADD temp/devstats-config-dev.tar .
 
 RUN make docker_minimal_install

@@ -5,13 +5,19 @@ domainName: 'devstats-dev.tidb.io'
 fullnameOverride: devstats
 imagePullPolicy: Always
 concurrencyPolicy: Forbid
+
+pgSecret: pg-db
 oauthSecret: github-oauth
+identifierSecret: identifier-secrets
+larkSecret: lark-secrets
+googleMapSecret: google-map-secrets
+awsSecret: aws-secrets
 secretType: Opaque
+
 skipTemp: 1
 volumeMountName: data
 volumeMountPath: '/root'
 volumeName: data
-pgSecret: pg-db
 
 # Company configurations.
 affiliations: 'github_users.json'
@@ -33,7 +39,7 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana:0.4.5'
+grafanaImage: 'miniantdev/devstats-grafana:0.5.0'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
 grafanaNReplicas: 1
@@ -50,7 +56,7 @@ limitsGrafanasMemory: '8Gi'
 useGrafanasResourcesLimits: 1
 
 # Provision configurations.
-provisionImage: 'miniantdev/devstats-dev:0.4.5'
+provisionImage: 'miniantdev/devstats-dev:0.5.0'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
@@ -67,7 +73,7 @@ waitForBootstrap: 60
 
 # Cron sync jobs configurations.
 syncCommand: devstats
-syncImage: 'miniantdev/devstats-minimal-dev:0.4.5'
+syncImage: 'miniantdev/devstats-minimal-dev:0.5.0'
 syncPodName: devstats
 syncRestartPolicy: Never
 indexCronsFrom: 0
@@ -79,9 +85,9 @@ requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
 
 # Execute Pod configurations.
-executeImage: 'miniantdev/devstats-minimal-dev:0.4.5'
+executeImage: 'miniantdev/devstats-minimal-dev:0.5.0'
 executePodName: 'devstats-execute'
-executeTargetProject: 'pingcap'
+executeTargetProject: 'tidb'
 executeCommand: 'sleep'
 executeCommandArgs:
 - "60"
@@ -100,7 +106,7 @@ requestsExecuteMemory: '1Gi'
 useExecuteResourcesLimits: 1
 
 # Affiliations Sync.
-affiliationsImage: 'miniantdev/devstats-dev:0.4.5'
+affiliationsImage: 'miniantdev/devstats-dev:0.5.0'
 affiliationsPodName: 'devstats-affiliations'
 affiliationsRestartPolicy: Never
 affiliationsCommand: './shared/affs.sh'
@@ -118,6 +124,39 @@ limitsAffiliationsCPU: '4000m'
 limitsAffiliationsMemory: '32Gi'
 requestsAffiliationsCPU: '250m'
 requestsAffiliationsMemory: '512Mi'
+
+# Identifier
+identifierImage: 'miniantdev/devstats-dev:0.5.0'
+identifierPodName: 'devstats-identifier'
+identifierRestartPolicy: Never
+identifierCommand: './identifier'
+identifierCommandArgs: ''
+identifierPGDB: 'allprj'
+identifierNAffsCPUs: 8
+identifierDebug: ''
+identifierCmdDebug: ''
+identifierGithubDebug: ''
+identifierMaxGhAPIRetry: 3
+
+identifierGitHubUsersJSONSourcePath: https://media.githubusercontent.com/media/cncf/gitdm/master/src/github_users.json
+identifierGitHubUsersJSONOutputPath: './github_users.json'
+identifierOrganizationConfigFile: './organizations.yaml'
+identifierCountryCodesFilePath: './countries.csv'
+identifierUploadGitHubUsersJSONToS3: 1
+identifierSkipAutoImportProfile: ''
+identifierSkipOutputGitHubUserJSON: ''
+identifierNodeSelector:
+
+identifierCron: '0 0 */14 * *'
+identifierCronHistoryLimit: 2
+identifierCronFailedHistoryLimit: 1
+identifierCronStartingDeadlineSeconds: 300
+
+useIdentifierResourcesLimits: 1
+limitsIdentifierCPU: '4000m'
+limitsIdentifierMemory: '32Gi'
+requestsIdentifierCPU: '250m'
+requestsIdentifierMemory: '512Mi'
 
 # Ingresses indexes.
 indexIngressesFrom: 0

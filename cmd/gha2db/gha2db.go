@@ -1372,8 +1372,14 @@ func parseJSON(con *sql.DB, ctx *lib.Ctx, idx, njsons int, jsonStr []byte, dt ti
 	// jsonStr = bytes.Replace(jsonStr, []byte("\x00"), []byte(""), -1)
 	if err != nil {
 		lib.Printf("Error(%v): %v\n", lib.ToGHADate(dt), err)
-		ofn := fmt.Sprintf("jsons/error_%v-%d-%d.json", lib.ToGHADate(dt), idx+1, njsons)
-		lib.FatalOnError(ioutil.WriteFile(ofn, jsonStr, 0644))
+		_, err := os.Stat("./jsons")
+		if err != nil {
+			if os.IsNotExist(err) {
+				lib.FatalOnError(os.Mkdir("./jsons", 0777))
+			}
+		}
+		ofn := fmt.Sprintf("./jsons/error_%v-%d-%d.json", lib.ToGHADate(dt), idx+1, njsons)
+		lib.FatalOnError(os.WriteFile(ofn, jsonStr, 0644))
 		lib.Printf("%v: Cannot unmarshal:\n%s\n%v\n", dt, string(jsonStr), err)
 		fmt.Fprintf(os.Stderr, "%v: Cannot unmarshal:\n%s\n%v\n", dt, string(jsonStr), err)
 		if ctx.AllowBrokenJSON {

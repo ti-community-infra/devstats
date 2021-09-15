@@ -41,18 +41,18 @@ PACKAGES  := $$($(PACKAGE_LIST))
 PACKAGE_DIRECTORIES := $(PACKAGE_LIST) | sed 's|github.com/ti-community-infra/$(PROJECT)/||'
 FILES     := $$(find $$($(PACKAGE_DIRECTORIES)) -name "*.go")
 
-GO_LIB_FILES=internal/pkg/lib/pg_conn.go internal/pkg/lib/error.go internal/pkg/lib/mgetc.go internal/pkg/lib/map.go internal/pkg/lib/threads.go internal/pkg/lib/gha.go internal/pkg/lib/json.go internal/pkg/lib/time.go internal/pkg/lib/context.go internal/pkg/lib/exec.go internal/pkg/lib/structure.go internal/pkg/lib/log.go internal/pkg/lib/hash.go internal/pkg/lib/unicode.go internal/pkg/lib/const.go internal/pkg/lib/string.go internal/pkg/lib/annotations.go internal/pkg/lib/env.go internal/pkg/lib/ghapi.go internal/pkg/lib/io.go internal/pkg/lib/tags.go internal/pkg/lib/yaml.go internal/pkg/lib/es_conn.go internal/pkg/lib/ts_points.go internal/pkg/lib/convert.go
-GO_BIN_FILES=cmd/structure/structure.go cmd/runq/runq.go cmd/gha2db/gha2db.go cmd/calc_metric/calc_metric.go cmd/gha2db_sync/gha2db_sync.go cmd/import_affs/import_affs.go cmd/annotations/annotations.go cmd/tags/tags.go cmd/webhook/webhook.go cmd/devstats/devstats.go cmd/get_repos/get_repos.go cmd/merge_dbs/merge_dbs.go cmd/replacer/replacer.go cmd/vars/vars.go cmd/ghapi2db/ghapi2db.go cmd/columns/columns.go cmd/hide_data/hide_data.go cmd/sqlitedb/sqlitedb.go cmd/website_data/website_data.go cmd/sync_issues/sync_issues.go cmd/gha2es/gha2es.go cmd/api/api.go
+GO_LIB_FILES=internal/pkg/lib/pg_conn.go internal/pkg/lib/error.go internal/pkg/lib/mgetc.go internal/pkg/lib/map.go internal/pkg/lib/threads.go internal/pkg/lib/gha.go internal/pkg/lib/json.go internal/pkg/lib/time.go internal/pkg/lib/context.go internal/pkg/lib/exec.go internal/pkg/lib/structure.go internal/pkg/lib/log.go internal/pkg/lib/hash.go internal/pkg/lib/unicode.go internal/pkg/lib/const.go internal/pkg/lib/string.go internal/pkg/lib/annotations.go internal/pkg/lib/env.go internal/pkg/lib/ghapi.go internal/pkg/lib/io.go internal/pkg/lib/tags.go internal/pkg/lib/yaml.go internal/pkg/lib/es_conn.go internal/pkg/lib/orm_conn.go internal/pkg/lib/ts_points.go internal/pkg/lib/convert.go internal/pkg/identifier/identifier.go internal/pkg/identifier/context.go internal/pkg/storage/model.go internal/pkg/storage/gha_model.go
+GO_BIN_FILES=cmd/structure/structure.go cmd/runq/runq.go cmd/gha2db/gha2db.go cmd/calc_metric/calc_metric.go cmd/gha2db_sync/gha2db_sync.go cmd/import_affs/import_affs.go cmd/annotations/annotations.go cmd/tags/tags.go cmd/webhook/webhook.go cmd/devstats/devstats.go cmd/get_repos/get_repos.go cmd/merge_dbs/merge_dbs.go cmd/replacer/replacer.go cmd/vars/vars.go cmd/ghapi2db/ghapi2db.go cmd/columns/columns.go cmd/hide_data/hide_data.go cmd/sqlitedb/sqlitedb.go cmd/website_data/website_data.go cmd/sync_issues/sync_issues.go cmd/gha2es/gha2es.go cmd/api/api.go cmd/identifier/identifier.go
 GO_DBTEST_FILES=internal/pkg/dbtest/pg_test.go internal/pkg/dbtest/series_test.go
 
 # Binary file.
 
-GO_BIN_CMDS=github.com/ti-community-infra/devstats/cmd/structure github.com/ti-community-infra/devstats/cmd/runq github.com/ti-community-infra/devstats/cmd/gha2db github.com/ti-community-infra/devstats/cmd/calc_metric github.com/ti-community-infra/devstats/cmd/gha2db_sync github.com/ti-community-infra/devstats/cmd/import_affs github.com/ti-community-infra/devstats/cmd/annotations github.com/ti-community-infra/devstats/cmd/tags github.com/ti-community-infra/devstats/cmd/webhook github.com/ti-community-infra/devstats/cmd/devstats github.com/ti-community-infra/devstats/cmd/get_repos github.com/ti-community-infra/devstats/cmd/merge_dbs github.com/ti-community-infra/devstats/cmd/replacer github.com/ti-community-infra/devstats/cmd/vars github.com/ti-community-infra/devstats/cmd/ghapi2db github.com/ti-community-infra/devstats/cmd/columns github.com/ti-community-infra/devstats/cmd/hide_data github.com/ti-community-infra/devstats/cmd/sqlitedb github.com/ti-community-infra/devstats/cmd/website_data github.com/ti-community-infra/devstats/cmd/sync_issues github.com/ti-community-infra/devstats/cmd/gha2es github.com/ti-community-infra/devstats/cmd/api
-GO_DOCKER_FULL_BIN_CMDS=github.com/ti-community-infra/devstats/cmd/structure github.com/ti-community-infra/devstats/cmd/gha2db github.com/ti-community-infra/devstats/cmd/calc_metric github.com/ti-community-infra/devstats/cmd/gha2db_sync github.com/ti-community-infra/devstats/cmd/import_affs github.com/ti-community-infra/devstats/cmd/annotations github.com/ti-community-infra/devstats/cmd/tags github.com/ti-community-infra/devstats/cmd/devstats github.com/ti-community-infra/devstats/cmd/get_repos github.com/ti-community-infra/devstats/cmd/vars github.com/ti-community-infra/devstats/cmd/ghapi2db github.com/ti-community-infra/devstats/cmd/columns github.com/ti-community-infra/devstats/cmd/gha2es github.com/ti-community-infra/devstats/cmd/runq github.com/ti-community-infra/devstats/cmd/replacer github.com/ti-community-infra/devstats/cmd/hide_data github.com/ti-community-infra/devstats/cmd/merge_dbs github.com/ti-community-infra/devstats/cmd/api
+GO_BIN_CMDS=github.com/ti-community-infra/devstats/cmd/structure github.com/ti-community-infra/devstats/cmd/runq github.com/ti-community-infra/devstats/cmd/gha2db github.com/ti-community-infra/devstats/cmd/calc_metric github.com/ti-community-infra/devstats/cmd/gha2db_sync github.com/ti-community-infra/devstats/cmd/import_affs github.com/ti-community-infra/devstats/cmd/annotations github.com/ti-community-infra/devstats/cmd/tags github.com/ti-community-infra/devstats/cmd/webhook github.com/ti-community-infra/devstats/cmd/devstats github.com/ti-community-infra/devstats/cmd/get_repos github.com/ti-community-infra/devstats/cmd/merge_dbs github.com/ti-community-infra/devstats/cmd/replacer github.com/ti-community-infra/devstats/cmd/vars github.com/ti-community-infra/devstats/cmd/ghapi2db github.com/ti-community-infra/devstats/cmd/columns github.com/ti-community-infra/devstats/cmd/hide_data github.com/ti-community-infra/devstats/cmd/sqlitedb github.com/ti-community-infra/devstats/cmd/website_data github.com/ti-community-infra/devstats/cmd/sync_issues github.com/ti-community-infra/devstats/cmd/gha2es github.com/ti-community-infra/devstats/cmd/api github.com/ti-community-infra/devstats/cmd/identifier
+GO_DOCKER_FULL_BIN_CMDS=github.com/ti-community-infra/devstats/cmd/structure github.com/ti-community-infra/devstats/cmd/gha2db github.com/ti-community-infra/devstats/cmd/calc_metric github.com/ti-community-infra/devstats/cmd/gha2db_sync github.com/ti-community-infra/devstats/cmd/import_affs github.com/ti-community-infra/devstats/cmd/annotations github.com/ti-community-infra/devstats/cmd/tags github.com/ti-community-infra/devstats/cmd/devstats github.com/ti-community-infra/devstats/cmd/get_repos github.com/ti-community-infra/devstats/cmd/vars github.com/ti-community-infra/devstats/cmd/ghapi2db github.com/ti-community-infra/devstats/cmd/columns github.com/ti-community-infra/devstats/cmd/gha2es github.com/ti-community-infra/devstats/cmd/runq github.com/ti-community-infra/devstats/cmd/replacer github.com/ti-community-infra/devstats/cmd/hide_data github.com/ti-community-infra/devstats/cmd/merge_dbs github.com/ti-community-infra/devstats/cmd/api github.com/ti-community-infra/devstats/cmd/identifier
 GO_DOCKER_MINIMAL_BIN_CMDS=github.com/ti-community-infra/devstats/cmd/structure github.com/ti-community-infra/devstats/cmd/gha2db github.com/ti-community-infra/devstats/cmd/calc_metric github.com/ti-community-infra/devstats/cmd/gha2db_sync github.com/ti-community-infra/devstats/cmd/annotations github.com/ti-community-infra/devstats/cmd/tags github.com/ti-community-infra/devstats/cmd/devstats github.com/ti-community-infra/devstats/cmd/get_repos github.com/ti-community-infra/devstats/cmd/ghapi2db github.com/ti-community-infra/devstats/cmd/columns github.com/ti-community-infra/devstats/cmd/gha2es github.com/ti-community-infra/devstats/cmd/vars github.com/ti-community-infra/devstats/cmd/runq github.com/ti-community-infra/devstats/cmd/api
 
-BINARIES=structure gha2db calc_metric gha2db_sync import_affs annotations tags webhook devstats get_repos merge_dbs replacer vars ghapi2db columns hide_data website_data sync_issues gha2es runq api sqlitedb
-DOCKER_FULL_BINARIES=structure gha2db calc_metric gha2db_sync import_affs annotations tags devstats get_repos vars ghapi2db columns gha2es api runq replacer hide_data merge_dbs sync_issues
+BINARIES=structure gha2db calc_metric gha2db_sync import_affs annotations tags webhook devstats get_repos merge_dbs replacer vars ghapi2db columns hide_data website_data sync_issues gha2es runq api sqlitedb identifier
+DOCKER_FULL_BINARIES=structure gha2db calc_metric gha2db_sync import_affs annotations tags devstats get_repos vars ghapi2db columns gha2es api runq replacer hide_data merge_dbs sync_issues identifier
 DOCKER_MINIMAL_BINARIES=structure gha2db calc_metric gha2db_sync annotations tags devstats get_repos ghapi2db columns gha2es vars runq api
 
 # Script file.
@@ -171,6 +171,9 @@ website_data: cmd/website_data/website_data.go ${GO_LIB_FILES}
 sqlitedb: cmd/sqlitedb/sqlitedb.go ${GO_LIB_FILES}
 	 ${GO_BUILD} ${GCC_STATIC} -o sqlitedb cmd/sqlitedb/sqlitedb.go
 
+identifier: cmd/identifier/identifier.go ${GO_LIB_FILES}
+	${GO_ENV} ${GO_BUILD} ${GCC_STATIC} -o identifier cmd/identifier/identifier.go
+
 # Install
 
 util_scripts:
@@ -187,6 +190,8 @@ endif
 	cp -R util_sql/ ${DATA_DIR}/util_sql/ || exit 5
 	cp -R util_sh/ ${DATA_DIR}/util_sh/ || exit 6
 	cp -R docs/ ${DATA_DIR}/docs/ || exit 7
+	cp -R jsons/ ${DATA_DIR}/jsons/ || exit 8
+	chmod 777 ${DATA_DIR}/jsons/ || exit 8
 	cp -R scripts/ ${DATA_DIR}/scripts/ || exit 9
 	cp devel/*.txt ${DATA_DIR}/ || exit 11
 	cp github_users.json projects.yaml companies.yaml skip_dates.yaml ${DATA_DIR}/ || exit 12
@@ -213,6 +218,8 @@ endif
 	cp -R util_sql/ ${DATA_DIR}/util_sql/ || exit 5
 	cp -R util_sh/ ${DATA_DIR}/util_sh/ || exit 6
 	cp -R docs/ ${DATA_DIR}/docs/ || exit 7
+	cp -R jsons/ ${DATA_DIR}/jsons/ || exit 8
+	chmod 777 ${DATA_DIR}/jsons/ || exit 8
 	cp -R scripts/ ${DATA_DIR}/scripts/ || exit 9
 	cp devel/*.txt ${DATA_DIR}/ || exit 11
 	cp projects.yaml skip_dates.yaml ${DATA_DIR}/ || exit 12

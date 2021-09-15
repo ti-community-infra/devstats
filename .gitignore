@@ -10,7 +10,6 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
-coverage.txt
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
@@ -19,6 +18,15 @@ coverage.txt
 .idea
 .vscode
 .favorites.json
+
+# Cache
+dump.out
+
+# Output
+configs/shared/github_users.json
+
+# Test data.
+test/data/
 
 # Temporary files generated when compiling the image
 deployments/images/temp/
