@@ -136,7 +136,7 @@ then
   rm -f "$DEVSTATS_SHARED_CONFIG_TAR" 2>/dev/null
 fi
 
-tar cf "$DEVSTATS_SHARED_CONFIG_TAR" grafana jsons countries.csv organizations.yaml
+tar cf "$DEVSTATS_SHARED_CONFIG_TAR" ./*
 
 # Package the devstats config file for dev environment.
 # Notice: This file will override the config files from shared directory and cncf/devstats repository.
