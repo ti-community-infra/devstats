@@ -114,17 +114,17 @@ spec:
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.awsSecret }}
+                  name: {{ $root.Values.awsSecret }}
                   key: AWS_ACCESS_KEY_ID.secret
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.awsSecret }}
+                  name: {{ $root.Values.awsSecret }}
                   key: AWS_SECRET_ACCESS_KEY.secret
             - name: AWS_DEFAULT_REGION
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.awsSecret }}
+                  name: {{ $root.Values.awsSecret }}
                   key: AWS_DEFAULT_REGION.secret
             # PostgreSQL
             - name: PG_HOST
