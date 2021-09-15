@@ -22,6 +22,9 @@ RUN make links
 FROM postgres:13-alpine
 
 RUN apk add git curl xz
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN unzip awscliv2.zip
+RUN ./aws/install
 
 COPY --from=builder /etc/gha2db /etc/gha2db
 COPY --from=builder /go/src/github.com/ti-community-infra/devstats /go/src/devstats

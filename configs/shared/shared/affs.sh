@@ -60,9 +60,6 @@ export GHA2DB_GHAPIFORCELANGS=1
 
 if [ ! -z "$GET_AFFS_FILES" ]
 then
-  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-  unzip awscliv2.zip
-  ./aws/install
   if [ ! -z "$GHA2DB_AFFILIATIONS_JSON" ]
   then
     aws s3 cp "$AFFILIATIONS_SOURCE_URL" "$GHA2DB_AFFILIATIONS_JSON" || exit 7
