@@ -4,125 +4,125 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ti-community-infra/devstats/internal/pkg/storage"
+	"github.com/ti-community-infra/devstats/internal/pkg/storage/model"
 )
 
 func TestAppendEnrollment(t *testing.T) {
 	var testcases = []struct {
 		name        string
-		enrollments []storage.Enrollment
+		enrollments []model.Enrollment
 		uuid        string
 		orgID       uint
-		source      storage.ProfileSource
+		source      model.ProfileSource
 
-		expectEnrollments []storage.Enrollment
+		expectEnrollments []model.Enrollment
 	}{
 		{
 			name:        "the original enrollments slice is empty",
-			enrollments: []storage.Enrollment{},
+			enrollments: []model.Enrollment{},
 			uuid:        "uuid",
 			orgID:       1,
-			source:      storage.GitHubProfileSource,
+			source:      model.GitHubProfileSource,
 
-			expectEnrollments: []storage.Enrollment{
+			expectEnrollments: []model.Enrollment{
 				{
 					UUID:      "uuid",
 					OrgID:     1,
-					StartDate: storage.DefaultStartDate,
-					EndDate:   storage.DefaultEndDate,
-					Source:    storage.GitHubProfileSource,
+					StartDate: model.DefaultStartDate,
+					EndDate:   model.DefaultEndDate,
+					Source:    model.GitHubProfileSource,
 				},
 			},
 		},
 		{
 			name: "the original enrollments slice is not empty",
-			enrollments: []storage.Enrollment{
+			enrollments: []model.Enrollment{
 				{
 					UUID:      "uuid",
 					OrgID:     1,
-					StartDate: storage.DefaultStartDate,
-					EndDate:   storage.DefaultEndDate,
-					Source:    storage.GitHubProfileSource,
+					StartDate: model.DefaultStartDate,
+					EndDate:   model.DefaultEndDate,
+					Source:    model.GitHubProfileSource,
 				},
 			},
 			uuid:   "uuid",
 			orgID:  2,
-			source: storage.GitHubProfileSource,
+			source: model.GitHubProfileSource,
 
-			expectEnrollments: []storage.Enrollment{
+			expectEnrollments: []model.Enrollment{
 				{
 					UUID:      "uuid",
 					OrgID:     1,
-					StartDate: storage.DefaultStartDate,
+					StartDate: model.DefaultStartDate,
 					EndDate:   time.Now(),
-					Source:    storage.GitHubProfileSource,
+					Source:    model.GitHubProfileSource,
 				},
 				{
 					UUID:      "uuid",
 					OrgID:     2,
 					StartDate: time.Now(),
-					EndDate:   storage.DefaultEndDate,
-					Source:    storage.GitHubProfileSource,
+					EndDate:   model.DefaultEndDate,
+					Source:    model.GitHubProfileSource,
 				},
 			},
 		},
 		{
 			name: "the original enrollments slice is not empty",
-			enrollments: []storage.Enrollment{
+			enrollments: []model.Enrollment{
 				{
 					UUID:      "uuid",
 					OrgID:     1,
-					StartDate: storage.DefaultStartDate,
+					StartDate: model.DefaultStartDate,
 					EndDate:   time.Date(2018, 9, 1, 0, 0, 0, 0, time.UTC),
-					Source:    storage.GitHubProfileSource,
+					Source:    model.GitHubProfileSource,
 				},
 				{
 					UUID:      "uuid",
 					OrgID:     2,
 					StartDate: time.Date(2019, 9, 7, 0, 0, 0, 0, time.UTC),
-					EndDate:   storage.DefaultEndDate,
-					Source:    storage.GitHubProfileSource,
+					EndDate:   model.DefaultEndDate,
+					Source:    model.GitHubProfileSource,
 				},
 				{
 					UUID:      "uuid",
 					OrgID:     3,
 					StartDate: time.Date(2018, 9, 1, 0, 0, 0, 0, time.UTC),
 					EndDate:   time.Date(2019, 9, 7, 0, 0, 0, 0, time.UTC),
-					Source:    storage.GitHubProfileSource,
+					Source:    model.GitHubProfileSource,
 				},
 			},
 			uuid:   "uuid",
 			orgID:  4,
-			source: storage.GitHubProfileSource,
+			source: model.GitHubProfileSource,
 
-			expectEnrollments: []storage.Enrollment{
+			expectEnrollments: []model.Enrollment{
 				{
 					UUID:      "uuid",
 					OrgID:     1,
-					StartDate: storage.DefaultStartDate,
+					StartDate: model.DefaultStartDate,
 					EndDate:   time.Date(2018, 9, 1, 0, 0, 0, 0, time.UTC),
-					Source:    storage.GitHubProfileSource,
+					Source:    model.GitHubProfileSource,
 				},
 				{
 					UUID:      "uuid",
 					OrgID:     3,
 					StartDate: time.Date(2018, 9, 1, 0, 0, 0, 0, time.UTC),
 					EndDate:   time.Date(2019, 9, 7, 0, 0, 0, 0, time.UTC),
-					Source:    storage.GitHubProfileSource,
+					Source:    model.GitHubProfileSource,
 				},
 				{
 					UUID:      "uuid",
 					OrgID:     2,
 					StartDate: time.Date(2019, 9, 7, 0, 0, 0, 0, time.UTC),
 					EndDate:   time.Now(),
-					Source:    storage.GitHubProfileSource,
+					Source:    model.GitHubProfileSource,
 				},
 				{
 					UUID:      "uuid",
 					OrgID:     4,
 					StartDate: time.Now(),
-					EndDate:   storage.DefaultEndDate,
-					Source:    storage.GitHubProfileSource,
+					EndDate:   model.DefaultEndDate,
+					Source:    model.GitHubProfileSource,
 				},
 			},
 		},
