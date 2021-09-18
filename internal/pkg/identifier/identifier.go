@@ -9,10 +9,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"regexp"
 	"sort"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -24,12 +22,11 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/chyroc/lark"
-	"github.com/google/go-github/github"
 	"github.com/google/uuid"
 	"github.com/patrickmn/go-cache"
 	"github.com/sirupsen/logrus"
 	"github.com/ti-community-infra/devstats/internal/pkg/lib"
-	"github.com/ti-community-infra/devstats/internal/pkg/storage"
+	"github.com/ti-community-infra/devstats/internal/pkg/storage/model"
 	"googlemaps.github.io/maps"
 	"gopkg.in/yaml.v2"
 	"gorm.io/gorm"
@@ -61,95 +58,12 @@ type OrgConfig struct {
 }
 
 type OrgMapping struct {
-	Name     string                   `yaml:"name"`
-	Fullname string                   `yaml:"fullname"`
-	Type     storage.OrganizationType `yaml:"type"`
-	Website  string                   `yaml:"website"`
-	Patterns []string                 `yaml:"patterns"`
-	Domains  []storage.OrgDomain      `yaml:"domains"`
-}
-
-/*  GitHub Client  */
-
-type GitHubClient struct {
-	ctx         *Ctx
-	gcs         []*github.Client
-	ghCtx       context.Context
-	mtx         sync.Mutex
-	log         *logrus.Entry
-	memCache    *cache.Cache
-	clientIndex int
-	maxRetry    int
-}
-
-type GitHubGetUserByIDResult struct {
-	User github.User
-	Err  string
-}
-
-func (c *GitHubClient) Init(ctx *Ctx, log *logrus.Entry, cache *cache.Cache) error {
-	ghCtx, githubClients := lib.GHClient(&ctx.Ctx)
-	c.gcs = githubClients
-	c.mtx = sync.Mutex{}
-	c.ctx = ctx
-	c.ghCtx = ghCtx
-	c.clientIndex = -1
-	c.memCache = cache
-	c.log = log
-	c.maxRetry = ctx.MaxGHAPIRetry
-	return nil
-}
-
-func (c *GitHubClient) GetUserByID(id int64) (*github.User, *github.Response, error) {
-	// Try to get results from cache.
-	cacheKey := "github-get-user-result-" + strconv.Itoa(int(id))
-	resultCached, ok := c.memCache.Get(cacheKey)
-	if ok {
-		result := resultCached.(GitHubGetUserByIDResult)
-		if len(result.Err) == 0 {
-			// Notice: The result obtained by caching will not contain the response.
-			return &result.User, nil, nil
-		}
-		return nil, nil, errors.New(result.Err)
-	}
-
-	// Support failure retry.
-	for try := 1; try <= c.maxRetry; try++ {
-		hint, _, remain, waitPeriod := lib.GetRateLimits(c.ghCtx, &c.ctx.Ctx, c.gcs, true)
-		if remain[hint] <= c.ctx.MinGHAPIPoints {
-			if waitPeriod[hint].Seconds() <= float64(c.ctx.MaxGHAPIWaitSeconds) {
-				time.Sleep(time.Duration(1) * time.Second)
-				time.Sleep(waitPeriod[hint])
-				continue
-			} else {
-				c.log.Fatalf("API limit reached while getting issue data, aborting, don't want to wait %v", waitPeriod[hint])
-				os.Exit(1)
-			}
-		}
-		client := c.gcs[hint]
-		user, res, err := client.Users.GetByID(c.ghCtx, id)
-
-		if err != nil {
-			c.log.Errorf("Failed to get user by id %d, retrying %d/%d.", id, try, c.maxRetry)
-			continue
-		} else {
-			resultWithoutError := GitHubGetUserByIDResult{
-				User: *user,
-				Err:  "",
-			}
-			c.memCache.Set(cacheKey, resultWithoutError, cache.DefaultExpiration)
-			return user, res, nil
-		}
-	}
-
-	// Cache the error result.
-	err := fmt.Errorf("failed to get user by id %d, it still fails after %d retries", id, c.maxRetry)
-	resultWithError := GitHubGetUserByIDResult{
-		Err: err.Error(),
-	}
-	c.memCache.Set(cacheKey, resultWithError, cache.DefaultExpiration)
-
-	return nil, nil, err
+	Name     string                 `yaml:"name"`
+	Fullname string                 `yaml:"fullname"`
+	Type     model.OrganizationType `yaml:"type"`
+	Website  string                 `yaml:"website"`
+	Patterns []string               `yaml:"patterns"`
+	Domains  []model.OrgDomain      `yaml:"domains"`
 }
 
 /*  Location Client  */
@@ -396,7 +310,7 @@ func AutoImportProfile(
 	gc *GitHubClient, locationClient *LocationClient, employeeManager *EmployeeManager, memCache *cache.Cache,
 ) {
 	// Ensure the existence of database structure and basic data.
-	ensureStructure(log, db)
+	EnsureStructure(log, db)
 
 	// Import the init data from file to database.
 	loadInitData(log, ctx, db)
@@ -416,10 +330,10 @@ func AutoImportProfile(
 	startTime := time.Now()
 	log.Infof("Establishing the mapping from pattern to org...")
 
-	pattern2org := make(map[*regexp.Regexp]storage.Organization)
-	domain2org := make(map[string]storage.Organization)
+	pattern2org := make(map[*regexp.Regexp]model.Organization)
+	domain2org := make(map[string]model.Organization)
 
-	var organizations []storage.Organization
+	var organizations []model.Organization
 	db.Preload("Patterns").Preload("Domains").Where("invalid = ?", false).Find(&organizations)
 
 	for _, organization := range organizations {
@@ -442,12 +356,12 @@ func AutoImportProfile(
 	log.Infof("Established the mapping from pattern to org, cost time: %v.", endTime.Sub(startTime))
 
 	// Get an existing unified identity.
-	var uniqueIdentities []storage.UniqueIdentity
+	var uniqueIdentities []model.UniqueIdentity
 	db.Preload("Country").Preload("Organizations").Preload("Projects").
 		Preload("GitHubUsers").Find(&uniqueIdentities)
 
 	// Import GitHub account from Devstats database.
-	var actors []storage.GhaActor
+	var actors []model.GhaActor
 	err = dataSource.Preload("Names").Preload("Emails").
 		Where("gha_actors.id in (select distinct actor_id from gha_events)").Find(&actors).Error
 	lib.FatalOnError(err)
@@ -565,21 +479,25 @@ func AutoImportProfile(
 	log.Infof("Imported %d GitHub users, cost: %v.", nGitHubIds, endTime.Sub(startTime))
 }
 
-// ensureStructure is used to ensure the table structure existed in the database.
-func ensureStructure(log *logrus.Entry, db *gorm.DB) {
+// EnsureStructure is used to ensure the table structure existed in the database.
+func EnsureStructure(log *logrus.Entry, db *gorm.DB) {
 	// Create data tables.
 	err := db.AutoMigrate(
-		&storage.Project{},
-		&storage.Country{},
-		&storage.UniqueIdentity{},
-		&storage.Organization{},
-		&storage.OrgDomain{},
-		&storage.OrgPattern{},
-		&storage.Enrollment{},
-		&storage.GitHubUser{},
-		&storage.GitHubUserEmail{},
-		&storage.GitHubUserLogin{},
-		&storage.GitHubUserName{},
+		&model.Project{},
+		&model.Team{},
+		&model.TeamMember{},
+		&model.Repository{},
+		&model.TeamMemberChangeLog{},
+		&model.Country{},
+		&model.UniqueIdentity{},
+		&model.Organization{},
+		&model.OrgDomain{},
+		&model.OrgPattern{},
+		&model.Enrollment{},
+		&model.GitHubUser{},
+		&model.GitHubUserEmail{},
+		&model.GitHubUserLogin{},
+		&model.GitHubUserName{},
 	)
 	if err != nil {
 		log.WithError(err).Error("Failed to migrate.")
@@ -587,9 +505,16 @@ func ensureStructure(log *logrus.Entry, db *gorm.DB) {
 		return
 	}
 
-	err = db.SetupJoinTable(&storage.UniqueIdentity{}, "Organizations", &storage.Enrollment{})
+	err = db.SetupJoinTable(&model.UniqueIdentity{}, "Organizations", &model.Enrollment{})
 	if err != nil {
-		log.WithError(err).Errorln("Failed to setup join table.")
+		log.WithError(err).Errorln("Failed to setup join table: enrollments.")
+		lib.FatalOnError(err)
+		return
+	}
+
+	err = db.SetupJoinTable(&model.Team{}, "Members", &model.TeamMember{})
+	if err != nil {
+		log.WithError(err).Errorln("Failed to setup join table: team_members.")
 		lib.FatalOnError(err)
 		return
 	}
@@ -646,17 +571,17 @@ func loadInitData(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
 		i++
 
 		// Find or create organization.
-		var org storage.Organization
+		var org model.Organization
 		org.Name = mapping.Name
 		org.Fullname = mapping.Fullname
 		org.Website = mapping.Website
 		org.Type = mapping.Type
 		if isEducationOrgName(mapping.Name) {
-			org.Type = storage.OrgTypeEducation
+			org.Type = model.OrgTypeEducation
 		} else if mapping.Name == "Individual" {
-			org.Type = storage.OrgTypeIndividual
+			org.Type = model.OrgTypeIndividual
 		} else if strings.HasPrefix(mapping.Name, "@") {
-			org.Type = storage.OrgTypeOpenSource
+			org.Type = model.OrgTypeOpenSource
 		}
 		err := db.Preload("Patterns").Preload("Domains").
 			Where("name = ?", org.Name, false).
@@ -671,7 +596,7 @@ func loadInitData(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
 			if len(pattern) == 0 {
 				continue
 			}
-			var orgPattern storage.OrgPattern
+			var orgPattern model.OrgPattern
 			orgPattern.OrgID = org.ID
 			orgPattern.Pattern = pattern
 			db.Clauses(clause.OnConflict{
@@ -704,7 +629,7 @@ func loadInitData(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
 }
 
 // loadCountryCodesFromFile - get country code from csv file.
-func loadCountryCodesFromFile(fileName string) ([]storage.Country, error) {
+func loadCountryCodesFromFile(fileName string) ([]model.Country, error) {
 	bytesFile, err := ioutil.ReadFile(fileName)
 	r := csv.NewReader(strings.NewReader(string(bytesFile)))
 	rows, _ := r.ReadAll()
@@ -712,13 +637,13 @@ func loadCountryCodesFromFile(fileName string) ([]storage.Country, error) {
 		return nil, fmt.Errorf("failed to open %s", fileName)
 	}
 
-	var countries []storage.Country
+	var countries []model.Country
 	for _, row := range rows {
 		if len(row) != 3 {
 			return nil, fmt.Errorf("missing information in country code file %s", fileName)
 		}
 
-		country := storage.Country{
+		country := model.Country{
 			Name:   row[0],
 			Code:   row[1],
 			Alpha3: row[2],
@@ -780,7 +705,7 @@ func processUniqueIdentity(
 	ch chan bool, thMtx *sync.Mutex, db *gorm.DB, log *logrus.Entry,
 	gc *GitHubClient, locationClient *LocationClient, employeeManager *EmployeeManager,
 	githubID uint, loginSet lib.StringSet, githubID2names, githubID2emails map[uint]lib.StringSet,
-	pattern2org map[*regexp.Regexp]storage.Organization, domain2org map[string]storage.Organization,
+	pattern2org map[*regexp.Regexp]model.Organization, domain2org map[string]model.Organization,
 	githubLogin2JsonUser map[string]GitHubUserFromJSON,
 ) {
 	if len(loginSet) == 0 {
@@ -790,9 +715,9 @@ func processUniqueIdentity(
 
 	// Found GitHub Logins.
 	var githubLogin string
-	githubUserLogins := make([]storage.GitHubUserLogin, 0)
+	githubUserLogins := make([]model.GitHubUserLogin, 0)
 	for l := range loginSet {
-		githubUserLogins = append(githubUserLogins, storage.GitHubUserLogin{
+		githubUserLogins = append(githubUserLogins, model.GitHubUserLogin{
 			GitHubUserID: githubID,
 			Login:        l,
 		})
@@ -802,9 +727,9 @@ func processUniqueIdentity(
 	// Found GitHub Names.
 	var githubName string
 	nameSet := githubID2names[githubID]
-	githubUserNames := make([]storage.GitHubUserName, 0)
+	githubUserNames := make([]model.GitHubUserName, 0)
 	for n := range nameSet {
-		githubUserNames = append(githubUserNames, storage.GitHubUserName{
+		githubUserNames = append(githubUserNames, model.GitHubUserName{
 			GitHubUserID: githubID,
 			Name:         n,
 		})
@@ -816,9 +741,9 @@ func processUniqueIdentity(
 	// Found GitHub Emails.
 	var githubEmail string
 	emailSet := githubID2emails[githubID]
-	githubUserEmails := make([]storage.GitHubUserEmail, 0)
+	githubUserEmails := make([]model.GitHubUserEmail, 0)
 	for e := range emailSet {
-		githubUserEmails = append(githubUserEmails, storage.GitHubUserEmail{
+		githubUserEmails = append(githubUserEmails, model.GitHubUserEmail{
 			GitHubUserID: githubID,
 			Email:        e,
 		})
@@ -836,7 +761,7 @@ func processUniqueIdentity(
 	}
 
 	// Fetch existed GitHub profile from database.
-	var githubUser storage.GitHubUser
+	var githubUser model.GitHubUser
 	githubUser.ID = githubID
 	db.Find(&githubUser)
 
@@ -845,7 +770,7 @@ func processUniqueIdentity(
 		githubLogin = githubProfile.GetLogin()
 		if _, ok := loginSet[githubLogin]; !ok {
 			loginSet[githubLogin] = struct{}{}
-			githubUserLogins = append(githubUserLogins, storage.GitHubUserLogin{
+			githubUserLogins = append(githubUserLogins, model.GitHubUserLogin{
 				GitHubUserID: githubID,
 				Login:        githubLogin,
 			})
@@ -855,7 +780,7 @@ func processUniqueIdentity(
 		githubName = githubProfile.GetName()
 		if _, ok := nameSet[githubName]; !ok {
 			nameSet[githubName] = struct{}{}
-			githubUserNames = append(githubUserNames, storage.GitHubUserName{
+			githubUserNames = append(githubUserNames, model.GitHubUserName{
 				GitHubUserID: githubID,
 				Name:         githubName,
 			})
@@ -868,7 +793,7 @@ func processUniqueIdentity(
 		}
 		if _, ok := emailSet[githubEmail]; !ok {
 			emailSet[githubEmail] = struct{}{}
-			githubUserEmails = append(githubUserEmails, storage.GitHubUserEmail{
+			githubUserEmails = append(githubUserEmails, model.GitHubUserEmail{
 				GitHubUserID: githubID,
 				Email:        githubEmail,
 			})
@@ -876,7 +801,7 @@ func processUniqueIdentity(
 	}
 
 	// Handle UUID, find or create unique identity.
-	var uniqueIdentity storage.UniqueIdentity
+	var uniqueIdentity model.UniqueIdentity
 	if len(githubUser.UUID) == 0 {
 		newUUID := uuid.NewString()
 		githubUser.UUID = newUUID
@@ -958,15 +883,15 @@ func processUniqueIdentity(
 	/*  Handle Unique Identity Profile  */
 
 	// Handle Name (Only support manual and GitHub profile).
-	if uniqueIdentity.CountrySource != storage.ManualSource && len(githubName) != 0 {
+	if uniqueIdentity.CountrySource != model.ManualSource && len(githubName) != 0 {
 		uniqueIdentity.Name = githubName
-		uniqueIdentity.NameSource = storage.GitHubProfileSource
+		uniqueIdentity.NameSource = model.GitHubProfileSource
 	}
 
 	// Handle Email (Only support manual and GitHub profile).
-	if uniqueIdentity.EmailSource != storage.ManualSource && len(githubEmail) != 0 {
+	if uniqueIdentity.EmailSource != model.ManualSource && len(githubEmail) != 0 {
 		uniqueIdentity.Email = githubEmail
-		uniqueIdentity.EmailSource = storage.GitHubProfileSource
+		uniqueIdentity.EmailSource = model.GitHubProfileSource
 	}
 
 	// Handle Location (Only support manual and GitHub profile).
@@ -976,13 +901,13 @@ func processUniqueIdentity(
 			log.WithError(err).Errorf("Failed to format the location: %s.", githubLocation)
 		}
 
-		if uniqueIdentity.LocationSource != storage.ManualSource && len(formattedGitHubLocation) != 0 {
+		if uniqueIdentity.LocationSource != model.ManualSource && len(formattedGitHubLocation) != 0 {
 			uniqueIdentity.Location = formattedGitHubLocation
-			uniqueIdentity.LocationSource = storage.GitHubProfileSource
+			uniqueIdentity.LocationSource = model.GitHubProfileSource
 		}
-		if uniqueIdentity.CountrySource != storage.ManualSource && len(countryCode) != 0 {
+		if uniqueIdentity.CountrySource != model.ManualSource && len(countryCode) != 0 {
 			uniqueIdentity.CountryCode = &countryCode
-			uniqueIdentity.CountrySource = storage.GitHubProfileSource
+			uniqueIdentity.CountrySource = model.GitHubProfileSource
 		}
 	}
 
@@ -990,7 +915,7 @@ func processUniqueIdentity(
 	// TODO: Handle Is Bot.
 
 	// Handle Company.
-	enrollments := make([]storage.Enrollment, 0)
+	enrollments := make([]model.Enrollment, 0)
 	db.Where("uuid = ?", uniqueIdentity.UUID).Find(&enrollments)
 
 	// First, add the affiliation information imported from json to enrollments, because this usually contains historical records.
@@ -1003,7 +928,7 @@ func processUniqueIdentity(
 
 		if !(isInvalidAffs) {
 			affsAry := strings.Split(affs, ", ")
-			prevDate := storage.DefaultStartDate
+			prevDate := model.DefaultStartDate
 
 			for _, aff := range affsAry {
 				var dtFrom, dtTo time.Time
@@ -1017,7 +942,7 @@ func processUniqueIdentity(
 				} else {
 					// "company" form
 					dtFrom = prevDate
-					dtTo = storage.DefaultEndDate
+					dtTo = model.DefaultEndDate
 				}
 
 				if company == "" {
@@ -1028,18 +953,18 @@ func processUniqueIdentity(
 				org := mapNameToOrg(db, pattern2org, company)
 				thMtx.Unlock()
 
-				source := storage.GitHubJSONSource
+				source := model.GitHubJSONSource
 				if jsonSource == "user_manual" || jsonSource == "user" {
-					source = storage.UserManualSource
+					source = model.UserManualSource
 				} else if jsonSource == "domain" {
-					source = storage.EmailDomainSource
+					source = model.EmailDomainSource
 				}
 
 				if org == nil {
 					continue
 				}
 
-				enrollment := storage.Enrollment{
+				enrollment := model.Enrollment{
 					UUID:      uniqueIdentity.UUID,
 					OrgID:     org.ID,
 					StartDate: dtFrom,
@@ -1071,7 +996,7 @@ func processUniqueIdentity(
 			}
 			for domain, org := range domain2org {
 				if strings.HasSuffix(githubEmail, "@"+domain) {
-					enrollments = appendEnrollment(enrollments, uniqueIdentity.UUID, org.ID, storage.EmailDomainSource)
+					enrollments = appendEnrollment(enrollments, uniqueIdentity.UUID, org.ID, model.EmailDomainSource)
 				}
 			}
 		}
@@ -1085,7 +1010,7 @@ func processUniqueIdentity(
 		if githubProfileOrg.Name == "ING" {
 			log.Warnf("wrong org: %s %d %s", uniqueIdentity.UUID, githubProfileOrg.ID, githubCompany)
 		}
-		enrollments = appendEnrollment(enrollments, uniqueIdentity.UUID, githubProfileOrg.ID, storage.GitHubProfileSource)
+		enrollments = appendEnrollment(enrollments, uniqueIdentity.UUID, githubProfileOrg.ID, model.GitHubProfileSource)
 	}
 
 	// Get organization information through Lark contact.
@@ -1102,7 +1027,7 @@ func processUniqueIdentity(
 		larkContactOrg := mapNameToOrg(db, pattern2org, LarkCompany)
 		thMtx.Unlock()
 		if larkContactOrg != nil {
-			enrollments = appendEnrollment(enrollments, uniqueIdentity.UUID, larkContactOrg.ID, storage.LarkContactSource)
+			enrollments = appendEnrollment(enrollments, uniqueIdentity.UUID, larkContactOrg.ID, model.LarkContactSource)
 		}
 	}
 
@@ -1128,15 +1053,15 @@ func processUniqueIdentity(
 }
 
 func appendEnrollment(
-	enrollments []storage.Enrollment, uuid string, newOrgID uint,
-	source storage.ProfileSource,
-) []storage.Enrollment {
+	enrollments []model.Enrollment, uuid string, newOrgID uint,
+	source model.ProfileSource,
+) []model.Enrollment {
 	if len(enrollments) == 0 {
-		enrollment := storage.Enrollment{
+		enrollment := model.Enrollment{
 			OrgID:     newOrgID,
 			UUID:      uuid,
-			StartDate: storage.DefaultStartDate,
-			EndDate:   storage.DefaultEndDate,
+			StartDate: model.DefaultStartDate,
+			EndDate:   model.DefaultEndDate,
 			Source:    source,
 		}
 		enrollments = append(enrollments, enrollment)
@@ -1160,11 +1085,11 @@ func appendEnrollment(
 
 		now := time.Now()
 		enrollments[lastIndex].EndDate = now
-		enrollment := storage.Enrollment{
+		enrollment := model.Enrollment{
 			UUID:      uuid,
 			OrgID:     newOrgID,
 			StartDate: now,
-			EndDate:   storage.DefaultEndDate,
+			EndDate:   model.DefaultEndDate,
 			Source:    source,
 		}
 		enrollments = append(enrollments, enrollment)
@@ -1173,7 +1098,7 @@ func appendEnrollment(
 	return enrollments
 }
 
-func mapNameToOrg(db *gorm.DB, pattern2org map[*regexp.Regexp]storage.Organization, orgName string) *storage.Organization {
+func mapNameToOrg(db *gorm.DB, pattern2org map[*regexp.Regexp]model.Organization, orgName string) *model.Organization {
 	orgName = strings.TrimSpace(orgName)
 
 	// orgName requires at least two characters.
@@ -1188,11 +1113,11 @@ func mapNameToOrg(db *gorm.DB, pattern2org map[*regexp.Regexp]storage.Organizati
 	}
 
 	// If not match, try to create a new organization.
-	orgType := storage.OrgTypeCompany
+	orgType := model.OrgTypeCompany
 	if isEducationOrgName(orgName) {
-		orgType = storage.OrgTypeEducation
+		orgType = model.OrgTypeEducation
 	}
-	newOrg := storage.Organization{
+	newOrg := model.Organization{
 		Name: orgName,
 		Type: orgType,
 	}
@@ -1210,7 +1135,7 @@ func mapNameToOrg(db *gorm.DB, pattern2org map[*regexp.Regexp]storage.Organizati
 			{Name: "pattern"},
 		},
 		DoNothing: true,
-	}).Create(&storage.OrgPattern{
+	}).Create(&model.OrgPattern{
 		OrgID:   newOrg.ID,
 		Pattern: pattern,
 	})
@@ -1256,7 +1181,7 @@ type EnrollmentWithOrg struct {
 }
 
 func OutputGitHubUserToJSON(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
-	uniqueIdentities := make([]storage.UniqueIdentity, 0)
+	uniqueIdentities := make([]model.UniqueIdentity, 0)
 	db.Preload("GitHubUsers").Preload("Country").Find(&uniqueIdentities)
 
 	githubUsersToJSON := make([]GitHubUserFromJSON, 0)
@@ -1279,7 +1204,7 @@ func OutputGitHubUserToJSON(log *logrus.Entry, ctx *Ctx, db *gorm.DB) {
 			u, false, false,
 		).Scan(&enrollments)
 
-		githubUsers := make([]storage.GitHubUser, 0)
+		githubUsers := make([]model.GitHubUser, 0)
 		db.Preload("Emails").Preload("Logins").Preload("Names").
 			Where("uuid = ?", u).Find(&githubUsers)
 

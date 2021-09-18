@@ -41,7 +41,7 @@ func main() {
 	gob.Register(github.Response{})
 	gob.Register(github.User{})
 	gob.Register(github.RateLimits{})
-	gob.Register(identifier.GitHubGetUserByIDResult{})
+	gob.Register(identifier.GitHubGetUserResult{})
 	gob.Register(identifier.LocationCacheEntry{})
 	gob.Register(lib.StringSet{})
 

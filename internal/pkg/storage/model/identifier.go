@@ -1,4 +1,4 @@
-package storage
+package model
 
 import (
 	"time"
@@ -13,6 +13,14 @@ const (
 	OrgTypeEducation  OrganizationType = "education"
 	OrgTypeOpenSource OrganizationType = "open_source"
 	OrgTypeIndividual OrganizationType = "individual"
+)
+
+type TeamLevel string
+
+const (
+	TeamMaintainer TeamLevel = "maintainer"
+	TeamCommitter  TeamLevel = "committer"
+	TeamReviewer   TeamLevel = "reviewer"
 )
 
 type ProfileSource string
@@ -38,15 +46,85 @@ type Country struct {
 	Alpha3 string `gorm:"type:char(3);uniqueIndex:uniq_country_alpha3,sort:asc"`
 }
 
+func (Country) TableName() string {
+	return "countries"
+}
+
 type Project struct {
 	gorm.Model
 
-	Slug string `gorm:"type:varchar(128);uniqueIndex"`
-	Name string `gorm:"type:varchar(128)"`
+	DisplayName string `gorm:"type:varchar(128);not null;"`
+	Name        string `gorm:"type:varchar(128);uniqueIndex;not null;"`
+
+	Teams []Team `gorm:"foreignKey:project_id"`
+}
+
+func (Project) TableName() string {
+	return "projects"
+}
+
+type Team struct {
+	gorm.Model
+
+	Name        string
+	Description string
+
+	Members      []UniqueIdentity `gorm:"many2many:team_members;foreignKey:ID;joinForeignKey:team_id;References:UUID;JoinReferences:uuid"`
+	Repositories []Repository     `gorm:"many2many:team_repositories;foreignKey:ID;joinForeignKey:team_id;References:ID;JoinReferences:repo_id"`
+
+	ProjectID uint
+}
+
+func (Team) TableName() string {
+	return "teams"
+}
+
+type TeamMember struct {
+	TeamID uint   `gorm:"primaryKey;"`
+	UUID   string `gorm:"primaryKey;type:varchar(128)"`
+	Level  TeamLevel
+
+	DupGitHubID    uint   `gorm:"column:dup_github_id;"`
+	DupGitHubLogin string `gorm:"column:dup_github_login;type:varchar(128);not null"`
+	DupEmail       string `gorm:"type:varchar(255);"`
+
+	JoinDate       time.Time
+	LastUpdateDate time.Time
+}
+
+func (TeamMember) TableName() string {
+	return "team_members"
+}
+
+type Repository struct {
+	gorm.Model
+
+	Name      string
+	Owner     string
+	ProjectID uint
+}
+
+func (Repository) TableName() string {
+	return "repositories"
+}
+
+type TeamMemberChangeLog struct {
+	gorm.Model
+
+	TeamID         uint   `gorm:"uniqueIndex:uniq_team_member_change_log;"`
+	UUID           string `gorm:"type:varchar(128);uniqueIndex:uniq_team_member_change_log;"`
+	CommitSHA      string `gorm:"uniqueIndex:uniq_team_member_change_log;"`
+	DupGitHubID    uint   `gorm:"column:dup_github_id;"`
+	DupGitHubLogin string `gorm:"column:dup_github_login;type:varchar(128);not null"`
+
+	CommitMessage string
+	LevelFrom     *TeamLevel
+	LevelTo       *TeamLevel
+	ChangedAt     time.Time
 }
 
 type UniqueIdentity struct {
-	UUID           string        `gorm:"type:varchar(128);primaryKey"`
+	UUID           string        `gorm:"primaryKey;type:varchar(128);"`
 	Name           string        `gorm:"type:varchar(128)"`
 	NameSource     ProfileSource `gorm:"type:varchar(32)"`
 	Email          string        `gorm:"type:varchar(128)"`
