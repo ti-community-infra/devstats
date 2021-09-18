@@ -116,7 +116,6 @@ type TeamMemberChangeLog struct {
 	CommitSHA      string `gorm:"uniqueIndex:uniq_team_member_change_log;"`
 	DupGitHubID    uint   `gorm:"column:dup_github_id;"`
 	DupGitHubLogin string `gorm:"column:dup_github_login;type:varchar(128);not null"`
-	DupEmail       string `gorm:"type:varchar(255);"`
 
 	CommitMessage string
 	LevelFrom     *TeamLevel

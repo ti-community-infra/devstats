@@ -92,12 +92,12 @@ func main() {
 
 	for _, projectConfig := range projects {
 		if projectConfig.UseTeamJSON {
-			getCommunityRolesByTeams(conn, &gc, projectConfig)
+			getCommunityInfoByTeams(conn, &gc, projectConfig)
 		}
 	}
 }
 
-func getCommunityRolesByTeams(db *gorm.DB, gc *identifier.GitHubClient, projectConfig ProjectConfig) {
+func getCommunityInfoByTeams(db *gorm.DB, gc *identifier.GitHubClient, projectConfig ProjectConfig) {
 	logrus.Infof("Cloning the repository: %s", projectConfig.CommunityRepoURL)
 	r, err := git.Clone(memory.NewStorage(), nil, &git.CloneOptions{
 		URL:               projectConfig.CommunityRepoURL,
@@ -187,7 +187,7 @@ func getCommunityRolesByTeams(db *gorm.DB, gc *identifier.GitHubClient, projectC
 					team.Description = teamMembership.Description
 					db.Updates(&team)
 
-					saveTeamMembershipToDB(db, gc, team.ID, team.Name, teamMembership, commit)
+					saveTeamMembersToDB(db, gc, team.ID, team.Name, teamMembership, commit)
 
 					repositories := teamMembership.Repositories
 					if len(repositories) != 0 {
@@ -219,7 +219,7 @@ func getCommunityRolesByTeams(db *gorm.DB, gc *identifier.GitHubClient, projectC
 	}
 }
 
-func saveTeamMembershipToDB(
+func saveTeamMembersToDB(
 	db *gorm.DB, gc *identifier.GitHubClient,
 	teamID uint, teamName string, teamMembership TeamMembership, commit *object.Commit,
 ) {
@@ -255,8 +255,8 @@ func saveTeamMembershipToDB(
 			// Ensure GitHub user existed in the database.
 			var newGitHubUser model.GitHubUser
 			githubUserID := githubUserData.GetID()
-			githubUserName := githubUserData.GetName()
 			githubUserLogin := githubUserData.GetLogin()
+			githubUserName := githubUserData.GetName()
 			githubUserEmail := githubUserData.GetEmail()
 
 			if login != githubUserLogin {
@@ -265,9 +265,9 @@ func saveTeamMembershipToDB(
 
 			newGitHubUser.ID = uint(githubUserID)
 			newGitHubUser.Login = githubUserLogin
-			newGitHubUser.UUID = uniqueIdentity.UUID
 			newGitHubUser.Name = &githubUserName
 			newGitHubUser.Email = githubUserEmail
+			newGitHubUser.UUID = uniqueIdentity.UUID
 
 			err = db.Where("id = ?", githubUserID).FirstOrCreate(&newGitHubUser).Error
 			lib.FatalOnError(err)
@@ -331,7 +331,6 @@ func saveTeamMembershipToDB(
 			LevelTo:        &newLevel,
 			DupGitHubID:    githubUser.ID,
 			DupGitHubLogin: login,
-			DupEmail:       githubUser.Email,
 		}
 		db.Clauses(clause.OnConflict{
 			Columns: []clause.Column{
@@ -354,6 +353,7 @@ func saveTeamRepositoryToDB(
 
 		// Process repo name.
 		if strings.Contains(repoName, "/") {
+			// If the name of the repo is complete, get org name by splitting.
 			ary := strings.Split(repoName, "/")
 			if len(ary) != 2 {
 				logrus.Warnf("Skiping the wrong repo name: %s", repoName)
@@ -369,7 +369,7 @@ func saveTeamRepositoryToDB(
 			repository.Name = fmt.Sprintf("%s/%s", defaultOrgName, repoName)
 		}
 
-		db.Find(&repository)
+		db.Where("name = ?", repository.Name).Find(&repository)
 
 		// Get repository ID.
 		if repository.ID == 0 {
