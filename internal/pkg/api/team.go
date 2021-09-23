@@ -117,37 +117,26 @@ func (h *TeamHandler) GetTeam(teamName string) (*TeamDetail, error) {
 	teamDetail.Name = team.Name
 	teamDetail.Description = team.Description
 
-	// Reviewers.
+	// Group by team role.
 	teamReviewers := make([]TeamMemberItem, 0)
-	for _, member := range teamMembers {
-		var teamReviewer TeamMemberItem
-		teamReviewer.Name = member.UniqueIdentity.Name
-		teamReviewer.Login = member.DupGitHubLogin
-		teamReviewer.ID = member.DupGitHubID
-		teamReviewers = append(teamReviewers, teamReviewer)
-	}
-	teamDetail.Reviewers = teamReviewers
-
-	// Committers.
 	teamCommitters := make([]TeamMemberItem, 0)
-	for _, member := range teamMembers {
-		var teamCommitter TeamMemberItem
-		teamCommitter.Name = member.UniqueIdentity.Name
-		teamCommitter.Login = member.DupGitHubLogin
-		teamCommitter.ID = member.DupGitHubID
-		teamCommitters = append(teamCommitters, teamCommitter)
-	}
-	teamDetail.Committers = teamCommitters
-
-	// Maintainers.
 	teamMaintainers := make([]TeamMemberItem, 0)
 	for _, member := range teamMembers {
-		var teamMaintainer TeamMemberItem
-		teamMaintainer.Name = member.UniqueIdentity.Name
-		teamMaintainer.Login = member.DupGitHubLogin
-		teamMaintainer.ID = member.DupGitHubID
-		teamMaintainers = append(teamMaintainers, teamMaintainer)
+		var memberItem TeamMemberItem
+		memberItem.Name = member.UniqueIdentity.Name
+		memberItem.Login = member.DupGitHubLogin
+		memberItem.ID = member.DupGitHubID
+
+		if member.Level == model.TeamReviewer {
+			teamReviewers = append(teamReviewers, memberItem)
+		} else if member.Level == model.TeamCommitter {
+			teamCommitters = append(teamCommitters, memberItem)
+		} else if member.Level == model.TeamMaintainer {
+			teamMaintainers = append(teamMaintainers, memberItem)
+		}
 	}
+	teamDetail.Reviewers = teamReviewers
+	teamDetail.Committers = teamCommitters
 	teamDetail.Maintainers = teamMaintainers
 
 	// Repositories

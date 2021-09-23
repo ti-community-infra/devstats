@@ -104,7 +104,7 @@ func main() {
 	router.GET("/members/", func(c *gin.Context) {
 		// Check if the level parameter.
 		level, ok := c.GetQuery("level")
-		if ok && level != "maintainer" && level != "committer" && level != "reviewer" {
+		if ok && level != string(model.TeamMaintainer) && level != string(model.TeamCommitter) && level != string(model.TeamReviewer) {
 			e := fmt.Errorf("wrong level parameter: %s", level)
 			api.ErrorMsgf(c, 500, e, "level only support `maintainer`, `committer` or `reviewer`.")
 			return
@@ -123,8 +123,8 @@ func main() {
 	contributorHandler := api.ContributorHandler{}
 	contributorHandler.Init(identifierDB, projectDBs, ctx.DevstatsAPIBaseURL)
 
-	router.GET("/projects/:project/contributors/", func(c *gin.Context) {
-		projectName := c.Param("project")
+	router.GET("/projects/:project_name/contributors/", func(c *gin.Context) {
+		projectName := c.Param("project_name")
 		includeBots, _ := strconv.ParseBool(c.Query("include_bots"))
 
 		// Check if the order parameter.

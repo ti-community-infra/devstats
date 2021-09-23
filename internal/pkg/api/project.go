@@ -71,6 +71,7 @@ func (h *ProjectHandler) GetProject(projectName string) (*ProjectDetail, error) 
 	var projectDetail ProjectDetail
 	projectDetail.Name = project.Name
 	projectDetail.DisplayName = project.DisplayName
+	projectDetail.URL = fmt.Sprintf("%s/projects/%s", h.BaseURL, project.Name)
 	projectDetail.Stats = getProjectStat(projDB)
 
 	return &projectDetail, nil
