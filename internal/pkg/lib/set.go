@@ -12,3 +12,12 @@ func (s *StringSet) ToArray() []string {
 	}
 	return arr
 }
+
+func FromArray(arr []string) StringSet {
+	stringSet := make(StringSet, 0)
+	for _, item := range arr {
+		stringSet[item] = struct{}{}
+	}
+
+	return stringSet
+}

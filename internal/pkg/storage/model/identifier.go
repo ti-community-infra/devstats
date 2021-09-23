@@ -66,13 +66,12 @@ func (Project) TableName() string {
 type Team struct {
 	gorm.Model
 
-	Name        string
-	Description string
-
+	Name         string `gorm:"uniqueIndex"`
+	Description  string
+	ProjectID    uint             `gorm:"project_id"`
 	Members      []UniqueIdentity `gorm:"many2many:team_members;foreignKey:ID;joinForeignKey:team_id;References:UUID;JoinReferences:uuid"`
 	Repositories []Repository     `gorm:"many2many:team_repositories;foreignKey:ID;joinForeignKey:team_id;References:ID;JoinReferences:repo_id"`
-
-	ProjectID uint
+	Project      Project          `gorm:"foreignKey:project_id"`
 }
 
 func (Team) TableName() string {
@@ -87,6 +86,9 @@ type TeamMember struct {
 	DupGitHubID    uint   `gorm:"column:dup_github_id;"`
 	DupGitHubLogin string `gorm:"column:dup_github_login;type:varchar(128);not null"`
 	DupEmail       string `gorm:"type:varchar(255);"`
+
+	Team           Team           `gorm:"foreignKey:team_id"`
+	UniqueIdentity UniqueIdentity `gorm:"foreignKey:uuid"`
 
 	JoinDate       time.Time
 	LastUpdateDate time.Time
