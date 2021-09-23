@@ -146,7 +146,7 @@ func (h *TeamHandler) GetTeam(teamName string) (*TeamDetail, error) {
 		teamMaintainer.Name = member.UniqueIdentity.Name
 		teamMaintainer.Login = member.DupGitHubLogin
 		teamMaintainer.ID = member.DupGitHubID
-		teamMaintainers = append(teamCommitters, teamMaintainer)
+		teamMaintainers = append(teamMaintainers, teamMaintainer)
 	}
 	teamDetail.Maintainers = teamMaintainers
 
