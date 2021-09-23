@@ -39,6 +39,8 @@ type Ctx struct {
 	AwsSecretAccessKey         string // From AWS_SECRET_ACCESS_KEY
 	AwsDefaultRegion           string // From AWS_DEFAULT_REGION
 
+	DevstatsAPIBaseURL string // From DEVSTATS_API_BASE_URL
+
 	lib.Ctx
 }
 
@@ -146,6 +148,8 @@ func (c *Ctx) Init() error {
 	c.AwsAccessKeyID = os.Getenv("AWS_ACCESS_KEY_ID")
 	c.AwsSecretAccessKey = os.Getenv("AWS_SECRET_ACCESS_KEY")
 	c.AwsDefaultRegion = os.Getenv("AWS_DEFAULT_REGION")
+
+	c.DevstatsAPIBaseURL = os.Getenv("DEVSTATS_API_BASE_URL")
 
 	return nil
 }
