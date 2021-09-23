@@ -23,6 +23,7 @@ FROM postgres:13-alpine
 RUN apk add git curl xz
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 RUN unzip awscliv2.zip
+RUN chmod +x /usr/local/bin/aws
 RUN ./aws/install
 
 COPY --from=builder /etc/gha2db /etc/gha2db
