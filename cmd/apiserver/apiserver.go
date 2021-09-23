@@ -58,7 +58,7 @@ func main() {
 		projects, err := projectHandler.GetProjects()
 		if err != nil {
 			msg := fmt.Sprintf("Failed to get projects.")
-			api.ErrorMsg(c, 500, err, msg)
+			api.ErrorMsgf(c, 500, err, msg)
 			return
 		}
 		c.JSON(http.StatusOK, &projects)
@@ -69,7 +69,7 @@ func main() {
 		project, err := projectHandler.GetProject(projectName)
 		if err != nil {
 			msg := fmt.Sprintf("Failed to get project %s detail.", projectName)
-			api.ErrorMsg(c, 500, err, msg)
+			api.ErrorMsgf(c, 500, err, msg)
 			return
 		}
 		c.JSON(http.StatusOK, &project)
@@ -83,7 +83,7 @@ func main() {
 		teams, err := teamHandler.GetTeams()
 		if err != nil {
 			msg := fmt.Sprintf("Failed to get teams.")
-			api.ErrorMsg(c, 500, err, msg)
+			api.ErrorMsgf(c, 500, err, msg)
 			return
 		}
 		c.JSON(http.StatusOK, &teams)
@@ -94,7 +94,7 @@ func main() {
 		team, err := teamHandler.GetTeam(teamName)
 		if err != nil {
 			msg := fmt.Sprintf("Failed to get team %s.", teamName)
-			api.ErrorMsg(c, 500, err, msg)
+			api.ErrorMsgf(c, 500, err, msg)
 			return
 		}
 		c.JSON(http.StatusOK, &team)
@@ -106,14 +106,14 @@ func main() {
 		level, ok := c.GetQuery("level")
 		if ok && level != "maintainer" && level != "committer" && level != "reviewer" {
 			e := fmt.Errorf("wrong level parameter: %s", level)
-			api.ErrorMsg(c, 500, e, "level only support `maintainer`, `committer` or `reviewer`.")
+			api.ErrorMsgf(c, 500, e, "level only support `maintainer`, `committer` or `reviewer`.")
 			return
 		}
 
 		members, _ := teamHandler.GetMembers(level)
 		if err != nil {
 			msg := fmt.Sprintf("Failed to get members.")
-			api.ErrorMsg(c, 500, err, msg)
+			api.ErrorMsgf(c, 500, err, msg)
 			return
 		}
 		c.JSON(http.StatusOK, &members)
@@ -131,7 +131,7 @@ func main() {
 		order := c.Query("order")
 		if len(order) != 0 && order != api.ContributorLoginOrder && order != api.ContributorPRCountOrder {
 			e := fmt.Errorf("wrong order parameter: %s", order)
-			api.ErrorMsg(c, 400, e, "Wrong order parameter, order only support `login` or `pr_count`.")
+			api.ErrorMsgf(c, 400, e, "Wrong order parameter, order only support `login` or `pr_count`.")
 			return
 		}
 
@@ -139,14 +139,14 @@ func main() {
 		direction := c.Query("direction")
 		if len(direction) != 0 && direction != api.DirectionAsc && direction != api.DirectionDesc {
 			e := fmt.Errorf("wrong direction parameter: %s", direction)
-			api.ErrorMsg(c, 400, e, "Wrong direction parameter, direction only support `asc` or `desc`.")
+			api.ErrorMsgf(c, 400, e, "Wrong direction parameter, direction only support `asc` or `desc`.")
 			return
 		}
 
 		contributors, err := contributorHandler.GetContributors(projectName, includeBots, order, direction)
 		if err != nil {
 			msg := fmt.Sprintf("Failed to get contributors.")
-			api.ErrorMsg(c, 500, err, msg)
+			api.ErrorMsgf(c, 500, err, msg)
 			return
 		}
 		c.JSON(http.StatusOK, &contributors)

@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
@@ -11,7 +12,7 @@ const (
 	DirectionDesc string = "desc"
 )
 
-func ErrorMsg(c *gin.Context, code int, err error, format string, a ...interface{}) {
+func ErrorMsgf(c *gin.Context, code int, err error, format string, a ...interface{}) {
 	var msg string
 	if len(a) != 0 {
 		msg = fmt.Sprintf(format, a...)

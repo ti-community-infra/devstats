@@ -2,11 +2,11 @@ package api
 
 import (
 	"fmt"
-	"github.com/ti-community-infra/devstats/internal/pkg/lib"
 	"sort"
 	"strings"
 
 	"github.com/sirupsen/logrus"
+	"github.com/ti-community-infra/devstats/internal/pkg/lib"
 	"gorm.io/gorm"
 )
 
@@ -32,20 +32,17 @@ var botLogins = []string{
 	"ti-chi-bot", "ti-srebot", "sre-bot", "ti-community-prow-bot", "dependabot[bot]",
 	"tidb-dashboard-bot", "fossabot",
 }
-var botLoginSet lib.StringSet
-
-func init() {
-	botLoginSet = lib.FromArray(botLogins)
-}
 
 type ContributorHandler struct {
 	identifierDB *gorm.DB
 	projectDBs   map[string]*gorm.DB
+	botLoginSet  lib.StringSet
 }
 
 func (h *ContributorHandler) Init(identifierDB *gorm.DB, projectDBs map[string]*gorm.DB) {
 	h.identifierDB = identifierDB
 	h.projectDBs = projectDBs
+	h.botLoginSet = lib.FromArray(botLogins)
 }
 
 func (h *ContributorHandler) GetContributors(
@@ -135,7 +132,7 @@ from
 	for _, item := range contributorMap {
 		if !includeBots {
 			// Skip the Bots.
-			if _, ok := botLoginSet[item.GitHubLogin]; ok {
+			if _, ok := h.botLoginSet[item.GitHubLogin]; ok {
 				continue
 			}
 		}
@@ -148,18 +145,16 @@ from
 		sort.Slice(contributorItems, func(i, j int) bool {
 			if direction == DirectionDesc {
 				return strings.Compare(contributorItems[i].GitHubLogin, contributorItems[j].GitHubLogin) > 0
-			} else {
-				return strings.Compare(contributorItems[i].GitHubLogin, contributorItems[j].GitHubLogin) < 0
 			}
+			return strings.Compare(contributorItems[i].GitHubLogin, contributorItems[j].GitHubLogin) < 0
 		})
 	} else if order == ContributorPRCountOrder {
 		// Order by PR Count, default direction is desc.
 		sort.Slice(contributorItems, func(i, j int) bool {
 			if direction == DirectionAsc {
 				return contributorItems[i].PRCount < contributorItems[j].PRCount
-			} else {
-				return contributorItems[i].PRCount > contributorItems[j].PRCount
 			}
+			return contributorItems[i].PRCount > contributorItems[j].PRCount
 		})
 	}
 
