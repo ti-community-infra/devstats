@@ -40,7 +40,7 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana:0.5.0'
+grafanaImage: 'miniantdev/devstats-grafana:0.5.1'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
 grafanaNReplicas: 1
@@ -57,7 +57,7 @@ limitsGrafanasMemory: '8Gi'
 useGrafanasResourcesLimits: 1
 
 # Provision configurations.
-provisionImage: 'miniantdev/devstats-prod:0.5.0'
+provisionImage: 'miniantdev/devstats-prod:0.5.1'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
@@ -74,7 +74,7 @@ waitForBootstrap: 60
 
 # Cron sync jobs configurations.
 syncCommand: devstats
-syncImage: 'miniantdev/devstats-minimal-prod:0.5.0'
+syncImage: 'miniantdev/devstats-minimal-prod:0.5.1'
 syncPodName: devstats
 syncRestartPolicy: Never
 indexCronsFrom: 0
@@ -86,7 +86,7 @@ requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
 
 # Execute Pod configurations.
-executeImage: 'miniantdev/devstats-minimal-prod:0.5.0'
+executeImage: 'miniantdev/devstats-minimal-prod:0.5.1'
 executePodName: 'devstats-execute'
 executeTargetProject: 'tikv'
 executeCommand: 'sleep'
@@ -107,7 +107,7 @@ requestsExecuteMemory: '1Gi'
 useExecuteResourcesLimits: 1
 
 # Affiliations Sync.
-affiliationsImage: 'miniantdev/devstats-prod:0.5.0'
+affiliationsImage: 'miniantdev/devstats-prod:0.5.1'
 affiliationsPodName: 'devstats-affiliations'
 affiliationsRestartPolicy: Never
 affiliationsCommand: './shared/affs.sh'
@@ -115,7 +115,7 @@ affiliationsCronHistoryLimit: 2
 affiliationsCronFailedHistoryLimit: 1
 affiliationsCronStartingDeadlineSeconds: 300
 affiliationsGetAffsFiles: '1'
-affiliationsSourceUrl: https://community-devstats-affiliations-prod.s3-ap-northeast-1.amazonaws.com/github_users.json
+affiliationsSourceUrl: s3://community-devstats-affiliations-prod/github_users.json
 affiliationsCompaniesSourceUrl: https://raw.githubusercontent.com/cncf/gitdm/master/src/companies.yaml
 
 useAffiliationsResourcesLimits: 1
@@ -127,7 +127,7 @@ requestsAffiliationsCPU: '250m'
 requestsAffiliationsMemory: '512Mi'
 
 # Identifier
-identifierImage: 'miniantdev/devstats-prod:0.5.0'
+identifierImage: 'miniantdev/devstats-prod:0.5.1'
 identifierPodName: 'devstats-identifier'
 identifierRestartPolicy: Never
 identifierCommand: './identifier'

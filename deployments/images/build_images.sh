@@ -149,7 +149,7 @@ then
     rm -f "$DEVSTATS_DEV_CONFIG_TAR" 2>/dev/null
   fi
 
-  tar cf "$DEVSTATS_DEV_CONFIG_TAR" all tidb tikv chaosmesh ob metrics scripts devel docs shared projects.yaml
+  tar cf "$DEVSTATS_DEV_CONFIG_TAR" all tidb tikv chaosmesh ob metrics scripts devel docs projects.yaml
   tar cf "$DEVSTATS_API_DEV_CONFIG_TAR" projects.yaml
 fi
 
@@ -159,7 +159,7 @@ if [ -z "$SKIP_PROD" ]
 then
   cd "$DEVSTATS_PROD_CONFIG_DIR" || exit 62
 
-  tar cf "$DEVSTATS_PROD_CONFIG_TAR" all tidb tikv chaosmesh ob metrics scripts devel docs shared projects.yaml
+  tar cf "$DEVSTATS_PROD_CONFIG_TAR" all tidb tikv chaosmesh ob metrics scripts devel docs projects.yaml
   tar cf "$DEVSTATS_API_PROD_CONFIG_TAR" projects.yaml
 fi
 

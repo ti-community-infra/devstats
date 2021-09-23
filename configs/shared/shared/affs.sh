@@ -62,23 +62,23 @@ if [ ! -z "$GET_AFFS_FILES" ]
 then
   if [ ! -z "$GHA2DB_AFFILIATIONS_JSON" ]
   then
-    wget "$AFFILIATIONS_SOURCE_URL" -O "$GHA2DB_AFFILIATIONS_JSON" || exit 7
-    sum1=`sha256sum "$GHA2DB_AFFILIATIONS_JSON" | awk '{print $1}'`
+    aws s3 cp "$AFFILIATIONS_SOURCE_URL" "$GHA2DB_AFFILIATIONS_JSON" || exit 7
+    sum1=$(sha256sum "$GHA2DB_AFFILIATIONS_JSON" | awk '{print $1}')
   else
-    wget "$AFFILIATIONS_SOURCE_URL" -O github_users.json || exit 8
-    sum1=`sha256sum github_users.json | awk '{print $1}'`
+    aws s3 cp "$AFFILIATIONS_SOURCE_URL" github_users.json || exit 8
+    sum1=$(sha256sum github_users.json | awk '{print $1}')
   fi
   if [ ! -z "$GHA2DB_COMPANY_ACQ_YAML" ]
   then
     wget "$COMPANIES_SOURCE_URL" -O "$GHA2DB_COMPANY_ACQ_YAML" || exit 9
-    sum2=`sha256sum "$GHA2DB_COMPANY_ACQ_YAML" | awk '{print $1}'`
+    sum2=$(sha256sum "$GHA2DB_COMPANY_ACQ_YAML" | awk '{print $1}')
   else
     wget "$COMPANIES_SOURCE_URL" -O companies.yaml || exit 10
-    sum2=`sha256sum companies.yaml | awk '{print $1}'`
+    sum2=$(sha256sum companies.yaml | awk '{print $1}')
   fi
 else
-  sum1=`sha256sum github_users.json | awk '{print $1}'`
-  sum2=`sha256sum companies.yaml | awk '{print $1}'`
+  sum1=$(sha256sum github_users.json | awk '{print $1}')
+  sum2=$(sha256sum companies.yaml | awk '{print $1}')
 fi
 
 echo "Importing SHA pair ('$sum1', '$sum2')"

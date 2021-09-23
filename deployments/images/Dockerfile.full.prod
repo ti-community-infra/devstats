@@ -21,7 +21,7 @@ RUN make links
 #RUN apk add git bash postgresql-client xz curl
 FROM postgres:13-alpine
 
-RUN apk add git curl xz
+RUN apk add git curl xz aws-cli
 
 COPY --from=builder /etc/gha2db /etc/gha2db
 COPY --from=builder /go/src/github.com/ti-community-infra/devstats /go/src/devstats
