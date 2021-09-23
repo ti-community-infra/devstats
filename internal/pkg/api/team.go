@@ -164,15 +164,16 @@ func (h *TeamHandler) GetMembers(level string) ([]MemberItem, error) {
 		JoinDate       time.Time
 		LastUpdateDate time.Time
 	}
-	query := h.identifierDB.Raw("select " +
-		"gu.id as github_id, gu.login as github_login, ui.name as name, t.id as team_id, " +
-		"t.name as team_name, tm.level as level, tm.join_date, tm.last_update_date " +
-		"from " +
-		"team_members tm " +
-		"left join teams t on t.id = tm.team_id " +
-		"left join unique_identities ui on tm.uuid = ui.uuid " +
-		"left join github_users gu on ui.uuid = gu.uuid ",
-	)
+	query := h.identifierDB.Raw(`
+select 
+    gu.id as github_id, gu.login as github_login, ui.name as name, t.id as team_id, 
+    t.name as team_name, tm.level as level, tm.join_date, tm.last_update_date 
+from 
+    team_members tm 
+    left join teams t on t.id = tm.team_id 
+    left join unique_identities ui on tm.uuid = ui.uuid 
+    left join github_users gu on ui.uuid = gu.uuid
+`)
 	err := query.Find(&members).Error
 	if err != nil {
 		return nil, err

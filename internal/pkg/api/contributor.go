@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/ti-community-infra/devstats/internal/pkg/lib"
@@ -13,6 +14,7 @@ import (
 type ContributorItem struct {
 	GitHubID                uint                    `json:"github_id"`
 	GitHubLogin             string                  `json:"github_login"`
+	FirstPRMergedAt         time.Time               `json:"first_pr_merged_at"`
 	ParticipateRepositories []ParticipateRepository `json:"participate_repositories"`
 	PRCount                 uint                    `json:"pr_count"`
 }
@@ -24,8 +26,9 @@ type ParticipateRepository struct {
 }
 
 const (
-	ContributorLoginOrder   = "login"
-	ContributorPRCountOrder = "pr_count"
+	ContributorLoginOrder           = "login"
+	ContributorPRCountOrder         = "pr_count"
+	ContributorFirstPRMergedAtOrder = "first_pr_merged_at"
 )
 
 var botLogins = []string{
@@ -57,11 +60,12 @@ func (h *ContributorHandler) GetContributors(
 	}
 
 	var contributionItems []struct {
-		GitHubID    uint   `gorm:"column:github_id"`
-		GitHubLogin string `gorm:"column:github_login"`
-		RepoID      uint   `gorm:"column:repo_id"`
-		RepoName    string `gorm:"column:repo_name"`
-		PRCount     uint   `gorm:"column:pr_count"`
+		GitHubID        uint      `gorm:"column:github_id"`
+		GitHubLogin     string    `gorm:"column:github_login"`
+		RepoID          uint      `gorm:"column:repo_id"`
+		RepoName        string    `gorm:"column:repo_name"`
+		FirstPRMergedAt time.Time `gorm:"column:first_pr_merged_at"`
+		PRCount         uint      `gorm:"column:pr_count"`
 	}
 	projDB.Raw(`
 with pr_counts as (
@@ -83,25 +87,32 @@ with pr_counts as (
             merged_at is not null
      ) sub
     where rank = 1
-    group by
-        user_id, repo_id, repo_name
+    group by user_id, repo_id, repo_name
 ), contributor_with_current_login as (
     select
-        user_id, user_login
-    from (
-             select
-                 user_id as user_id,
-                 dup_user_login as user_login,
-                 row_number() over (partition by user_id order by pr.updated_at desc) as rank
-             from
-                 gha_pull_requests pr
-             where
-                 merged_at is not null
-    ) sub
-    where rank = 1
+        distinct on (user_id)
+        user_id as user_id,
+        last_value(dup_user_login) over pr_ordered_by_merged_at as user_login,
+        first_value(merged_at) over pr_ordered_by_merged_at as first_pr_merged_at
+    from
+        gha_pull_requests pr
+    where
+		merged_at is not null
+    window
+        pr_ordered_by_merged_at as (
+            partition by pr.user_id
+            order by merged_at, event_id
+            range between current row
+            and unbounded following
+        )
 )
 select
-    ccl.user_id as github_id, ccl.user_login as github_login, repo_id, repo_name, cnt as pr_count
+    ccl.user_id as github_id,
+    ccl.user_login as github_login,
+    repo_id,
+    repo_name,
+    first_pr_merged_at,
+    cnt as pr_count
 from
     contributor_with_current_login ccl
     left join pr_counts pc on ccl.user_id = pc.user_id
@@ -116,6 +127,7 @@ from
 		} else {
 			contributorItem.GitHubID = contribution.GitHubID
 			contributorItem.GitHubLogin = contribution.GitHubLogin
+			contributorItem.FirstPRMergedAt = contribution.FirstPRMergedAt
 			contributorItem.ParticipateRepositories = make([]ParticipateRepository, 0)
 		}
 
@@ -151,12 +163,20 @@ from
 			return strings.Compare(contributorItems[i].GitHubLogin, contributorItems[j].GitHubLogin) < 0
 		})
 	} else if order == ContributorPRCountOrder {
-		// Order by PR Count, default direction is desc.
+		// Order by PR count, default direction is desc.
 		sort.Slice(contributorItems, func(i, j int) bool {
 			if direction == DirectionAsc {
 				return contributorItems[i].PRCount < contributorItems[j].PRCount
 			}
 			return contributorItems[i].PRCount > contributorItems[j].PRCount
+		})
+	} else if order == ContributorFirstPRMergedAtOrder {
+		// Order by PR merged at, default direction is desc.
+		sort.Slice(contributorItems, func(i, j int) bool {
+			if direction == DirectionAsc {
+				return contributorItems[i].FirstPRMergedAt.Before(contributorItems[j].FirstPRMergedAt)
+			}
+			return contributorItems[i].FirstPRMergedAt.After(contributorItems[j].FirstPRMergedAt)
 		})
 	}
 

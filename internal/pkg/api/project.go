@@ -16,10 +16,11 @@ type ProjectDetailStats struct {
 }
 
 type ProjectDetail struct {
-	DisplayName string             `json:"display_name"`
-	Name        string             `json:"name"`
-	URL         string             `json:"url"`
-	Stats       ProjectDetailStats `json:"stats,omitempty"`
+	DisplayName     string             `json:"display_name"`
+	Name            string             `json:"name"`
+	URL             string             `json:"url"`
+	ContributorsURL string             `json:"contributor_url"`
+	Stats           ProjectDetailStats `json:"stats,omitempty"`
 }
 
 type ProjectHandler struct {
@@ -47,6 +48,7 @@ func (h *ProjectHandler) GetProjects() ([]ProjectDetail, error) {
 		projectDetail.Name = project.Name
 		projectDetail.DisplayName = project.DisplayName
 		projectDetail.URL = fmt.Sprintf("%s/projects/%s", h.BaseURL, project.Name)
+		projectDetail.ContributorsURL = fmt.Sprintf("%s/projects/%s/contributors", h.BaseURL, project.Name)
 		if projDB, ok := h.projectDBs[project.Name]; ok {
 			projectDetail.Stats = getProjectStat(projDB)
 		}
@@ -72,6 +74,7 @@ func (h *ProjectHandler) GetProject(projectName string) (*ProjectDetail, error) 
 	projectDetail.Name = project.Name
 	projectDetail.DisplayName = project.DisplayName
 	projectDetail.URL = fmt.Sprintf("%s/projects/%s", h.BaseURL, project.Name)
+	projectDetail.ContributorsURL = fmt.Sprintf("%s/projects/%s/contributors", h.BaseURL, project.Name)
 	projectDetail.Stats = getProjectStat(projDB)
 
 	return &projectDetail, nil

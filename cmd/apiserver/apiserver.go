@@ -129,9 +129,12 @@ func main() {
 
 		// Check if the order parameter.
 		order := c.Query("order")
-		if len(order) != 0 && order != api.ContributorLoginOrder && order != api.ContributorPRCountOrder {
+		if len(order) != 0 && order != api.ContributorLoginOrder && order != api.ContributorPRCountOrder &&
+			order != api.ContributorFirstPRMergedAtOrder {
 			e := fmt.Errorf("wrong order parameter: %s", order)
-			api.ErrorMsgf(c, 400, e, "Wrong order parameter, order only support `login` or `pr_count`.")
+			api.ErrorMsgf(c, 400, e,
+				"Wrong order parameter, order only support `login`, `first_pr_merged_at` or `pr_count`.",
+			)
 			return
 		}
 
