@@ -37,12 +37,14 @@ type ContributorHandler struct {
 	identifierDB *gorm.DB
 	projectDBs   map[string]*gorm.DB
 	botLoginSet  lib.StringSet
+	BaseURL      string
 }
 
-func (h *ContributorHandler) Init(identifierDB *gorm.DB, projectDBs map[string]*gorm.DB) {
+func (h *ContributorHandler) Init(identifierDB *gorm.DB, projectDBs map[string]*gorm.DB, baseURL string) {
 	h.identifierDB = identifierDB
 	h.projectDBs = projectDBs
 	h.botLoginSet = lib.FromArray(botLogins)
+	h.BaseURL = baseURL
 }
 
 func (h *ContributorHandler) GetContributors(

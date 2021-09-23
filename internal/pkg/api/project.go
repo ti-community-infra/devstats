@@ -18,17 +18,20 @@ type ProjectDetailStats struct {
 type ProjectDetail struct {
 	DisplayName string             `json:"display_name"`
 	Name        string             `json:"name"`
+	URL         string             `json:"url"`
 	Stats       ProjectDetailStats `json:"stats,omitempty"`
 }
 
 type ProjectHandler struct {
 	identifierDB *gorm.DB
 	projectDBs   map[string]*gorm.DB
+	BaseURL      string
 }
 
-func (h *ProjectHandler) Init(identifierDB *gorm.DB, projectDBs map[string]*gorm.DB) {
+func (h *ProjectHandler) Init(identifierDB *gorm.DB, projectDBs map[string]*gorm.DB, baseURL string) {
 	h.identifierDB = identifierDB
 	h.projectDBs = projectDBs
+	h.BaseURL = baseURL
 }
 
 func (h *ProjectHandler) GetProjects() ([]ProjectDetail, error) {
@@ -43,6 +46,7 @@ func (h *ProjectHandler) GetProjects() ([]ProjectDetail, error) {
 		var projectDetail ProjectDetail
 		projectDetail.Name = project.Name
 		projectDetail.DisplayName = project.DisplayName
+		projectDetail.URL = fmt.Sprintf("%s/projects/%s", h.BaseURL, project.Name)
 		if projDB, ok := h.projectDBs[project.Name]; ok {
 			projectDetail.Stats = getProjectStat(projDB)
 		}

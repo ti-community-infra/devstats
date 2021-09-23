@@ -66,9 +66,10 @@ type TeamHandler struct {
 	projectDBs   map[string]*gorm.DB
 }
 
-func (h *TeamHandler) Init(identifierDB *gorm.DB, projectDBs map[string]*gorm.DB) {
+func (h *TeamHandler) Init(identifierDB *gorm.DB, projectDBs map[string]*gorm.DB, baseURL string) {
 	h.identifierDB = identifierDB
 	h.projectDBs = projectDBs
+	h.BaseURL = baseURL
 }
 
 func (h *TeamHandler) GetTeams() ([]TeamItem, error) {

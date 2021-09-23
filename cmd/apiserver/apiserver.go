@@ -52,7 +52,7 @@ func main() {
 
 	// Handle /projects endpoint.
 	projectHandler := api.ProjectHandler{}
-	projectHandler.Init(identifierDB, projectDBs)
+	projectHandler.Init(identifierDB, projectDBs, ctx.DevstatsAPIBaseURL)
 
 	router.GET("/projects/", func(c *gin.Context) {
 		projects, err := projectHandler.GetProjects()
@@ -64,8 +64,8 @@ func main() {
 		c.JSON(http.StatusOK, &projects)
 	})
 
-	router.GET("/projects/:project/", func(c *gin.Context) {
-		projectName := c.Param("project")
+	router.GET("/projects/:project_name/", func(c *gin.Context) {
+		projectName := c.Param("project_name")
 		project, err := projectHandler.GetProject(projectName)
 		if err != nil {
 			msg := fmt.Sprintf("Failed to get project %s detail.", projectName)
@@ -77,7 +77,7 @@ func main() {
 
 	// Handle /teams endpoint.
 	teamHandler := api.TeamHandler{}
-	teamHandler.Init(identifierDB, projectDBs)
+	teamHandler.Init(identifierDB, projectDBs, ctx.DevstatsAPIBaseURL)
 
 	router.GET("/teams/", func(c *gin.Context) {
 		teams, err := teamHandler.GetTeams()
@@ -121,7 +121,7 @@ func main() {
 
 	// Handle /contributors endpoint.
 	contributorHandler := api.ContributorHandler{}
-	contributorHandler.Init(identifierDB, projectDBs)
+	contributorHandler.Init(identifierDB, projectDBs, ctx.DevstatsAPIBaseURL)
 
 	router.GET("/projects/:project/contributors/", func(c *gin.Context) {
 		projectName := c.Param("project")
