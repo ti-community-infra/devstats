@@ -213,7 +213,7 @@ func getCommunityInfoByTeams(db *gorm.DB, gc *identifier.GitHubClient, projectCo
 		}
 
 		for teamDeletedName := range teamNamesInDB {
-			db.Where("name = ? and project_id", teamDeletedName, project.ID).Delete(&model.Team{})
+			db.Where("name = ? and project_id = ?", teamDeletedName, project.ID).Delete(&model.Team{})
 			logrus.Infof("team %s has been deleted.", teamDeletedName)
 		}
 	}
@@ -237,12 +237,16 @@ func saveTeamMembersToDB(
 
 	for login, newLevel := range member2level {
 		var githubUser model.GitHubUser
-		db.Raw("select * from github_users u left join github_user_logins ul on u.id = ul.github_user_id where ul.login = ?", login).
-			Scan(&githubUser)
+		db.Raw(`
+select * from github_users u where exists(
+    select * from github_user_logins ul where u.id = ul.github_user_id and ul.login = ?
+)
+`, login).Scan(&githubUser)
 
 		if githubUser.ID == 0 {
 			githubUserData, _, err := gc.GetUserByLogin(login)
 			if err != nil {
+				lib.FatalOnError(err)
 				return
 			}
 
@@ -389,7 +393,7 @@ func saveTeamRepositoryToDB(
 		// Ensure the repository in the database.
 		db.Clauses(clause.OnConflict{
 			Columns: []clause.Column{
-				{Name: "id"},
+				{ Name: "id" },
 			},
 			DoNothing: true,
 		}).Create(&repository)
