@@ -40,7 +40,7 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana:0.5.1'
+grafanaImage: 'miniantdev/devstats-grafana:0.6.0-beta.1'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
 grafanaNReplicas: 1
@@ -57,7 +57,7 @@ limitsGrafanasMemory: '8Gi'
 useGrafanasResourcesLimits: 1
 
 # Provision configurations.
-provisionImage: 'miniantdev/devstats-dev:0.5.1'
+provisionImage: 'miniantdev/devstats-dev:0.6.0-beta.1'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
@@ -74,7 +74,7 @@ waitForBootstrap: 60
 
 # Cron sync jobs configurations.
 syncCommand: devstats
-syncImage: 'miniantdev/devstats-minimal-dev:0.5.1'
+syncImage: 'miniantdev/devstats-minimal-dev:0.6.0-beta.1'
 syncPodName: devstats
 syncRestartPolicy: Never
 indexCronsFrom: 0
@@ -86,7 +86,7 @@ requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
 
 # Execute Pod configurations.
-executeImage: 'miniantdev/devstats-minimal-dev:0.5.1'
+executeImage: 'miniantdev/devstats-minimal-dev:0.6.0-beta.1'
 executePodName: 'devstats-execute'
 executeTargetProject: 'tidb'
 executeCommand: 'sleep'
@@ -107,7 +107,7 @@ requestsExecuteMemory: '1Gi'
 useExecuteResourcesLimits: 1
 
 # Affiliations Sync.
-affiliationsImage: 'miniantdev/devstats-dev:0.5.1'
+affiliationsImage: 'miniantdev/devstats-dev:0.6.0-beta.1'
 affiliationsPodName: 'devstats-affiliations'
 affiliationsRestartPolicy: Never
 affiliationsCommand: './shared/affs.sh'
@@ -127,7 +127,7 @@ requestsAffiliationsCPU: '250m'
 requestsAffiliationsMemory: '512Mi'
 
 # Identifier
-identifierImage: 'miniantdev/devstats-dev:0.5.1'
+identifierImage: 'miniantdev/devstats-dev:0.6.0-beta.1'
 identifierPodName: 'devstats-identifier'
 identifierRestartPolicy: Never
 identifierCommand: './identifier'
@@ -160,7 +160,7 @@ requestsIdentifierCPU: '250m'
 requestsIdentifierMemory: '512Mi'
 
 # Sync teams cronjob
-syncTeamImage: 'miniantdev/devstats-dev:0.5.1'
+syncTeamImage: 'miniantdev/devstats-dev:0.6.0-beta.1'
 syncTeamPodName: 'devstats-sync_teams'
 syncTeamRestartPolicy: Never
 syncTeamCommand: './sync_teams'
