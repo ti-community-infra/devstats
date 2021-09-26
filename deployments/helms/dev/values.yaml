@@ -12,6 +12,7 @@ identifierSecret: identifier-secrets
 larkSecret: lark-secrets
 googleMapSecret: google-map-secrets
 awsSecret: aws-secrets
+syncTeamSecret: sync-team-secrets
 secretType: Opaque
 
 skipTemp: 1
@@ -157,6 +158,32 @@ limitsIdentifierCPU: '4000m'
 limitsIdentifierMemory: '32Gi'
 requestsIdentifierCPU: '250m'
 requestsIdentifierMemory: '512Mi'
+
+# Sync teams cronjob
+syncTeamImage: 'miniantdev/devstats-dev:0.5.1'
+syncTeamPodName: 'devstats-sync_teams'
+syncTeamRestartPolicy: Never
+syncTeamCommand: './sync_teams'
+syncTeamCommandArgs: ''
+syncTeamPGDB: 'allprj'
+syncTeamNAffsCPUs: 8
+syncTeamDebug: ''
+syncTeamCmdDebug: ''
+syncTeamGithubDebug: ''
+syncTeamMaxGhAPIRetry: 3
+
+syncTeamCron: '0 0 * * *'
+syncTeamCronHistoryLimit: 2
+syncTeamCronFailedHistoryLimit: 1
+syncTeamCronStartingDeadlineSeconds: 300
+syncTeamNodeSelector:
+  node: devstats-stable-node
+
+useSyncTeamResourcesLimits: 1
+limitsSyncTeamCPU: '4000m'
+limitsSyncTeamMemory: '32Gi'
+requestsSyncTeamCPU: '250m'
+requestsSyncTeamMemory: '512Mi'
 
 # Ingresses indexes.
 indexIngressesFrom: 0

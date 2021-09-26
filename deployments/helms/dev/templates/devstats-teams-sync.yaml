@@ -1,0 +1,129 @@
+{{- $skipSyncTeam := .Values.skipSyncTeam -}}
+{{ if not $skipSyncTeam }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: '{{ .Values.syncTeamPodName }}'
+  labels:
+    name: devstats
+    type: 'sync-team-cron'
+spec:
+  schedule: '{{ .Values.syncTeamCron }}'
+  successfulJobsHistoryLimit: {{ .Values.syncTeamCronHistoryLimit }}
+  failedJobsHistoryLimit: {{ .Values.syncTeamCronFailedHistoryLimit }}
+  startingDeadlineSeconds: {{ .Values.syncTeamCronStartingDeadlineSeconds }}
+  concurrencyPolicy: {{ .Values.concurrencyPolicy }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: '{{ .Values.syncTeamPodName }}-all'
+          labels:
+            name: devstats
+            type: syncTeam
+            proj: all
+        spec:
+          containers:
+          - command:
+            - {{ .Values.syncTeamCommand }}
+{{ if .Values.syncTeamCommandArgs }}
+            args:
+{{- with .Values.syncTeamCommandArgs -}}
+{{ toYaml . | nindent 14 }}
+{{ end }}
+{{ end }}
+{{ if .Values.useSyncTeamResourcesLimits }}
+            resources:
+              requests:
+                memory: '{{ .Values.requestsSyncTeamMemory }}'
+                cpu: '{{ .Values.requestsSyncTeamCPU }}'
+              limits:
+                memory: '{{ .Values.limitsSyncTeamMemory }}'
+                cpu: '{{ .Values.limitsSyncTeamCPU }}'
+{{ end }}
+            env:
+              - name: GHA2DB_NCPUS
+                value: '{{ .Values.syncTeamNAffsCPUs }}'
+              - name: GHA2DB_DEBUG
+                value: '{{ .Values.syncTeamDebug }}'
+              - name: GHA2DB_CMDDEBUG
+                value: '{{ .Values.syncTeamCmdDebug }}'
+              - name: GHA2DB_GITHUB_DEBUG
+                value: '{{ .Values.syncTeamGithubDebug }}'
+              - name: GHA2DB_COMPANY_ACQ_YAML
+                value: '{{ .Values.companyAcq }}'
+              - name: GHA2DB_PROJECTS_YAML
+                value: {{ .Values.projectsFile }}
+              # GitHub.
+              - name: GHA2DB_MAX_GHAPI_RETRY
+                value: '{{ .Values.syncTeamMaxGhAPIRetry }}'
+              - name: GHA2DB_GITHUB_OAUTH
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.oauthSecret }}
+                    key: GHA2DB_GITHUB_OAUTH.secret
+              # syncTeam Database.
+              - name: ID_DB_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.syncTeamSecret }}
+                    key: ID_DB_HOST.secret
+              - name: ID_DB_PORT
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.syncTeamSecret }}
+                    key: ID_DB_PORT.secret
+              - name: ID_DB_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.syncTeamSecret }}
+                    key: ID_DB_USER.secret
+              - name: ID_DB_PASS
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.syncTeamSecret }}
+                    key: ID_DB_PASS.secret
+              - name: ID_DB_NAME
+                value: 'devstats'
+              - name: ID_DB_DIALECT
+                value: 'postgresql'
+              # Devstats Database.
+              - name: PG_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.pgSecret }}
+                    key: PG_HOST.secret
+              - name: PG_PORT
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.pgSecret }}
+                    key: PG_PORT.secret
+              - name: PG_DB
+                value: {{ .Values.syncTeamPGDB }}
+              - name: PG_PASS
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.pgSecret }}
+                    key: PG_PASS.secret
+              - name: PG_ADMIN_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.pgSecret }}
+                    key: PG_ADMIN_USER.secret
+            image: {{ .Values.syncTeamImage }}
+            imagePullPolicy: {{ .Values.imagePullPolicy }}
+            name: '{{ .Values.syncTeamPodName }}-all'
+            volumeMounts:
+            - name: '{{ .Values.volumeMountName }}-all'
+              mountPath: '{{ .Values.volumeMountPath }}'
+          volumes:
+          - name: '{{ .Values.volumeName }}-all'
+            persistentVolumeClaim:
+              claimName: '{{ .Values.pvName }}-all'
+          restartPolicy: {{ .Values.syncTeamRestartPolicy }}
+          nodeSelector:
+{{- with .Values.syncTeamNodeSelector -}}
+{{ toYaml . | nindent 12 }}
+{{ end }}
+{{ end }}
