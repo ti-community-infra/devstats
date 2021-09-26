@@ -161,7 +161,7 @@ requestsIdentifierMemory: '512Mi'
 
 # Sync teams cronjob
 syncTeamImage: 'miniantdev/devstats-dev:0.6.0-beta.1'
-syncTeamPodName: 'devstats-sync_teams'
+syncTeamPodName: 'devstats-sync-teams'
 syncTeamRestartPolicy: Never
 syncTeamCommand: './sync_teams'
 syncTeamCommandArgs: ''
