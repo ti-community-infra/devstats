@@ -112,7 +112,7 @@ runq: cmd/runq/runq.go ${GO_LIB_FILES}
 	 ${GO_ENV} ${GO_BUILD} -o runq cmd/runq/runq.go
 
 apiserver: cmd/apiserver/apiserver.go ${GO_LIB_FILES}
-	 ${GO_ENV} ${GO_BUILD} -o api cmd/apiserver/apiserver.go
+	 ${GO_ENV} ${GO_BUILD} -o apiserver cmd/apiserver/apiserver.go
 
 gha2db: cmd/gha2db/gha2db.go ${GO_LIB_FILES}
 	 ${GO_ENV} ${GO_BUILD} -o gha2db cmd/gha2db/gha2db.go

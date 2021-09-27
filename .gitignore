@@ -75,7 +75,7 @@ coverage.txt
 /pdb_vars
 /z2influx
 /api
-/devstats_api_server
+/apiserver
 
 # Other ignore file
 # TODO: remove unnecessary ignore item.

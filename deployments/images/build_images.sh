@@ -92,7 +92,7 @@ then
 fi
 
 tar cf "$DEVSTATS_CODE_TAR" cmd cron devel git internal tools/check go.mod go.sum .git .golangci.yml Makefile || exit 5
-tar cf "$DEVSTATS_API_SERVER_BIN_TAR" api || exit 44
+tar cf "$DEVSTATS_API_SERVER_BIN_TAR" apiserver || exit 44
 tar cf "$GRAFANA_TOOL_BIN_TAR" replacer sqlitedb runq || exit 6
 
 # Package the configs files from cncf/devstats.
