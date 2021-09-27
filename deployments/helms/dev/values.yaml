@@ -189,7 +189,7 @@ apiServerMaxSurge: 1
 apiServerMaxUnavailable: 1
 apiServerNReplicas: 1
 apiServerPodName: devstats-api-server
-apiServerPort: 3000
+apiServerPort: 8080
 apiServerRestartPolicy: Always
 
 useApiServerResourcesLimits: 1
