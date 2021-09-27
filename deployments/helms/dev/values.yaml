@@ -69,7 +69,7 @@ requestsProvisionsMemory: '4Gi'
 limitsProvisionsCPU: '4000m'
 limitsProvisionsMemory: '32Gi'
 useProvisionsResourcesLimits: 1
-waitForBootstrap: 60
+waitForBootstrap: 15
 
 # Cron sync jobs configurations.
 syncCommand: devstats
