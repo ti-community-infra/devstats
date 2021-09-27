@@ -1,0 +1,117 @@
+{{- $skipAPI := .Values.skipAPI -}}
+{{ if not $skipAPI }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: '{{ .Values.apiServerPodName }}'
+  labels:
+    name: devstats
+    type: 'api-server'
+spec:
+  replicas: {{ .Values.apiServerNReplicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: {{ .Values.apiServerMaxSurge }}
+      maxUnavailable: {{ .Values.apiServerMaxUnavailable }}
+  selector:
+    matchLabels:
+      name: devstats
+      type: 'api-server'
+  template:
+    metadata:
+      labels:
+        name: devstats
+        type: 'api-server'
+    spec:
+      containers:
+      - command:
+        - {{ .Values.apiServerCommand }}
+{{ if .Values.apiServerCommandArgs }}
+        args:
+{{- with .Values.apiServerCommandArgs -}}
+{{ toYaml . | nindent 10 }}
+{{ end }}
+{{ end }}
+{{ if .Values.useApiServerResourcesLimits }}
+        resources:
+          requests:
+            memory: '{{ .Values.requestsApiServerMemory }}'
+            cpu: '{{ .Values.requestsApiServerCPU }}'
+          limits:
+            memory: '{{ .Values.limitsApiServerMemory }}'
+            cpu: '{{ .Values.limitsApiServerCPU }}'
+{{ end }}
+        name: '{{ .Values.apiServerPodName }}'
+        image: {{ .Values.apiServerImage }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.apiServerPort }}
+        env:
+          - name: DEVSTATS_API_BASE_URL
+            value: '{{ .Values.apiServerBaseURL }}'
+          - name: GHA2DB_PROJECTS_YAML
+            value: {{ .Values.projectsFile }}
+          # GitHub.
+          - name: GHA2DB_MAX_GHAPI_RETRY
+            value: '{{ .Values.apiServerMaxGhAPIRetry }}'
+          - name: GHA2DB_GITHUB_OAUTH
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.oauthSecret }}
+                key: GHA2DB_GITHUB_OAUTH.secret
+          # syncTeam Database.
+          - name: ID_DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.identifierSecret }}
+                key: ID_DB_HOST.secret
+          - name: ID_DB_PORT
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.identifierSecret }}
+                key: ID_DB_PORT.secret
+          - name: ID_DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.identifierSecret }}
+                key: ID_DB_USER.secret
+          - name: ID_DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.identifierSecret }}
+                key: ID_DB_PASS.secret
+          - name: ID_DB_NAME
+            value: 'devstats'
+          - name: ID_DB_DIALECT
+            value: 'postgresql'
+          # Devstats Database.
+          - name: PG_HOST
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pgSecret }}
+                key: PG_HOST.secret
+          - name: PG_PORT
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pgSecret }}
+                key: PG_PORT.secret
+          - name: PG_DB
+            value: {{ .Values.syncTeamPGDB }}
+          - name: PG_PASS
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pgSecret }}
+                key: PG_PASS.secret
+          - name: PG_ADMIN_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.pgSecret }}
+                key: PG_ADMIN_USER.secret
+      restartPolicy: {{ .Values.apiServerRestartPolicy }}
+      nodeSelector:
+{{- with .Values.appNodeSelector -}}
+{{ toYaml . | nindent 8 }}
+{{ end }}
+{{ end }}

@@ -1,0 +1,19 @@
+{{- $skipAPI := .Values.skipAPI -}}
+{{ if not $skipAPI }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'devstats-api-server-service'
+  labels:
+    name: devstats
+    type: 'service'
+spec:
+  ports:
+  - port: 80
+    targetPort: {{ .Values.apiServerPort }}
+    protocol: TCP
+  selector:
+    name: devstats
+    type: 'api-server'
+{{ end }}
