@@ -43,7 +43,6 @@ DEVSTATS_PROD_CONFIG_DIR="${cwd}/configs/prod"
 
 # The path to devstats packages.
 DEVSTATS_CODE_TAR="${TEMP_DIR}/devstatscode.tar"
-DEVSTATS_REPORTS_TAR="${TEMP_DIR}/devstats-reports.tar"
 DEVSTATS_API_SERVER_BIN_TAR="${TEMP_DIR}/devstats-api-bins.tar"
 GRAFANA_TOOL_BIN_TAR="${TEMP_DIR}/grafana-tool-bins.tar"
 
@@ -96,16 +95,6 @@ tar cf "$DEVSTATS_CODE_TAR" cmd cron devel git internal tools/check go.mod go.su
 tar cf "$DEVSTATS_API_SERVER_BIN_TAR" api || exit 44
 tar cf "$GRAFANA_TOOL_BIN_TAR" replacer sqlitedb runq || exit 6
 
-# Package the files in devstats-report repository.
-cd "$DEVSTATS_REPORTS_DIR" || exit 40
-
-if [ -n "$DEVSTATS_REPORTS_TAR" ]
-then
-  rm -f "$DEVSTATS_REPORTS_TAR" 2>/dev/null
-fi
-
-tar cf "$DEVSTATS_REPORTS_TAR" sh sql affs rep contributors velocity find.sh || exit 41
-
 # Package the configs files from cncf/devstats.
 cd "$DEVSTATS_CNCF_CONFIG_DIR" || exit 7
 
@@ -115,9 +104,6 @@ then
 fi
 
 tar cf "$DEVSTATS_CNCF_CONFIG_TAR" hide git metrics devel shared scripts cron docs jsons/.keep util_sql util_sh github_users.json companies.yaml skip_dates.yaml  || exit 8
-
-# Copy static file to temp directory, for copying to the docker image.
-cp apache/www/index_*.html "${TEMP_DIR}/" || exit 22
 
 #
 # Pack the configuration files of different environments into different compressed packages,
@@ -198,37 +184,6 @@ then
   docker build -f Dockerfile.grafana -t "${DOCKER_USER}/devstats-grafana:${IMAGE_TAG}" . || exit 36
 fi
 
-if [ -z "$SKIP_TESTS" ]
-then
-  docker build -f Dockerfile.tests -t "${DOCKER_USER}/devstats-tests:${IMAGE_TAG}" . || exit 15
-fi
-
-if [ -z "$SKIP_PATRONI" ]
-then
-  #docker build -f Dockerfile.patroni -t "${DOCKER_USER}/devstats-patroni:${IMAGE_TAG}" . || exit 16
-  docker build -f Dockerfile.patroni -t "${DOCKER_USER}/devstats-patroni-new:${IMAGE_TAG}" . || exit 16
-  docker build -f Dockerfile.patroni.13 -t "${DOCKER_USER}/devstats-patroni-13:${IMAGE_TAG}" . || exit 16
-fi
-
-if [ -z "$SKIP_STATIC" ]
-then
-  if [ -z "$SKIP_DEV" ]
-  then
-    docker build -f Dockerfile.static.dev -t "${DOCKER_USER}/devstats-static-dev:${IMAGE_TAG}" . || exit 24
-  fi
-  if [ -z "$SKIP_PROD" ]
-  then
-    docker build -f Dockerfile.static.prod -t "${DOCKER_USER}/devstats-static-prod:${IMAGE_TAG}" . || exit 23
-  fi
-  docker build -f Dockerfile.static.default -t "${DOCKER_USER}/devstats-static-default:${IMAGE_TAG}" . || exit 27
-  docker build -f Dockerfile.static.backups -t "${DOCKER_USER}/backups-page:${IMAGE_TAG}" . || exit 42
-fi
-
-if [ -z "$SKIP_REPORTS" ]
-then
-  docker build -f Dockerfile.reports -t "${DOCKER_USER}/devstats-reports:${IMAGE_TAG}" . || exit 37
-fi
-
 if [ -z "$SKIP_API" ]
 then
   if [ -z "$SKIP_DEV" ]
@@ -292,40 +247,6 @@ fi
 if [ -z "$SKIP_GRAFANA" ]
 then
   docker push "${DOCKER_USER}/devstats-grafana:${IMAGE_TAG}" || exit 19
-fi
-
-# Build docker image for tests.
-if [ -z "$SKIP_TESTS" ]
-then
-  docker push "${DOCKER_USER}/devstats-tests:${IMAGE_TAG}" || exit 20
-fi
-
-# Build docker image for patroni database.
-if [ -z "$SKIP_PATRONI" ]
-then
-  #docker push "${DOCKER_USER}/devstats-patroni" || exit 21
-  docker push "${DOCKER_USER}/devstats-patroni-new:${IMAGE_TAG}" || exit 21
-  docker push "${DOCKER_USER}/devstats-patroni-13:${IMAGE_TAG}" || exit 21
-fi
-
-# Build docker image for static files.
-if [ -z "$SKIP_STATIC" ]
-then
-  if [ -z "$SKIP_DEV" ]
-  then
-    docker push "${DOCKER_USER}/devstats-static-dev:${IMAGE_TAG}" || exit 28
-  fi
-  if [ -z "$SKIP_PROD" ]
-  then
-    docker push "${DOCKER_USER}/devstats-static-prod:${IMAGE_TAG}" || exit 24
-  fi
-  docker push "${DOCKER_USER}/devstats-static-default:${IMAGE_TAG}" || exit 31
-  docker push "${DOCKER_USER}/backups-page:${IMAGE_TAG}" || exit 43
-fi
-
-if [ -z "$SKIP_REPORTS" ]
-then
-  docker push "${DOCKER_USER}/devstats-reports:${IMAGE_TAG}" || exit 38
 fi
 
 # Build docker image for API server.
