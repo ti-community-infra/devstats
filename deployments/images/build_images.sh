@@ -74,7 +74,7 @@ mkdir -p "$TEMP_DIR"
 
 # Package the sourcecode and binary of devstats.
 cd "${DEVSTATS_ROOT}" || exit 6
-make replacer sqlitedb runq api || exit 7
+make replacer sqlitedb runq apiserver || exit 7
 
 if [ -n "$DEVSTATS_CODE_TAR" ]
 then
