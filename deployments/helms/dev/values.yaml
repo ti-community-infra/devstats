@@ -182,6 +182,22 @@ limitsSyncTeamMemory: '32Gi'
 requestsSyncTeamCPU: '250m'
 requestsSyncTeamMemory: '512Mi'
 
+# ApiServer configurations.
+apiServerCommand: 'apiserver'
+apiServerImage: 'miniantdev/devstats-dev:0.6.0'
+apiServerMaxSurge: 1
+apiServerMaxUnavailable: 1
+apiServerNReplicas: 1
+apiServerPodName: devstats-api-server
+apiServerPort: 3000
+apiServerRestartPolicy: Always
+
+useApiServerResourcesLimits: 1
+requestsApiServerCPU: '300m'
+requestsApiServerMemory: '512Mi'
+limitsApiServerCPU: '2000m'
+limitsApiServerMemory: '8Gi'
+
 # Ingresses indexes.
 indexIngressesFrom: 0
 indexIngressesTo: 100

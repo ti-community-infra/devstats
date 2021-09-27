@@ -1,5 +1,6 @@
 {{- $skipIngress := .Values.skipIngress -}}
 {{ if not $skipIngress }}
+{{- $root := . -}}
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -13,7 +14,7 @@ metadata:
 spec:
   tls:
     - hosts:
-{{- $root := . -}}
+        - api-{{ .Values.domainName }}
 {{ range $index, $_ := .Values.projects }}
 {{ if and (or (eq ($index|int) ($root.Values.indexIngressesFrom|int)) (gt ($index|int) ($root.Values.indexIngressesFrom|int))) (lt ($index|int) ($root.Values.indexIngressesTo|int)) }}
         - {{ .proj }}-{{ $root.Values.domainName }}
@@ -21,7 +22,13 @@ spec:
 {{ end }}
       secretName: devstats-tls
   rules:
-{{- $root := . -}}
+  - host: api-{{ .Values.domainName }}
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: devstats-api-server-service
+            servicePort: 80
 {{ range $index, $_ := .Values.projects }}
 {{ if and (or (eq ($index|int) ($root.Values.indexIngressesFrom|int)) (gt ($index|int) ($root.Values.indexIngressesFrom|int))) (lt ($index|int) ($root.Values.indexIngressesTo|int)) }}
   - host: {{ .proj }}-{{ $root.Values.domainName }}
