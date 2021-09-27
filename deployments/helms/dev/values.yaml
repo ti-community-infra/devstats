@@ -191,6 +191,7 @@ apiServerNReplicas: 1
 apiServerPodName: devstats-api-server
 apiServerPort: 8080
 apiServerRestartPolicy: Always
+apiServerMaxGhAPIRetry: 3
 
 useApiServerResourcesLimits: 1
 requestsApiServerCPU: '300m'

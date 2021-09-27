@@ -49,11 +49,13 @@ spec:
         ports:
         - containerPort: {{ .Values.apiServerPort }}
         env:
+          - name: DEVSTATS_API_BASE_URL
+            value: '{{ .Values.apiServerBaseURL }}'
           - name: GHA2DB_PROJECTS_YAML
             value: {{ .Values.projectsFile }}
           # GitHub.
           - name: GHA2DB_MAX_GHAPI_RETRY
-            value: '{{ .Values.syncTeamMaxGhAPIRetry }}'
+            value: '{{ .Values.apiServerMaxGhAPIRetry }}'
           - name: GHA2DB_GITHUB_OAUTH
             valueFrom:
               secretKeyRef:
