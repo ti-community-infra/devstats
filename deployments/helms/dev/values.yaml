@@ -176,8 +176,6 @@ syncTeamCron: '0 0 * * *'
 syncTeamCronHistoryLimit: 2
 syncTeamCronFailedHistoryLimit: 1
 syncTeamCronStartingDeadlineSeconds: 300
-syncTeamNodeSelector:
-  node: devstats-stable-node
 
 useSyncTeamResourcesLimits: 1
 limitsSyncTeamCPU: '4000m'
