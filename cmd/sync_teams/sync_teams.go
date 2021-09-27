@@ -246,8 +246,8 @@ select * from github_users u where exists(
 		if githubUser.ID == 0 {
 			githubUserData, _, err := gc.GetUserByLogin(login)
 			if err != nil {
-				lib.FatalOnError(err)
-				return
+				logrus.WithError(err).Errorf("Failed to get user by login.")
+				continue
 			}
 
 			// Ensure unique identity existed in the database.
@@ -393,7 +393,7 @@ func saveTeamRepositoryToDB(
 		// Ensure the repository in the database.
 		db.Clauses(clause.OnConflict{
 			Columns: []clause.Column{
-				{ Name: "id" },
+				{Name: "id"},
 			},
 			DoNothing: true,
 		}).Create(&repository)
