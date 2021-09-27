@@ -22,13 +22,13 @@ spec:
 {{ end }}
       secretName: devstats-tls
   rules:
-    - host: api-{{ .Values.domainName }}
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: devstats-api-server-service
-              servicePort: 80
+  - host: api-{{ .Values.domainName }}
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: devstats-api-server-service
+            servicePort: 80
 {{ range $index, $_ := .Values.projects }}
 {{ if and (or (eq ($index|int) ($root.Values.indexIngressesFrom|int)) (gt ($index|int) ($root.Values.indexIngressesFrom|int))) (lt ($index|int) ($root.Values.indexIngressesTo|int)) }}
   - host: {{ .proj }}-{{ $root.Values.domainName }}
