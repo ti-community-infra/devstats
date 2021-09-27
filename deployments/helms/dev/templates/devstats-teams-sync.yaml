@@ -67,22 +67,22 @@ spec:
               - name: ID_DB_HOST
                 valueFrom:
                   secretKeyRef:
-                    name: {{ .Values.syncTeamSecret }}
+                    name: {{ .Values.identifierSecret }}
                     key: ID_DB_HOST.secret
               - name: ID_DB_PORT
                 valueFrom:
                   secretKeyRef:
-                    name: {{ .Values.syncTeamSecret }}
+                    name: {{ .Values.identifierSecret }}
                     key: ID_DB_PORT.secret
               - name: ID_DB_USER
                 valueFrom:
                   secretKeyRef:
-                    name: {{ .Values.syncTeamSecret }}
+                    name: {{ .Values.identifierSecret }}
                     key: ID_DB_USER.secret
               - name: ID_DB_PASS
                 valueFrom:
                   secretKeyRef:
-                    name: {{ .Values.syncTeamSecret }}
+                    name: {{ .Values.identifierSecret }}
                     key: ID_DB_PASS.secret
               - name: ID_DB_NAME
                 value: 'devstats'

@@ -12,7 +12,6 @@ identifierSecret: identifier-secrets
 larkSecret: lark-secrets
 googleMapSecret: google-map-secrets
 awsSecret: aws-secrets
-syncTeamSecret: sync-team-secrets
 secretType: Opaque
 
 skipTemp: 1
