@@ -143,7 +143,7 @@ identifierGitHubUsersJSONSourcePath: https://media.githubusercontent.com/media/c
 identifierGitHubUsersJSONOutputPath: './github_users.json'
 identifierOrganizationConfigFile: './organizations.yaml'
 identifierCountryCodesFilePath: './countries.csv'
-identifierCacheFilePath: '~/dump.out'
+identifierCacheFilePath: '/root/dump.out'
 identifierUploadGitHubUsersJSONToS3: 1
 identifierSkipAutoImportProfile: ''
 identifierSkipOutputGitHubUserJSON: ''
