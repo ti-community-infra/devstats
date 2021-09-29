@@ -113,6 +113,8 @@ spec:
                     name: {{ .Values.awsSecret }}
                     key: S3_GITHUB_USERS_JSON_BUCKET_KEY.secret
               # identifier Database.
+              - name: ID_CACHE_FILE_PATH
+                value: '{{ .Values.identifierCacheFilePath }}'
               - name: ID_GITHUB_USERS_JSON_SOURCE_PATH
                 value: '{{ .Values.identifierGitHubUsersJSONSourcePath }}'
               - name: ID_GITHUB_USERS_JSON_OUTPUT_PATH

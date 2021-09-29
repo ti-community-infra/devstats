@@ -121,6 +121,8 @@ spec:
                 value: '{{ .Values.identifierOrganizationConfigFile }}'
               - name: ID_COUNTRY_CODES_FILE_PATH
                 value: '{{ .Values.identifierCountryCodesFilePath }}'
+              - name: ID_CACHE_FILE_PATH
+                value: '{{ .Values.identifierCacheFilePath }}'
               - name: ID_DB_HOST
                 valueFrom:
                   secretKeyRef:
