@@ -22,8 +22,8 @@ type Ctx struct {
 
 	GitHubUsersJSONSourcePath string // From ID_GITHUB_USERS_JSON_SOURCE_PATH
 	GitHubUsersJSONOutputPath string // From ID_GITHUB_USERS_JSON_OUTPUT_PATH
-	CountryCodesFilePath      string // From ID_COUNTRY_CODES_FILE_PATH, default "data/countries.csv"
-	CacheFilePath             string // From ID_CACHE_FILE_PATH, default "data/dump.out"
+	CountryCodesFilePath      string // From ID_COUNTRY_CODES_FILE_PATH, default "configs/shared/countries.csv"
+	CacheFilePath             string // From ID_CACHE_FILE_PATH, default "~/dump.out"
 	OrganizationsFilePath     string // From ID_ORGANIZATION_CONFIG_YAML, default "configs/shared/organizations.yaml"
 
 	GoogleMapAPIKey string // From GOOGLE_MAP_API_KEY
@@ -105,7 +105,7 @@ func (c *Ctx) Init() error {
 	}
 
 	// Cache
-	c.CacheFilePath = "dump.out"
+	c.CacheFilePath = "~/dump.out"
 	if os.Getenv("ID_CACHE_FILE_PATH") != "" {
 		c.CacheFilePath = os.Getenv("ID_CACHE_FILE_PATH")
 	}
