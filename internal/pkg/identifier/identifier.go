@@ -885,13 +885,15 @@ func processUniqueIdentity(
 	/*  Handle Unique Identity Profile  */
 
 	// Handle Name (Only support manual and GitHub profile).
-	if uniqueIdentity.CountrySource != model.ManualSource && len(githubName) != 0 {
+	if uniqueIdentity.NameSource != model.ManualSource && uniqueIdentity.NameSource != model.UserManualSource &&
+		len(githubName) != 0 {
 		uniqueIdentity.Name = githubName
 		uniqueIdentity.NameSource = model.GitHubProfileSource
 	}
 
 	// Handle Email (Only support manual and GitHub profile).
-	if uniqueIdentity.EmailSource != model.ManualSource && len(githubEmail) != 0 {
+	if uniqueIdentity.EmailSource != model.ManualSource && uniqueIdentity.EmailSource != model.UserManualSource &&
+		len(githubEmail) != 0 {
 		uniqueIdentity.Email = githubEmail
 		uniqueIdentity.EmailSource = model.GitHubProfileSource
 	}
@@ -903,11 +905,13 @@ func processUniqueIdentity(
 			log.WithError(err).Errorf("Failed to format the location: %s.", githubLocation)
 		}
 
-		if uniqueIdentity.LocationSource != model.ManualSource && len(formattedGitHubLocation) != 0 {
+		if uniqueIdentity.LocationSource != model.ManualSource && uniqueIdentity.LocationSource != model.UserManualSource &&
+			len(formattedGitHubLocation) != 0 {
 			uniqueIdentity.Location = formattedGitHubLocation
 			uniqueIdentity.LocationSource = model.GitHubProfileSource
 		}
-		if uniqueIdentity.CountrySource != model.ManualSource && len(countryCode) != 0 {
+		if uniqueIdentity.CountrySource != model.ManualSource && uniqueIdentity.CountrySource != model.UserManualSource &&
+			len(countryCode) != 0 {
 			uniqueIdentity.CountryCode = &countryCode
 			uniqueIdentity.CountrySource = model.GitHubProfileSource
 		}
@@ -924,6 +928,16 @@ func processUniqueIdentity(
 	if jsonUser, ok := githubLogin2JsonUser[githubLogin]; ok {
 		jsonSource := jsonUser.Source
 		affs := jsonUser.Affiliation
+
+		if len(uniqueIdentity.Name) == 0 && len(jsonUser.Name) != 0 {
+			uniqueIdentity.Name = jsonUser.Name
+			uniqueIdentity.NameSource = model.GitHubJSONSource
+		}
+
+		if uniqueIdentity.CountryCode == nil && jsonUser.CountryID != nil {
+			uniqueIdentity.CountryCode = jsonUser.CountryID
+			uniqueIdentity.CountrySource = model.GitHubJSONSource
+		}
 
 		// Do not process invalid affiliation information.
 		isInvalidAffs := affs == "NotFound" || affs == "(Unknown)" || affs == "?" || affs == "-" || affs == ""
