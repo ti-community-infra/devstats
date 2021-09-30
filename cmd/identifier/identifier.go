@@ -36,7 +36,7 @@ func main() {
 	lib.FatalOnError(err)
 
 	// Init the memory cache.
-	memCache := cache.New(2*24*time.Hour, 4*24*time.Hour)
+	memCache := cache.New(15*24*time.Hour, 30*24*time.Hour)
 
 	gob.Register(github.Response{})
 	gob.Register(github.User{})

@@ -83,6 +83,8 @@ type LocationCacheEntry struct {
 
 const locationCacheKeyPrefix = "formatted-location-"
 
+const locationCacheExpire = 365 * 24 * time.Hour
+
 func (l *LocationClient) Init(ctx *Ctx, log *logrus.Entry, memCache *cache.Cache) error {
 	mapClient, err := maps.NewClient(maps.WithAPIKey(ctx.GoogleMapAPIKey))
 	if err != nil {
@@ -129,7 +131,7 @@ func (l *LocationClient) FormattedLocation(location string) (string, string, str
 			CountryCode:      "",
 			CountryName:      "",
 		}
-		l.memCache.Set(locationCacheKey, cacheResult, cache.DefaultExpiration)
+		l.memCache.Set(locationCacheKey, cacheResult, locationCacheExpire)
 		return "", "", "", errors.New("no matching locations were found")
 	}
 
@@ -160,7 +162,7 @@ func (l *LocationClient) FormattedLocation(location string) (string, string, str
 			CountryCode:      "",
 			CountryName:      "",
 		}
-		l.memCache.Set(locationCacheKey, cacheResult, cache.DefaultExpiration)
+		l.memCache.Set(locationCacheKey, cacheResult, locationCacheExpire)
 		return "", "", "", errors.New("failed to found country code")
 	}
 
@@ -169,7 +171,7 @@ func (l *LocationClient) FormattedLocation(location string) (string, string, str
 		CountryCode:      countryCode,
 		CountryName:      countryName,
 	}
-	l.memCache.Set(locationCacheKey, cacheResult, cache.DefaultExpiration)
+	l.memCache.Set(locationCacheKey, cacheResult, locationCacheExpire)
 
 	return formattedAddress, countryCode, countryName, nil
 }
