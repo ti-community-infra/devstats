@@ -885,7 +885,7 @@ func processUniqueIdentity(
 	/*  Handle Unique Identity Profile  */
 
 	// Handle Name (Only support manual and GitHub profile).
-	if uniqueIdentity.CountrySource != model.ManualSource && len(githubName) != 0 {
+	if uniqueIdentity.NameSource != model.ManualSource && len(githubName) != 0 {
 		uniqueIdentity.Name = githubName
 		uniqueIdentity.NameSource = model.GitHubProfileSource
 	}
@@ -924,6 +924,16 @@ func processUniqueIdentity(
 	if jsonUser, ok := githubLogin2JsonUser[githubLogin]; ok {
 		jsonSource := jsonUser.Source
 		affs := jsonUser.Affiliation
+
+		if len(uniqueIdentity.Name) == 0 && len(jsonUser.Name) != 0 {
+			uniqueIdentity.Name = jsonUser.Name
+			uniqueIdentity.NameSource = model.GitHubJSONSource
+		}
+
+		if uniqueIdentity.CountryCode == nil && jsonUser.CountryID != nil {
+			uniqueIdentity.CountryCode = jsonUser.CountryID
+			uniqueIdentity.CountrySource = model.GitHubJSONSource
+		}
 
 		// Do not process invalid affiliation information.
 		isInvalidAffs := affs == "NotFound" || affs == "(Unknown)" || affs == "?" || affs == "-" || affs == ""
