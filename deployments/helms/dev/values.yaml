@@ -39,7 +39,7 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana:0.7.0'
+grafanaImage: 'miniantdev/devstats-grafana:0.7.1'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
 grafanaNReplicas: 1
@@ -56,7 +56,7 @@ limitsGrafanasMemory: '8Gi'
 useGrafanasResourcesLimits: 1
 
 # Provision configurations.
-provisionImage: 'miniantdev/devstats-dev:0.7.0'
+provisionImage: 'miniantdev/devstats-dev:0.7.1'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
@@ -73,7 +73,7 @@ waitForBootstrap: 15
 
 # Cron sync jobs configurations.
 syncCommand: devstats
-syncImage: 'miniantdev/devstats-minimal-dev:0.7.0'
+syncImage: 'miniantdev/devstats-minimal-dev:0.7.1'
 syncPodName: devstats
 syncRestartPolicy: Never
 indexCronsFrom: 0
@@ -85,7 +85,7 @@ requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
 
 # Execute Pod configurations.
-executeImage: 'miniantdev/devstats-minimal-dev:0.7.0'
+executeImage: 'miniantdev/devstats-minimal-dev:0.7.1'
 executePodName: 'devstats-execute'
 executeTargetProject: 'tidb'
 executeCommand: 'sleep'
@@ -106,7 +106,7 @@ requestsExecuteMemory: '1Gi'
 useExecuteResourcesLimits: 1
 
 # Affiliations Sync.
-affiliationsImage: 'miniantdev/devstats-dev:0.7.0'
+affiliationsImage: 'miniantdev/devstats-dev:0.7.1'
 affiliationsPodName: 'devstats-affiliations'
 affiliationsRestartPolicy: Never
 affiliationsCommand: './shared/affs.sh'
@@ -126,7 +126,7 @@ requestsAffiliationsCPU: '250m'
 requestsAffiliationsMemory: '512Mi'
 
 # Identifier
-identifierImage: 'miniantdev/devstats-dev:0.7.0'
+identifierImage: 'miniantdev/devstats-dev:0.7.1'
 identifierPodName: 'devstats-identifier'
 identifierRestartPolicy: Never
 identifierCommand: './identifier'
@@ -160,7 +160,7 @@ requestsIdentifierCPU: '250m'
 requestsIdentifierMemory: '512Mi'
 
 # Sync teams cronjob
-syncTeamImage: 'miniantdev/devstats-dev:0.7.0'
+syncTeamImage: 'miniantdev/devstats-dev:0.7.1'
 syncTeamPodName: 'devstats-sync-teams'
 syncTeamRestartPolicy: Never
 syncTeamCommand: './sync_teams'
@@ -185,7 +185,7 @@ requestsSyncTeamMemory: '512Mi'
 
 # ApiServer configurations.
 apiServerCommand: 'apiserver'
-apiServerImage: 'miniantdev/devstats-api-dev:0.7.0'
+apiServerImage: 'miniantdev/devstats-api-dev:0.7.1'
 apiServerMaxSurge: 1
 apiServerMaxUnavailable: 1
 apiServerNReplicas: 1
