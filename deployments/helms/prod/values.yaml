@@ -40,7 +40,7 @@ waitForPostgres: 15
 
 # Grafana configurations.
 grafanaCommand: 'grafana_start.sh'
-grafanaImage: 'miniantdev/devstats-grafana:0.7.1'
+grafanaImage: 'miniantdev/devstats-grafana:0.7.2'
 grafanaMaxSurge: 1
 grafanaMaxUnavailable: 1
 grafanaNReplicas: 1
@@ -57,7 +57,7 @@ limitsGrafanasMemory: '8Gi'
 useGrafanasResourcesLimits: 1
 
 # Provision configurations.
-provisionImage: 'miniantdev/devstats-prod:0.7.1'
+provisionImage: 'miniantdev/devstats-prod:0.7.2'
 projectsFile: 'projects.yaml'
 provisionCommand: './devel/deploy_all.sh'
 provisionPodName: devstats-provision
@@ -74,7 +74,7 @@ waitForBootstrap: 60
 
 # Cron sync jobs configurations.
 syncCommand: devstats
-syncImage: 'miniantdev/devstats-minimal-prod:0.7.1'
+syncImage: 'miniantdev/devstats-minimal-prod:0.7.2'
 syncPodName: devstats
 syncRestartPolicy: Never
 indexCronsFrom: 0
@@ -86,7 +86,7 @@ requestsCronsMemory: '2Gi'
 useCronsResourcesLimits: 1
 
 # Execute Pod configurations.
-executeImage: 'miniantdev/devstats-minimal-prod:0.7.1'
+executeImage: 'miniantdev/devstats-minimal-prod:0.7.2'
 executePodName: 'devstats-execute'
 executeTargetProject: 'tikv'
 executeCommand: 'sleep'
@@ -107,7 +107,7 @@ requestsExecuteMemory: '1Gi'
 useExecuteResourcesLimits: 1
 
 # Affiliations Sync.
-affiliationsImage: 'miniantdev/devstats-prod:0.7.1'
+affiliationsImage: 'miniantdev/devstats-prod:0.7.2'
 affiliationsPodName: 'devstats-affiliations'
 affiliationsRestartPolicy: Never
 affiliationsCommand: './shared/affs.sh'
@@ -127,7 +127,7 @@ requestsAffiliationsCPU: '250m'
 requestsAffiliationsMemory: '512Mi'
 
 # Identifier
-identifierImage: 'miniantdev/devstats-prod:0.7.1'
+identifierImage: 'miniantdev/devstats-prod:0.7.2'
 identifierPodName: 'devstats-identifier'
 identifierRestartPolicy: Never
 identifierCommand: './identifier'
@@ -161,7 +161,7 @@ requestsIdentifierCPU: '250m'
 requestsIdentifierMemory: '512Mi'
 
 # Sync teams cronjob
-syncTeamImage: 'miniantdev/devstats-prod:0.7.1'
+syncTeamImage: 'miniantdev/devstats-prod:0.7.2'
 syncTeamPodName: 'devstats-sync-teams'
 syncTeamRestartPolicy: Never
 syncTeamCommand: './sync_teams'
@@ -186,7 +186,7 @@ requestsSyncTeamMemory: '512Mi'
 
 # ApiServer configurations.
 apiServerCommand: 'apiserver'
-apiServerImage: 'miniantdev/devstats-api-prod:0.7.1'
+apiServerImage: 'miniantdev/devstats-api-prod:0.7.2'
 apiServerMaxSurge: 1
 apiServerMaxUnavailable: 1
 apiServerNReplicas: 1
