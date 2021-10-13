@@ -171,16 +171,18 @@ func getCommunityInfoByTeams(db *gorm.DB, gc *identifier.GitHubClient, projectCo
 			db.Where("project_id = ? and name = ?", project.ID, teamName).FirstOrCreate(&team)
 
 			files := teamTree.Files()
-			err = files.ForEach(func(file *object.File) error {
+			_ = files.ForEach(func(file *object.File) error {
 				if file.Name == projectConfig.MembershipFileName {
 					contents, err := file.Contents()
 					if err != nil {
+						logrus.WithError(err).Errorf("Failed to get the content of membership file.")
 						return err
 					}
 
 					var teamMembership TeamMembership
 					err = json.Unmarshal([]byte(contents), &teamMembership)
 					if err != nil {
+						logrus.WithError(err).Errorf("Failed to parse the membership file.")
 						return err
 					}
 
@@ -196,7 +198,6 @@ func getCommunityInfoByTeams(db *gorm.DB, gc *identifier.GitHubClient, projectCo
 				}
 				return nil
 			})
-			lib.FatalOnError(err)
 		}
 
 		// Handle the deleted teams.
