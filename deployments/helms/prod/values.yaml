@@ -98,7 +98,7 @@ executeCommandArgs:
 # executeOnlyMetrics: 'pr_opened_to_merged_company,pr_time_metric_company,pr_first_non_author_activity_company,pr_age_company'
 # executeSkipMetrics: ''
 # executeTargetDB: 'tikv'
-# executeIssueSyncUrl: "select distinct dup_repo_name, number from gha_issues;"
+# executeIssueSyncSQL: "select distinct dup_repo_name, number from gha_issues;"
 executeRestartPolicy: Never
 limitsExecuteCPU: '6000m'
 limitsExecuteMemory: '32Gi'
