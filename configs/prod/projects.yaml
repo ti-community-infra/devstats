@@ -47,7 +47,7 @@ projects:
     name: All Community
     status: "-"
     command_line:
-      - "pingcap,tikv,chaos-mesh"
+      - "pingcap,tikv,chaos-mesh,tidb-incubator"
     psql_db: allprj
     main_repo: ''
     project_scale: 5.0
